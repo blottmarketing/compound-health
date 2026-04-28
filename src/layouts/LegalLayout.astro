@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  label: string;
+  heading: string;
+  lastUpdated: string;
+}
+
+const { title, label, heading, lastUpdated } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} — Compound Health</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+
+    <nav class="site-nav">
+      <a href="/" class="nav-logo">Compound <em>Health</em></a>
+      <a href="/" class="nav-back">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M11 7H3M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to home
+      </a>
+    </nav>
+
+    <div class="page-hero">
+      <div class="inner">
+        <p class="page-label">{label}</p>
+        <h1>{heading}</h1>
+        <p>Last updated: {lastUpdated}</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="inner">
+        <div class="prose">
+          <slot />
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-logo">Compound Health</div>
+      <nav class="footer-nav">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/website-terms">Website Terms</a>
+      </nav>
+      <div class="footer-copy">&copy; 2026 Compound Health. All rights reserved.</div>
+    </footer>
+
+  </body>
+</html>

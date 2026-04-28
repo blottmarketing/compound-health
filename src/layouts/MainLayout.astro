@@ -1,0 +1,172 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Compound Health pairs elite clinical care with your RIA.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
+  </head>
+  <body>
+
+    <nav class="main-nav">
+      <a href="/" class="nav-logo">Compound <em>Health</em></a>
+      <div class="nav-links">
+        <a href="/#how">How it works</a>
+        <a href="/#features">What you get</a>
+        <a href="/#plans">Plans</a>
+        <a href="/#joinwaitlist" class="nav-cta">Get early access</a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </nav>
+
+    <!-- Mobile menu overlay -->
+    <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+      <div class="mobile-menu-bg" id="menuBg"></div>
+      <nav class="mobile-nav-links">
+        <a href="/#how" class="mobile-nav-link" data-menu-link>How it <em>works</em></a>
+        <a href="/#features" class="mobile-nav-link" data-menu-link>What you <em>get</em></a>
+        <a href="/#plans" class="mobile-nav-link" data-menu-link>Plans</a>
+      </nav>
+      <a href="/#joinwaitlist" class="mobile-nav-cta" id="menuCta" data-menu-link>
+        Get early access
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <div class="mobile-menu-footer" id="menuFooter">
+        <span class="mobile-menu-tagline">Compound Health &copy; 2026</span>
+        <div class="mobile-menu-dot"></div>
+      </div>
+    </div>
+
+    <slot />
+
+    <footer>
+      <div class="footer-logo">Compound Health</div>
+      <nav class="footer-nav">
+        <a href="/privacy-policy">Privacy Policy</a>
+        <a href="/website-terms">Website Terms</a>
+      </nav>
+      <div class="footer-copy">&copy; 2026 Compound Health. All rights reserved.</div>
+    </footer>
+
+    <script>
+      (function () {
+        const hamburger  = document.getElementById('hamburger') as HTMLButtonElement;
+        const mobileMenu = document.getElementById('mobileMenu') as HTMLDivElement;
+        const menuBg     = document.getElementById('menuBg') as HTMLDivElement;
+        const menuLinks  = document.querySelectorAll<HTMLElement>('.mobile-nav-link');
+        const menuCta    = document.getElementById('menuCta') as HTMLAnchorElement;
+        const menuFooter = document.getElementById('menuFooter') as HTMLDivElement;
+        const lines      = hamburger.querySelectorAll<HTMLElement>('.hamburger-line');
+        const body       = document.body;
+
+        if (!hamburger || !mobileMenu) return;
+
+        let isOpen = false;
+        let openTl: gsap.core.Timeline | null = null;
+        let closeTl: gsap.core.Timeline | null = null;
+
+        function buildOpenTimeline() {
+          const tl = gsap.timeline({ paused: true });
+          tl.set(mobileMenu, { visibility: 'visible' })
+            .fromTo(menuBg,
+              { scaleX: 0, scaleY: 0, transformOrigin: 'top right', borderRadius: '0 0 0 60px' },
+              { scaleX: 1, scaleY: 1, duration: 0.55, ease: 'expo.out' }
+            )
+            .to(lines[0], { y: 7,  rotation: 45,  duration: 0.3, ease: 'power2.inOut' }, 0.05)
+            .to(lines[1], { scaleX: 0, opacity: 0, duration: 0.2, ease: 'power2.in'  }, 0.05)
+            .to(lines[2], { y: -7, rotation: -45, duration: 0.3, ease: 'power2.inOut' }, 0.05)
+            .fromTo(menuLinks,
+              { opacity: 0, y: 28 },
+              { opacity: 1, y: 0, duration: 0.45, stagger: 0.07, ease: 'power3.out' },
+              0.25
+            )
+            .fromTo(menuCta,
+              { opacity: 0, y: 20 },
+              { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' },
+              0.5
+            )
+            .fromTo(menuFooter,
+              { opacity: 0 },
+              { opacity: 1, duration: 0.35, ease: 'power2.out' },
+              0.6
+            );
+          return tl;
+        }
+
+        function buildCloseTimeline() {
+          const tl = gsap.timeline({
+            paused: true,
+            onComplete: () => { mobileMenu.style.visibility = 'hidden'; }
+          });
+          tl.to([...menuLinks, menuCta, menuFooter],
+              { opacity: 0, y: -12, duration: 0.25, stagger: 0.04, ease: 'power2.in' }
+            )
+            .to(menuBg,
+              { scaleX: 0, scaleY: 0, transformOrigin: 'top right', duration: 0.45, ease: 'expo.in' },
+              0.1
+            )
+            .to(lines[0], { y: 0, rotation: 0, duration: 0.28, ease: 'power2.inOut' }, 0)
+            .to(lines[1], { scaleX: 1, opacity: 1, duration: 0.2, ease: 'power2.out' }, 0.1)
+            .to(lines[2], { y: 0, rotation: 0, duration: 0.28, ease: 'power2.inOut' }, 0);
+          return tl;
+        }
+
+        function openMenu() {
+          isOpen = true;
+          hamburger.setAttribute('aria-expanded', 'true');
+          hamburger.classList.add('is-open');
+          mobileMenu.classList.add('is-active');
+          mobileMenu.setAttribute('aria-hidden', 'false');
+          body.style.overflow = 'hidden';
+          if (closeTl) closeTl.kill();
+          openTl = buildOpenTimeline();
+          openTl.play();
+        }
+
+        function closeMenu() {
+          isOpen = false;
+          hamburger.setAttribute('aria-expanded', 'false');
+          hamburger.classList.remove('is-open');
+          mobileMenu.setAttribute('aria-hidden', 'true');
+          body.style.overflow = '';
+          if (openTl) openTl.kill();
+          closeTl = buildCloseTimeline();
+          closeTl.play().then(() => { mobileMenu.classList.remove('is-active'); });
+        }
+
+        hamburger.addEventListener('click', () => { isOpen ? closeMenu() : openMenu(); });
+
+        document.querySelectorAll('[data-menu-link]').forEach(link => {
+          link.addEventListener('click', () => { if (isOpen) closeMenu(); });
+        });
+
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape' && isOpen) closeMenu();
+        });
+      })();
+    </script>
+
+  </body>
+</html>
