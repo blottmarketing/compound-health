@@ -19,7 +19,7 @@ const {
 } = Astro.props;
 
 // Astro.site is set in astro.config.mjs and used for absolute URLs
-const siteOrigin = Astro.site ?? new URL('https://compoundhealth.com');
+const siteOrigin = Astro.site ?? new URL('https://compoundhealth.io');
 const canonical  = new URL(Astro.url.pathname, siteOrigin).toString();
 const ogImage    = new URL(image, siteOrigin).toString();
 ---

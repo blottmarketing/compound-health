@@ -20,7 +20,7 @@ const {
   lastUpdated,
 } = Astro.props;
 
-const siteOrigin = Astro.site ?? new URL('https://compoundhealth.com');
+const siteOrigin = Astro.site ?? new URL('https://compoundhealth.io');
 const canonical  = new URL(Astro.url.pathname, siteOrigin).toString();
 const ogImage    = new URL(DEFAULT_OG, siteOrigin).toString();
 ---
