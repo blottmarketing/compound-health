@@ -223,8 +223,21 @@ section { padding: 108px 56px; }
 .wf-submit:hover { background: var(--sage-light); transform: translateY(-1px); }
 .wf-success { display: none; align-items: center; gap: 10px; font-size: 14px; font-weight: 400; color: var(--sage); background: var(--sage-pale); border: 1px solid rgba(45,80,22,0.18); border-radius: 10px; padding: 14px 18px; }
 .wf-success.visible { display: flex; }
+.wf-error { display: none; align-items: center; gap: 10px; font-size: 14px; font-weight: 400; color: #8a3a1a; background: rgba(184,89,42,0.08); border: 1px solid rgba(184,89,42,0.25); border-radius: 10px; padding: 14px 18px; }
+.wf-error.visible { display: flex; }
 .wf-note { font-size: 12px; font-weight: 300; color: var(--mid); line-height: 1.6; }
 .wf-note a { color: var(--sage); text-decoration: underline; text-underline-offset: 2px; }
+
+/* Full success panel — swaps in for the form on submit */
+.waitlist-success { display: none; background: var(--cream); border: 1px solid var(--border); border-radius: 24px; padding: 56px 40px; flex-direction: column; align-items: center; text-align: center; gap: 18px; min-height: 380px; justify-content: center; animation: wfFadeIn 0.4s ease-out; }
+.waitlist-success.visible { display: flex; }
+.waitlist-success .ws-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--sage-pale); display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+.waitlist-success h3 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; letter-spacing: -1px; color: var(--charcoal); line-height: 1.15; margin: 0; }
+.waitlist-success p { font-size: 15px; font-weight: 300; color: var(--mid); line-height: 1.65; max-width: 360px; margin: 0; }
+.waitlist-success .ws-meta { font-size: 12px; color: var(--mid); letter-spacing: 0.04em; text-transform: uppercase; margin-top: 4px; }
+.waitlist-success .ws-reset { background: none; border: none; color: var(--sage); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; padding: 8px 12px; text-decoration: underline; text-underline-offset: 3px; margin-top: 8px; }
+.waitlist-success .ws-reset:hover { color: var(--sage-light); }
+@keyframes wfFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── FOOTER CTA ── */
 .footer-cta { background: var(--sage); text-align: center; padding: 128px 56px; }

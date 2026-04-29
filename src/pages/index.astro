@@ -264,7 +264,7 @@ import MainLayout from '../layouts/MainLayout.astro';
         </p>
       </div>
       <div class="waitlist-form-wrap">
-        <div class="waitlist-form">
+        <div class="waitlist-form" id="waitlistForm">
           <div class="wf-row">
             <div class="wf-field">
               <label class="wf-label" for="wf-fname">First name</label>
@@ -298,17 +298,34 @@ import MainLayout from '../layouts/MainLayout.astro';
               <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
-          <div class="wf-success" id="wfSuccess" aria-live="polite">
+          <div class="wf-error" id="wfError" aria-live="polite" role="alert">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <circle cx="10" cy="10" r="9" stroke="#4A7A25" stroke-width="1.5"/>
-              <path d="M6 10l3 3 5-5" stroke="#4A7A25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="10" cy="10" r="9" stroke="#8a3a1a" stroke-width="1.5"/>
+              <path d="M10 6v5M10 14h.01" stroke="#8a3a1a" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
-            You're on the list. We'll be in touch shortly.
+            <span class="wf-error-msg">Something went wrong. Please try again.</span>
           </div>
           <p class="wf-note">
             Your data is handled in accordance with our <a href="/privacy-policy">Privacy Policy</a>.
             We do not share your details with third parties.
           </p>
+        </div>
+
+        <!-- Success state — swaps in for the form on successful submit -->
+        <div class="waitlist-success" id="waitlistSuccess" role="status" aria-live="polite">
+          <div class="ws-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <circle cx="16" cy="16" r="15" stroke="#4A7A25" stroke-width="1.5"/>
+              <path d="M10 16.5l4 4 8-9" stroke="#4A7A25" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>You're on the list</h3>
+          <p>
+            Thank you, <span id="wsName">there</span>. Your founding member request has been received.
+            Our team will be in touch as soon as your tier opens.
+          </p>
+          <div class="ws-meta">A confirmation will arrive at <span id="wsEmail">your inbox</span></div>
+          <button class="ws-reset" id="wsReset" type="button">Submit another response</button>
         </div>
       </div>
     </div>
@@ -323,19 +340,121 @@ import MainLayout from '../layouts/MainLayout.astro';
 
   <!-- Waitlist form script -->
   <script>
-    const wfSubmit  = document.getElementById('wfSubmit') as HTMLButtonElement | null;
-    const wfSuccess = document.getElementById('wfSuccess') as HTMLDivElement | null;
+    const WAITLIST_ENDPOINT =
+      'https://script.google.com/macros/s/AKfycbzY5RvWk2brJh-UXMCrmje97TMZK3u6iEWYOexglSWQfaxGZD4-I5RsZUlQq-AlfH1fpw/exec';
 
-    if (wfSubmit && wfSuccess) {
-      wfSubmit.addEventListener('click', () => {
-        const emailInput = document.getElementById('wf-email') as HTMLInputElement;
-        const email = emailInput?.value.trim() ?? '';
-        if (!email || !email.includes('@')) {
+    const waitlistForm    = document.getElementById('waitlistForm')    as HTMLDivElement | null;
+    const waitlistSuccess = document.getElementById('waitlistSuccess') as HTMLDivElement | null;
+    const wfSubmit        = document.getElementById('wfSubmit')        as HTMLButtonElement | null;
+    const wfError         = document.getElementById('wfError')         as HTMLDivElement | null;
+    const wfErrorMsg      = wfError?.querySelector('.wf-error-msg')    as HTMLSpanElement | null;
+    const wfLabel         = wfSubmit?.querySelector('.wf-submit-label') as HTMLSpanElement | null;
+    const wsName          = document.getElementById('wsName')          as HTMLSpanElement | null;
+    const wsEmail         = document.getElementById('wsEmail')         as HTMLSpanElement | null;
+    const wsReset         = document.getElementById('wsReset')         as HTMLButtonElement | null;
+    const ORIGINAL_LABEL  = wfLabel?.textContent ?? 'Reserve my place';
+
+    function showError(message: string) {
+      if (!wfError) return;
+      if (wfErrorMsg) wfErrorMsg.textContent = message;
+      wfError.classList.add('visible');
+    }
+
+    function clearError() {
+      wfError?.classList.remove('visible');
+    }
+
+    if (wfSubmit && waitlistForm && waitlistSuccess) {
+      wfSubmit.addEventListener('click', async () => {
+        clearError();
+
+        const fnameInput   = document.getElementById('wf-fname')   as HTMLInputElement | null;
+        const lnameInput   = document.getElementById('wf-lname')   as HTMLInputElement | null;
+        const emailInput   = document.getElementById('wf-email')   as HTMLInputElement | null;
+        const tierInput    = document.getElementById('wf-tier')    as HTMLSelectElement | null;
+        const advisorInput = document.getElementById('wf-advisor') as HTMLInputElement | null;
+
+        const firstName = fnameInput?.value.trim()   ?? '';
+        const lastName  = lnameInput?.value.trim()   ?? '';
+        const email     = emailInput?.value.trim()   ?? '';
+        const tier      = tierInput?.value           ?? '';
+        const advisor   = advisorInput?.value.trim() ?? '';
+
+        // Minimal validation: require first name, last name, email, tier
+        if (!firstName) { fnameInput?.focus(); return; }
+        if (!lastName)  { lnameInput?.focus(); return; }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           emailInput?.focus();
           return;
         }
-        wfSubmit.style.display = 'none';
-        wfSuccess.classList.add('visible');
+        if (!tier) { tierInput?.focus(); return; }
+
+        // Submitting state
+        wfSubmit.disabled = true;
+        if (wfLabel) wfLabel.textContent = 'Submitting…';
+
+        const payload = new URLSearchParams({
+          firstName,
+          lastName,
+          email,
+          tier,
+          advisor,
+          source:      'compound-health.com',
+          submittedAt: new Date().toISOString(),
+          userAgent:   navigator.userAgent,
+        });
+
+        try {
+          const res = await fetch(WAITLIST_ENDPOINT, {
+            method: 'POST',
+            // application/x-www-form-urlencoded is a "simple" request and avoids
+            // a CORS preflight against the Apps Script endpoint.
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+            body: payload.toString(),
+          });
+
+          if (!res.ok) throw new Error('Request failed: ' + res.status);
+
+          // Personalise and reveal the success panel
+          if (wsName)  wsName.textContent  = firstName;
+          if (wsEmail) wsEmail.textContent = email;
+
+          waitlistForm.style.display = 'none';
+          waitlistSuccess.classList.add('visible');
+
+          // Smoothly bring the success panel into view on smaller screens
+          waitlistSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (err) {
+          console.error('Waitlist submission failed', err);
+          wfSubmit.disabled = false;
+          if (wfLabel) wfLabel.textContent = ORIGINAL_LABEL;
+          showError("We couldn't submit your details. Please check your connection and try again.");
+        }
+      });
+    }
+
+    // Allow the user to submit another response without a page reload
+    if (wsReset && waitlistForm && waitlistSuccess && wfSubmit) {
+      wsReset.addEventListener('click', () => {
+        // Reset the form fields
+        (document.getElementById('wf-fname')   as HTMLInputElement | null)?.setAttribute('value', '');
+        (document.getElementById('wf-lname')   as HTMLInputElement | null)?.setAttribute('value', '');
+        (document.getElementById('wf-email')   as HTMLInputElement | null)?.setAttribute('value', '');
+        (document.getElementById('wf-advisor') as HTMLInputElement | null)?.setAttribute('value', '');
+
+        ['wf-fname', 'wf-lname', 'wf-email', 'wf-advisor'].forEach((id) => {
+          const el = document.getElementById(id) as HTMLInputElement | null;
+          if (el) el.value = '';
+        });
+        const tierEl = document.getElementById('wf-tier') as HTMLSelectElement | null;
+        if (tierEl) tierEl.value = '';
+
+        // Restore form, reset button
+        waitlistSuccess.classList.remove('visible');
+        waitlistForm.style.display = '';
+        wfSubmit.disabled = false;
+        if (wfLabel) wfLabel.textContent = ORIGINAL_LABEL;
+        clearError();
       });
     }
   </script>
