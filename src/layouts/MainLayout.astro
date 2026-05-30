@@ -9,7 +9,7 @@ interface Props {
 
 const SITE_NAME = 'Compound Health';
 const DEFAULT_DESCRIPTION =
-  'Compound Health pairs elite clinical care with your registered investment advisor — preventive medicine, biomarker tracking and longevity protocols, coordinated through your RIA.';
+  'A private longevity membership introduced by your wealth advisor. One healthspan score, sitting alongside net worth on your annual client review. Founding member waitlist now open.';
 const DEFAULT_OG = '/og-image.png';
 
 const {
@@ -25,7 +25,7 @@ const ogImage    = new URL(image, siteOrigin).toString();
 ---
 
 <!doctype html>
-<html lang="en-GB">
+<html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -44,14 +44,14 @@ const ogImage    = new URL(image, siteOrigin).toString();
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
-    <meta property="og:locale" content="en_GB" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Compound Health — your health, compounded over time" />
+    <meta property="og:image:alt" content="Compound Health, a private longevity membership introduced by your advisor" />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -75,6 +75,7 @@ const ogImage    = new URL(image, siteOrigin).toString();
       <div class="nav-links">
         <a href="/#how">How it works</a>
         <a href="/#features">What you get</a>
+        <a href="/#case">Case study</a>
         <a href="/#plans">Plans</a>
         <a href="/#joinwaitlist" class="nav-cta">Get early access</a>
       </div>
@@ -91,6 +92,7 @@ const ogImage    = new URL(image, siteOrigin).toString();
       <nav class="mobile-nav-links">
         <a href="/#how" class="mobile-nav-link" data-menu-link>How it <em>works</em></a>
         <a href="/#features" class="mobile-nav-link" data-menu-link>What you <em>get</em></a>
+        <a href="/#case" class="mobile-nav-link" data-menu-link>Case <em>study</em></a>
         <a href="/#plans" class="mobile-nav-link" data-menu-link>Plans</a>
       </nav>
       <a href="/#joinwaitlist" class="mobile-nav-cta" id="menuCta" data-menu-link>
@@ -110,6 +112,7 @@ const ogImage    = new URL(image, siteOrigin).toString();
     <footer>
       <div class="footer-logo">Compound Health</div>
       <nav class="footer-nav">
+        <a href="/#case">Case study</a>
         <a href="/privacy-policy">Privacy Policy</a>
         <a href="/website-terms">Website Terms</a>
       </nav>

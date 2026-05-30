@@ -143,6 +143,14 @@ section { padding: 108px 56px; }
 .logos-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); }
 .logo-name { font-family: 'Playfair Display', serif; font-size: 15px; color: rgba(28,28,26,0.3); }
 
+/* ── CREDIBILITY BAR ── */
+.credbar { background: var(--warm-white); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 32px 56px; display: flex; align-items: center; gap: 56px; justify-content: center; flex-wrap: wrap; }
+.cred-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid); white-space: nowrap; }
+.cred-item { display: flex; align-items: baseline; gap: 10px; }
+.cred-num { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--sage); letter-spacing: -0.4px; font-weight: 500; }
+.cred-text { font-size: 13px; font-weight: 400; color: var(--charcoal); letter-spacing: 0.01em; }
+.cred-divider { width: 1px; height: 18px; background: var(--border); }
+
 /* ── HOW ── */
 .how { background: var(--cream); }
 .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 64px; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; background: var(--border); }
@@ -175,7 +183,16 @@ section { padding: 108px 56px; }
 
 /* ── PLANS ── */
 .plans { background: var(--warm-white); }
-.plans-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 64px; }
+.plans-lead { margin-top: 16px; font-family: 'Playfair Display', serif; font-style: italic; font-size: 20px; color: var(--sage-light); letter-spacing: -0.3px; }
+.plans-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 56px; }
+.plan-price { display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px; }
+.plan-price-amount { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; color: var(--charcoal); letter-spacing: -1px; }
+.plan.featured .plan-price-amount { color: #fff; }
+.plan-price-period { font-size: 13px; font-weight: 400; color: var(--mid); }
+.plan.featured .plan-price-period { color: rgba(255,255,255,0.65); }
+.plan-price-note { font-size: 12px; font-weight: 400; color: var(--mid); margin-bottom: 28px; line-height: 1.5; min-height: 18px; }
+.plan.featured .plan-price-note { color: rgba(255,255,255,0.55); }
+.family-note { margin-top: 32px; text-align: center; font-size: 14px; font-weight: 400; color: var(--mid); font-style: italic; line-height: 1.6; }
 .plan { background: var(--warm-white); border: 1px solid var(--border); border-radius: 20px; padding: 44px 38px; position: relative; transition: transform 0.2s; display: flex; flex-direction: column; }
 .plan:hover { transform: translateY(-4px); }
 .plan.featured { background: var(--sage); border-color: var(--sage); }
@@ -196,6 +213,33 @@ section { padding: 108px 56px; }
 .plan-btn.white:hover { background: rgba(255,255,255,0.28); }
 .plan-btn.ghost { background: transparent; color: var(--charcoal); border: 1px solid var(--border); }
 .plan-btn.ghost:hover { border-color: var(--sage); color: var(--sage); }
+
+/* ── CASE STUDY ── */
+.case { background: var(--cream); }
+.case-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-top: 64px; margin-bottom: 64px; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; background: var(--border); }
+.case-stat { background: var(--cream); padding: 40px 36px; transition: background 0.25s; }
+.case-stat:hover { background: var(--warm-white); }
+.case-num { font-family: 'Playfair Display', serif; font-size: clamp(48px, 5vw, 68px); font-weight: 400; color: var(--sage); line-height: 1; margin-bottom: 14px; letter-spacing: -2px; }
+.case-num em { font-style: italic; color: var(--sage-light); font-size: 0.7em; }
+.case-stat-label { font-size: 14px; font-weight: 400; color: var(--charcoal); line-height: 1.5; }
+.case-body { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: stretch; }
+.case-content { background: var(--warm-white); border: 1px solid var(--border); border-radius: 20px; padding: 48px 44px; }
+.case-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage); margin-bottom: 14px; }
+.case-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 400; color: var(--charcoal); margin-bottom: 18px; line-height: 1.2; letter-spacing: -0.8px; }
+.case-desc { font-size: 15px; font-weight: 300; color: var(--mid); line-height: 1.7; margin-bottom: 28px; }
+.case-agenda { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 36px; }
+.case-agenda li { font-size: 14px; font-weight: 400; color: var(--charcoal); display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+.case-agenda li::before { content: '·'; font-size: 24px; line-height: 0.7; color: var(--sage-light); flex-shrink: 0; }
+.case-speaker { display: flex; align-items: center; gap: 14px; padding-top: 24px; border-top: 1px solid var(--border); }
+.speaker-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--sage-pale); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--sage); flex-shrink: 0; border: 1px solid rgba(45,80,22,0.2); }
+.speaker-name { font-size: 15px; font-weight: 500; color: var(--charcoal); }
+.speaker-role { font-size: 13px; font-weight: 300; color: var(--mid); }
+.case-quote-card { background: var(--sage); color: #fff; border-radius: 20px; padding: 48px 44px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.case-quote-card::before { content: '"'; position: absolute; top: -40px; right: 24px; font-family: 'Playfair Display', serif; font-size: 240px; line-height: 1; color: rgba(255,255,255,0.08); }
+.case-quote-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 20px; position: relative; z-index: 1; }
+.case-quote { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 400; font-style: italic; color: #fff; line-height: 1.4; letter-spacing: -0.3px; margin-bottom: 32px; position: relative; z-index: 1; }
+.case-quote-footer { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.7); line-height: 1.6; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.15); position: relative; z-index: 1; }
+.case-quote-footer strong { color: #fff; font-weight: 500; }
 
 /* ── TESTIMONIALS ── */
 .testimonials { background: var(--cream); }
@@ -228,7 +272,7 @@ section { padding: 108px 56px; }
 .wf-note { font-size: 12px; font-weight: 300; color: var(--mid); line-height: 1.6; }
 .wf-note a { color: var(--sage); text-decoration: underline; text-underline-offset: 2px; }
 
-/* Full success panel — swaps in for the form on submit */
+/* Full success panel: swaps in for the form on submit */
 .waitlist-success { display: none; background: var(--cream); border: 1px solid var(--border); border-radius: 24px; padding: 56px 40px; flex-direction: column; align-items: center; text-align: center; gap: 18px; min-height: 380px; justify-content: center; animation: wfFadeIn 0.4s ease-out; }
 .waitlist-success.visible { display: flex; }
 .waitlist-success .ws-icon { width: 64px; height: 64px; border-radius: 50%; background: var(--sage-pale); display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
@@ -290,7 +334,9 @@ footer { background: #141412; padding: 44px 56px; display: flex; align-items: ce
   section { padding: 80px 24px; }
   .hero { padding: 120px 24px 90px; }
   .logos-strip { padding: 24px; gap: 28px; }
-  .steps, .feat-grid, .plans-grid, .testi-grid { grid-template-columns: 1fr; }
+  .credbar { padding: 24px; gap: 20px; flex-direction: column; }
+  .credbar .cred-divider { display: none; }
+  .steps, .feat-grid, .plans-grid, .testi-grid, .case-stats, .case-body { grid-template-columns: 1fr; }
   .feat.span2 { grid-column: span 1; grid-template-columns: 1fr; gap: 36px; }
   .waitlist-inner { grid-template-columns: 1fr; gap: 40px; }
   .wf-row { grid-template-columns: 1fr; }

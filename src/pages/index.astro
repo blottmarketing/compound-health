@@ -3,18 +3,18 @@ import MainLayout from '../layouts/MainLayout.astro';
 ---
 
 <MainLayout
-  title="Compound Health — Elite clinical care, paired with your RIA"
-  description="Compound Health pairs elite preventive medicine with your registered investment advisor. Comprehensive diagnostics, continuous biomarker tracking and personalised longevity protocols, coordinated through your RIA. Founding member waitlist now open."
+  title="Compound Health | A private longevity membership, introduced by your advisor"
+  description="A private longevity membership introduced by your wealth advisor. One healthspan score, sitting alongside net worth on your annual client review. Comprehensive diagnostics, continuous biomarker tracking, and personalized longevity protocols, coordinated through your advisory firm. Founding member waitlist now open."
 >
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-blob"></div>
     <div class="eyebrow"><div class="eyebrow-dot"></div>Now enrolling founding members</div>
-    <h1>Your health,<br /><em>compounded</em> over time</h1>
+    <h1>Beyond wealth:<br />the years to <em>enjoy it</em></h1>
     <p class="hero-sub">
-      Compound Health pairs elite clinical care with your RIA — so your wealth manager
-      and your doctor finally speak the same language.
+      A private longevity membership introduced by your advisor. One healthspan score,
+      sitting alongside net worth on your annual client review.
     </p>
     <div class="hero-btns">
       <a href="#joinwaitlist" class="btn-solid">Join the waitlist</a>
@@ -23,13 +23,23 @@ import MainLayout from '../layouts/MainLayout.astro';
     <div class="scroll-indicator"><div class="scroll-line"></div></div>
   </section>
 
-  <!-- LOGOS -->
-  <div class="logos-strip">
-    <span class="logos-label">Clinical partners</span>
-    <span class="logo-name">Fountain Life</span>
-    <span class="logo-name">Cleveland Clinic</span>
-    <span class="logo-name">Canyon Ranch</span>
-    <span class="logo-name">Mayo Clinic</span>
+  <!-- CREDIBILITY BAR -->
+  <div class="credbar">
+    <span class="cred-label">Proven at scale</span>
+    <div class="cred-item">
+      <span class="cred-num">400</span>
+      <span class="cred-text">UHNW clients reached in our first delivery</span>
+    </div>
+    <div class="cred-divider"></div>
+    <div class="cred-item">
+      <span class="cred-num">May 2026</span>
+      <span class="cred-text">Live with one of the largest global private banks</span>
+    </div>
+    <div class="cred-divider"></div>
+    <div class="cred-item">
+      <span class="cred-num">1</span>
+      <span class="cred-text">Healthspan score, alongside net worth</span>
+    </div>
   </div>
 
   <!-- HOW IT WORKS -->
@@ -38,32 +48,33 @@ import MainLayout from '../layouts/MainLayout.astro';
       <p class="s-label">The process</p>
       <h2 class="s-title">A new model for<br />human performance</h2>
       <p class="s-sub">
-        We built the infrastructure connecting your advisory firm to world-class preventive
-        care — with none of the friction.
+        We built the infrastructure that connects your advisory firm to world-class preventive
+        care, with none of the friction.
       </p>
       <div class="steps">
         <div class="step">
           <div class="step-n">01</div>
           <div class="step-title">Join through your advisor</div>
           <p>
-            Access Compound Health as a benefit through your registered investment advisor.
-            No cold starts — your existing relationship is the door in.
+            Access Compound Health as a benefit through your wealth advisor. No cold starts, no
+            separate onboarding. Your existing relationship is the door.
           </p>
         </div>
         <div class="step">
           <div class="step-n">02</div>
           <div class="step-title">Deep diagnostic intake</div>
           <p>
-            A comprehensive baseline: bloodwork, advanced imaging, genetic risk, and cognitive
-            assessments. Not a wellness check — a full biological audit.
+            A comprehensive baseline: advanced bloodwork, imaging, genetic risk, cognitive and
+            metabolic assessments. Not a wellness check. A full-picture biological audit by elite
+            clinicians.
           </p>
         </div>
         <div class="step">
           <div class="step-n">03</div>
           <div class="step-title">Personalized longevity plan</div>
           <p>
-            Your clinical team builds and actively manages a protocol tailored to your data,
-            goals, and lifestyle — updated continuously as you compound.
+            Your clinical team and a dedicated health concierge build and actively manage a protocol
+            tailored to your data, goals, and lifestyle. Updated continuously.
           </p>
         </div>
       </div>
@@ -76,24 +87,24 @@ import MainLayout from '../layouts/MainLayout.astro';
       <p class="s-label">What you get</p>
       <h2 class="s-title" style="color:#FEFCFA">Everything your health<br />has been missing</h2>
       <p class="s-sub">
-        Compound Health is not a gym membership. It's a medical relationship — sustained,
-        personalized, and compounding.
+        Compound Health is not a gym membership or a supplement subscription. It is a medical
+        relationship, sustained and personalized.
       </p>
       <div class="feat-grid">
         <div class="feat">
           <div class="feat-icon">🩺</div>
-          <div class="feat-title">Elite clinical partnership</div>
+          <div class="feat-title">Elite clinical delivery</div>
           <p>
-            Vetted top-tier preventive medicine clinics — including Fountain Life — with
-            white-glove coordination and zero scheduling friction.
+            Virtual care nationwide, with local provider coordination for in-person diagnostics.
+            White-glove logistics included throughout.
           </p>
         </div>
         <div class="feat">
           <div class="feat-icon">🧬</div>
           <div class="feat-title">Full biomarker tracking</div>
           <p>
-            Quarterly labs, wearable integrations, and continuous monitoring — all synthesized
-            into a single health intelligence layer.
+            Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
+            continuous wearable integration, all synthesized into a single health intelligence layer.
           </p>
         </div>
         <div class="feat span2">
@@ -101,8 +112,8 @@ import MainLayout from '../layouts/MainLayout.astro';
             <div class="feat-icon">📊</div>
             <div class="feat-title">A dashboard for your body</div>
             <p>
-              The same rigor your advisor applies to your portfolio — applied to your biology.
-              Track trends, understand risks, act on what the data reveals.
+              The same rigor your advisor applies to your portfolio, applied to your biology.
+              Track trends, understand risks, and act on what the data reveals.
             </p>
           </div>
           <div class="metrics-panel">
@@ -138,17 +149,80 @@ import MainLayout from '../layouts/MainLayout.astro';
           <div class="feat-icon">💊</div>
           <div class="feat-title">Personalized protocols</div>
           <p>
-            Pharmaceutical-grade longevity protocols — nutrition, supplementation, hormones,
-            sleep — calibrated to your biology, not a template.
+            Pharmaceutical-grade longevity protocols across nutrition, supplementation, hormones,
+            and sleep, calibrated to your biology, not a template.
           </p>
         </div>
         <div class="feat">
           <div class="feat-icon">🤝</div>
           <div class="feat-title">Health concierge</div>
           <p>
-            A dedicated coordinator handles referrals, appointments, second opinions —
-            everything standing between you and optimal health.
+            A dedicated coordinator who handles specialist referrals, appointment logistics, second
+            opinions, and anything else between you and better health.
           </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASE STUDY -->
+  <section class="case" id="case">
+    <div class="inner">
+      <p class="s-label">Case study</p>
+      <h2 class="s-title">The Longevity Playbook,<br />delivered through a global private bank</h2>
+      <p class="s-sub">
+        In May 2026, Compound Health delivered its first private-bank-scale longevity program,
+        reaching the full UHNW client book of an advisory team at one of the largest private banks
+        globally.
+      </p>
+
+      <div class="case-stats">
+        <div class="case-stat">
+          <div class="case-num">400</div>
+          <div class="case-stat-label">UHNW clients reached in a single delivery, across one advisory team's full book.</div>
+        </div>
+        <div class="case-stat">
+          <div class="case-num"><em>First</em></div>
+          <div class="case-stat-label">Private-bank-scale rollout of a longevity program to a UHNW client base.</div>
+        </div>
+        <div class="case-stat">
+          <div class="case-num">May '26</div>
+          <div class="case-stat-label">From advisor approval to all-systems-go in days, not quarters.</div>
+        </div>
+      </div>
+
+      <div class="case-body">
+        <div class="case-content">
+          <div class="case-eyebrow">The session</div>
+          <h3 class="case-title">What actually matters for living longer and better</h3>
+          <p class="case-desc">
+            The session cut through the noise of wearables, advanced diagnostics, and preventive
+            care to give UHNW clients a practical lens on what to actually pay attention to, when,
+            and why. Built for busy professionals, entrepreneurs, and the people supporting aging
+            parents alongside their own health.
+          </p>
+          <ul class="case-agenda">
+            <li>The health data worth paying attention to, and what to ignore</li>
+            <li>The tests and metrics that matter in each decade of life</li>
+            <li>High-impact habits for busy professionals and entrepreneurs</li>
+            <li>How to support aging parents alongside your own health</li>
+          </ul>
+          <div class="case-speaker">
+            <div class="speaker-avatar">DG</div>
+            <div>
+              <div class="speaker-name">Dylan Gambardella</div>
+              <div class="speaker-role">Partner, Compound Health</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="case-quote-card">
+          <div class="case-quote-eyebrow">The model</div>
+          <div class="case-quote">One trusted advisor relationship. One longevity program. Run at scale across a wealth channel.</div>
+          <div class="case-quote-footer">
+            <strong>Now opening to RIAs, family offices, and additional private bank and wirehouse advisory teams.</strong>
+            Compound Health gives wealth firms a credible, ongoing program to run inside their practice, not a one-off event.
+          </div>
         </div>
       </div>
     </div>
@@ -157,101 +231,61 @@ import MainLayout from '../layouts/MainLayout.astro';
   <!-- PLANS -->
   <section class="plans" id="plans">
     <div class="inner">
-      <p class="s-label">Membership tiers</p>
+      <p class="s-label">Membership</p>
       <h2 class="s-title">Built for founders,<br />executives, and their families</h2>
-      <p class="s-sub">
-        Three tiers — all connected through your advisory firm, all backed by elite clinical partners.
-      </p>
+      <p class="plans-lead">One way in. Two ways forward.</p>
       <div class="plans-grid">
         <div class="plan">
-          <div class="plan-name">Foundation</div>
-          <p class="plan-tag">The essential annual health audit and optimization layer.</p>
+          <div class="plan-name">Baseline</div>
+          <div class="plan-price">
+            <span class="plan-price-amount">$3,500</span>
+            <span class="plan-price-period">one-time</span>
+          </div>
+          <p class="plan-price-note">Credited toward year one if you continue.</p>
           <ul class="plan-features">
-            <li>Annual comprehensive diagnostic</li>
-            <li>Full biomarker panel + imaging</li>
-            <li>Longevity plan with annual review</li>
-            <li>RIA-integrated health reporting</li>
-            <li>Secure health record vault</li>
+            <li>Advanced and standard bloodwork, mobile-drawn at home</li>
+            <li>DEXA scan, VO2 max with training zones, resting metabolic rate</li>
+            <li>Body composition and strength assessment</li>
+            <li>Written longevity plan reviewed by an MD</li>
           </ul>
-          <a href="#joinwaitlist" class="plan-btn ghost">Join waitlist &rarr;</a>
+          <a href="#joinwaitlist" class="plan-btn ghost">Start here &rarr;</a>
         </div>
         <div class="plan featured">
           <div class="plan-badge">Most popular</div>
-          <div class="plan-name">Compound</div>
-          <p class="plan-tag">Continuous monitoring and clinical access for peak performers.</p>
+          <div class="plan-name">Optimize</div>
+          <div class="plan-price">
+            <span class="plan-price-amount">$15,000</span>
+            <span class="plan-price-period">/ year</span>
+          </div>
+          <p class="plan-price-note">The annual program for sustained performance.</p>
           <ul class="plan-features">
-            <li>Everything in Foundation</li>
-            <li>Quarterly biomarker reviews</li>
-            <li>Wearable integration + AI coaching</li>
-            <li>Dedicated health concierge</li>
-            <li>24/7 clinical advisory access</li>
-            <li>Executive stress &amp; recovery protocols</li>
+            <li>MD-led, coach-supported program</li>
+            <li>Day 1 and Day 180 full reviews, plus quarterly check-ins</li>
+            <li>30 minutes per month of MD async messaging, monthly health coaching, and dietitian hours</li>
+            <li>Multi-cancer early detection and biological-age and healthspan tracking</li>
+            <li>Care navigation, with foundational supplements included</li>
+            <li>Hormones, peptides, NAD, IV, and CGM available on a curated add-on layer at member pricing</li>
           </ul>
           <a href="#joinwaitlist" class="plan-btn white">Join waitlist &rarr;</a>
         </div>
         <div class="plan">
-          <div class="plan-name">Legacy</div>
-          <p class="plan-tag">Full-family coverage with multi-generational health planning.</p>
+          <div class="plan-name">Eternal</div>
+          <div class="plan-price">
+            <span class="plan-price-amount">$65,000</span>
+            <span class="plan-price-period">/ year</span>
+          </div>
+          <p class="plan-price-note">Top of practice, always on.</p>
           <ul class="plan-features">
-            <li>Everything in Compound</li>
-            <li>Spouse + dependents included</li>
-            <li>Genetic risk &amp; family history planning</li>
-            <li>Estate-integrated health directives</li>
-            <li>Multi-generational longevity planning</li>
-            <li>Priority clinical placement</li>
+            <li>Everything in Optimize</li>
+            <li>Annual Executive Physical with 500+ biomarkers</li>
+            <li>Multi-cancer early detection, whole-body and brain imaging, genetics, and gut and toxin panels</li>
+            <li>Unlimited messaging with a five-person concierge care team</li>
+            <li>Hormones, supplements, and quarterly re-testing included</li>
           </ul>
-          <a href="#joinwaitlist" class="plan-btn dark">Join waitlist &rarr;</a>
+          <a href="#joinwaitlist" class="plan-btn dark">Contact us &rarr;</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section class="testimonials">
-    <div class="inner">
-      <p class="s-label">Early members</p>
-      <h2 class="s-title">The compounding effect<br />starts immediately</h2>
-      <div class="testi-grid">
-        <div class="testi">
-          <p class="testi-quote">
-            "I've had a wealth manager for 20 years. I never had anyone actively managing
-            my health the same way — until now."
-          </p>
-          <div class="testi-author">
-            <div class="avatar">MR</div>
-            <div>
-              <div class="author-name">Michael R.</div>
-              <div class="author-role">Founder &amp; LP, New York</div>
-            </div>
-          </div>
-        </div>
-        <div class="testi">
-          <p class="testi-quote">
-            "The Fountain Life diagnostic alone was transformative. Having it coordinated
-            through my RIA made it completely seamless."
-          </p>
-          <div class="testi-author">
-            <div class="avatar">SK</div>
-            <div>
-              <div class="author-name">Sarah K.</div>
-              <div class="author-role">CEO, Chicago</div>
-            </div>
-          </div>
-        </div>
-        <div class="testi">
-          <p class="testi-quote">
-            "My advisor introduced me to Compound Health six months ago. My metabolic age
-            has dropped four years. I wish I'd started at 40."
-          </p>
-          <div class="testi-author">
-            <div class="avatar">JP</div>
-            <div>
-              <div class="author-name">James P.</div>
-              <div class="author-role">Managing Partner, Miami</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <p class="family-note">Family and household coverage is available as an extension across all tiers.</p>
     </div>
   </section>
 
@@ -286,9 +320,9 @@ import MainLayout from '../layouts/MainLayout.astro';
             <label class="wf-label" for="wf-tier">Membership tier of interest</label>
             <select class="wf-input wf-select" id="wf-tier">
               <option value="" disabled selected>Select a tier</option>
-              <option value="foundation">Foundation</option>
-              <option value="compound">Compound</option>
-              <option value="legacy">Legacy</option>
+              <option value="baseline">Baseline</option>
+              <option value="optimize">Optimize</option>
+              <option value="eternal">Eternal</option>
             </select>
           </div>
           <div class="wf-field">
@@ -314,7 +348,7 @@ import MainLayout from '../layouts/MainLayout.astro';
           </p>
         </div>
 
-        <!-- Success state — swaps in for the form on successful submit -->
+        <!-- Success state: swaps in for the form on successful submit -->
         <div class="waitlist-success" id="waitlistSuccess" role="status" aria-live="polite">
           <div class="ws-icon">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -336,9 +370,9 @@ import MainLayout from '../layouts/MainLayout.astro';
 
   <!-- FOOTER CTA -->
   <div class="footer-cta">
-    <h2>Your healthiest decade<br />is <em>ahead of you</em></h2>
-    <p>Join the founding member waitlist and get priority access when Compound Health opens enrollment.</p>
-    <a href="#joinwaitlist" class="btn-white">Join the waitlist</a>
+    <h2>The years to <em>enjoy it</em><br />start now</h2>
+    <p>Join the founding cohort. Compound Health is enrolling through partner wealth advisors, with limited capacity in the first wave.</p>
+    <a href="#joinwaitlist" class="btn-white">Request access</a>
   </div>
 
   <!-- Waitlist form script -->
@@ -418,7 +452,7 @@ import MainLayout from '../layouts/MainLayout.astro';
 
           if (!res.ok) throw new Error('Request failed: ' + res.status);
 
-          // Personalise and reveal the success panel
+          // Personalize and reveal the success panel
           if (wsName)  wsName.textContent  = firstName;
           if (wsEmail) wsEmail.textContent = email;
 
