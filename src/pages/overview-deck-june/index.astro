@@ -1,0 +1,379 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// Cancer 5-year relative survival by stage (SEER / American Cancer Society).
+// Localized (early) vs distant (late) — the "same cancer, different timing" story.
+const survival = [
+  { type: 'Breast',     early: 99, late: 31 },
+  { type: 'Prostate',   early: 100, late: 38 },
+  { type: 'Colorectal', early: 91, late: 13 },
+  { type: 'Lung',       early: 65, late: 9  },
+];
+---
+
+<MainLayout
+  title="RIA Partnership | Compound Health"
+  description="A private longevity membership, distributed through your firm. The value beyond the portfolio your clients can feel, and the relationship that travels with the household into the next generation."
+  noindex={true}
+>
+
+  <!-- HERO -->
+  <section class="deck-hero">
+    <div class="hero-blob"></div>
+    <div class="eyebrow"><div class="eyebrow-dot"></div>RIA Partnership · Private &amp; Confidential</div>
+    <h1>The relationship that<br /><em>compounds</em> across generations</h1>
+    <p class="hero-sub">
+      A private longevity membership, distributed through your firm. The value beyond the
+      portfolio your clients can feel, and the relationship that travels with the household
+      into the next generation.
+    </p>
+    <div class="deck-meta">
+      <div class="deck-meta-item"><span class="dm-label">Prepared for</span><span class="dm-val">RIA Partners</span></div>
+      <div class="deck-meta-div"></div>
+      <div class="deck-meta-item"><span class="dm-label">Date</span><span class="dm-val">June 2026</span></div>
+      <div class="deck-meta-div"></div>
+      <div class="deck-meta-item"><span class="dm-label">Status</span><span class="dm-val">Private &amp; Confidential</span></div>
+    </div>
+  </section>
+
+  <!-- AGENDA / CREDIBILITY BAR -->
+  <div class="credbar">
+    <span class="cred-label">In this overview</span>
+    <div class="cred-item"><span class="cred-num">01</span><span class="cred-text">The opportunity</span></div>
+    <div class="cred-divider"></div>
+    <div class="cred-item"><span class="cred-num">02</span><span class="cred-text">How it works</span></div>
+    <div class="cred-divider"></div>
+    <div class="cred-item"><span class="cred-num">03</span><span class="cred-text">Why it matters</span></div>
+    <div class="cred-divider"></div>
+    <div class="cred-item"><span class="cred-num">04</span><span class="cred-text">The experience</span></div>
+    <div class="cred-divider"></div>
+    <div class="cred-item"><span class="cred-num">05</span><span class="cred-text">The membership</span></div>
+  </div>
+
+  <!-- 01 — THE OPPORTUNITY -->
+  <section class="how" id="opportunity">
+    <div class="inner">
+      <p class="s-label">01 — The opportunity</p>
+      <h2 class="s-title">Value beyond<br />the portfolio</h2>
+      <p class="s-sub">
+        Health is the most resonant value-add a firm can introduce since the family office
+        itself, and the only one that operates at the level of the household.
+      </p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-title">The differentiation</div>
+          <p>
+            A measurable healthspan score, early advanced cancer detection, and the physical
+            capacity to enjoy what your clients built. All delivered under your brand and
+            reviewed alongside net worth.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-title">The household</div>
+          <p>
+            Health is the only offering in your stack that operates at the level of the
+            household: spouse, adult children, grandchildren. The natural way to meet the heirs
+            while their parents are still in the room.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-title">The compounding</div>
+          <p>
+            $84 trillion moves to the next generation over the next two decades. Advisers who
+            operate at the household level retain the household. Members refer at materially
+            higher rates, because they have something worth talking about.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PULL QUOTE -->
+  <section class="deck-quote">
+    <div class="inner">
+      <p class="dq-text">
+        Healthspan is becoming the primary status good of the 21st century, and financial
+        advisers are uniquely placed to deliver it.
+      </p>
+      <p class="dq-attr">Compound Health</p>
+    </div>
+  </section>
+
+  <!-- 02 — HOW IT WORKS -->
+  <section class="features" id="how">
+    <div class="inner">
+      <p class="s-label">02 — How it works</p>
+      <h2 class="s-title" style="color:#FEFCFA">Distributed<br />through your firm</h2>
+      <p class="s-sub">
+        Your name on every touchpoint. Compound Health operates underneath. No clinical
+        liability on your firm, no operational lift on your advisers.
+      </p>
+      <div class="feat-grid feat-grid-3">
+        <div class="feat">
+          <div class="feat-icon">🏷️</div>
+          <div class="feat-title">We brand it</div>
+          <p>
+            Co-branded or fully white-labeled. Your name on the app, the dashboard, the daily
+            report, the member touchpoints. The clinical team, technology, and diagnostics
+            network operate underneath. The relationship in the client's mind is with your firm.
+          </p>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">🤝</div>
+          <div class="feat-title">You introduce it</div>
+          <p>
+            Offered to your top-tier households by invitation, as value beyond the portfolio.
+            A thirty-minute introductory call sets up the baseline. No clinical liability, no
+            operational lift. The introduction is the work.
+          </p>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">⚙️</div>
+          <div class="feat-title">We operate it</div>
+          <p>
+            Virtual physician and care-team access nationwide, with local provider coordination
+            for in-person diagnostics. The Day 1 baseline, the quarterly cadence, the full
+            clinical operation: all handled. Partnership economics built around volume, tier
+            mix, and exclusivity.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 — WHY IT MATTERS -->
+  <section class="why" id="why">
+    <div class="inner">
+      <p class="s-label">03 — Why it matters</p>
+      <h2 class="s-title">Same cancer.<br />Different timing.</h2>
+      <p class="s-sub">
+        Five-year survival depends almost entirely on the stage at which a cancer is caught.
+        The disease is the same. Only the timing differs. Prevention and advanced screening
+        move clients from the right bar to the left.
+      </p>
+
+      <div class="chart">
+        <div class="chart-legend">
+          <span class="lg"><span class="lg-dot lg-early"></span>Caught early — localized</span>
+          <span class="lg"><span class="lg-dot lg-late"></span>Caught late — distant</span>
+        </div>
+        <div class="chart-rows">
+          {survival.map((c) => (
+            <div class="chart-row">
+              <div class="chart-type">{c.type}</div>
+              <div class="chart-bars">
+                <div class="bar-track">
+                  <div class="bar bar-early" style={`width:${c.early}%`}><span class="bar-val">{c.early}%</span></div>
+                </div>
+                <div class="bar-track">
+                  <div class="bar bar-late" style={`width:${c.late}%`}><span class="bar-val">{c.late}%</span></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <p class="chart-source">
+          Percent of patients alive five years after diagnosis (5-year relative survival),
+          localized vs distant stage. Source: SEER / American Cancer Society, 2025.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOUNDER QUOTE -->
+  <section class="deck-quote deck-quote-light">
+    <div class="inner">
+      <p class="dq-text">
+        If you spend forty years building wealth and a preventable disease takes you in your
+        sixties, the compounding was never the point.
+      </p>
+      <p class="dq-attr">Guillaume Auvray — Founder, Compound Health</p>
+    </div>
+  </section>
+
+  <!-- 04 — THE EXPERIENCE -->
+  <section class="plans" id="experience">
+    <div class="inner">
+      <p class="s-label">04 — The experience</p>
+      <h2 class="s-title">Healthspan, measured</h2>
+      <p class="s-sub">
+        One integrated score, built from biological age, advanced bloods, imaging, and
+        metabolic and cardiovascular analysis. It sits on the client review, alongside net
+        worth, and the protocol is built to move it quarter over quarter.
+      </p>
+      <div class="exp-stats">
+        <div class="exp-stat">
+          <div class="exp-num">82<span class="exp-num-sub">/100</span></div>
+          <div class="exp-label">Illustrative healthspan score</div>
+        </div>
+        <div class="exp-stat">
+          <div class="exp-num">−7<span class="exp-num-sub">yrs</span></div>
+          <div class="exp-label">Biological vs chronological age</div>
+        </div>
+        <div class="exp-stat">
+          <div class="exp-num">87<span class="exp-num-sub">%</span></div>
+          <div class="exp-label">Of at-risk members lower HbA1c</div>
+        </div>
+      </div>
+      <p class="family-note">
+        Illustrative member dashboard; score and biological-age figures shown for
+        demonstration. HbA1c outcome from the at-risk member cohort.
+      </p>
+    </div>
+  </section>
+
+  <!-- 05 — THE MEMBERSHIP -->
+  <section class="plans" id="membership" style="background:var(--cream);border-top:1px solid var(--border);">
+    <div class="inner">
+      <p class="s-label">05 — The membership</p>
+      <h2 class="s-title">One way in,<br />two ways forward</h2>
+      <p class="plans-lead">Every member starts at Baseline. The Baseline fee is credited toward year one.</p>
+      <div class="plans-grid">
+        <div class="plan">
+          <div class="plan-name">Baseline</div>
+          <div class="plan-price"><span class="plan-price-amount">$3,500</span><span class="plan-price-period">one-time</span></div>
+          <p class="plan-price-note">Where every member starts. Credited toward year one.</p>
+          <ul class="plan-features">
+            <li>Single Day 1 workup: advanced and standard bloods</li>
+            <li>DEXA, VO2 max with training zones, resting metabolic rate</li>
+            <li>Body composition and strength</li>
+            <li>Delivered as a written longevity plan by an MD</li>
+          </ul>
+        </div>
+        <div class="plan featured">
+          <div class="plan-badge">Most members join</div>
+          <div class="plan-name">Optimize</div>
+          <div class="plan-price"><span class="plan-price-amount">$15,000</span><span class="plan-price-period">/ year</span></div>
+          <p class="plan-price-note">MD-led and coach-supported, year round.</p>
+          <ul class="plan-features">
+            <li>Day 1 and Day 180 reviews, quarterly check-ins</li>
+            <li>Monthly coaching</li>
+            <li>Multi-cancer early detection on the bloods</li>
+            <li>Hormones, peptides, NAD, and IV therapy at member pricing</li>
+          </ul>
+        </div>
+        <div class="plan">
+          <div class="plan-name">Eternal</div>
+          <div class="plan-price"><span class="plan-price-amount">$65,000</span><span class="plan-price-period">/ year</span></div>
+          <p class="plan-price-note">The full stack, always on.</p>
+          <ul class="plan-features">
+            <li>Annual Executive Physical: 500+ biomarkers</li>
+            <li>Multi-cancer detection, whole-body and brain imaging, genetics</li>
+            <li>Unlimited same-day messaging with a five-person concierge care team</li>
+            <li>Quarterly re-testing included</li>
+          </ul>
+        </div>
+      </div>
+      <p class="family-note">Partnership economics are built around volume, tier mix, and exclusivity.</p>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <div class="footer-cta">
+    <h2>Wealth is what you have.<br />Healthspan is what you <em>have it for</em></h2>
+    <p>Live longer. Live better. To discuss a partnership, reach us directly.</p>
+    <a href="mailto:hello@compoundhealth.io" class="btn-white">hello@compoundhealth.io</a>
+  </div>
+
+  <style>
+    /* ── DECK HERO ── */
+    .deck-hero {
+      min-height: 92vh; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 150px 48px 100px;
+      background: var(--cream); position: relative; overflow: hidden;
+    }
+    .deck-hero h1 {
+      font-family: 'Playfair Display', serif; font-size: clamp(44px, 6.4vw, 86px);
+      font-weight: 400; line-height: 1.05; letter-spacing: -2.5px; color: var(--charcoal);
+      max-width: 920px; margin-bottom: 28px; animation: up 0.7s 0.1s ease both; position: relative; z-index: 1;
+    }
+    .deck-hero h1 em { font-style: italic; color: var(--sage); }
+    .deck-hero .hero-sub {
+      font-size: 20px; font-weight: 300; color: var(--mid); max-width: 580px;
+      line-height: 1.7; margin-bottom: 48px; animation: up 0.7s 0.2s ease both; position: relative; z-index: 1;
+    }
+    .deck-meta {
+      display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: center;
+      animation: up 0.7s 0.3s ease both; position: relative; z-index: 1;
+    }
+    .deck-meta-item { display: flex; flex-direction: column; gap: 4px; text-align: center; }
+    .dm-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mid); }
+    .dm-val { font-size: 14px; font-weight: 500; color: var(--charcoal); }
+    .deck-meta-div { width: 1px; height: 28px; background: var(--border); }
+
+    /* The opportunity reuses .how/.steps but with no big numbers */
+    #opportunity .step-title { margin-bottom: 14px; }
+
+    /* How-it-works 3-up grid override */
+    .feat-grid-3 { grid-template-columns: repeat(3, 1fr) !important; }
+    .feat-grid-3 .feat { background: var(--charcoal); }
+
+    /* ── PULL QUOTES ── */
+    .deck-quote { background: var(--sage); padding: 120px 56px; }
+    .deck-quote .inner { max-width: 920px; text-align: center; }
+    .dq-text {
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+      font-size: clamp(26px, 3.4vw, 42px); line-height: 1.34; letter-spacing: -0.6px;
+      color: #fff; margin-bottom: 28px;
+    }
+    .dq-attr {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .deck-quote-light { background: var(--charcoal); }
+    .deck-quote-light .dq-text { color: var(--warm-white); }
+    .deck-quote-light .dq-attr { color: #7AB85A; }
+
+    /* ── WHY / CHART ── */
+    .why { background: var(--warm-white); }
+    .chart {
+      margin-top: 56px; background: var(--cream); border: 1px solid var(--border);
+      border-radius: 20px; padding: 44px 48px;
+    }
+    .chart-legend { display: flex; gap: 28px; flex-wrap: wrap; margin-bottom: 32px; }
+    .lg { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 400; color: var(--charcoal); }
+    .lg-dot { width: 11px; height: 11px; border-radius: 3px; flex-shrink: 0; }
+    .lg-early { background: var(--sage-light); }
+    .lg-late { background: var(--gold); }
+    .chart-rows { display: flex; flex-direction: column; gap: 26px; }
+    .chart-row { display: grid; grid-template-columns: 110px 1fr; gap: 20px; align-items: center; }
+    .chart-type { font-family: 'Playfair Display', serif; font-size: 19px; color: var(--charcoal); letter-spacing: -0.4px; }
+    .chart-bars { display: flex; flex-direction: column; gap: 8px; }
+    .bar-track { height: 30px; background: rgba(45,80,22,0.05); border-radius: 7px; overflow: hidden; }
+    .bar {
+      height: 100%; border-radius: 7px; display: flex; align-items: center; justify-content: flex-end;
+      padding-right: 12px; min-width: 42px; transition: width 0.6s ease;
+    }
+    .bar-early { background: var(--sage-light); }
+    .bar-late { background: var(--gold); }
+    .bar-val { font-size: 12px; font-weight: 600; color: #fff; letter-spacing: 0.02em; }
+    .chart-source { font-size: 12px; font-weight: 300; color: var(--mid); line-height: 1.6; margin-top: 32px; font-style: italic; }
+
+    /* ── EXPERIENCE STATS ── */
+    .exp-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 56px;
+      border: 1px solid var(--border); border-radius: 20px; overflow: hidden; background: var(--border);
+    }
+    .exp-stat { background: var(--warm-white); padding: 48px 40px; transition: background 0.25s; }
+    .exp-stat:hover { background: var(--cream); }
+    .exp-num {
+      font-family: 'Playfair Display', serif; font-size: clamp(48px, 5.4vw, 72px); font-weight: 400;
+      color: var(--sage); line-height: 1; letter-spacing: -2px; margin-bottom: 16px;
+    }
+    .exp-num-sub { font-size: 0.34em; color: var(--mid); letter-spacing: 0; margin-left: 4px; font-style: italic; }
+    .exp-label { font-size: 13px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--charcoal); line-height: 1.5; }
+
+    @media (max-width: 900px) {
+      .deck-hero { padding: 120px 24px 80px; min-height: 88vh; }
+      .deck-meta { gap: 18px; }
+      .deck-meta-div { display: none; }
+      .feat-grid-3 { grid-template-columns: 1fr !important; }
+      .deck-quote { padding: 80px 24px; }
+      .chart { padding: 32px 24px; }
+      .chart-row { grid-template-columns: 1fr; gap: 10px; }
+      .chart-type { font-size: 17px; }
+      .exp-stats { grid-template-columns: 1fr; }
+    }
+  </style>
+
+</MainLayout>
