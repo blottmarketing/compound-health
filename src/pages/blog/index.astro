@@ -1,0 +1,113 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import {
+  authors,
+  categories,
+  posts,
+  getAuthor,
+  getCategory,
+  sortedPosts,
+  formatDate,
+} from '../../data/blog';
+
+const ordered = sortedPosts(posts);
+const featured = ordered.find((p) => p.featured) ?? ordered[0];
+const rest = ordered.filter((p) => p.slug !== featured.slug);
+
+// Soft palette rotation so the placeholder covers vary across the grid.
+const tones = ['', 'tone-sage', 'tone-cream', 'tone-charcoal', 'tone-gold'];
+const toneFor = (i: number) => tones[i % tones.length];
+---
+
+<BlogLayout
+  title="Blog | Compound Health"
+  description="Notes from the Compound Health clinical and research team on preventive medicine, biomarker science and the practicalities of building a longevity programme."
+>
+
+  <!-- HERO -->
+  <section class="blog-hero">
+    <div class="inner">
+      <p class="blog-hero-eyebrow">Compound Health</p>
+      <h1>Notes on healthspan,<br />from our <em>clinical team</em></h1>
+      <p>
+        Plain-language briefings on the science we use day to day, the studies we are watching,
+        and how leading wealth advisers are integrating healthspan into the annual client review.
+      </p>
+    </div>
+  </section>
+
+  <!-- CATEGORY FILTER ROW -->
+  <div class="blog-filters">
+    <div class="blog-filters-inner">
+      <a href="/blog" class="blog-filter is-active">All</a>
+      {categories.map((c) => (
+        <a href={`/blog/category/${c.slug}`} class="blog-filter">{c.name}</a>
+      ))}
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <section class="blog-body">
+    <div class="inner">
+
+      <!-- FEATURED -->
+      {featured && (
+        <article class="blog-featured">
+          <a href={`/blog/${featured.slug}`} aria-label={featured.title} class="blog-featured-cover">
+            <span class="cover-mark">Compound Health</span>
+          </a>
+          <div class="blog-featured-body">
+            <p class="blog-featured-tag">Featured</p>
+            <h2><a href={`/blog/${featured.slug}`}>{featured.title}</a></h2>
+            <p class="blog-featured-excerpt">{featured.excerpt}</p>
+            <div class="card-meta">
+              <div class="author-chips">
+                {featured.authorSlugs.map((slug) => {
+                  const a = getAuthor(slug);
+                  return a ? (
+                    <a class="author-chip" href={`/authors/${a.slug}`}>
+                      <span class="avatar">{a.initials}</span>
+                      <span class="author-chip-name">{a.name}</span>
+                    </a>
+                  ) : null;
+                })}
+              </div>
+              <span class="dot"></span>
+              <span>{formatDate(featured.date)}</span>
+              <span class="dot"></span>
+              <span>{featured.readTime} min read</span>
+            </div>
+          </div>
+        </article>
+      )}
+
+      <!-- GRID -->
+      <div class="blog-grid">
+        {rest.map((p, i) => {
+          const cat = getCategory(p.categorySlug);
+          return (
+            <a class="post-card" href={`/blog/${p.slug}`}>
+              <div class={`post-card-cover ${toneFor(i + 1)}`}>
+                <span class="post-card-cover-mark">Compound Health</span>
+              </div>
+              {cat && <p class="post-card-eyebrow">{cat.name}</p>}
+              <h3>{p.title}</h3>
+              <p class="post-card-excerpt">{p.excerpt}</p>
+              <div class="post-card-meta">
+                <div class="author-stack" aria-label="Authors">
+                  {p.authorSlugs.map((slug) => {
+                    const a = getAuthor(slug);
+                    return a ? <span class="avatar" title={a.name}>{a.initials}</span> : null;
+                  })}
+                </div>
+                <span class="meta-date">{formatDate(p.date)}</span>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+
+    </div>
+  </section>
+
+</BlogLayout>

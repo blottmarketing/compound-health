@@ -1,13 +1,13 @@
 ---
 import MainLayout from '../../layouts/MainLayout.astro';
 
-// Cancer 5-year relative survival by stage (SEER / American Cancer Society).
-// Localized (early) vs distant (late) — the "same cancer, different timing" story.
+// Cancer 5-year survival by stage, from the RIA Overview deck chart.
+// Caught early (Stage I) vs caught late (Stage IV) — "same cancer, different timing."
 const survival = [
-  { type: 'Breast',     early: 99, late: 31 },
-  { type: 'Prostate',   early: 100, late: 38 },
-  { type: 'Colorectal', early: 91, late: 13 },
-  { type: 'Lung',       early: 65, late: 9  },
+  { type: 'Pancreatic', early: 80, late: 3  },
+  { type: 'Lung',       early: 67, late: 11 },
+  { type: 'Rectal',     early: 73, late: 6  },
+  { type: 'Colorectal', early: 91, late: 16 },
 ];
 ---
 
@@ -154,8 +154,8 @@ const survival = [
 
       <div class="chart">
         <div class="chart-legend">
-          <span class="lg"><span class="lg-dot lg-early"></span>Caught early — localized</span>
-          <span class="lg"><span class="lg-dot lg-late"></span>Caught late — distant</span>
+          <span class="lg"><span class="lg-dot lg-early"></span>Caught early — Stage I</span>
+          <span class="lg"><span class="lg-dot lg-late"></span>Caught late — Stage IV</span>
         </div>
         <div class="chart-rows">
           {survival.map((c) => (
@@ -173,8 +173,8 @@ const survival = [
           ))}
         </div>
         <p class="chart-source">
-          Percent of patients alive five years after diagnosis (5-year relative survival),
-          localized vs distant stage. Source: SEER / American Cancer Society, 2025.
+          Percent of patients alive five years after diagnosis, Stage I vs Stage IV.
+          Source: SEER / American Cancer Society, 2025.
         </p>
       </div>
     </div>

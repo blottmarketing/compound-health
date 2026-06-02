@@ -1,0 +1,88 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import {
+  categories,
+  postsByCategory,
+  getAuthor,
+  getCategory,
+  sortedPosts,
+  formatDate,
+} from '../../../data/blog';
+
+export async function getStaticPaths() {
+  return categories.map((c) => ({
+    params: { category: c.slug },
+    props: { category: c },
+  }));
+}
+
+const { category } = Astro.props;
+const list = sortedPosts(postsByCategory(category.slug));
+const tones = ['', 'tone-sage', 'tone-cream', 'tone-charcoal', 'tone-gold'];
+---
+
+<BlogLayout
+  title={`${category.name} | Compound Health Blog`}
+  description={category.description}
+>
+
+  <!-- HERO -->
+  <section class="category-hero">
+    <div class="inner">
+      <p class="category-hero-eyebrow">Category</p>
+      <h1>{category.name}</h1>
+      <p>{category.description}</p>
+    </div>
+  </section>
+
+  <!-- FILTER ROW -->
+  <div class="blog-filters">
+    <div class="blog-filters-inner">
+      <a href="/blog" class="blog-filter">All</a>
+      {categories.map((c) => (
+        <a
+          href={`/blog/category/${c.slug}`}
+          class={`blog-filter ${c.slug === category.slug ? 'is-active' : ''}`}
+        >{c.name}</a>
+      ))}
+    </div>
+  </div>
+
+  <!-- POSTS -->
+  <section class="blog-body">
+    <div class="inner">
+      {list.length === 0 ? (
+        <div class="blog-empty">
+          <h3>Nothing in this category yet</h3>
+          <p>We have not published in {category.name} yet. Check back soon.</p>
+        </div>
+      ) : (
+        <div class="blog-grid">
+          {list.map((p, i) => {
+            const cat = getCategory(p.categorySlug);
+            return (
+              <a class="post-card" href={`/blog/${p.slug}`}>
+                <div class={`post-card-cover ${tones[i % tones.length]}`}>
+                  <span class="post-card-cover-mark">Compound Health</span>
+                </div>
+                {cat && <p class="post-card-eyebrow">{cat.name}</p>}
+                <h3>{p.title}</h3>
+                <p class="post-card-excerpt">{p.excerpt}</p>
+                <div class="post-card-meta">
+                  <div class="author-stack">
+                    {p.authorSlugs.map((slug) => {
+                      const a = getAuthor(slug);
+                      return a ? <span class="avatar" title={a.name}>{a.initials}</span> : null;
+                    })}
+                  </div>
+                  <span class="meta-date">{formatDate(p.date)}</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </section>
+
+</BlogLayout>

@@ -1,0 +1,159 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import {
+  posts,
+  getAuthor,
+  getCategory,
+  formatDate,
+  sortedPosts,
+} from '../../data/blog';
+
+export async function getStaticPaths() {
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p } }));
+}
+
+const { post } = Astro.props;
+const cat = getCategory(post.categorySlug);
+const authorObjs = post.authorSlugs
+  .map((s) => getAuthor(s))
+  .filter((a): a is NonNullable<ReturnType<typeof getAuthor>> => Boolean(a));
+
+// Pick three other posts as "Continue reading", preferring the same category.
+const related = sortedPosts(posts)
+  .filter((p) => p.slug !== post.slug)
+  .sort((a, b) => {
+    const aSame = a.categorySlug === post.categorySlug ? 0 : 1;
+    const bSame = b.categorySlug === post.categorySlug ? 0 : 1;
+    return aSame - bSame;
+  })
+  .slice(0, 3);
+
+const tones = ['tone-sage', 'tone-cream', 'tone-charcoal', 'tone-gold'];
+---
+
+<BlogLayout
+  title={`${post.title} | Compound Health Blog`}
+  description={post.excerpt}
+  ogType="article"
+  publishedTime={`${post.date}T09:00:00Z`}
+>
+
+  <!-- HERO -->
+  <section class="post-hero">
+    <div class="inner">
+      <nav class="post-crumbs" aria-label="Breadcrumb">
+        <a href="/blog">Blog</a>
+        {cat && <>
+          <span class="sep">/</span>
+          <a href={`/blog/category/${cat.slug}`}>{cat.name}</a>
+        </>}
+      </nav>
+
+      <p class="post-eyebrow">{post.eyebrow}</p>
+      <h1>{post.title}</h1>
+      <p class="post-lede">{post.excerpt}</p>
+
+      <div class="post-meta">
+        <div class="post-meta-left">
+          <div class="author-chips">
+            {authorObjs.map((a) => (
+              <a class="author-chip" href={`/authors/${a.slug}`}>
+                <span class="avatar">{a.initials}</span>
+                <span class="author-chip-name">{a.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="post-meta-right">
+          <span>{formatDate(post.date)}</span>
+          <span class="dot"></span>
+          <span>{post.readTime} min read</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COVER BANNER -->
+  <div class="post-cover-wrap">
+    <div class="inner">
+      <div class="post-cover">
+        <span class="cover-mark">Compound Health &middot; {cat?.name ?? 'Notes'}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ARTICLE BODY -->
+  <article class="post-body">
+    <div class="inner">
+      <div class="prose" set:html={post.bodyHtml} />
+    </div>
+  </article>
+
+  <!-- TAGS -->
+  {(cat || post.tags.length > 0) && (
+    <div class="post-tags">
+      <div class="inner">
+        <span class="tag-label">Tags</span>
+        {cat && (
+          <a class="tag-chip" href={`/blog/category/${cat.slug}`}>#{cat.name}</a>
+        )}
+        {post.tags.map((t) => (
+          <span class="tag-chip tag-neutral">#{t}</span>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <!-- AUTHOR PANELS -->
+  <section class="post-authors">
+    <div class="inner">
+      {authorObjs.map((a) => (
+        <div class="author-panel">
+          <span class="avatar-lg">{a.initials}</span>
+          <div>
+            <div class="author-panel-name"><a href={`/authors/${a.slug}`}>{a.name}</a></div>
+            <div class="author-panel-role">{a.role}</div>
+            <p class="author-panel-bio">{a.bio}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- CONTINUE READING -->
+  {related.length > 0 && (
+    <section class="continue-reading">
+      <div class="inner">
+        <div class="continue-reading-head">
+          <h2>Continue reading</h2>
+          <a class="continue-reading-link" href="/blog">All posts &rarr;</a>
+        </div>
+        <div class="blog-grid">
+          {related.map((p, i) => {
+            const rCat = getCategory(p.categorySlug);
+            return (
+              <a class="post-card" href={`/blog/${p.slug}`}>
+                <div class={`post-card-cover ${tones[i % tones.length]}`}>
+                  <span class="post-card-cover-mark">Compound Health</span>
+                </div>
+                {rCat && <p class="post-card-eyebrow">{rCat.name}</p>}
+                <h3>{p.title}</h3>
+                <p class="post-card-excerpt">{p.excerpt}</p>
+                <div class="post-card-meta">
+                  <div class="author-stack">
+                    {p.authorSlugs.map((slug) => {
+                      const a = getAuthor(slug);
+                      return a ? <span class="avatar" title={a.name}>{a.initials}</span> : null;
+                    })}
+                  </div>
+                  <span class="meta-date">{formatDate(p.date)}</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+</BlogLayout>
