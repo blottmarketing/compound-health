@@ -1,0 +1,126 @@
+---
+import '../styles/global.css';
+import '../styles/design-system.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Section label rendered above the page title, e.g. "Atoms". */
+  section?: string;
+  /** Page intro rendered under the title. */
+  lede?: string;
+  /** Robots noindex,nofollow. Defaults to true. Every /design-system/* route
+   *  is internal documentation and must stay out of indexes and the sitemap. */
+  noindex?: boolean;
+}
+
+const SITE_NAME = 'Compound Health';
+const DEFAULT_DESCRIPTION =
+  'Internal design system documentation for Compound Health. Atoms and molecules used across the marketing site.';
+
+const {
+  title,
+  description = DEFAULT_DESCRIPTION,
+  section,
+  lede,
+  noindex = true,
+} = Astro.props;
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isActive = (href: string) => {
+  const a = href.replace(/\/+$/, '') || '/';
+  return path === a;
+};
+
+const nav = [
+  { label: 'Overview',  href: '/design-system' },
+  { label: 'Atoms',     href: '/design-system/atoms' },
+  { label: 'Molecules', href: '/design-system/molecules' },
+];
+---
+
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#2D5016" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+
+    <nav class="ds-topnav">
+      <a href="/" class="nav-logo">Compound <em>Health</em></a>
+      <div class="ds-topnav-meta">
+        <span class="ds-eyebrow">Design system · Internal</span>
+        <a href="/" class="nav-back">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M11 7H3M6 3L2 7l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Back to site
+        </a>
+      </div>
+    </nav>
+
+    <div class="ds-shell">
+      <aside class="ds-sidebar">
+        <div class="ds-side-section">
+          <p class="ds-side-label">Compound Health</p>
+          <p class="ds-side-sub">v1.0 · Astro · Client-First</p>
+        </div>
+
+        <nav class="ds-side-nav" aria-label="Design system sections">
+          <p class="ds-side-label">Pages</p>
+          <ul>
+            {nav.map((item) => (
+              <li>
+                <a href={item.href} class={`ds-side-link${isActive(item.href) ? ' is-active' : ''}`}>
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div class="ds-side-section">
+          <p class="ds-side-label">Methodology</p>
+          <p class="ds-side-sub">
+            Atomic design (Frost) combined with Finsweet
+            <a href="https://finsweet.com/client-first" target="_blank" rel="noopener">Client-First</a>
+            naming. Tokens live in <code>global.css</code> as CSS custom properties.
+          </p>
+        </div>
+      </aside>
+
+      <main class="ds-main">
+        <header class="ds-pagehead">
+          {section && <p class="ds-section-label">{section}</p>}
+          <h1>{title}</h1>
+          {lede && <p class="ds-lede">{lede}</p>}
+        </header>
+
+        <slot />
+
+        <footer class="ds-footer">
+          <p>Compound Health design system · Noindex · Last updated 2026-06-02</p>
+        </footer>
+      </main>
+    </div>
+
+  </body>
+</html>

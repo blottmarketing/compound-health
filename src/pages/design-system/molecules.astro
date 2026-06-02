@@ -1,0 +1,496 @@
+---
+import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
+---
+
+<DesignSystemLayout
+  title="Molecules"
+  section="02 · Molecules"
+  lede="Atoms combined into reusable building blocks. Step card, plan card, credibility item, metric row, testimonial, post card, author chip, tag group, form field, mobile menu link, case stat and case quote card."
+>
+
+  <nav class="ds-toc" aria-label="On this page">
+    <a href="#credibility-item">Credibility item</a>
+    <a href="#step-card">Step card</a>
+    <a href="#feature-card">Feature card</a>
+    <a href="#metric-row">Metric row</a>
+    <a href="#case-stat">Case stat</a>
+    <a href="#case-quote">Case quote card</a>
+    <a href="#speaker">Speaker block</a>
+    <a href="#plan-card">Plan card</a>
+    <a href="#testimonial">Testimonial</a>
+    <a href="#form-field">Form field</a>
+    <a href="#mobile-link">Mobile menu link</a>
+    <a href="#author-chip">Author chip</a>
+    <a href="#author-stack">Author stack</a>
+    <a href="#post-card">Post card</a>
+    <a href="#tag-group">Tag group</a>
+    <a href="#breadcrumb">Breadcrumb</a>
+    <a href="#author-panel">Author panel</a>
+  </nav>
+
+  <!-- ─────────── CREDIBILITY ITEM ─────────── -->
+  <section class="ds-section" id="credibility-item">
+    <div class="ds-section-head">
+      <h2>Credibility item</h2>
+      <span class="ds-tag">.cred-item</span>
+    </div>
+    <p class="ds-note">Used in the home page credibility bar. Sage Playfair number + neutral caption. Multiple items separate with <code class="ds-inline">.cred-divider</code>.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview">
+        <div class="cred-item">
+          <span class="cred-num">400</span>
+          <span class="cred-text">UHNW clients reached in our first delivery</span>
+        </div>
+        <div class="cred-divider"></div>
+        <div class="cred-item">
+          <span class="cred-num">May 2026</span>
+          <span class="cred-text">Live with one of the largest global private banks</span>
+        </div>
+      </div>
+      <pre class="ds-code"><span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"cred-item"`}</span><span class="tag">{`>`}</span>
+  <span class="tag">{`<span `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"cred-num"`}</span><span class="tag">{`>`}</span>400<span class="tag">{`</span>`}</span>
+  <span class="tag">{`<span `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"cred-text"`}</span><span class="tag">{`>`}</span>UHNW clients reached…<span class="tag">{`</span>`}</span>
+<span class="tag">{`</div>`}</span></pre>
+    </div>
+  </section>
+
+  <!-- ─────────── STEP CARD ─────────── -->
+  <section class="ds-section" id="step-card">
+    <div class="ds-section-head">
+      <h2>Step card</h2>
+      <span class="ds-tag">.step</span>
+    </div>
+    <p class="ds-note">Three-up grid in the “how it works” section. Large Playfair numeral, Playfair title, body. Hover shifts background.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="steps" style="margin-top:0;">
+          <div class="step">
+            <div class="step-n">01</div>
+            <div class="step-title">Join through your advisor</div>
+            <p>Access Compound Health as a benefit through your wealth advisor. No cold starts, no separate onboarding.</p>
+          </div>
+          <div class="step">
+            <div class="step-n">02</div>
+            <div class="step-title">Deep diagnostic intake</div>
+            <p>A comprehensive baseline: advanced bloodwork, imaging, genetic risk, cognitive and metabolic assessments.</p>
+          </div>
+          <div class="step">
+            <div class="step-n">03</div>
+            <div class="step-title">Personalised longevity plan</div>
+            <p>Your clinical team and a dedicated concierge build and actively manage a protocol tailored to your data.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── FEATURE CARD ─────────── -->
+  <section class="ds-section" id="feature-card">
+    <div class="ds-section-head">
+      <h2>Feature card</h2>
+      <span class="ds-tag">.feat · .feat.span2</span>
+    </div>
+    <p class="ds-note">Lives inside a dark <code class="ds-inline">.features</code> section. Two-column grid with optional double-width variant.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-dark is-block">
+        <div class="feat-grid">
+          <div class="feat">
+            <div class="feat-icon">🩺</div>
+            <div class="feat-title">Elite clinical delivery</div>
+            <p>Virtual care nationwide, with local provider coordination for in-person diagnostics.</p>
+          </div>
+          <div class="feat">
+            <div class="feat-icon">🧬</div>
+            <div class="feat-title">Full biomarker tracking</div>
+            <p>Multiple comprehensive panels per year, DEXA, performance battery, CGM and wearable data.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── METRIC ROW ─────────── -->
+  <section class="ds-section" id="metric-row">
+    <div class="ds-section-head">
+      <h2>Metric row</h2>
+      <span class="ds-tag">.metric · .metric-fill.is-good · .metric-fill.is-warn</span>
+    </div>
+    <p class="ds-note">
+      A label, a track, a fill, a value. Width on the fill comes from data via inline
+      <code class="ds-inline">style="width:NN%"</code>. Colour comes from a status modifier:
+      <code class="ds-inline">.is-good</code> for sage, <code class="ds-inline">.is-warn</code> for gold.
+    </p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-dark is-block">
+        <div class="metrics-panel">
+          <div class="metrics-head">Health score overview</div>
+          <div class="metric">
+            <span class="metric-name">Cardiovascular</span>
+            <div class="metric-track"><div class="metric-fill is-good" style="width:82%"></div></div>
+            <span class="metric-val">82</span>
+          </div>
+          <div class="metric">
+            <span class="metric-name">Metabolic</span>
+            <div class="metric-track"><div class="metric-fill is-warn" style="width:74%"></div></div>
+            <span class="metric-val">74</span>
+          </div>
+          <div class="metric">
+            <span class="metric-name">Cognitive</span>
+            <div class="metric-track"><div class="metric-fill is-good" style="width:91%"></div></div>
+            <span class="metric-val">91</span>
+          </div>
+        </div>
+      </div>
+      <pre class="ds-code"><span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric"`}</span><span class="tag">{`>`}</span>
+  <span class="tag">{`<span `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric-name"`}</span><span class="tag">{`>`}</span>Cardiovascular<span class="tag">{`</span>`}</span>
+  <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric-track"`}</span><span class="tag">{`>`}</span>
+    <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric-fill is-good"`}</span> <span class="attr">style</span><span class="tag">=</span><span class="str">{`"width:82%"`}</span><span class="tag">{`></div>`}</span>
+  <span class="tag">{`</div>`}</span>
+  <span class="tag">{`<span `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric-val"`}</span><span class="tag">{`>`}</span>82<span class="tag">{`</span>`}</span>
+<span class="tag">{`</div>`}</span></pre>
+    </div>
+  </section>
+
+  <!-- ─────────── CASE STAT ─────────── -->
+  <section class="ds-section" id="case-stat">
+    <div class="ds-section-head">
+      <h2>Case stat</h2>
+      <span class="ds-tag">.case-stat</span>
+    </div>
+    <p class="ds-note">Headline number + caption. The numeral can hold an italic adjective via <code class="ds-inline">&lt;em&gt;</code>.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="case-stats" style="margin:0;">
+          <div class="case-stat">
+            <div class="case-num">400</div>
+            <div class="case-stat-label">UHNW clients reached in a single delivery.</div>
+          </div>
+          <div class="case-stat">
+            <div class="case-num"><em>First</em></div>
+            <div class="case-stat-label">Private-bank-scale rollout of a longevity programme.</div>
+          </div>
+          <div class="case-stat">
+            <div class="case-num">May '26</div>
+            <div class="case-stat-label">From advisor approval to live in days, not quarters.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── CASE QUOTE CARD ─────────── -->
+  <section class="ds-section" id="case-quote">
+    <div class="ds-section-head">
+      <h2>Case quote card</h2>
+      <span class="ds-tag">.case-quote-card</span>
+    </div>
+    <p class="ds-note">Sage surface with a giant decorative quote mark. Pair with <code class="ds-inline">.case-content</code> in the case-body grid.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="case-quote-card" style="max-width:560px;">
+          <div class="case-quote-eyebrow">The model</div>
+          <div class="case-quote">One trusted advisor relationship. One longevity programme. Run at scale across a wealth channel.</div>
+          <div class="case-quote-footer">
+            <strong>Now opening to RIAs, family offices, and private bank teams.</strong>
+            A credible, ongoing programme run inside the practice, not a one-off event.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── SPEAKER BLOCK ─────────── -->
+  <section class="ds-section" id="speaker">
+    <div class="ds-section-head">
+      <h2>Speaker block</h2>
+      <span class="ds-tag">.case-speaker · .speaker-avatar</span>
+    </div>
+    <p class="ds-note">Avatar + name + role, sat above a hairline divider. Used inside <code class="ds-inline">.case-content</code> and similar.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="case-speaker" style="border-top:none;padding-top:0;">
+          <div class="speaker-avatar">DG</div>
+          <div>
+            <div class="speaker-name">Dylan Gambardella</div>
+            <div class="speaker-role">Partner, Compound Health</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── PLAN CARD ─────────── -->
+  <section class="ds-section" id="plan-card">
+    <div class="ds-section-head">
+      <h2>Plan card</h2>
+      <span class="ds-tag">.plan · .plan.featured</span>
+    </div>
+    <p class="ds-note">Three-up pricing grid. The featured variant uses sage as its surface and inverts every child colour.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="plans-grid" style="margin-top:0;">
+          <div class="plan">
+            <div class="plan-name">Baseline</div>
+            <p class="plan-price-note">Credited toward year one if you continue.</p>
+            <ul class="plan-features">
+              <li>Advanced bloodwork, mobile-drawn at home</li>
+              <li>DEXA scan, VO2 max, body composition</li>
+              <li>Written longevity plan reviewed by an MD</li>
+            </ul>
+            <a href="#" class="plan-btn ghost">Start here &rarr;</a>
+          </div>
+          <div class="plan featured">
+            <div class="plan-badge">Most popular</div>
+            <div class="plan-name">Optimise</div>
+            <p class="plan-price-note">The annual programme for sustained performance.</p>
+            <ul class="plan-features">
+              <li>MD-led, coach-supported programme</li>
+              <li>Day 1 and Day 180 reviews + quarterly check-ins</li>
+              <li>Continuous biomarker and biological-age tracking</li>
+            </ul>
+            <a href="#" class="plan-btn white">Apply now &rarr;</a>
+          </div>
+          <div class="plan">
+            <div class="plan-name">Family</div>
+            <p class="plan-price-note">Optimise extended to spouse and children.</p>
+            <ul class="plan-features">
+              <li>Up to four additional members</li>
+              <li>Shared concierge coordination</li>
+              <li>Family-level reporting</li>
+            </ul>
+            <a href="#" class="plan-btn dark">Speak with us &rarr;</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── TESTIMONIAL ─────────── -->
+  <section class="ds-section" id="testimonial">
+    <div class="ds-section-head">
+      <h2>Testimonial</h2>
+      <span class="ds-tag">.testi</span>
+    </div>
+    <p class="ds-note">Playfair italic quote + sage-pale avatar with initials, name and role. Three-up grid by default.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="testi-grid" style="margin-top:0;">
+          <div class="testi">
+            <p class="testi-quote">A quiet, considered way to keep the years that count. Compound has changed how I review my health, full stop.</p>
+            <div class="testi-author">
+              <div class="avatar">HC</div>
+              <div>
+                <div class="author-name">Henry Cavendish</div>
+                <div class="author-role">Founder, private investment office</div>
+              </div>
+            </div>
+          </div>
+          <div class="testi">
+            <p class="testi-quote">It fits inside the annual review, which means it actually happens. That alone has been worth it.</p>
+            <div class="testi-author">
+              <div class="avatar">IA</div>
+              <div>
+                <div class="author-name">Imogen Asher</div>
+                <div class="author-role">Senior advisor, multi-family office</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── FORM FIELD ─────────── -->
+  <section class="ds-section" id="form-field">
+    <div class="ds-section-head">
+      <h2>Form field</h2>
+      <span class="ds-tag">.wf-field · .wf-row · .wf-submit</span>
+    </div>
+    <p class="ds-note">A field is label-over-input. A row groups two fields side-by-side. The whole form lives in a cream-surface card with sage submit.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <form class="waitlist-form" style="max-width:520px;">
+          <div class="wf-row">
+            <div class="wf-field">
+              <label class="wf-label">Full name</label>
+              <input class="wf-input" placeholder="Jane Cavendish" />
+            </div>
+            <div class="wf-field">
+              <label class="wf-label">Email</label>
+              <input class="wf-input" type="email" placeholder="jane@cavendish.com" />
+            </div>
+          </div>
+          <div class="wf-field">
+            <label class="wf-label">How did you hear about us?</label>
+            <select class="wf-input wf-select">
+              <option>Select…</option>
+              <option>My advisor</option>
+              <option>Press</option>
+              <option>A current member</option>
+            </select>
+          </div>
+          <button type="button" class="wf-submit">
+            Join the waitlist
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <p class="wf-note">By joining you agree to our <a href="#">privacy policy</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── MOBILE MENU LINK ─────────── -->
+  <section class="ds-section" id="mobile-link">
+    <div class="ds-section-head">
+      <h2>Mobile menu link</h2>
+      <span class="ds-tag">.mobile-nav-link</span>
+    </div>
+    <p class="ds-note">Used inside the GSAP-driven mobile overlay. Large editorial Playfair with optional italicised emphasis word.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div style="background:var(--cream);padding:36px;border-radius:14px;display:flex;flex-direction:column;gap:8px;">
+          <a href="#" class="mobile-nav-link" style="opacity:1;transform:none;">How it <em>works</em></a>
+          <a href="#" class="mobile-nav-link" style="opacity:1;transform:none;">What you <em>get</em></a>
+          <a href="#" class="mobile-nav-link" style="opacity:1;transform:none;">Case <em>study</em></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── AUTHOR CHIP ─────────── -->
+  <section class="ds-section" id="author-chip">
+    <div class="ds-section-head">
+      <h2>Author chip</h2>
+      <span class="ds-tag">.author-chip</span>
+    </div>
+    <p class="ds-note">Inline byline. Avatar plus author name, links to the author page.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview">
+        <a class="author-chip" href="#"><div class="avatar">IA</div><span class="author-chip-name">Imogen Asher</span></a>
+        <a class="author-chip" href="#"><div class="avatar">HC</div><span class="author-chip-name">Henry Cavendish</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── AUTHOR STACK ─────────── -->
+  <section class="ds-section" id="author-stack">
+    <div class="ds-section-head">
+      <h2>Author stack</h2>
+      <span class="ds-tag">.author-stack</span>
+    </div>
+    <p class="ds-note">Multiple author avatars overlapping. Used in card meta where space is tight.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview">
+        <div class="author-stack">
+          <div class="avatar">IA</div>
+          <div class="avatar">HC</div>
+          <div class="avatar">DG</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── POST CARD ─────────── -->
+  <section class="ds-section" id="post-card">
+    <div class="ds-section-head">
+      <h2>Post card</h2>
+      <span class="ds-tag">.post-card</span>
+    </div>
+    <p class="ds-note">The reusable blog index card. Cover tone is set with <code class="ds-inline">.tone-sage</code>, <code class="ds-inline">.tone-cream</code>, <code class="ds-inline">.tone-charcoal</code> or <code class="ds-inline">.tone-gold</code>.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="blog-grid" style="grid-template-columns:repeat(2,1fr);">
+          <a class="post-card" href="#">
+            <div class="post-card-cover tone-sage">
+              <span class="post-card-cover-mark">Research</span>
+            </div>
+            <p class="post-card-eyebrow">Research</p>
+            <h3>What advanced bloodwork actually tells your advisor</h3>
+            <p class="post-card-excerpt">A practical lens on which panels matter, when, and why — translated for the people sitting across from your clients.</p>
+            <div class="post-card-meta">
+              <div class="author-stack">
+                <div class="avatar">IA</div>
+                <div class="avatar">HC</div>
+              </div>
+              <span class="meta-date">27 May 2026</span>
+            </div>
+          </a>
+          <a class="post-card" href="#">
+            <div class="post-card-cover tone-gold">
+              <span class="post-card-cover-mark">Insights</span>
+            </div>
+            <p class="post-card-eyebrow">Insights</p>
+            <h3>Healthspan, alongside net worth</h3>
+            <p class="post-card-excerpt">Why one of the largest private banks chose to put a longevity score into the annual client review — and what it changed.</p>
+            <div class="post-card-meta">
+              <div class="author-stack">
+                <div class="avatar">DG</div>
+              </div>
+              <span class="meta-date">14 May 2026</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── TAG GROUP ─────────── -->
+  <section class="ds-section" id="tag-group">
+    <div class="ds-section-head">
+      <h2>Tag group</h2>
+      <span class="ds-tag">.tag-chip · .tag-chip.tag-neutral</span>
+    </div>
+    <p class="ds-note">Sat at the foot of a post. Sage chips for taxonomy, neutral chips for general tags.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview">
+        <span class="tag-label">Tagged</span>
+        <a href="#" class="tag-chip">bloodwork</a>
+        <a href="#" class="tag-chip">protocols</a>
+        <a href="#" class="tag-chip tag-neutral">private bank</a>
+        <a href="#" class="tag-chip tag-neutral">UHNW</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── BREADCRUMB ─────────── -->
+  <section class="ds-section" id="breadcrumb">
+    <div class="ds-section-head">
+      <h2>Breadcrumb</h2>
+      <span class="ds-tag">.post-crumbs</span>
+    </div>
+    <p class="ds-note">Used on individual blog posts to surface the parent index and category. Separators are styled <code class="ds-inline">.sep</code> spans.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview">
+        <div class="post-crumbs">
+          <a href="#">Blog</a><span class="sep">/</span>
+          <a href="#">Research</a><span class="sep">/</span>
+          <span>What advanced bloodwork tells your advisor</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── AUTHOR PANEL ─────────── -->
+  <section class="ds-section" id="author-panel">
+    <div class="ds-section-head">
+      <h2>Author panel</h2>
+      <span class="ds-tag">.author-panel</span>
+    </div>
+    <p class="ds-note">Sits below a post body. Larger avatar, name, role and short bio. Multiple panels stack vertically.</p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="author-panel">
+          <div class="avatar-lg">IA</div>
+          <div>
+            <div class="author-panel-name"><a href="#">Imogen Asher</a></div>
+            <div class="author-panel-role">Clinical lead, Compound Health</div>
+            <p class="author-panel-bio">Imogen leads the clinical programme at Compound Health. She trained in preventive cardiology and has spent the last decade building longevity protocols for principals and their families.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</DesignSystemLayout>

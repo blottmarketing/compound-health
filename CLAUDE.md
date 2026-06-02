@@ -24,21 +24,28 @@ compound-health/
 │   ├── data/
 │   │   └── blog.ts             # authors, categories, posts — single source of truth for blog content
 │   ├── layouts/
-│   │   ├── MainLayout.astro    # marketing pages; supports `noindex` prop
-│   │   ├── LegalLayout.astro   # privacy/terms; always indexed
-│   │   └── BlogLayout.astro    # blog/author/category; defaults to noindex (pre-launch)
+│   │   ├── MainLayout.astro          # marketing pages; supports `noindex` prop
+│   │   ├── LegalLayout.astro         # privacy/terms; always indexed
+│   │   ├── BlogLayout.astro          # blog/author/category; defaults to noindex (pre-launch)
+│   │   └── DesignSystemLayout.astro  # /design-system/*; always noindex
 │   ├── pages/                  # one .astro file per route
 │   │   ├── index.astro
 │   │   ├── privacy-policy.astro
 │   │   ├── website-terms.astro
 │   │   ├── overview-deck-june/index.astro   # private RIA deck, noindex
+│   │   ├── design-system/                   # internal design system, all routes noindex
+│   │   │   ├── index.astro                  # /design-system  overview
+│   │   │   ├── atoms.astro                  # /design-system/atoms
+│   │   │   └── molecules.astro              # /design-system/molecules
 │   │   ├── blog/
 │   │   │   ├── index.astro                  # /blog parent
 │   │   │   ├── [slug].astro                 # /blog/<post-slug>
 │   │   │   └── category/[category].astro    # /blog/category/<category-slug>
 │   │   └── authors/
 │   │       └── [author].astro               # /authors/<first-lastname>
-│   └── styles/global.css
+│   └── styles/
+│       ├── global.css                       # tokens + atoms + molecules — the live design system
+│       └── design-system.css                # documentation chrome for /design-system/*
 ├── PAGES.xlsx              # source of truth for live page inventory
 └── CLAUDE.md               # this file
 ```
@@ -72,12 +79,32 @@ compound-health/
 | Privacy Policy | https://compoundhealth.io/privacy-policy | Live | Indexed | LegalLayout |
 | Website Terms | https://compoundhealth.io/website-terms | Live | Indexed | LegalLayout |
 | RIA Overview Deck (June) | https://compoundhealth.io/overview-deck-june/ | Live | Noindex | MainLayout |
+| Design System — Overview | https://compoundhealth.io/design-system | Live | Noindex | DesignSystemLayout |
+| Design System — Atoms | https://compoundhealth.io/design-system/atoms | Live | Noindex | DesignSystemLayout |
+| Design System — Molecules | https://compoundhealth.io/design-system/molecules | Live | Noindex | DesignSystemLayout |
 | Blog — Index | https://compoundhealth.io/blog | Live | Noindex | BlogLayout |
 | Blog Category — Research | https://compoundhealth.io/blog/category/research | Live | Noindex | BlogLayout |
 | Blog Category — Insights | https://compoundhealth.io/blog/category/insights | Live | Noindex | BlogLayout |
 | Blog Post — 6 dummy posts | https://compoundhealth.io/blog/<slug> | Live | Noindex | BlogLayout |
 | Author — Imogen Asher | https://compoundhealth.io/authors/imogen-asher | Live | Noindex | BlogLayout |
 | Author — Henry Cavendish | https://compoundhealth.io/authors/henry-cavendish | Live | Noindex | BlogLayout |
+
+## Design system
+
+The site has a single source of truth for visual style. Use it. Do not invent new tokens, sizes or button variants inline.
+
+- **Live system lives in `src/styles/global.css`.** All tokens (colour, type, spacing), atoms (buttons, eyebrows, badges, inputs, avatars, dividers, links) and molecules (step card, plan card, feature card, metric row, post card, author chip, form field, mobile menu link, case stat, case quote card, testimonial, breadcrumb, author panel) are defined there.
+- **Documentation lives at `/design-system`.** Three routes, all noindex via `DesignSystemLayout`:
+  - `/design-system` — overview and working rules.
+  - `/design-system/atoms` — colour, typography, spacing, radii, buttons, badges, eyebrows, dots, avatars, dividers, inputs, links, motion.
+  - `/design-system/molecules` — every reusable block on the site, with code snippets.
+- **Methodology.** Atomic design (atoms → molecules → organisms → templates → pages) combined with [Finsweet Client-First](https://finsweet.com/client-first) naming. Class names are lowercase, hyphen-separated, with `is-active` / `is-open` for state and modifier classes like `.is-good`, `.is-warn`, `.tone-sage` for variants.
+- **Rules.**
+  1. Every visual change starts in `global.css`. If a token, atom or molecule does not exist for what you need, add it before using it.
+  2. Do not inline colours, sizes or backgrounds on elements. Width values that come from data (e.g. `.metric-fill style="width:82%"`) are the only legitimate use of inline `style`. Colours always come from a class.
+  3. When you add a new atom or molecule to `global.css`, add a documentation block to the corresponding `/design-system` page in the same commit.
+  4. All `/design-system/*` routes must stay noindex and out of `public/sitemap.xml`.
+- **Status modifiers shipped with the system.** `.metric-fill.is-good` (sage) and `.metric-fill.is-warn` (gold) replace the previously inline metric colours in `index.astro`.
 
 ## Blog system
 

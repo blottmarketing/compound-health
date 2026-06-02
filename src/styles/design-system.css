@@ -1,0 +1,255 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Compound Health · Design system documentation styles
+   Chrome only. Atoms and molecules on display use classes from global.css
+   so the docs are guaranteed to reflect the live system.
+   ───────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --ds-bg: var(--warm-white);
+  --ds-panel: var(--cream);
+  --ds-panel-2: #FBF9F5;
+  --ds-line: var(--border);
+  --ds-code-bg: #14201A;
+  --ds-code-text: #DCE7DA;
+  --ds-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+body { background: var(--ds-bg); }
+
+/* ── Top nav ── */
+.ds-topnav {
+  position: sticky; top: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px;
+  background: rgba(254,252,250,0.94); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--ds-line);
+}
+.ds-topnav-meta { display: flex; align-items: center; gap: 28px; }
+.ds-eyebrow {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--sage); background: var(--sage-pale);
+  padding: 5px 12px; border-radius: 100px;
+  border: 1px solid rgba(45,80,22,0.18);
+}
+
+/* ── Shell ── */
+.ds-shell {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  min-height: calc(100vh - 60px);
+}
+
+/* ── Sidebar ── */
+.ds-sidebar {
+  border-right: 1px solid var(--ds-line);
+  padding: 36px 28px;
+  background: var(--ds-panel-2);
+  position: sticky; top: 60px;
+  align-self: start;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 32px;
+}
+.ds-side-label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--mid); margin-bottom: 10px;
+}
+.ds-side-sub { font-size: 13px; font-weight: 300; color: var(--mid); line-height: 1.6; }
+.ds-side-sub a { color: var(--sage); text-decoration: underline; text-underline-offset: 2px; }
+.ds-side-sub code {
+  font-family: var(--ds-mono); font-size: 12px;
+  background: rgba(45,80,22,0.06); padding: 1px 5px; border-radius: 4px; color: var(--sage);
+}
+.ds-side-nav ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.ds-side-link {
+  display: block; padding: 8px 12px; border-radius: 8px;
+  font-size: 14px; font-weight: 400; color: var(--charcoal);
+  text-decoration: none; transition: background 0.15s, color 0.15s;
+}
+.ds-side-link:hover { background: rgba(45,80,22,0.06); color: var(--sage); }
+.ds-side-link.is-active { background: var(--sage); color: #fff; font-weight: 500; }
+
+/* ── Main column ── */
+.ds-main { padding: 56px 56px 96px; min-width: 0; }
+.ds-pagehead { max-width: 760px; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--ds-line); }
+.ds-section-label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--sage); margin-bottom: 14px;
+}
+.ds-pagehead h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 4vw, 52px); font-weight: 400; line-height: 1.06; letter-spacing: -1.4px;
+  color: var(--charcoal); margin-bottom: 16px;
+}
+.ds-lede { font-size: 17px; font-weight: 300; color: var(--mid); line-height: 1.65; max-width: 620px; }
+
+/* ── Section block (one per atom or molecule) ── */
+.ds-section { margin-bottom: 64px; scroll-margin-top: 88px; }
+.ds-section-head { margin-bottom: 24px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.ds-section-head h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px; font-weight: 400; letter-spacing: -0.6px; color: var(--charcoal);
+}
+.ds-section-head .ds-tag {
+  font-family: var(--ds-mono); font-size: 12px; color: var(--sage);
+  background: var(--sage-pale); padding: 4px 10px; border-radius: 100px;
+  border: 1px solid rgba(45,80,22,0.18);
+}
+.ds-section p.ds-note { font-size: 14px; color: var(--mid); line-height: 1.65; max-width: 620px; margin-bottom: 20px; }
+
+/* ── Specimen card ── */
+.ds-specimen {
+  background: var(--warm-white);
+  border: 1px solid var(--ds-line);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.ds-specimen-preview {
+  padding: 36px;
+  background: var(--ds-panel);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 18px;
+  min-height: 120px;
+}
+.ds-specimen-preview.is-dark { background: var(--charcoal); }
+.ds-specimen-preview.is-tight { padding: 24px; min-height: 0; }
+.ds-specimen-preview.is-stack { flex-direction: column; align-items: flex-start; gap: 24px; }
+.ds-specimen-preview.is-block { display: block; }
+.ds-specimen-meta {
+  display: flex; align-items: center; justify-content: space-between; gap: 18px;
+  padding: 14px 20px; border-top: 1px solid var(--ds-line);
+  background: var(--ds-panel-2);
+  font-family: var(--ds-mono); font-size: 12px; color: var(--mid);
+  flex-wrap: wrap;
+}
+.ds-specimen-meta strong { color: var(--charcoal); font-weight: 500; }
+
+/* ── Token grids ── */
+.ds-grid { display: grid; gap: 16px; }
+.ds-grid.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+.ds-grid.cols-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+.ds-grid.cols-6 { grid-template-columns: repeat(6, minmax(0,1fr)); }
+
+/* ── Swatch ── */
+.ds-swatch {
+  border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--ds-line);
+  background: var(--warm-white);
+}
+.ds-swatch-chip { height: 110px; border-bottom: 1px solid var(--ds-line); }
+.ds-swatch-body { padding: 14px 16px; }
+.ds-swatch-name { font-size: 13px; font-weight: 500; color: var(--charcoal); margin-bottom: 4px; }
+.ds-swatch-token { font-family: var(--ds-mono); font-size: 11px; color: var(--mid); }
+.ds-swatch-hex { font-family: var(--ds-mono); font-size: 11px; color: var(--mid); margin-top: 2px; }
+
+/* ── Type specimen ── */
+.ds-type-row {
+  display: grid; grid-template-columns: 200px 1fr; gap: 28px; align-items: baseline;
+  padding: 22px 0; border-bottom: 1px dashed var(--ds-line);
+}
+.ds-type-row:last-child { border-bottom: none; }
+.ds-type-meta { font-family: var(--ds-mono); font-size: 12px; color: var(--mid); line-height: 1.6; }
+.ds-type-meta strong { color: var(--charcoal); display: block; margin-bottom: 4px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; }
+
+/* ── Scale / size token list ── */
+.ds-scale { display: flex; flex-direction: column; gap: 10px; }
+.ds-scale-row {
+  display: grid; grid-template-columns: 180px 80px 1fr; align-items: center; gap: 18px;
+  padding: 10px 0;
+}
+.ds-scale-label { font-family: var(--ds-mono); font-size: 12px; color: var(--charcoal); }
+.ds-scale-value { font-family: var(--ds-mono); font-size: 12px; color: var(--mid); }
+.ds-scale-bar { height: 14px; background: var(--sage-pale); border-radius: 4px; border: 1px solid rgba(45,80,22,0.18); }
+
+/* ── Radii preview ── */
+.ds-radius-tile {
+  width: 100%; aspect-ratio: 1; background: var(--sage-pale);
+  border: 1px solid rgba(45,80,22,0.18);
+  display: flex; align-items: flex-end; justify-content: flex-start; padding: 14px;
+  font-family: var(--ds-mono); font-size: 11px; color: var(--sage);
+}
+
+/* ── Code block ── */
+.ds-code {
+  margin: 0;
+  background: var(--ds-code-bg); color: var(--ds-code-text);
+  font-family: var(--ds-mono); font-size: 12.5px; line-height: 1.6;
+  padding: 18px 22px;
+  border-top: 1px solid var(--ds-line);
+  overflow-x: auto;
+  white-space: pre;
+}
+.ds-code .tag { color: #7AB85A; }
+.ds-code .attr { color: #D4B871; }
+.ds-code .str { color: #FBE8B7; }
+.ds-code .com { color: rgba(220,231,218,0.45); font-style: italic; }
+
+/* ── Inline code chip ── */
+code.ds-inline {
+  font-family: var(--ds-mono); font-size: 12px;
+  background: rgba(45,80,22,0.06); padding: 2px 6px; border-radius: 4px; color: var(--sage);
+}
+
+/* ── Overview grid (index page) ── */
+.ds-overview-grid {
+  display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px;
+}
+.ds-overview-card {
+  display: flex; flex-direction: column; gap: 12px;
+  background: var(--ds-panel); border: 1px solid var(--ds-line); border-radius: 18px;
+  padding: 32px;
+  text-decoration: none; color: inherit;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.ds-overview-card:hover { transform: translateY(-3px); border-color: rgba(45,80,22,0.28); }
+.ds-overview-card-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage); }
+.ds-overview-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 400; color: var(--charcoal); letter-spacing: -0.6px;
+}
+.ds-overview-card p { font-size: 14px; color: var(--mid); line-height: 1.7; }
+.ds-overview-card-meta { margin-top: 4px; font-family: var(--ds-mono); font-size: 11px; color: var(--mid); }
+
+/* ── Section index (right-rail style anchor list) ── */
+.ds-toc {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  margin-bottom: 40px; padding: 16px 20px;
+  background: var(--ds-panel); border: 1px solid var(--ds-line); border-radius: 14px;
+}
+.ds-toc a {
+  font-size: 12px; font-family: var(--ds-mono);
+  color: var(--charcoal); text-decoration: none;
+  padding: 5px 12px; border-radius: 100px;
+  background: var(--warm-white); border: 1px solid var(--ds-line);
+  transition: border-color 0.15s, color 0.15s;
+}
+.ds-toc a:hover { color: var(--sage); border-color: var(--sage); }
+
+/* ── Footer ── */
+.ds-footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--ds-line); font-size: 12px; color: var(--mid); }
+
+/* ── Tiny demo helpers (only used in specimens) ── */
+.ds-bg-dark { background: var(--charcoal); padding: 24px; border-radius: 12px; }
+.ds-bg-sage { background: var(--sage); padding: 24px; border-radius: 12px; }
+
+/* Spacing utility tile used in spacing token preview */
+.ds-space-row { display: flex; align-items: center; gap: 18px; padding: 8px 0; }
+.ds-space-label { font-family: var(--ds-mono); font-size: 12px; color: var(--charcoal); width: 200px; flex-shrink: 0; }
+.ds-space-bar { height: 18px; background: var(--sage); border-radius: 4px; }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .ds-shell { grid-template-columns: 1fr; }
+  .ds-sidebar {
+    position: static; height: auto; border-right: none; border-bottom: 1px solid var(--ds-line);
+    padding: 24px;
+  }
+  .ds-main { padding: 32px 24px 72px; }
+  .ds-topnav { padding: 14px 20px; }
+  .ds-grid.cols-3, .ds-grid.cols-4, .ds-grid.cols-6 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .ds-type-row { grid-template-columns: 1fr; gap: 8px; }
+  .ds-scale-row { grid-template-columns: 1fr 80px; }
+  .ds-scale-row .ds-scale-bar { display: none; }
+  .ds-overview-grid { grid-template-columns: 1fr; }
+}
+
