@@ -17,8 +17,8 @@ interface Props {
   /** Robots noindex,nofollow. Defaults to true. Every /design-system/* route
    *  is internal documentation and must stay out of indexes and the sitemap. */
   noindex?: boolean;
-  /** Right-rail anchor links. Each entry needs a matching id on a heading
-   *  inside the page slot. Omit on pages that don't need a contents list. */
+  /** Anchor list shown nested under the active page link in the left sidebar.
+   *  Each entry needs a matching id on a section heading inside the slot. */
   sections?: SectionLink[];
 }
 
@@ -46,8 +46,6 @@ const nav = [
   { label: 'Atoms',     href: '/design-system/atoms' },
   { label: 'Molecules', href: '/design-system/molecules' },
 ];
-
-const hasRail = sections.length > 0;
 ---
 
 <!doctype html>
@@ -73,7 +71,7 @@ const hasRail = sections.length > 0;
       rel="stylesheet"
     />
   </head>
-  <body class={hasRail ? 'has-rail' : ''}>
+  <body>
 
     <nav class="ds-topnav">
       <a href="/" class="nav-logo">Compound <em>Health</em></a>
@@ -88,7 +86,7 @@ const hasRail = sections.length > 0;
       </div>
     </nav>
 
-    <div class={`ds-shell${hasRail ? ' has-rail' : ''}`}>
+    <div class="ds-shell">
       <aside class="ds-sidebar">
         <div class="ds-side-section">
           <p class="ds-side-label">Compound Health</p>
@@ -98,13 +96,28 @@ const hasRail = sections.length > 0;
         <nav class="ds-side-nav" aria-label="Design system sections">
           <p class="ds-side-label">Pages</p>
           <ul>
-            {nav.map((item) => (
-              <li>
-                <a href={item.href} class={`ds-side-link${isActive(item.href) ? ' is-active' : ''}`}>
-                  {item.label}
-                </a>
-              </li>
-            ))}
+            {nav.map((item) => {
+              const active = isActive(item.href);
+              const showSections = active && sections.length > 0;
+              return (
+                <li>
+                  <a href={item.href} class={`ds-side-link${active ? ' is-active' : ''}`}>
+                    {item.label}
+                  </a>
+                  {showSections && (
+                    <ul class="ds-side-sublist">
+                      {sections.map((s) => (
+                        <li>
+                          <a href={`#${s.id}`} data-rail-target={s.id} class="ds-side-sublink">
+                            {s.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
@@ -127,19 +140,6 @@ const hasRail = sections.length > 0;
 
         <slot />
       </main>
-
-      {hasRail && (
-        <aside class="ds-rightrail" aria-label="On this page">
-          <p class="ds-rightrail-label">On this page</p>
-          <ul>
-            {sections.map((s) => (
-              <li>
-                <a href={`#${s.id}`} data-rail-target={s.id}>{s.label}</a>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )}
     </div>
 
     <footer class="ds-footer">
@@ -152,10 +152,10 @@ const hasRail = sections.length > 0;
       </div>
     </footer>
 
-    {hasRail && (
+    {sections.length > 0 && (
       <script is:inline>
         (function () {
-          const links = Array.from(document.querySelectorAll('.ds-rightrail [data-rail-target]'));
+          const links = Array.from(document.querySelectorAll('.ds-sidebar [data-rail-target]'));
           if (!links.length) return;
           const map = new Map();
           links.forEach((a) => {
@@ -168,7 +168,17 @@ const hasRail = sections.length > 0;
           const setActive = (el) => {
             links.forEach((a) => a.classList.remove('is-active'));
             const a = map.get(el);
-            if (a) a.classList.add('is-active');
+            if (a) {
+              a.classList.add('is-active');
+              const sidebar = document.querySelector('.ds-sidebar');
+              if (sidebar) {
+                const aRect = a.getBoundingClientRect();
+                const sRect = sidebar.getBoundingClientRect();
+                if (aRect.top < sRect.top + 60 || aRect.bottom > sRect.bottom - 60) {
+                  a.scrollIntoView({ block: 'nearest' });
+                }
+              }
+            }
           };
 
           const io = new IntersectionObserver((entries) => {
