@@ -2,6 +2,11 @@
 import '../styles/global.css';
 import '../styles/design-system.css';
 
+interface SectionLink {
+  id: string;
+  label: string;
+}
+
 interface Props {
   title: string;
   description?: string;
@@ -12,6 +17,9 @@ interface Props {
   /** Robots noindex,nofollow. Defaults to true. Every /design-system/* route
    *  is internal documentation and must stay out of indexes and the sitemap. */
   noindex?: boolean;
+  /** Right-rail anchor links. Each entry needs a matching id on a heading
+   *  inside the page slot. Omit on pages that don't need a contents list. */
+  sections?: SectionLink[];
 }
 
 const SITE_NAME = 'Compound Health';
@@ -24,6 +32,7 @@ const {
   section,
   lede,
   noindex = true,
+  sections = [],
 } = Astro.props;
 
 const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
@@ -37,6 +46,8 @@ const nav = [
   { label: 'Atoms',     href: '/design-system/atoms' },
   { label: 'Molecules', href: '/design-system/molecules' },
 ];
+
+const hasRail = sections.length > 0;
 ---
 
 <!doctype html>
@@ -62,7 +73,7 @@ const nav = [
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class={hasRail ? 'has-rail' : ''}>
 
     <nav class="ds-topnav">
       <a href="/" class="nav-logo">Compound <em>Health</em></a>
@@ -77,7 +88,7 @@ const nav = [
       </div>
     </nav>
 
-    <div class="ds-shell">
+    <div class={`ds-shell${hasRail ? ' has-rail' : ''}`}>
       <aside class="ds-sidebar">
         <div class="ds-side-section">
           <p class="ds-side-label">Compound Health</p>
@@ -115,12 +126,62 @@ const nav = [
         </header>
 
         <slot />
-
-        <footer class="ds-footer">
-          <p>Compound Health design system · Noindex · Last updated 2026-06-02</p>
-        </footer>
       </main>
+
+      {hasRail && (
+        <aside class="ds-rightrail" aria-label="On this page">
+          <p class="ds-rightrail-label">On this page</p>
+          <ul>
+            {sections.map((s) => (
+              <li>
+                <a href={`#${s.id}`} data-rail-target={s.id}>{s.label}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
     </div>
+
+    <footer class="ds-footer">
+      <div class="ds-footer-inner">
+        <span>Compound Health design system</span>
+        <span class="ds-footer-dot">·</span>
+        <span>Noindex</span>
+        <span class="ds-footer-dot">·</span>
+        <span>Last updated 2026-06-02</span>
+      </div>
+    </footer>
+
+    {hasRail && (
+      <script is:inline>
+        (function () {
+          const links = Array.from(document.querySelectorAll('.ds-rightrail [data-rail-target]'));
+          if (!links.length) return;
+          const map = new Map();
+          links.forEach((a) => {
+            const id = a.getAttribute('data-rail-target');
+            const el = document.getElementById(id);
+            if (el) map.set(el, a);
+          });
+          if (!map.size) return;
+
+          const setActive = (el) => {
+            links.forEach((a) => a.classList.remove('is-active'));
+            const a = map.get(el);
+            if (a) a.classList.add('is-active');
+          };
+
+          const io = new IntersectionObserver((entries) => {
+            const visible = entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => a.target.getBoundingClientRect().top - b.target.getBoundingClientRect().top);
+            if (visible[0]) setActive(visible[0].target);
+          }, { rootMargin: '-96px 0px -60% 0px', threshold: 0 });
+
+          map.forEach((_, el) => io.observe(el));
+        })();
+      </script>
+    )}
 
   </body>
 </html>

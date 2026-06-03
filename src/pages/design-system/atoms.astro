@@ -35,30 +35,31 @@ const radii = [
   { name: 'radius-2xl',  px: '24px'  },
   { name: 'pill',        px: '100px' },
 ];
+
+const sections = [
+  { id: 'colour',        label: 'Colour' },
+  { id: 'typography',    label: 'Typography' },
+  { id: 'spacing',       label: 'Spacing' },
+  { id: 'radii',         label: 'Radii' },
+  { id: 'section-heads', label: 'Section heads' },
+  { id: 'buttons',       label: 'Buttons' },
+  { id: 'eyebrows',      label: 'Eyebrows' },
+  { id: 'dots',          label: 'Dots & indicators' },
+  { id: 'badges',        label: 'Badges' },
+  { id: 'avatars',       label: 'Avatars' },
+  { id: 'dividers',      label: 'Dividers' },
+  { id: 'inputs',        label: 'Inputs' },
+  { id: 'links',         label: 'Links' },
+  { id: 'motion',        label: 'Motion' },
+];
 ---
 
 <DesignSystemLayout
   title="Atoms"
   section="01 · Atoms"
   lede="The visual primitives that everything else is built from. Colour, typography, spacing, radii, motion, plus the smallest interactive elements: buttons, badges, eyebrows, inputs, icons, avatars and dividers."
+  sections={sections}
 >
-
-  <nav class="ds-toc" aria-label="On this page">
-    <a href="#colour">Colour</a>
-    <a href="#typography">Typography</a>
-    <a href="#spacing">Spacing</a>
-    <a href="#radii">Radii</a>
-    <a href="#section-heads">Section heads</a>
-    <a href="#buttons">Buttons</a>
-    <a href="#eyebrows">Eyebrows</a>
-    <a href="#dots">Dots & indicators</a>
-    <a href="#badges">Badges</a>
-    <a href="#avatars">Avatars</a>
-    <a href="#dividers">Dividers</a>
-    <a href="#inputs">Inputs</a>
-    <a href="#links">Links</a>
-    <a href="#motion">Motion</a>
-  </nav>
 
   <!-- ─────────── COLOUR ─────────── -->
   <section class="ds-section" id="colour">

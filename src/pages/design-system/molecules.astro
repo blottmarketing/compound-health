@@ -1,32 +1,33 @@
 ---
 import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
+
+const sections = [
+  { id: 'credibility-item', label: 'Credibility item' },
+  { id: 'step-card',        label: 'Step card' },
+  { id: 'feature-card',     label: 'Feature card' },
+  { id: 'metric-row',       label: 'Metric row' },
+  { id: 'case-stat',        label: 'Case stat' },
+  { id: 'case-quote',       label: 'Case quote card' },
+  { id: 'speaker',          label: 'Speaker block' },
+  { id: 'plan-card',        label: 'Plan card' },
+  { id: 'testimonial',      label: 'Testimonial' },
+  { id: 'form-field',       label: 'Form field' },
+  { id: 'mobile-link',      label: 'Mobile menu link' },
+  { id: 'author-chip',      label: 'Author chip' },
+  { id: 'author-stack',     label: 'Author stack' },
+  { id: 'post-card',        label: 'Post card' },
+  { id: 'tag-group',        label: 'Tag group' },
+  { id: 'breadcrumb',       label: 'Breadcrumb' },
+  { id: 'author-panel',     label: 'Author panel' },
+];
 ---
 
 <DesignSystemLayout
   title="Molecules"
   section="02 · Molecules"
   lede="Atoms combined into reusable building blocks. Step card, plan card, credibility item, metric row, testimonial, post card, author chip, tag group, form field, mobile menu link, case stat and case quote card."
+  sections={sections}
 >
-
-  <nav class="ds-toc" aria-label="On this page">
-    <a href="#credibility-item">Credibility item</a>
-    <a href="#step-card">Step card</a>
-    <a href="#feature-card">Feature card</a>
-    <a href="#metric-row">Metric row</a>
-    <a href="#case-stat">Case stat</a>
-    <a href="#case-quote">Case quote card</a>
-    <a href="#speaker">Speaker block</a>
-    <a href="#plan-card">Plan card</a>
-    <a href="#testimonial">Testimonial</a>
-    <a href="#form-field">Form field</a>
-    <a href="#mobile-link">Mobile menu link</a>
-    <a href="#author-chip">Author chip</a>
-    <a href="#author-stack">Author stack</a>
-    <a href="#post-card">Post card</a>
-    <a href="#tag-group">Tag group</a>
-    <a href="#breadcrumb">Breadcrumb</a>
-    <a href="#author-panel">Author panel</a>
-  </nav>
 
   <!-- ─────────── CREDIBILITY ITEM ─────────── -->
   <section class="ds-section" id="credibility-item">

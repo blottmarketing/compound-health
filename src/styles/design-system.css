@@ -14,7 +14,13 @@
   --ds-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-body { background: var(--ds-bg); }
+html, body { height: 100%; }
+body {
+  background: var(--ds-bg);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
 /* ── Top nav ── */
 .ds-topnav {
@@ -36,7 +42,11 @@ body { background: var(--ds-bg); }
 .ds-shell {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
-  min-height: calc(100vh - 60px);
+  flex: 1;
+  min-height: 0;
+}
+.ds-shell.has-rail {
+  grid-template-columns: 260px minmax(0, 1fr) 240px;
 }
 
 /* ── Sidebar ── */
@@ -70,7 +80,36 @@ body { background: var(--ds-bg); }
 .ds-side-link.is-active { background: var(--sage); color: #fff; font-weight: 500; }
 
 /* ── Main column ── */
-.ds-main { padding: 56px 56px 96px; min-width: 0; }
+.ds-main { padding: 56px 56px 72px; min-width: 0; }
+
+/* ── Right rail (table of contents) ── */
+.ds-rightrail {
+  border-left: 1px solid var(--ds-line);
+  padding: 56px 24px;
+  background: var(--ds-bg);
+  position: sticky; top: 60px;
+  align-self: start;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+.ds-rightrail-label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--mid); margin-bottom: 14px;
+}
+.ds-rightrail ul { list-style: none; display: flex; flex-direction: column; gap: 2px; border-left: 1px solid var(--ds-line); }
+.ds-rightrail li { margin-left: -1px; }
+.ds-rightrail a {
+  display: block; padding: 6px 14px;
+  font-size: 13px; font-weight: 400; color: var(--mid);
+  text-decoration: none; line-height: 1.45;
+  border-left: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+.ds-rightrail a:hover { color: var(--sage); }
+.ds-rightrail a.is-active {
+  color: var(--sage); font-weight: 500;
+  border-left-color: var(--sage);
+}
 .ds-pagehead { max-width: 760px; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--ds-line); }
 .ds-section-label {
   font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
@@ -210,23 +249,18 @@ code.ds-inline {
 .ds-overview-card p { font-size: 14px; color: var(--mid); line-height: 1.7; }
 .ds-overview-card-meta { margin-top: 4px; font-family: var(--ds-mono); font-size: 11px; color: var(--mid); }
 
-/* ── Section index (right-rail style anchor list) ── */
-.ds-toc {
-  display: flex; flex-wrap: wrap; gap: 8px;
-  margin-bottom: 40px; padding: 16px 20px;
-  background: var(--ds-panel); border: 1px solid var(--ds-line); border-radius: 14px;
+/* ── Footer (full-bleed, flush to viewport bottom) ── */
+.ds-footer {
+  background: #141412;
+  padding: 32px 56px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
 }
-.ds-toc a {
-  font-size: 12px; font-family: var(--ds-mono);
-  color: var(--charcoal); text-decoration: none;
-  padding: 5px 12px; border-radius: 100px;
-  background: var(--warm-white); border: 1px solid var(--ds-line);
-  transition: border-color 0.15s, color 0.15s;
+.ds-footer-inner {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  max-width: none;
 }
-.ds-toc a:hover { color: var(--sage); border-color: var(--sage); }
-
-/* ── Footer ── */
-.ds-footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--ds-line); font-size: 12px; color: var(--mid); }
+.ds-footer-dot { color: rgba(255,255,255,0.2); }
 
 /* ── Tiny demo helpers (only used in specimens) ── */
 .ds-bg-dark { background: var(--charcoal); padding: 24px; border-radius: 12px; }
@@ -237,15 +271,22 @@ code.ds-inline {
 .ds-space-label { font-family: var(--ds-mono); font-size: 12px; color: var(--charcoal); width: 200px; flex-shrink: 0; }
 .ds-space-bar { height: 18px; background: var(--sage); border-radius: 4px; }
 
+/* Tablet — drop the right rail */
+@media (max-width: 1200px) {
+  .ds-shell.has-rail { grid-template-columns: 260px minmax(0, 1fr); }
+  .ds-rightrail { display: none; }
+}
+
 /* Mobile */
 @media (max-width: 900px) {
-  .ds-shell { grid-template-columns: 1fr; }
+  .ds-shell, .ds-shell.has-rail { grid-template-columns: 1fr; }
   .ds-sidebar {
     position: static; height: auto; border-right: none; border-bottom: 1px solid var(--ds-line);
     padding: 24px;
   }
-  .ds-main { padding: 32px 24px 72px; }
+  .ds-main { padding: 32px 24px 56px; }
   .ds-topnav { padding: 14px 20px; }
+  .ds-footer { padding: 24px; }
   .ds-grid.cols-3, .ds-grid.cols-4, .ds-grid.cols-6 { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .ds-type-row { grid-template-columns: 1fr; gap: 8px; }
   .ds-scale-row { grid-template-columns: 1fr 80px; }
