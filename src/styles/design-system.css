@@ -105,7 +105,15 @@ body {
 }
 
 /* ── Main column ── */
-.ds-main { padding: 56px 56px 72px; min-width: 0; }
+.ds-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.ds-main-content {
+  padding: 56px 56px 72px;
+  flex: 1 0 auto; /* push the footer to the bottom of the column on short pages */
+}
 .ds-pagehead { max-width: 760px; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--ds-line); }
 .ds-section-label {
   font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
@@ -245,7 +253,7 @@ code.ds-inline {
 .ds-overview-card p { font-size: 14px; color: var(--mid); line-height: 1.7; }
 .ds-overview-card-meta { margin-top: 4px; font-family: var(--ds-mono); font-size: 11px; color: var(--mid); }
 
-/* ── Footer (full-bleed dark band at end of content; not pinned) ── */
+/* ── Footer (sits at the bottom of the main column only; not under sidebar) ── */
 .ds-footer {
   position: static; /* never sticky */
   background: #141412;
@@ -256,8 +264,6 @@ code.ds-inline {
 }
 .ds-footer-inner {
   display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  /* Indent to align with main column content (260px sidebar + 56px main padding) */
-  padding-left: 260px;
   max-width: none;
 }
 .ds-footer-dot { color: rgba(255,255,255,0.2); }
@@ -279,10 +285,9 @@ code.ds-inline {
     padding: 24px;
   }
   .ds-side-sublist { display: none; }
-  .ds-main { padding: 32px 24px 56px; }
+  .ds-main-content { padding: 32px 24px 56px; }
   .ds-topnav { padding: 14px 20px; }
   .ds-footer { padding: 24px; }
-  .ds-footer-inner { padding-left: 0; }
   .ds-grid.cols-3, .ds-grid.cols-4, .ds-grid.cols-6 { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .ds-type-row { grid-template-columns: 1fr; gap: 8px; }
   .ds-scale-row { grid-template-columns: 1fr 80px; }

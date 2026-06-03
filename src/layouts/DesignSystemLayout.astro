@@ -132,25 +132,27 @@ const nav = [
       </aside>
 
       <main class="ds-main">
-        <header class="ds-pagehead">
-          {section && <p class="ds-section-label">{section}</p>}
-          <h1>{title}</h1>
-          {lede && <p class="ds-lede">{lede}</p>}
-        </header>
+        <div class="ds-main-content">
+          <header class="ds-pagehead">
+            {section && <p class="ds-section-label">{section}</p>}
+            <h1>{title}</h1>
+            {lede && <p class="ds-lede">{lede}</p>}
+          </header>
 
-        <slot />
+          <slot />
+        </div>
+
+        <footer class="ds-footer">
+          <div class="ds-footer-inner">
+            <span>Compound Health design system</span>
+            <span class="ds-footer-dot">·</span>
+            <span>Noindex</span>
+            <span class="ds-footer-dot">·</span>
+            <span>Last updated 2026-06-02</span>
+          </div>
+        </footer>
       </main>
     </div>
-
-    <footer class="ds-footer">
-      <div class="ds-footer-inner">
-        <span>Compound Health design system</span>
-        <span class="ds-footer-dot">·</span>
-        <span>Noindex</span>
-        <span class="ds-footer-dot">·</span>
-        <span>Last updated 2026-06-02</span>
-      </div>
-    </footer>
 
     {sections.length > 0 && (
       <script is:inline>
