@@ -10,11 +10,11 @@ import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
 
   <section class="ds-section">
     <div class="ds-section-head">
-      <h2>How this system is organised</h2>
+      <h2>How this system is organized</h2>
       <span class="ds-tag">atomic + client-first</span>
     </div>
     <p class="ds-note">
-      Atoms are the smallest visual primitives: a colour, a type style, a button, an input. Molecules
+      Atoms are the smallest visual primitives: a color, a type style, a button, an input. Molecules
       combine atoms into reusable patterns: a credibility item, a step card, a form field. Organisms,
       templates, and pages are out of scope for v1 — they are assembled directly inside
       <code class="ds-inline">src/pages/*.astro</code> using molecules and global section classes.
@@ -36,7 +36,7 @@ import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
         <span class="ds-overview-card-eyebrow">01 · Atoms</span>
         <h2>Atoms</h2>
         <p>
-          Colour, typography, spacing, radii, buttons, badges, eyebrows, dots, dividers,
+          Color, typography, spacing, radii, buttons, badges, eyebrows, dots, dividers,
           form inputs, avatars and icons. Everything that cannot usefully be broken down further.
         </p>
         <span class="ds-overview-card-meta">/design-system/atoms</span>
@@ -59,7 +59,7 @@ import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
     </div>
     <p class="ds-note">
       One: every visual change starts here. If a token, atom, or molecule does not exist for what you
-      need, add it before using it. Two: do not inline colours or sizes on elements. If a value is
+      need, add it before using it. Two: do not inline colors or sizes on elements. If a value is
       reused, it lives in <code class="ds-inline">global.css</code> as a token or class. Three: this
       directory and everything under it must stay noindexed and out of
       <code class="ds-inline">public/sitemap.xml</code>.

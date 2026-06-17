@@ -59,7 +59,7 @@ export const authors: Author[] = [
     name: 'Imogen Asher',
     role: 'Chief Medical Officer, Compound Health',
     initials: 'IA',
-    bio: 'Dr Imogen Asher leads clinical strategy at Compound Health. Previously a consultant in preventive cardiology at a London teaching hospital, she has spent the last decade building longevity programmes for private clients and family offices across Europe and the Middle East.',
+    bio: 'Dr Imogen Asher leads clinical strategy at Compound Health. Previously a consultant in preventive cardiology at a London teaching hospital, she has spent the last decade building longevity programs for private clients and family offices across Europe and the Middle East.',
   },
   {
     slug: 'henry-cavendish',
@@ -79,13 +79,13 @@ export const categories: Category[] = [
     slug: 'research',
     name: 'Research',
     description:
-      'New evidence, recent studies and the science our clinical team is watching, summarised for a non-clinical reader.',
+      'New evidence, recent studies and the science our clinical team is watching, summarized for a non-clinical reader.',
   },
   {
     slug: 'insights',
     name: 'Insights',
     description:
-      'How our members and partner advisers are thinking about healthspan, prevention and the practicalities of building a longevity programme.',
+      'How our members and partner advisors are thinking about healthspan, prevention and the practicalities of building a longevity program.',
   },
 ];
 
@@ -98,7 +98,7 @@ export const posts: Post[] = [
     slug: 'biomarkers-that-matter-after-fifty',
     title: 'The biomarkers that actually matter after fifty',
     excerpt:
-      'A working list of the panels and metrics our clinical team prioritises for members in their sixth decade, and the ones we have learned to ignore.',
+      'A working list of the panels and metrics our clinical team prioritizes for members in their sixth decade, and the ones we have learned to ignore.',
     date: '2026-05-28',
     readTime: 7,
     eyebrow: 'Clinical perspective',
@@ -148,19 +148,19 @@ export const posts: Post[] = [
       'Why a growing number of family offices are now treating healthspan as a line item on the annual client review, sitting alongside net worth.',
     date: '2026-05-14',
     readTime: 5,
-    eyebrow: 'Adviser briefing',
+    eyebrow: 'Advisor briefing',
     authorSlugs: ['imogen-asher'],
     categorySlug: 'insights',
     tags: ['Family office', 'Wealth advisory', 'Healthspan'],
     bodyHtml: `
       <p>For most of the families we work with, the annual client review covers portfolio performance, tax position, succession structure and philanthropy. Health, until recently, sat outside the conversation. That is changing.</p>
       <h2>The shift</h2>
-      <p>Several of our adviser partners now report a single healthspan score alongside net worth on the annual review. The score is composed from a member's diagnostics, biomarker trends and lifestyle data, normalised to their age and sex. It is updated quarterly.</p>
-      <p>The point is not to clinicalise the relationship between principal and adviser. It is to give the principal one number they can act on, and one number their adviser can reference without overstepping.</p>
-      <h2>Why advisers are leaning in</h2>
-      <p>Three reasons come up consistently in our conversations. The first is retention: principals who feel their adviser is concerned with the years they have, not only the assets, refer more and switch less. The second is succession: a healthspan trajectory shapes the timing of generational transfer in a way the family is rarely prepared to discuss without a structured prompt. The third is differentiation: the firms moving fastest on this are setting an expectation the rest of the channel will need to meet.</p>
+      <p>Several of our advisor partners now report a single healthspan score alongside net worth on the annual review. The score is composed from a member's diagnostics, biomarker trends and lifestyle data, normalised to their age and sex. It is updated quarterly.</p>
+      <p>The point is not to clinicalise the relationship between principal and advisor. It is to give the principal one number they can act on, and one number their advisor can reference without overstepping.</p>
+      <h2>Why advisors are leaning in</h2>
+      <p>Three reasons come up consistently in our conversations. The first is retention: principals who feel their advisor is concerned with the years they have, not only the assets, refer more and switch less. The second is succession: a healthspan trajectory shapes the timing of generational transfer in a way the family is rarely prepared to discuss without a structured prompt. The third is differentiation: the firms moving fastest on this are setting an expectation the rest of the channel will need to meet.</p>
       <h2>What it does not replace</h2>
-      <p>A healthspan score is not a substitute for a clinical relationship, and we are careful that our adviser partners do not present it as one. Members still see clinicians; advisers still see assets. The score sits between the two as a shared reference point, no more and no less.</p>
+      <p>A healthspan score is not a substitute for a clinical relationship, and we are careful that our advisor partners do not present it as one. Members still see clinicians; advisors still see assets. The score sits between the two as a shared reference point, no more and no less.</p>
     `,
   },
   {
@@ -175,9 +175,9 @@ export const posts: Post[] = [
     categorySlug: 'research',
     tags: ['CGM', 'Metabolic health', 'Wearables'],
     bodyHtml: `
-      <p>The continuous glucose monitor is now a fixture of any serious longevity programme. It is also one of the most over-interpreted data sources we work with. Both observations matter.</p>
+      <p>The continuous glucose monitor is now a fixture of any serious longevity program. It is also one of the most over-interpreted data sources we work with. Both observations matter.</p>
       <h2>Where the evidence is strong</h2>
-      <p>For members with pre-diabetes, established insulin resistance or a family history of type 2 diabetes, two-week CGM cycles produce genuinely useful behavioural insight. Members see, in real time, how their breakfast choices, sleep quality and training timing interact with their glucose curves. The behaviour change tends to stick.</p>
+      <p>For members with pre-diabetes, established insulin resistance or a family history of type 2 diabetes, two-week CGM cycles produce genuinely useful behavioral insight. Members see, in real time, how their breakfast choices, sleep quality and training timing interact with their glucose curves. The behavior change tends to stick.</p>
       <h2>Where it is overstated</h2>
       <p>For metabolically healthy members, the marginal information from a CGM is small. Glucose excursions after a meal are a normal physiological response, not a pathology. We have seen members worry themselves into eliminating foods that were not contributing to any meaningful metabolic risk.</p>
       <h2>How we deploy CGMs</h2>
@@ -221,7 +221,7 @@ export const posts: Post[] = [
       <h2>The concept is sound</h2>
       <p>The underlying science, particularly around DNA methylation clocks, is genuinely interesting. Several second-generation clocks correlate meaningfully with all-cause mortality, and the field is moving quickly.</p>
       <h2>The test you took is the question</h2>
-      <p>Not every biological age test is equivalent. First-generation clocks were trained to predict chronological age. Second-generation clocks were trained to predict mortality. Third-generation clocks are trained to predict the pace of ageing. They are different tools answering different questions, and they should not be compared like-for-like.</p>
+      <p>Not every biological age test is equivalent. First-generation clocks were trained to predict chronological age. Second-generation clocks were trained to predict mortality. Third-generation clocks are trained to predict the pace of aging. They are different tools answering different questions, and they should not be compared like-for-like.</p>
       <h2>Variability is high</h2>
       <p>A single biological age reading from one provider, taken once, is a snapshot with meaningful test-to-test variability. Trends across several readings, from the same provider, using the same methodology, are far more informative.</p>
       <h2>How we use them</h2>

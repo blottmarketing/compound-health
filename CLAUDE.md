@@ -57,7 +57,7 @@ compound-health/
 3. **`public/sitemap.xml` mirrors the indexed pages from `PAGES.xlsx`.** When a new indexed page ships, add it to the sitemap with today's `<lastmod>`. When a page is removed or switched to noindex, remove it from the sitemap. Never include noindex routes in the sitemap.
 4. **Indexing rule.** A page is "indexed" by default. To make a page private, pass `noindex={true}` to `MainLayout` (or add a `<meta name="robots" content="noindex, nofollow" />` if using a different layout). Noindex pages must be excluded from `sitemap.xml` and listed as "Noindex" in `PAGES.xlsx`.
 5. **Canonical URLs come from `astro.config.mjs` (`site:`).** Do not hardcode absolute URLs in templates.
-6. **British English** in all prose unless the page is explicitly written for a US audience (e.g. legal pages reference Compound Health, Inc.). Existing legal copy uses US spelling — leave it as is.
+6. **American English** in all prose. Compound Health is US-based and serves US clients, so the entire site uses American spelling (optimize, color, personalized, program, advisor). Legal copy already uses US spelling.
 7. **No em dashes** in copy.
 
 ## Workflow when adding or changing a page
@@ -113,7 +113,7 @@ The blog is pre-launch. Every route under `/blog`, `/blog/category/*` and `/auth
 - **Content lives in `src/data/blog.ts`.** This file holds typed `Author`, `Category` and `Post` collections. To add or edit a post, author or category, edit this file. Do not introduce a separate CMS layer without a discussion.
 - **Slugs are the URL.** Author slugs are `first-lastname`. Category slugs are short, lowercased nouns. Post slugs are kebab-case.
 - **Authoring posts.** `bodyHtml` is raw HTML. Stick to `<h2>` and `<p>`. The post body inherits the `.prose` styles in `global.css`.
-- **British English** in all blog copy, per project standing instructions.
+- **American English** in all blog copy, per project standing instructions.
 - **When launching the blog publicly:** pass `noindex={false}` on the relevant `BlogLayout` instances (or change the layout default), add each newly-indexed route to `public/sitemap.xml`, and flip its row in `PAGES.xlsx` from `Noindex` to `Indexed`.
 
 ## Commands
