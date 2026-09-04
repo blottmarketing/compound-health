@@ -38,28 +38,25 @@ const sections = [
   <section class="ds-section" id="hero-media">
     <div class="ds-section-head">
       <h2>Hero media</h2>
-      <span class="ds-tag">.hero-media · .hero-img · .hero-blur.is-1/2/3</span>
+      <span class="ds-tag">.hero-media · .hero-img</span>
     </div>
     <p class="ds-note">
-      The home page hero is a full-bleed landscape with the copy anchored bottom-left inside
-      <code class="ds-inline">.hero-inner</code>. The picture lives in an absolutely positioned
-      <code class="ds-inline">.hero-media</code> that fills the section, anchored to the bottom edge. On top of
-      the base <code class="ds-inline">.hero-img</code> sit three blur layers, each drawing the same
-      image via the <code class="ds-inline">--hero-image</code> token and masked to a horizontal
-      band, so the lower part of the picture softens progressively. The artwork itself carries the
-      dissolve into <code class="ds-inline">--warm-white</code> (a white bottom quarter). The copy stays
-      legible over the landscape through a soft white <code class="ds-inline">text-shadow</code> halo rather
-      than a scrim, so the picture is never dimmed. To change the artwork,
-      replace <code class="ds-inline">/public/images/hero-landscape.webp</code> and keep the token in
-      sync.
+      The home page hero is a full-bleed landscape with the copy centred in its sky.
+      <code class="ds-inline">.hero-media</code> is absolutely positioned at the top of the section
+      and holds the artwork at its own aspect ratio (<code class="ds-inline">2048 / 1360</code>) across
+      the full width, so the picture is never cropped and the section grows with it
+      (<code class="ds-inline">min-height: 66.41vw</code>). There is no gradient, scrim or blur
+      anywhere in the hero: the painting itself stops on a torn organic edge and gives way to flat
+      white, which meets <code class="ds-inline">--warm-white</code> on the page. A replacement must
+      carry that edge, keep a light sky across the top half for the copy to sit on, and have both
+      ratios updated here and in <code class="ds-inline">global.css</code>. Replace
+      <code class="ds-inline">/public/images/hero-landscape.webp</code>. Portrait viewports fall back
+      to a bottom-anchored cover crop.
     </p>
     <div class="ds-specimen">
       <pre class="ds-code"><span class="tag">{`<section `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero"`}</span><span class="tag">{`>`}</span>
   <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-media"`}</span> <span class="attr">aria-hidden</span><span class="tag">=</span><span class="str">{`"true"`}</span><span class="tag">{`>`}</span>
     <span class="tag">{`<img `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-img"`}</span> <span class="attr">src</span><span class="tag">=</span><span class="str">{`"/images/hero-landscape.webp"`}</span> <span class="attr">alt</span><span class="tag">=</span><span class="str">{`""`}</span> <span class="attr">fetchpriority</span><span class="tag">=</span><span class="str">{`"high"`}</span><span class="tag">{` />`}</span>
-    <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-blur is-1"`}</span><span class="tag">{`></div>`}</span>
-    <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-blur is-2"`}</span><span class="tag">{`></div>`}</span>
-    <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-blur is-3"`}</span><span class="tag">{`></div>`}</span>
   <span class="tag">{`</div>`}</span>
   <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-inner"`}</span><span class="tag">{`>`}</span> …eyebrow, h1, .hero-sub, .hero-btns… <span class="tag">{`</div>`}</span>
 <span class="tag">{`</section>`}</span></pre>
