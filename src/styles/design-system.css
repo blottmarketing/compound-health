@@ -155,6 +155,7 @@ body {
   min-height: 120px;
 }
 .ds-specimen-preview.is-dark { background: var(--charcoal); }
+.ds-specimen-preview.is-band { background: var(--sage-pale); }
 .ds-specimen-preview.is-tight { padding: 24px; min-height: 0; }
 .ds-specimen-preview.is-stack { flex-direction: column; align-items: flex-start; gap: 24px; }
 .ds-specimen-preview.is-block { display: block; }

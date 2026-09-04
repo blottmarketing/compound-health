@@ -238,6 +238,16 @@ section { padding: 108px 56px; }
 /* .is-narrow keeps a lone case-content card to a readable measure instead of
    stretching it across the full inner width. */
 .case-content.is-narrow { max-width: 640px; }
+
+/* ── CURATED DELIVERY ──
+   Slim band between the dark features section and Partners. Pale sage so it
+   reads lighter than both neighbours. Half a screen on desktop, no CTA. */
+.curated { background: var(--sage-pale); padding-top: 80px; padding-bottom: 80px; }
+.curated-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 48px; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; background: var(--border); }
+.curated-card { background: var(--sage-pale); padding: 36px 32px; }
+.curated-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 400; color: var(--charcoal); line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 10px; }
+.curated-card p { font-size: 15px; font-weight: 300; color: var(--mid); line-height: 1.7; }
+.curated-note { font-size: 15px; font-weight: 300; color: var(--mid); line-height: 1.7; max-width: 620px; margin-top: 32px; }
 .case-content { background: var(--warm-white); border: 1px solid var(--border); border-radius: 20px; padding: 48px 44px; }
 .case-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage); margin-bottom: 14px; }
 .case-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 400; color: var(--charcoal); margin-bottom: 18px; line-height: 1.2; letter-spacing: -0.8px; }
@@ -611,7 +621,7 @@ footer { background: #141412; padding: 44px 56px; display: flex; align-items: ce
   .credbar { padding: 24px; gap: 20px; flex-direction: column; }
   .credbar .cred-divider { display: none; }
   .steps, .feat-grid, .plans-grid, .testi-grid, .case-stats, .case-body,
-  .audience-grid, .partner-notes { grid-template-columns: 1fr; }
+  .curated-grid, .audience-grid, .partner-notes { grid-template-columns: 1fr; }
   .feat.span2 { grid-column: span 1; grid-template-columns: 1fr; gap: 36px; }
   .waitlist-inner { grid-template-columns: 1fr; gap: 40px; }
   .wf-row { grid-template-columns: 1fr; }
