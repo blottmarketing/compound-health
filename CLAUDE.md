@@ -102,8 +102,11 @@ The site has a single source of truth for visual style. Use it. Do not invent ne
 - **Rules.**
   1. Every visual change starts in `global.css`. If a token, atom or molecule does not exist for what you need, add it before using it.
   2. Do not inline colours, sizes or backgrounds on elements. Width values that come from data (e.g. `.metric-fill style="width:82%"`) are the only legitimate use of inline `style`. Colours always come from a class.
-  3. When you add a new atom or molecule to `global.css`, add a documentation block to the corresponding `/design-system` page in the same commit.
-  4. All `/design-system/*` routes must stay noindex and out of `public/sitemap.xml`.
+  3. **One ground.** The marketing page runs on `--warm-white` end to end. `--panel` (#F1EFEA) is the only other surface: the single light block (`.features`) and every filled card. Do not add a new background band to a section.
+  4. **Fills and hairlines, never outlines.** Group content with a fill or with `--hair` hairlines on the top and left of grid cells. Do not wrap a grid in a bordered, rounded box. `--border`, the green-tinted line, is for form controls only.
+  5. **Section heads use `.s-head`.** Chip, title, standfirst, and an optional `.s-head-action` pill that carries a real destination. `.s-label`, the older uppercase label, remains on the legal, blog and deck pages.
+  6. When you add a new atom or molecule to `global.css`, add a documentation block to the corresponding `/design-system` page in the same commit.
+  7. All `/design-system/*` routes must stay noindex and out of `public/sitemap.xml`.
 - **Status modifiers shipped with the system.** `.metric-fill.is-good` (sage) and `.metric-fill.is-warn` (gold) replace the previously inline metric colours in `index.astro`.
 
 ## Blog system

@@ -100,9 +100,9 @@ const sections = [
   <section class="ds-section" id="credibility-item">
     <div class="ds-section-head">
       <h2>Credibility item</h2>
-      <span class="ds-tag">.cred-item</span>
+      <span class="ds-tag">.credbar · .cred-item</span>
     </div>
-    <p class="ds-note">Used in the home page credibility bar. Sage Lato number + neutral caption. Multiple items separate with <code class="ds-inline">.cred-divider</code>.</p>
+    <p class="ds-note">Used in the home page credibility bar. Sage Lato number above a neutral caption. Each item carries its own left hairline, so the strip can wrap to any number of rows without leaving an orphan separator; the <code class="ds-inline">.cred-divider</code> elements still in the markup are no longer drawn.</p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview">
         <div class="cred-item">
@@ -128,7 +128,7 @@ const sections = [
       <h2>Step card</h2>
       <span class="ds-tag">.step</span>
     </div>
-    <p class="ds-note">Three-up grid in the “how it works” section. Large Lato numeral, Lato title, body. Hover shifts background.</p>
+    <p class="ds-note">Three-up grid in the “how it works” section. Large Lato numeral, Lato title, body. Not boxed: a hairline on top of each cell draws the row rules, a hairline on the left of every cell that is not first in its row draws the columns, and the first column sits flush with the container so it lines up with the section title.</p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
         <div class="steps" style="margin-top:0;">
@@ -158,9 +158,9 @@ const sections = [
       <h2>Feature card</h2>
       <span class="ds-tag">.feat · .feat.span2</span>
     </div>
-    <p class="ds-note">Lives inside a dark <code class="ds-inline">.features</code> section. Two-column grid with optional double-width variant. Icons are single-weight, monochrome line SVGs (24&times;24, <code class="ds-inline">stroke="currentColor"</code>) set in <code class="ds-inline">.feat-icon</code>; never emoji.</p>
+    <p class="ds-note">Lives inside <code class="ds-inline">.features</code>, the one section on the page that sits on <code class="ds-inline">var(--panel)</code> rather than the page ground. Two-column grid with an optional double-width variant, separated by hairlines rather than boxed. Because <code class="ds-inline">.span2</code> breaks the column count, cells in the right-hand column are marked <code class="ds-inline">.is-col2</code> in the markup. Icons are single-weight, monochrome line SVGs (24&times;24, <code class="ds-inline">stroke="currentColor"</code>) set in <code class="ds-inline">.feat-icon</code>; never emoji.</p>
     <div class="ds-specimen">
-      <div class="ds-specimen-preview is-dark is-block">
+      <div class="ds-specimen-preview is-block">
         <div class="feat-grid">
           <div class="feat">
             <div class="feat-icon">
@@ -174,7 +174,7 @@ const sections = [
             <div class="feat-title">Elite clinical delivery</div>
             <p>Virtual care nationwide, with local provider coordination for in-person diagnostics.</p>
           </div>
-          <div class="feat">
+          <div class="feat is-col2">
             <div class="feat-icon">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -238,7 +238,7 @@ const sections = [
       <h2>Case stat</h2>
       <span class="ds-tag">.case-stat</span>
     </div>
-    <p class="ds-note">Headline number + caption. The numeral can hold an italic adjective via <code class="ds-inline">&lt;em&gt;</code>.</p>
+    <p class="ds-note">Headline number + caption, standing in the open: no box, no fill, no hover. Air does the framing, so the numeral runs large (up to 92px). The numeral can hold an italic adjective via <code class="ds-inline">&lt;em&gt;</code>.</p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
         <div class="case-stats" style="margin:0;">
@@ -405,7 +405,7 @@ const sections = [
       <h2>Plan card</h2>
       <span class="ds-tag">.plan · .plan.featured</span>
     </div>
-    <p class="ds-note">Three-up pricing grid. The featured variant uses sage as its surface and inverts every child color.</p>
+    <p class="ds-note">Three-up pricing grid of filled panels, never outlined cards. The featured variant is the same panel in sage and inverts every child color, so emphasis comes from the fill.</p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
         <div class="plans-grid" style="margin-top:0;">

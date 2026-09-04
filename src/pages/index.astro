@@ -61,15 +61,24 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </div>
 
+  <div class="rule"></div>
+
   <!-- HOW IT WORKS -->
   <section class="how" id="how">
     <div class="inner">
-      <p class="s-label">The process</p>
-      <h2 class="s-title">A new model for<br />human performance</h2>
-      <p class="s-sub">
-        We built the infrastructure that connects the people who advise you to world-class
-        preventive care.
-      </p>
+      <div class="s-head">
+        <p class="s-chip">The process</p>
+        <div class="s-head-copy">
+          <h2 class="s-title">A new model for<br />human performance</h2>
+          <p class="s-sub">
+            We built the infrastructure that connects the people who advise you to world-class
+            preventive care.
+          </p>
+        </div>
+        <div class="s-head-action">
+          <a href="#features" class="btn-pill">What you get &#8594;</a>
+        </div>
+      </div>
       <div class="steps">
         <div class="step">
           <div class="step-n">01</div>
@@ -103,12 +112,19 @@ import MainLayout from '../layouts/MainLayout.astro';
   <!-- FEATURES -->
   <section class="features" id="features">
     <div class="inner">
-      <p class="s-label">What you get</p>
-      <h2 class="s-title">Everything your health<br />has been missing</h2>
-      <p class="s-sub">
-        Compound Health is not a gym membership or a supplement subscription. It is a medical
-        relationship, sustained and personalized.
-      </p>
+      <div class="s-head">
+        <p class="s-chip">What you get</p>
+        <div class="s-head-copy">
+          <h2 class="s-title">Everything your health<br />has been missing</h2>
+          <p class="s-sub">
+            Compound Health is not a gym membership or a supplement subscription. It is a medical
+            relationship, sustained and personalized.
+          </p>
+        </div>
+        <div class="s-head-action">
+          <a href="#membership" class="btn-pill">See membership &#8594;</a>
+        </div>
+      </div>
       <div class="feat-grid">
         <div class="feat">
           <div class="feat-icon">
@@ -125,7 +141,7 @@ import MainLayout from '../layouts/MainLayout.astro';
             outcomes, governance, and data ownership. Logistics handled.
           </p>
         </div>
-        <div class="feat">
+        <div class="feat is-col2">
           <div class="feat-icon">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -194,7 +210,7 @@ import MainLayout from '../layouts/MainLayout.astro';
             Calibrated to your biology, not a template.
           </p>
         </div>
-        <div class="feat">
+        <div class="feat is-col2">
           <div class="feat-icon">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -215,12 +231,16 @@ import MainLayout from '../layouts/MainLayout.astro';
   <!-- CURATED DELIVERY -->
   <section class="curated">
     <div class="inner">
-      <p class="s-label">How we choose</p>
-      <h2 class="s-title">The best of each discipline,<br />one membership</h2>
-      <p class="s-sub">
-        Longevity medicine is not one company. We assessed the field, set one standard, and chose
-        the partners who meet it.
-      </p>
+      <div class="s-head">
+        <p class="s-chip">How we choose</p>
+        <div class="s-head-copy">
+          <h2 class="s-title">The best of each discipline,<br />one membership</h2>
+          <p class="s-sub">
+            Longevity medicine is not one company. We assessed the field, set one standard, and
+            chose the partners who meet it.
+          </p>
+        </div>
+      </div>
       <div class="curated-grid">
         <div class="curated-card">
           <h3 class="curated-title">Clinical care</h3>
@@ -248,15 +268,21 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </section>
 
+  <div class="rule"></div>
+
   <!-- PARTNERS (formerly Case study) -->
   <section class="case" id="partners">
     <div class="inner">
-      <p class="s-label">Partners</p>
-      <h2 class="s-title">A credible way to bring longevity<br />to the people you serve</h2>
-      <p class="s-sub">
-        Compound Health is introduced, not sold. Whether you advise clients, employ a workforce or
-        lead a network, you make the introduction and we run the program.
-      </p>
+      <div class="s-head">
+        <p class="s-chip">Partners</p>
+        <div class="s-head-copy">
+          <h2 class="s-title">A credible way to bring longevity<br />to the people you serve</h2>
+          <p class="s-sub">
+            Compound Health is introduced, not sold. Whether you advise clients, employ a
+            workforce or lead a network, you make the introduction and we run the program.
+          </p>
+        </div>
+      </div>
 
       <!-- Proof block: the first partner engagement, kept as evidence -->
       <div class="case-stats">
@@ -335,12 +361,21 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </section>
 
+  <div class="rule"></div>
+
   <!-- MEMBERSHIP (formerly Plans) -->
   <section class="plans" id="membership">
     <div class="inner">
-      <p class="s-label">Membership</p>
-      <h2 class="s-title">Built for founders, executives, and families.<br />Structured for the organizations that serve them.</h2>
-      <p class="plans-lead">One way in. Two ways forward.</p>
+      <div class="s-head">
+        <p class="s-chip">Membership</p>
+        <div class="s-head-copy">
+          <h2 class="s-title">Built for founders, executives, and families.<br />Structured for the organizations that serve them.</h2>
+          <p class="plans-lead">One way in. Two ways forward.</p>
+        </div>
+        <div class="s-head-action">
+          <a href="#joinwaitlist" class="btn-pill">Get access &#8594;</a>
+        </div>
+      </div>
       <div class="plans-grid">
         <div class="plan">
           <div class="plan-name">Baseline</div>
@@ -384,11 +419,13 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </section>
 
+  <div class="rule"></div>
+
   <!-- WAITLIST FORM -->
   <section class="waitlist" id="joinwaitlist">
     <div class="inner waitlist-inner">
       <div class="waitlist-copy">
-        <p class="s-label">Access</p>
+        <p class="s-chip">Access</p>
         <h2 class="s-title">Get access</h2>
         <p class="s-sub">
           Founding member places and first-wave partner slots are limited. Leave your details

@@ -127,7 +127,9 @@ body {
 .ds-lede { font-size: 17px; font-weight: 300; color: var(--mid); line-height: 1.65; max-width: 620px; }
 
 /* ── Section block (one per atom or molecule) ── */
-.ds-section { margin-bottom: 64px; scroll-margin-top: 88px; }
+/* The documentation chrome owns its own rhythm: reset the marketing
+   section padding from global.css so it does not double up on .ds-main-content. */
+.ds-section { padding: 0; margin-bottom: 88px; scroll-margin-top: 88px; }
 .ds-section-head { margin-bottom: 24px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .ds-section-head h2 {
   font-family: 'Lato', sans-serif;
