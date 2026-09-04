@@ -143,17 +143,17 @@ section { padding: 108px 56px; }
 
 /* ── HERO ──
    Full-bleed landscape in the manner of a cinematic title card. .hero-media keeps
-   the artwork's own aspect ratio (2048 / 1360 = 66.41vw) at the full width of the
+   the artwork's own aspect ratio (1536 / 1024 = 66.67vw) at the full width of the
    page, flush with the top edge, so nothing is cropped and the section grows with
    the picture. There is no gradient, scrim or blur anywhere: the painting itself
    stops on a torn organic edge and gives way to flat white, which lands on the
    page background. Any replacement must carry that edge and match both ratios.
-   The copy is anchored to the horizon: the top padding is the horizon's position
-   (27.9% of the width, being 42% of the picture's height) less the height of the
-   copy block, with a floor that clears the nav. So the block lands in the sky at
-   every width. Portrait viewports fall back to a cover crop. */
-.hero { position: relative; min-height: 66.41vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; text-align: left; padding: max(104px, calc(27.9% - 372px)) 56px 80px; background: var(--warm-white); overflow: hidden; }
-.hero-media { position: absolute; top: 0; left: 0; width: 100%; height: auto; aspect-ratio: 2048 / 1360; overflow: hidden; z-index: 0; background: linear-gradient(180deg, var(--cream) 0%, var(--sage-pale) 100%); }
+   The copy is anchored to where the picture stops being light: the top padding is
+   that line's position (36% of the width, being 54% of the picture's height) less
+   the height of the copy block, with a floor that clears the nav. So the block
+   lands in the sky at every width. Portrait viewports fall back to a cover crop. */
+.hero { position: relative; min-height: 66.67vw; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; text-align: left; padding: max(104px, calc(36% - 360px)) 56px 80px; background: var(--warm-white); overflow: hidden; }
+.hero-media { position: absolute; top: 0; left: 0; width: 100%; height: auto; aspect-ratio: 1536 / 1024; overflow: hidden; z-index: 0; background: linear-gradient(180deg, var(--cream) 0%, var(--sage-pale) 100%); }
 .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 .hero-inner { position: relative; z-index: 1; width: 100%; max-width: 1120px; margin: 0 auto; }
 .hero-blob { position: absolute; top: -10%; left: 50%; transform: translateX(-50%); width: 900px; height: 700px; background: radial-gradient(ellipse at center, rgba(74,122,37,0.10) 0%, transparent 65%); pointer-events: none; }
@@ -164,9 +164,9 @@ section { padding: 108px 56px; }
 .hero .btn-outline { background: rgba(255,255,255,0.88); border-color: rgba(28,28,26,0.14); backdrop-filter: blur(6px); }
 .hero .btn-outline:hover { background: #fff; border-color: var(--sage); }
 .hero .hero-note .link-quiet { color: #2F2F2B; text-decoration-color: rgba(47,47,43,0.4); }
-.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(38px, 3.6vw, 76px); font-weight: 400; line-height: 1.05; letter-spacing: -1.6px; color: var(--charcoal); max-width: 780px; margin-bottom: 12px; animation: up 0.7s 0.1s ease both; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(40px, 4.4vw, 80px); font-weight: 400; line-height: 1.05; letter-spacing: -1.6px; color: var(--charcoal); max-width: 780px; margin-bottom: 12px; animation: up 0.7s 0.1s ease both; }
 .hero h1 em { font-style: italic; color: var(--sage); }
-.hero-sub { font-size: clamp(15.5px, 1.05vw, 19px); font-weight: 400; color: #35352F; max-width: 620px; line-height: 1.55; margin-bottom: 20px; animation: up 0.7s 0.2s ease both; }
+.hero-sub { font-size: clamp(16px, 1.15vw, 20px); font-weight: 400; color: #35352F; max-width: 620px; line-height: 1.55; margin-bottom: 20px; animation: up 0.7s 0.2s ease both; }
 .hero-btns { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: flex-start; animation: up 0.7s 0.3s ease both; }
 .hero-actions { display: flex; align-items: center; gap: 12px 28px; flex-wrap: wrap; animation: up 0.7s 0.3s ease both; }
 .hero .hero-note { max-width: 300px; }
@@ -366,32 +366,32 @@ section { padding: 108px 56px; }
 .footer-cta-actions { display: flex; gap: 28px; align-items: center; justify-content: center; flex-wrap: wrap; }
 
 /* ── FOOTER ──
-   The mirror of the hero. .footer-media holds the artwork at its own aspect
-   ratio (1536 / 1024 = 66.67vw) across the full width, flush with the top of the
-   block, and the section is at least as tall as the picture. No gradient, scrim
-   or vignette anywhere: the painting's pale sky carries the link columns, and
-   its grass fringe stops on flat white, which is where the legal row sits.
-   A replacement must keep that fringe and a near-white sky, and have both ratios
-   updated here. Phones drop the overlay and put the picture below the columns. */
+   One tall warm-white block that mirrors the hero. A hairline divider, four
+   link columns, a generous gap, then the legal row. .footer-media fills the
+   whole block with a bright daylight landscape, cover-cropped from the bottom,
+   with no CSS fade: the artwork carries a near-white sky in its upper half so
+   the columns sit on the painted sky. ::after is a soft dark vignette over the
+   bottom of the grass, and the legal row switches to white on top of it. */
 .site-footer { position: relative; background: var(--warm-white); color: var(--charcoal); padding: 0 56px; overflow: hidden; }
-.footer-media { position: absolute; top: 0; left: 0; width: 100%; height: auto; aspect-ratio: 1536 / 1024; z-index: 0; pointer-events: none; }
-.footer-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
-.footer-inner { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; min-height: 66.67vw; display: flex; flex-direction: column; padding: 0 0 40px; }
+.footer-media { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.footer-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; display: block; }
+.footer-media::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 260px; z-index: 1; background: linear-gradient(to bottom, rgba(20,20,18,0) 0%, rgba(20,20,18,0.18) 45%, rgba(20,20,18,0.5) 100%); }
+.footer-inner { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; display: flex; flex-direction: column; padding: 0 0 36px; }
 .footer-divider { height: 1px; width: 100%; background: var(--border); border-radius: 100px; }
-.footer-cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; padding-top: 72px; }
+.footer-cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 40px; padding-top: 88px; }
 .footer-brand { display: flex; flex-direction: column; gap: 14px; max-width: 320px; }
 .footer-logo { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 400; color: var(--charcoal); letter-spacing: -0.5px; text-decoration: none; }
-.footer-logo em { font-style: italic; color: var(--sage); }
+.footer-logo em { font-style: italic; color: var(--sage-light); }
 .footer-tagline { font-size: 14px; font-weight: 300; color: var(--mid); line-height: 1.65; }
 .footer-col { display: flex; flex-direction: column; gap: 10px; }
 .footer-col-title { font-size: 14px; font-weight: 500; color: var(--charcoal); margin-bottom: 6px; }
 .footer-col a { font-size: 14px; font-weight: 300; color: var(--mid); text-decoration: none; transition: color 0.2s; width: fit-content; }
 .footer-col a:hover { color: var(--sage); }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: auto; padding-top: 64px; }
-.footer-copy { font-size: 13px; color: var(--mid); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: clamp(220px, 30vw, 440px); }
+.footer-copy { font-size: 13px; color: #fff; }
 .footer-legal { display: flex; gap: 28px; }
-.footer-legal a { font-size: 13px; color: var(--mid); text-decoration: none; transition: color 0.2s; }
-.footer-legal a:hover { color: var(--sage); }
+.footer-legal a { font-size: 13px; color: #fff; text-decoration: none; transition: color 0.2s; }
+.footer-legal a:hover { color: rgba(255,255,255,0.7); }
 
 /* ── LEGAL PAGES ── */
 .page-hero { background: var(--cream); padding: 152px 56px 80px; border-bottom: 1px solid var(--border); }
@@ -665,7 +665,7 @@ section { padding: 108px 56px; }
   section { padding: 80px 24px; }
   .hero { padding: 116px 24px 0; min-height: 0; justify-content: flex-start; }
   .hero-inner { order: 1; }
-  .hero-media { position: relative; order: 2; width: calc(100% + 48px); margin: 36px -24px 0; height: auto; aspect-ratio: 2048 / 1360; }
+  .hero-media { position: relative; order: 2; width: calc(100% + 48px); margin: 36px -24px 0; height: auto; aspect-ratio: 1536 / 1024; }
   .hero-img { position: absolute; object-position: center top; }
   .hero-sub { max-width: none; }
   .hero .hero-note { max-width: none; }
@@ -682,10 +682,8 @@ section { padding: 108px 56px; }
   .waitlist-form { padding: 32px 24px; }
   .page-hero { padding: 120px 24px 56px; }
   .content { padding: 48px 24px 80px; }
-  .site-footer { padding: 0 24px; display: flex; flex-direction: column; }
-  .footer-inner { order: 1; min-height: 0; padding-bottom: 40px; }
-  .footer-media { position: relative; order: 2; width: calc(100% + 48px); margin: 0 -24px; }
+  .site-footer { padding: 0 24px; }
   .footer-cols { grid-template-columns: 1fr 1fr; gap: 36px 24px; padding-top: 56px; }
   .footer-brand { grid-column: 1 / -1; }
-  .footer-bottom { padding-top: 48px; flex-direction: column; align-items: flex-start; }
+  .footer-bottom { margin-top: 240px; flex-direction: column; align-items: flex-start; }
 }
