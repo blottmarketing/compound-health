@@ -315,6 +315,19 @@ import MainLayout from '../layouts/MainLayout.astro';
       </div>
       <div class="waitlist-form-wrap">
         <div class="waitlist-form" id="waitlistForm">
+          <div class="wf-field">
+            <span class="wf-label" id="wfRoleLabel">I am</span>
+            <div class="wf-segmented" id="wfRole" role="radiogroup" aria-labelledby="wfRoleLabel">
+              <button class="wf-segment is-active" type="button" role="radio" aria-checked="true"
+                      data-role="client" data-audience="client">A client</button>
+              <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                      data-role="wealth-firm" data-audience="partner">A wealth firm</button>
+              <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                      data-role="employer" data-audience="partner">An employer</button>
+              <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                      data-role="network" data-audience="partner">A network or organization</button>
+            </div>
+          </div>
           <div class="wf-row">
             <div class="wf-field">
               <label class="wf-label" for="wf-fname">First name</label>
@@ -329,7 +342,9 @@ import MainLayout from '../layouts/MainLayout.astro';
             <label class="wf-label" for="wf-email">Email address</label>
             <input class="wf-input" type="email" id="wf-email" placeholder="james@example.com" autocomplete="email" />
           </div>
-          <div class="wf-field">
+
+          <!-- Client path. Same two fields, and the same card height, as before. -->
+          <div class="wf-field" data-shown-to="client">
             <label class="wf-label" for="wf-tier">Membership tier of interest</label>
             <select class="wf-input wf-select" id="wf-tier">
               <option value="" disabled selected>Select a tier</option>
@@ -338,10 +353,27 @@ import MainLayout from '../layouts/MainLayout.astro';
               <option value="eternal">Eternal</option>
             </select>
           </div>
-          <div class="wf-field">
+          <div class="wf-field" data-shown-to="client">
             <label class="wf-label" for="wf-advisor">Referring advisor or firm (optional)</label>
             <input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" />
           </div>
+
+          <!-- Partner path. Swaps in for the two client fields. -->
+          <div class="wf-field" data-shown-to="partner" hidden>
+            <label class="wf-label" for="wf-org">Organization name</label>
+            <input class="wf-input" type="text" id="wf-org" placeholder="e.g. Pemberton Family Office" autocomplete="organization" />
+          </div>
+          <div class="wf-field" data-shown-to="partner" hidden>
+            <label class="wf-label" for="wf-reach">People you would introduce (optional)</label>
+            <select class="wf-input wf-select" id="wf-reach">
+              <option value="" disabled selected>Select a range</option>
+              <option value="under-100">Under 100</option>
+              <option value="100-500">100 to 500</option>
+              <option value="500-2000">500 to 2,000</option>
+              <option value="over-2000">Over 2,000</option>
+            </select>
+          </div>
+
           <button class="wf-submit" id="wfSubmit" type="button">
             <span class="wf-submit-label">Reserve my place</span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -369,9 +401,9 @@ import MainLayout from '../layouts/MainLayout.astro';
               <path d="M10 16.5l4 4 8-9" stroke="#4A7A25" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <h3>You're on the list</h3>
-          <p>
-            Thank you<span id="wsName"></span>. Your founding member request has been received.
+          <h3 id="wsTitle">You're on the list</h3>
+          <p id="wsBody">
+            Thank you. Your founding member request has been received.
             Our team will be in touch as soon as your tier opens.
           </p>
           <div class="ws-meta">A confirmation will arrive at <span id="wsEmail">your inbox</span></div>
@@ -396,16 +428,43 @@ import MainLayout from '../layouts/MainLayout.astro';
     const WAITLIST_ENDPOINT =
       'https://script.google.com/macros/s/AKfycbzY5RvWk2brJh-UXMCrmje97TMZK3u6iEWYOexglSWQfaxGZD4-I5RsZUlQq-AlfH1fpw/exec';
 
+    // Routing. The Apps Script endpoint branches on `audience` so partner
+    // submissions land somewhere other than the client waitlist. The tag values
+    // are placeholders: the inbox / CRM tag for partners is still an open point
+    // in the designer brief, and changing them here is a one-line edit.
+    const ROUTING_TAG: Record<string, string> = {
+      client:  'client-waitlist',
+      partner: 'partner-pipeline',
+    };
+
     const waitlistForm    = document.getElementById('waitlistForm')    as HTMLDivElement | null;
     const waitlistSuccess = document.getElementById('waitlistSuccess') as HTMLDivElement | null;
     const wfSubmit        = document.getElementById('wfSubmit')        as HTMLButtonElement | null;
     const wfError         = document.getElementById('wfError')         as HTMLDivElement | null;
     const wfErrorMsg      = wfError?.querySelector('.wf-error-msg')    as HTMLSpanElement | null;
     const wfLabel         = wfSubmit?.querySelector('.wf-submit-label') as HTMLSpanElement | null;
-    const wsName          = document.getElementById('wsName')          as HTMLSpanElement | null;
+    const wfRole          = document.getElementById('wfRole')          as HTMLDivElement | null;
+    const wsTitle         = document.getElementById('wsTitle')         as HTMLHeadingElement | null;
+    const wsBody          = document.getElementById('wsBody')          as HTMLParagraphElement | null;
     const wsEmail         = document.getElementById('wsEmail')         as HTMLSpanElement | null;
     const wsReset         = document.getElementById('wsReset')         as HTMLButtonElement | null;
     const ORIGINAL_LABEL  = wfLabel?.textContent ?? 'Reserve my place';
+
+    const segments = Array.from(
+      wfRole?.querySelectorAll<HTMLButtonElement>('.wf-segment') ?? []
+    );
+
+    /** 'client' or 'partner', from the currently selected segment. */
+    function currentAudience(): string {
+      const active = segments.find((s) => s.classList.contains('is-active'));
+      return active?.dataset.audience ?? 'client';
+    }
+
+    /** The specific segment value, e.g. 'client', 'wealth-firm', 'employer', 'network'. */
+    function currentRole(): string {
+      const active = segments.find((s) => s.classList.contains('is-active'));
+      return active?.dataset.role ?? 'client';
+    }
 
     function showError(message: string) {
       if (!wfError) return;
@@ -417,6 +476,52 @@ import MainLayout from '../layouts/MainLayout.astro';
       wfError?.classList.remove('visible');
     }
 
+    /**
+     * Reveal the fields for one audience and hide the other's. Both paths carry
+     * two conditional fields, so the card keeps the same height either way.
+     */
+    function applyAudience(audience: string) {
+      document
+        .querySelectorAll<HTMLElement>('[data-shown-to]')
+        .forEach((field) => {
+          field.hidden = field.dataset.shownTo !== audience;
+        });
+    }
+
+    /** Select a segment by role slug. 'partner' picks the first partner option. */
+    function selectRole(role: string) {
+      const target =
+        segments.find((s) => s.dataset.role === role) ??
+        (role === 'partner'
+          ? segments.find((s) => s.dataset.audience === 'partner')
+          : undefined);
+      if (!target) return;
+
+      segments.forEach((s) => {
+        const isActive = s === target;
+        s.classList.toggle('is-active', isActive);
+        s.setAttribute('aria-checked', String(isActive));
+      });
+      applyAudience(target.dataset.audience ?? 'client');
+      clearError();
+    }
+
+    segments.forEach((segment) => {
+      segment.addEventListener('click', () => {
+        selectRole(segment.dataset.role ?? 'client');
+      });
+    });
+
+    // Links elsewhere on the page can preset the selector before the browser
+    // scrolls to the form, e.g. the Partners CTA. Delegated, so triggers added
+    // to the page later are wired without touching this file.
+    document.addEventListener('click', (event) => {
+      const trigger = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-wf-role]');
+      if (trigger) selectRole(trigger.dataset.wfRole ?? 'partner');
+    });
+
+    applyAudience(currentAudience());
+
     if (wfSubmit && waitlistForm && waitlistSuccess) {
       wfSubmit.addEventListener('click', async () => {
         clearError();
@@ -426,32 +531,51 @@ import MainLayout from '../layouts/MainLayout.astro';
         const emailInput   = document.getElementById('wf-email')   as HTMLInputElement | null;
         const tierInput    = document.getElementById('wf-tier')    as HTMLSelectElement | null;
         const advisorInput = document.getElementById('wf-advisor') as HTMLInputElement | null;
+        const orgInput     = document.getElementById('wf-org')     as HTMLInputElement | null;
+        const reachInput   = document.getElementById('wf-reach')   as HTMLSelectElement | null;
+
+        const audience  = currentAudience();
+        const isPartner = audience === 'partner';
 
         const firstName = fnameInput?.value.trim()   ?? '';
         const lastName  = lnameInput?.value.trim()   ?? '';
         const email     = emailInput?.value.trim()   ?? '';
         const tier      = tierInput?.value           ?? '';
         const advisor   = advisorInput?.value.trim() ?? '';
+        const org       = orgInput?.value.trim()     ?? '';
+        const reach     = reachInput?.value          ?? '';
 
-        // Minimal validation: require first name, last name, email, tier
+        // Minimal validation, matching the existing pattern: focus the first
+        // field that needs attention. Required fields differ by audience.
         if (!firstName) { fnameInput?.focus(); return; }
         if (!lastName)  { lnameInput?.focus(); return; }
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           emailInput?.focus();
           return;
         }
-        if (!tier) { tierInput?.focus(); return; }
+        if (isPartner) {
+          if (!org) { orgInput?.focus(); return; }
+        } else if (!tier) {
+          tierInput?.focus();
+          return;
+        }
 
         // Submitting state
         wfSubmit.disabled = true;
         if (wfLabel) wfLabel.textContent = 'Submitting…';
 
         const payload = new URLSearchParams({
+          role:        currentRole(),
+          audience,
+          routingTag:  ROUTING_TAG[audience] ?? ROUTING_TAG.client,
           firstName,
           lastName,
           email,
-          tier,
-          advisor,
+          // Only the fields belonging to the chosen path are sent.
+          tier:         isPartner ? '' : tier,
+          advisor:      isPartner ? '' : advisor,
+          organization: isPartner ? org : '',
+          reach:        isPartner ? reach : '',
           source:      'compoundhealth.io',
           submittedAt: new Date().toISOString(),
           userAgent:   navigator.userAgent,
@@ -468,9 +592,23 @@ import MainLayout from '../layouts/MainLayout.astro';
 
           if (!res.ok) throw new Error('Request failed: ' + res.status);
 
-          // Personalize and reveal the success panel.
-          // With a name: "Thank you, {First Name}." Without: "Thank you."
-          if (wsName)  wsName.textContent  = firstName ? ', ' + firstName : '';
+          // Confirmation copy differs by audience.
+          if (isPartner) {
+            if (wsTitle) wsTitle.textContent = 'Request received';
+            if (wsBody) {
+              wsBody.textContent =
+                'Thank you. We will be in touch to discuss a program for your organization.';
+            }
+          } else {
+            if (wsTitle) wsTitle.textContent = "You're on the list";
+            if (wsBody) {
+              // Personalize: "Thank you, {First Name}." Without a name: "Thank you."
+              wsBody.textContent =
+                'Thank you' + (firstName ? ', ' + firstName : '') +
+                '. Your founding member request has been received. Our team will be in ' +
+                'touch as soon as your tier opens.';
+            }
+          }
           if (wsEmail) wsEmail.textContent = email;
 
           waitlistForm.style.display = 'none';
@@ -490,20 +628,17 @@ import MainLayout from '../layouts/MainLayout.astro';
     // Allow the user to submit another response without a page reload
     if (wsReset && waitlistForm && waitlistSuccess && wfSubmit) {
       wsReset.addEventListener('click', () => {
-        // Reset the form fields
-        (document.getElementById('wf-fname')   as HTMLInputElement | null)?.setAttribute('value', '');
-        (document.getElementById('wf-lname')   as HTMLInputElement | null)?.setAttribute('value', '');
-        (document.getElementById('wf-email')   as HTMLInputElement | null)?.setAttribute('value', '');
-        (document.getElementById('wf-advisor') as HTMLInputElement | null)?.setAttribute('value', '');
-
-        ['wf-fname', 'wf-lname', 'wf-email', 'wf-advisor'].forEach((id) => {
+        ['wf-fname', 'wf-lname', 'wf-email', 'wf-advisor', 'wf-org'].forEach((id) => {
           const el = document.getElementById(id) as HTMLInputElement | null;
           if (el) el.value = '';
         });
-        const tierEl = document.getElementById('wf-tier') as HTMLSelectElement | null;
-        if (tierEl) tierEl.value = '';
+        ['wf-tier', 'wf-reach'].forEach((id) => {
+          const el = document.getElementById(id) as HTMLSelectElement | null;
+          if (el) el.value = '';
+        });
 
-        // Restore form, reset button
+        // Restore form, reset button, and return the selector to the client path
+        selectRole('client');
         waitlistSuccess.classList.remove('visible');
         waitlistForm.style.display = '';
         wfSubmit.disabled = false;
