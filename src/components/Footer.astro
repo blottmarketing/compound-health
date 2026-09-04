@@ -1,9 +1,10 @@
 ---
+import Logo from './Logo.astro';
 /**
  * Site footer. Shared by MainLayout, LegalLayout and BlogLayout.
  *
- * Structure (top to bottom): hairline divider, four link columns, a tall gap,
- * then the legal row. A landscape image is anchored to the bottom of the block
+ * Structure (top to bottom): hairline divider, three columns (brand, site links,
+ * contact), a tall gap, then the legal row. A landscape image is anchored to the bottom of the block
  * and its sky dissolves into the footer background (--warm-white) via .footer-media.
  * Swap the artwork by replacing /public/images/footer-landscape.webp. The image
  * should be around 2048x1360 or larger with a pale, near-white sky in its top half
@@ -30,25 +31,19 @@ const year = new Date().getFullYear();
 
     <div class="footer-cols">
       <div class="footer-brand">
-        <a href="/" class="footer-logo">Compound <em>Health</em></a>
+        <Logo variant="footer" />
         <p class="footer-tagline">
           A private longevity membership, introduced through the people who already advise you.
         </p>
       </div>
 
       <div class="footer-col">
-        <div class="footer-col-title">Membership</div>
+        <div class="footer-col-title">Site</div>
         <a href="/#how">How it works</a>
         <a href="/#features">What you get</a>
         <a href="/#membership">Membership</a>
+        <a href="/for-advisors">For advisors and firms</a>
         <a href="/#joinwaitlist">Get access</a>
-      </div>
-
-      <div class="footer-col">
-        <div class="footer-col-title">Partners</div>
-        <a href="/#partners">For advisors and firms</a>
-        <a href="/#partners">For employers</a>
-        <a href="/#joinwaitlist">Introduce your clients</a>
       </div>
 
       <div class="footer-col">

@@ -9,9 +9,10 @@ const sections = [
   { id: 'credibility-item', label: 'Credibility item' },
   { id: 'step-card',        label: 'Step card' },
   { id: 'feature-card',     label: 'Feature card' },
-  { id: 'metric-row',       label: 'Metric row' },
+  { id: 'metric-row',       label: 'Score columns' },
   { id: 'case-stat',        label: 'Case stat' },
   { id: 'case-quote',       label: 'Case quote card' },
+  { id: 'deliver',          label: 'Delivered list' },
   { id: 'curated-card',     label: 'Curated card' },
   { id: 'audience-tile',    label: 'Audience tile' },
   { id: 'partner-note',     label: 'Partner note' },
@@ -32,7 +33,7 @@ const sections = [
 <DesignSystemLayout
   title="Molecules"
   section="02 · Molecules"
-  lede="Atoms combined into reusable building blocks. Bento grid, product section, step card, plan card, credibility item, metric row, testimonial, post card, author chip, tag group, form field, mobile menu link, case stat, case quote card, curated card, audience tile, partner note, hero media and footer columns."
+  lede="Atoms combined into reusable building blocks. Bento grid, product section, step card, plan card, credibility item, score columns, testimonial, post card, author chip, tag group, form field, mobile menu link, case stat, case quote card, delivered list, curated card, audience tile, partner note, hero media and footer columns."
   sections={sections}
 >
 
@@ -102,12 +103,16 @@ const sections = [
   <section class="ds-section" id="bento">
     <div class="ds-section-head">
       <h2>Bento grid</h2>
-      <span class="ds-tag">.bento · .bento-cell · .is-surface · .is-half · .is-wide · .bento-card</span>
+      <span class="ds-tag">.bento · .bento-cell · .tone-green · .tone-orange · .tone-pink · .is-surface · .is-half · .is-wide · .bento-card</span>
     </div>
     <p class="ds-note">
-      Filled cells of unequal size on a six-column track. One
-      <code class="ds-inline">.is-surface</code> cell spans four columns and two rows and carries a
-      white <code class="ds-inline">.bento-card</code> as the product surface; the rest carry a
+      Filled cells of unequal size on a six-column track, each in one of three tints. A cell reads
+      its fill, its ink and its copy colour from custom properties, so
+      <code class="ds-inline">.tone-green</code>, <code class="ds-inline">.tone-orange</code> and
+      <code class="ds-inline">.tone-pink</code> swap all three at once and the cell stays monochrome; a cell with no tone sits on
+      <code class="ds-inline">--panel</code>. The tints live only inside bento cells, never as a
+      section band. One <code class="ds-inline">.is-surface</code> cell spans four columns and can
+      carry a glass <code class="ds-inline">.bento-card</code> as a product surface; the rest carry a
       line icon, a title and a sentence at <code class="ds-inline">.is-half</code> (two columns) or
       <code class="ds-inline">.is-wide</code> (four). Placement is automatic, so the order in the
       markup is the order on the page.
@@ -120,7 +125,7 @@ const sections = [
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
         <div class="bento">
-          <div class="bento-cell is-surface">
+          <div class="bento-cell is-surface tone-green">
             <div>
               <span class="bento-icon">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -133,19 +138,19 @@ const sections = [
             </div>
             <div class="bento-card">
               <div class="stack-card-head">Health score overview</div>
-              <div class="metric">
-                <span class="metric-name">Cardiovascular</span>
-                <div class="metric-track"><div class="metric-fill is-good" style="width:82%"></div></div>
-                <span class="metric-val">82</span>
-              </div>
-              <div class="metric">
-                <span class="metric-name">Metabolic</span>
-                <div class="metric-track"><div class="metric-fill is-warn" style="width:74%"></div></div>
-                <span class="metric-val">74</span>
+              <div class="bars">
+                <div class="bars-axis" aria-hidden="true"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div>
+                <div class="bars-plot">
+                  <div class="bar is-good" style="--v:82"><span class="bar-val">82</span><span class="bar-fill"></span><span class="bar-name">Cardiovascular</span></div>
+                  <div class="bar is-warn" style="--v:74"><span class="bar-val">74</span><span class="bar-fill"></span><span class="bar-name">Metabolic</span></div>
+                  <div class="bar is-good is-peak" style="--v:91"><span class="bar-val">91</span><span class="bar-fill"></span><span class="bar-name">Cognitive</span></div>
+                  <div class="bar is-warn" style="--v:67"><span class="bar-val">67</span><span class="bar-fill"></span><span class="bar-name">Hormonal</span></div>
+                  <div class="bar is-good" style="--v:88"><span class="bar-val">88</span><span class="bar-fill"></span><span class="bar-name">Sleep quality</span></div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="bento-cell is-half">
+          <div class="bento-cell is-half tone-orange">
             <span class="bento-icon">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -157,7 +162,7 @@ const sections = [
             <h3 class="bento-title">Curated clinical delivery</h3>
             <p>Physician-led care nationwide, virtual and in person.</p>
           </div>
-          <div class="bento-cell is-half">
+          <div class="bento-cell is-half tone-pink">
             <span class="bento-icon">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -168,7 +173,7 @@ const sections = [
             <h3 class="bento-title">Full biomarker tracking</h3>
             <p>Multiple comprehensive panels per year, DEXA, CGM cycles.</p>
           </div>
-          <div class="bento-cell is-half">
+          <div class="bento-cell is-half tone-orange">
             <span class="bento-icon">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
@@ -178,7 +183,7 @@ const sections = [
             <h3 class="bento-title">Personalized protocols</h3>
             <p>Calibrated to your biology, not a template.</p>
           </div>
-          <div class="bento-cell is-wide">
+          <div class="bento-cell is-half tone-pink">
             <span class="bento-icon">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -202,7 +207,7 @@ const sections = [
   <section class="ds-section" id="product-section">
     <div class="ds-section-head">
       <h2>Product section</h2>
-      <span class="ds-tag">.prod · .prod-list · .prod-item · .prod-timer · .prod-panel · .prod-pane</span>
+      <span class="ds-tag">.prod · .prod-list · .prod-item · .prod-ring · .prod-panel · .prod-pane · .stack-card · .team · .cov · .gate</span>
     </div>
     <p class="ds-note">
       An interactive section. A <a href="/design-system/atoms#section-heads">section head</a>, then
@@ -215,14 +220,16 @@ const sections = [
       stays open and every choice is still readable in the list.
     </p>
     <p class="ds-note">
-      The tabs also advance on their own every seven seconds. The countdown bar under the active
-      tab (<code class="ds-inline">.prod-timer</code>) is a CSS animation, and the advance is driven
-      by its <code class="ds-inline">animationend</code>, so the bar and the switch can never drift
-      apart. Hovering or focusing anywhere in the section pauses both at once, so nothing moves
-      under a reader, and leaving the viewport pauses them too. Choosing a tab restarts the
-      countdown from it rather than ending the rotation. Under
+      The tabs also advance on their own every seven seconds. Every icon sits in a
+      <code class="ds-inline">.prod-icon</code> circle with a hairline
+      <code class="ds-inline">.prod-ring</code>, and the countdown is that ring: on the open tab
+      <code class="ds-inline">.prod-ring-fill</code> draws a sage stroke around it from the top.
+      The stroke is a CSS animation, and the advance is driven by its
+      <code class="ds-inline">animationend</code>, so the ring and the switch can never drift
+      apart. Hovering does not stop it. A keyboard focus does, and so does leaving the viewport.
+      Choosing a tab restarts the countdown from it rather than ending the rotation. Under
       <code class="ds-inline">prefers-reduced-motion</code>, or with no JavaScript, nothing rotates
-      and the bar never appears.
+      and the rings stay as plain hairlines.
     </p>
     <p class="ds-note">
       Tabs are real <code class="ds-inline">&lt;button&gt;</code> elements, so their body copy is a
@@ -230,21 +237,47 @@ const sections = [
       <code class="ds-inline">&lt;p&gt;</code>: flow content is not valid inside a button.
     </p>
     <p class="ds-note">
+      <strong>The panel is a soft gradient and the card on it is glass.</strong>
+      <code class="ds-inline">.prod-panel</code> is painted with
+      <code class="ds-inline">--panel-grad</code>, a pale sweep of the bento tints, and
+      <code class="ds-inline">.stack-card</code> is <code class="ds-inline">--glass-card</code>: a
+      translucent warm white with a bright hairline edge, a backdrop blur and an ambient shadow, so
+      the colour of the ground shows through its surface. <code class="ds-inline">.bento-card</code>
+      is the same glass.
+    </p>
+    <p class="ds-note">
       <strong>Each pane is a different figure, never the same list with different words.</strong>
-      The three on the home page are a roster (<code class="ds-inline">.team-row</code>, with a
-      dashed footer and a pulse for continuity), a coverage map
-      (<code class="ds-inline">.cov-figure</code> headline number over a
-      <code class="ds-inline">.cov-grid</code> of tiles) and a gated flow
-      (<code class="ds-inline">.gate-chips</code> above a connected
-      <code class="ds-inline">.gate-flow</code>). If a new pane would repeat a shape that is
-      already in the section, it needs a different figure, not different labels.
-      <code class="ds-inline">.prod-panes</code> fixes one height for all of them and each figure
-      pins its own footer with <code class="ds-inline">margin-top: auto</code>, so the card and the
-      footers stay put as the tab changes.
+      The three on the home page are a team bar (<code class="ds-inline">.team-bar</code> in the
+      three tints over a <code class="ds-inline">.team-legend</code> of who is on it, with a dashed
+      footer and a pulse for continuity), a ring (<code class="ds-inline">.cov-ring</code> of six
+      <code class="ds-inline">.cov-arc</code> segments around the headline number, with a
+      <code class="ds-inline">.cov-legend</code> naming them) and the gradient card
+      (<code class="ds-inline">.stack-card.is-feature</code>, painted in the tints themselves,
+      holding frosted <code class="ds-inline">.gate-chip</code> pills above a glass
+      <code class="ds-inline">.gate-flow</code> strip of two ticked conditions). If a new pane would
+      repeat a shape that is already in the section, it needs a different figure, not different
+      labels. <code class="ds-inline">.prod-panes</code> fixes one height for all of them and each
+      figure pins its own footer with <code class="ds-inline">margin-top: auto</code>, so the card
+      and the footers stay put as the tab changes.
     </p>
     <p class="ds-note">
       <strong>Every label inside a panel is lifted verbatim from copy that already appears in that
-      section.</strong> A panel illustrates the copy; it never introduces new copy.
+      section.</strong> A panel illustrates the copy; it never introduces new copy. The ring has six
+      equal segments for that reason: the six panels are named, not weighted, because no weighting
+      exists in the copy.
+    </p>
+    <p class="ds-note">
+      <strong>Every figure builds itself once per tab rotation.</strong> All of it runs on
+      <code class="ds-inline">var(--auto-ms)</code>, which the tab script sets on the section, so a
+      figure is up within the first second and a half, holds for the rest of the turn, and resets on
+      the tab change rather than under a reader. The team segments grow from the left and the legend
+      follows 0.14s apart; the arcs draw in 0.10s apart and the shield in
+      <code class="ds-inline">.cov-foot</code> draws itself last; the chips arrive 0.08s apart and
+      then the two conditions are ticked in turn. The count in the ring is the only JavaScript in any
+      figure, and it reads the clock of the first arc rather than one of its own, so the number can
+      never land ahead of the ring; without JS it simply reads what is in the markup. Under
+      <code class="ds-inline">prefers-reduced-motion</code> every figure is simply in its finished
+      state.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
@@ -253,7 +286,11 @@ const sections = [
             <button class="prod-item" type="button" role="tab" aria-selected="true" tabindex="0">
               <span class="prod-item-head">
                 <span class="prod-icon">
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <svg class="prod-ring" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+                    <circle class="prod-ring-track" cx="22" cy="22" r="20"/>
+                    <circle class="prod-ring-fill" cx="22" cy="22" r="20"/>
+                  </svg>
+                  <svg class="prod-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                     <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                     <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -263,12 +300,15 @@ const sections = [
                 <span class="prod-title">Clinical care</span>
               </span>
               <span class="prod-copy">Physician-led teams with published outcomes and continuous care between visits.</span>
-              <span class="prod-timer" aria-hidden="true"><span class="prod-timer-fill"></span></span>
             </button>
             <button class="prod-item" type="button" role="tab" aria-selected="false" tabindex="-1">
               <span class="prod-item-head">
                 <span class="prod-icon">
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <svg class="prod-ring" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+                    <circle class="prod-ring-track" cx="22" cy="22" r="20"/>
+                    <circle class="prod-ring-fill" cx="22" cy="22" r="20"/>
+                  </svg>
+                  <svg class="prod-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/>
                     <path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                   </svg>
@@ -276,7 +316,6 @@ const sections = [
                 <span class="prod-title">Diagnostics and screening</span>
               </span>
               <span class="prod-copy">Baseline testing, multi-cancer early detection and imaging.</span>
-              <span class="prod-timer" aria-hidden="true"><span class="prod-timer-fill"></span></span>
             </button>
           </div>
           <div class="prod-panel">
@@ -284,15 +323,14 @@ const sections = [
               <div class="prod-pane is-active" role="tabpanel">
                 <div class="stack-card">
                   <div class="stack-card-head">Your clinical team</div>
-                  <div class="team-row">
-                    <span class="team-badge" aria-hidden="true">M</span>
-                    <span class="team-role">MD-led</span>
-                    <span class="team-note">Published outcomes</span>
-                  </div>
-                  <div class="team-row">
-                    <span class="team-badge" aria-hidden="true">C</span>
-                    <span class="team-role">Health concierge</span>
-                    <span class="team-note">Specialist referrals</span>
+                  <div class="team">
+                    <div class="team-bar" aria-hidden="true"><span class="team-seg"></span><span class="team-seg"></span><span class="team-seg"></span><span class="team-seg"></span></div>
+                    <div class="team-legend">
+                      <div class="team-row"><span class="team-role">MD-led</span><span class="team-note">Published outcomes</span></div>
+                      <div class="team-row"><span class="team-role">Health coaching</span><span class="team-note">Monthly</span></div>
+                      <div class="team-row"><span class="team-role">Dietitian hours</span><span class="team-note">Monthly</span></div>
+                      <div class="team-row"><span class="team-role">Health concierge</span><span class="team-note">Specialist referrals</span></div>
+                    </div>
                   </div>
                   <div class="team-foot">
                     <span class="team-pulse" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
@@ -305,8 +343,10 @@ const sections = [
         </div>
       </div>
       <div class="ds-specimen-meta">
-        <span><strong>[aria-selected="true"]</strong> · takes the panel fill and shows the timer</span>
-        <span><strong>.prod-timer</strong> · 7s countdown, drives the advance</span>
+        <span><strong>[aria-selected="true"]</strong> · takes the panel fill</span>
+        <span><strong>.prod-ring-fill</strong> · 7s countdown, drives the advance</span>
+        <span><strong>.stack-card</strong> · glass on the gradient panel</span>
+        <span><strong>.is-feature</strong> · the one card painted in the tints</span>
       </div>
     </div>
   </section>
@@ -405,45 +445,54 @@ const sections = [
     </div>
   </section>
 
-  <!-- ─────────── METRIC ROW ─────────── -->
+  <!-- ─────────── SCORE COLUMNS ─────────── -->
   <section class="ds-section" id="metric-row">
     <div class="ds-section-head">
-      <h2>Metric row</h2>
-      <span class="ds-tag">.metric · .metric-fill.is-good · .metric-fill.is-warn</span>
+      <h2>Score columns</h2>
+      <span class="ds-tag">.bars · .bars-axis · .bars-plot · .bar · .bar-fill · .bar-val · .bar-name · .is-good · .is-warn · .is-peak</span>
     </div>
     <p class="ds-note">
-      A label, a track, a fill, a value. Width on the fill comes from data via inline
-      <code class="ds-inline">style="width:NN%"</code>. Color comes from a status modifier:
-      <code class="ds-inline">.is-good</code> for sage, <code class="ds-inline">.is-warn</code> for gold.
+      Every score as a column on one 0 to 100 plot. The axis is printed once by
+      <code class="ds-inline">.bars-axis</code> on the left and ruled across the plot at the
+      quarters, so five readings are compared against a fixed scale and the card admits what the
+      numbers are out of. Each <code class="ds-inline">.bar-fill</code> is a gradient that fades
+      toward the baseline: <code class="ds-inline">.is-good</code> is the cool
+      <code class="ds-inline">--grad-cool</code> in green, <code class="ds-inline">.is-warn</code> the warm
+      <code class="ds-inline">--grad-warm</code>. The value sits on top of its column and the name
+      under it. One value comes from data, the custom property <code class="ds-inline">--v</code>
+      on <code class="ds-inline">.bar</code>, and nothing else is inline.
+    </p>
+    <p class="ds-note">
+      <code class="ds-inline">.is-peak</code> marks the best reading with a glow and a faint column
+      behind it, the way a selected month reads on a dashboard. The columns rise once when the block
+      scrolls in (<code class="ds-inline">.reveal.is-in</code>), 0.08s apart, each value landing
+      after its own column; the resting state is the finished one. Under
+      <code class="ds-inline">prefers-reduced-motion</code> they do not animate.
     </p>
     <div class="ds-specimen">
-      <div class="ds-specimen-preview is-dark is-block">
-        <div class="metrics-panel">
-          <div class="metrics-head">Health score overview</div>
-          <div class="metric">
-            <span class="metric-name">Cardiovascular</span>
-            <div class="metric-track"><div class="metric-fill is-good" style="width:82%"></div></div>
-            <span class="metric-val">82</span>
-          </div>
-          <div class="metric">
-            <span class="metric-name">Metabolic</span>
-            <div class="metric-track"><div class="metric-fill is-warn" style="width:74%"></div></div>
-            <span class="metric-val">74</span>
-          </div>
-          <div class="metric">
-            <span class="metric-name">Cognitive</span>
-            <div class="metric-track"><div class="metric-fill is-good" style="width:91%"></div></div>
-            <span class="metric-val">91</span>
+      <div class="ds-specimen-preview is-block">
+        <div class="stack-card">
+          <div class="stack-card-head">Health score overview</div>
+          <div class="bars">
+            <div class="bars-axis" aria-hidden="true"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div>
+            <div class="bars-plot">
+              <div class="bar is-good" style="--v:82"><span class="bar-val">82</span><span class="bar-fill"></span><span class="bar-name">Cardiovascular</span></div>
+              <div class="bar is-warn" style="--v:74"><span class="bar-val">74</span><span class="bar-fill"></span><span class="bar-name">Metabolic</span></div>
+              <div class="bar is-good is-peak" style="--v:91"><span class="bar-val">91</span><span class="bar-fill"></span><span class="bar-name">Cognitive</span></div>
+              <div class="bar is-warn" style="--v:67"><span class="bar-val">67</span><span class="bar-fill"></span><span class="bar-name">Hormonal</span></div>
+              <div class="bar is-good" style="--v:88"><span class="bar-val">88</span><span class="bar-fill"></span><span class="bar-name">Sleep quality</span></div>
+            </div>
           </div>
         </div>
       </div>
-      <pre class="ds-code"><span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric"`}</span><span class="tag">{`>`}</span>
-  <span class="tag">{`<span `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric-name"`}</span><span class="tag">{`>`}</span>Cardiovascular<span class="tag">{`</span>`}</span>
-  <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric-track"`}</span><span class="tag">{`>`}</span>
-    <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric-fill is-good"`}</span> <span class="attr">style</span><span class="tag">=</span><span class="str">{`"width:82%"`}</span><span class="tag">{`></div>`}</span>
-  <span class="tag">{`</div>`}</span>
-  <span class="tag">{`<span `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"metric-val"`}</span><span class="tag">{`>`}</span>82<span class="tag">{`</span>`}</span>
-<span class="tag">{`</div>`}</span></pre>
+      <pre class="ds-code"><code>&lt;div class="bars"&gt;
+  &lt;div class="bars-axis" aria-hidden="true"&gt;&lt;span&gt;100&lt;/span&gt; … &lt;span&gt;0&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="bars-plot"&gt;
+    &lt;div class="bar is-good is-peak" style="--v:91"&gt;
+      &lt;span class="bar-val"&gt;91&lt;/span&gt;&lt;span class="bar-fill"&gt;&lt;/span&gt;&lt;span class="bar-name"&gt;Cognitive&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
     </div>
   </section>
 
@@ -451,9 +500,16 @@ const sections = [
   <section class="ds-section" id="case-stat">
     <div class="ds-section-head">
       <h2>Case stat</h2>
-      <span class="ds-tag">.case-stat</span>
+      <span class="ds-tag">.case-stats · .case-stat · .case-num</span>
     </div>
-    <p class="ds-note">Headline number + caption, standing in the open: no box, no fill, no hover. Air does the framing, so the numeral runs large (up to 92px). The numeral can hold an italic adjective via <code class="ds-inline">&lt;em&gt;</code>.</p>
+    <p class="ds-note">
+      A number and its caption in a hairline cell: a rule on top, a rule down the left of every cell
+      but the first, and no box, fill or hover. The numeral is the size of a section heading rather
+      than of a hero (up to 54px), because the claim is carried by the caption under it, and it can
+      hold an italic adjective via <code class="ds-inline">&lt;em&gt;</code>. This is the same
+      hairline grid as the steps and the audience tiles, so a row is divided one way across the
+      whole page. Stacked below 900px, where the column rules become row rules.
+    </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
         <div class="case-stats" style="margin:0;">
@@ -482,11 +538,9 @@ const sections = [
     </div>
     <p class="ds-note">
       Sage surface with a giant decorative quote mark. Pair with
-      <code class="ds-inline">.case-content</code> in the case-body grid. Not currently used on any
-      page: the Partners section carries the audience grid instead, so
-      <code class="ds-inline">.case-content</code> stands alone there with the
-      <code class="ds-inline">.is-narrow</code> modifier, which caps it at a readable measure
-      rather than letting it stretch across the full inner width.
+      <code class="ds-inline">.case-content</code> in the case-body grid. Neither is currently used
+      on any page: the Partners section runs on hairlines end to end, with the
+      <a href="#deliver">delivered list</a> where the filled card used to be.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
@@ -499,6 +553,39 @@ const sections = [
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ─────────── DELIVERED LIST ─────────── -->
+  <section class="ds-section" id="deliver">
+    <div class="ds-section-head">
+      <h2>Delivered list</h2>
+      <span class="ds-tag">.deliver · .deliver-title · .deliver-list</span>
+    </div>
+    <p class="ds-note">
+      A heading held in the left column and its items as hairline rows in the right, on the page
+      ground. No box, no fill and no bullets: the rules do the dividing and the empty left column is
+      the air. Use it where a short list would otherwise be dropped into a filled card, which is
+      what the Partners section did before. The list closes with a rule under the last row so it
+      does not read as unfinished. One column below 900px.
+    </p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="deliver">
+          <h3 class="deliver-title">What we delivered</h3>
+          <ul class="deliver-list">
+            <li>The health data worth paying attention to, and what to ignore</li>
+            <li>The tests and metrics that matter in each decade of life</li>
+            <li>High-impact habits for busy professionals and entrepreneurs</li>
+          </ul>
+        </div>
+      </div>
+      <pre class="ds-code"><span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"deliver reveal"`}</span><span class="tag">{`>`}</span>
+  <span class="tag">{`<h3 `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"deliver-title"`}</span><span class="tag">{`>`}</span>What we delivered<span class="tag">{`</h3>`}</span>
+  <span class="tag">{`<ul `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"deliver-list"`}</span><span class="tag">{`>`}</span>
+    <span class="tag">{`<li>`}</span>The health data worth paying attention to…<span class="tag">{`</li>`}</span>
+  <span class="tag">{`</ul>`}</span>
+<span class="tag">{`</div>`}</span></pre>
     </div>
   </section>
 
@@ -571,8 +658,11 @@ const sections = [
       <span class="ds-tag">.partner-notes · .partner-note</span>
     </div>
     <p class="ds-note">
-      Three unheaded reassurances under the audience grid. Small label, one sentence, no card and
-      no rules. Three across on desktop, stacked below 900px.
+      Three unheaded reassurances under the audience grid. Small label, one sentence, no card. They
+      sit in the same hairline cells as the <a href="#case-stat">case stats</a>: a rule on top and a
+      rule down the left of every cell but the first, so the section closes on the same rhythm it
+      opened with. Three across on desktop, stacked below 900px, where the column rules become row
+      rules.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
@@ -618,46 +708,57 @@ const sections = [
   <section class="ds-section" id="plan-card">
     <div class="ds-section-head">
       <h2>Plan card</h2>
-      <span class="ds-tag">.plan · .plan.featured</span>
+      <span class="ds-tag">.plan · .plan-head · .plan-badge · .plan-features · .plan-btn.is-solid</span>
     </div>
-    <p class="ds-note">Three-up pricing grid of filled panels, never outlined cards. The featured variant is the same panel in sage and inverts every child color, so emphasis comes from the fill.</p>
+    <p class="ds-note">Membership tiers on the same hairline grid as the steps and the case stats: three cells, a hairline on top and between them, no fill, no radius, no hover. Inclusions are hairline rows rather than ticked bullets. The featured tier is not a coloured card; it is marked by a chip beside its name and by the one solid button in the row. Stacks to row hairlines below 900px.</p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
-        <div class="plans-grid" style="margin-top:0;">
+        <div class="plans-grid">
           <div class="plan">
-            <div class="plan-name">Baseline</div>
+            <div class="plan-head"><div class="plan-name">Baseline</div></div>
             <p class="plan-price-note">Credited toward year one if you continue.</p>
             <ul class="plan-features">
               <li>Advanced bloodwork, mobile-drawn at home</li>
               <li>DEXA scan, VO2 max, body composition</li>
               <li>Written longevity plan reviewed by an MD</li>
             </ul>
-            <a href="#" class="plan-btn ghost">Start here &rarr;</a>
+            <a href="#" class="plan-btn">Start here &rarr;</a>
           </div>
           <div class="plan featured">
-            <div class="plan-badge">Most popular</div>
-            <div class="plan-name">Optimize</div>
+            <div class="plan-head"><div class="plan-name">Optimize</div><span class="plan-badge">Most popular</span></div>
             <p class="plan-price-note">The annual program for sustained performance.</p>
             <ul class="plan-features">
               <li>MD-led, coach-supported program</li>
               <li>Day 1 and Day 180 reviews + quarterly check-ins</li>
               <li>Continuous biomarker and biological-age tracking</li>
             </ul>
-            <a href="#" class="plan-btn white">Apply now &rarr;</a>
+            <a href="#" class="plan-btn is-solid">Get access &rarr;</a>
           </div>
           <div class="plan">
-            <div class="plan-name">Family</div>
-            <p class="plan-price-note">Optimize extended to spouse and children.</p>
+            <div class="plan-head"><div class="plan-name">Eternal</div></div>
+            <p class="plan-price-note">Top of practice, always on.</p>
             <ul class="plan-features">
-              <li>Up to four additional members</li>
-              <li>Shared concierge coordination</li>
-              <li>Family-level reporting</li>
+              <li>Everything in Optimize</li>
+              <li>Annual Executive Physical with 500+ biomarkers</li>
+              <li>Unlimited messaging with a concierge care team</li>
             </ul>
-            <a href="#" class="plan-btn dark">Speak with us &rarr;</a>
+            <a href="#" class="plan-btn">Contact us &rarr;</a>
           </div>
         </div>
+        <p class="family-note">Family and household coverage is available as an extension across all tiers. Terms are structured with each partner.</p>
       </div>
     </div>
+    <pre class="ds-code"><code>&lt;div class="plans-grid"&gt;
+  &lt;div class="plan featured"&gt;
+    &lt;div class="plan-head"&gt;
+      &lt;div class="plan-name"&gt;Optimize&lt;/div&gt;
+      &lt;span class="plan-badge"&gt;Most popular&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class="plan-price-note"&gt;The annual program for sustained performance.&lt;/p&gt;
+    &lt;ul class="plan-features"&gt;&lt;li&gt;...&lt;/li&gt;&lt;/ul&gt;
+    &lt;a href="#" class="plan-btn is-solid"&gt;Get access &amp;rarr;&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
   </section>
 
   <!-- ─────────── TESTIMONIAL ─────────── -->
@@ -699,17 +800,42 @@ const sections = [
   <section class="ds-section" id="form-field">
     <div class="ds-section-head">
       <h2>Form field</h2>
-      <span class="ds-tag">.wf-field · .wf-row · .wf-segmented · .wf-submit</span>
+      <span class="ds-tag">.wf-field · .wf-row · .wf-segmented · .wf-dd · .wf-submit</span>
     </div>
-    <p class="ds-note">A field is label-over-input. A row groups two fields side-by-side. The whole form lives in a cream-surface card with sage submit.</p>
+    <p class="ds-note">A field is label-over-input. A row groups two fields side-by-side. The form sits beside the gradient CTA card on the page ground, with no card around it: warm-white fields on neutral hairlines, the audience picker as a row of chips (charcoal when selected), and one sage pill to submit, left-aligned.</p>
+    <p class="ds-note">
+      <strong>Selects are custom dropdowns.</strong> The page script wraps every
+      <code class="ds-inline">select.wf-select</code> in <code class="ds-inline">.wf-dd</code>: a
+      <code class="ds-inline">.wf-dd-btn</code> that looks like a field and shows the chosen option
+      (or the placeholder, in <code class="ds-inline">.is-empty</code>), and a
+      <code class="ds-inline">.wf-dd-list</code> listbox that opens under it in the same warm white,
+      hairline and radius as the fields, the chosen option ticked in sage. The native select stays
+      in the DOM, hidden, as the value the form reads. Arrow keys, Home, End, Enter, Space and Escape
+      work; a click outside closes. Without JavaScript the native select shows.
+    </p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block" style="padding-bottom:200px;">
+        <div class="wf-field" style="max-width:520px;">
+          <span class="wf-label">Membership tier of interest</span>
+          <div class="wf-dd">
+            <button class="wf-dd-btn" type="button" aria-haspopup="listbox" aria-expanded="true"><span>Optimize</span><svg class="wf-dd-chev" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <ul class="wf-dd-list is-open" role="listbox">
+              <li class="wf-dd-opt" role="option" aria-selected="false"><span>Baseline</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+              <li class="wf-dd-opt" role="option" aria-selected="true"><span>Optimize</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+              <li class="wf-dd-opt" role="option" aria-selected="false"><span>Eternal</span><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
     <p class="ds-note">
       <code class="ds-inline">.wf-segmented</code> is the audience selector: a
       <code class="ds-inline">radiogroup</code> of <code class="ds-inline">.wf-segment</code>
-      buttons, one carrying <code class="ds-inline">.is-active</code>. Four across on desktop, two
-      across below 900px. Fields that belong to one branch carry
+      buttons, one carrying <code class="ds-inline">.is-active</code>. The chips wrap onto as many
+      lines as they need. Fields that belong to one branch carry
       <code class="ds-inline">data-shown-to</code> and are toggled with the
       <code class="ds-inline">hidden</code> attribute, so each branch shows the same number of
-      fields and the card keeps one height.
+      fields and the form keeps one height.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">

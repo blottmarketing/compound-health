@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Logo from '../components/Logo.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
@@ -80,7 +81,7 @@ const ogImage    = new URL(image, siteOrigin).toString();
   <body>
 
     <nav class="site-nav">
-      <a href="/" class="nav-logo">Compound <em>Health</em></a>
+      <Logo />
       <div class="blog-nav-links">
         <a href="/blog">Blog</a>
         <a href="/" class="nav-back">

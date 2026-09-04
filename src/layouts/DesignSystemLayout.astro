@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Logo from '../components/Logo.astro';
 import '../styles/design-system.css';
 
 interface SectionLink {
@@ -74,7 +75,7 @@ const nav = [
   <body>
 
     <nav class="ds-topnav">
-      <a href="/" class="nav-logo">Compound <em>Health</em></a>
+      <Logo />
       <div class="ds-topnav-meta">
         <span class="ds-eyebrow">Design system · Internal</span>
         <a href="/" class="nav-back">
