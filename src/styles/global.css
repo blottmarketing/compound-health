@@ -126,6 +126,14 @@ section { padding: 108px 56px; }
 .btn-white { background: #fff; color: var(--sage); padding: 18px 44px; border-radius: 100px; font-size: 15px; font-weight: 500; text-decoration: none; display: inline-block; transition: all 0.2s; font-family: inherit; border: none; cursor: pointer; }
 .btn-white:hover { background: var(--cream); transform: translateY(-2px); }
 
+/* ── QUIET LINK ──
+   Low-emphasis inline link used to point a secondary audience somewhere else on
+   the page without competing with a button. .is-on-dark for sage/charcoal bands. */
+.link-quiet { display: inline-block; font-size: 14px; font-weight: 400; color: var(--mid); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: rgba(107,107,101,0.35); transition: color 0.2s, text-decoration-color 0.2s; }
+.link-quiet:hover { color: var(--sage); text-decoration-color: var(--sage); }
+.link-quiet.is-on-dark { color: rgba(255,255,255,0.7); text-decoration-color: rgba(255,255,255,0.3); }
+.link-quiet.is-on-dark:hover { color: #fff; text-decoration-color: #fff; }
+
 /* ── HERO ── */
 .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 48px 100px; background: var(--cream); position: relative; overflow: hidden; }
 .hero-blob { position: absolute; top: -10%; left: 50%; transform: translateX(-50%); width: 900px; height: 700px; background: radial-gradient(ellipse at center, rgba(74,122,37,0.10) 0%, transparent 65%); pointer-events: none; }
@@ -135,6 +143,7 @@ section { padding: 108px 56px; }
 .hero h1 em { font-style: italic; color: var(--sage); }
 .hero-sub { font-size: 20px; font-weight: 300; color: var(--mid); max-width: 520px; line-height: 1.7; margin-bottom: 52px; animation: up 0.7s 0.2s ease both; }
 .hero-btns { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center; animation: up 0.7s 0.3s ease both; }
+.hero-note { margin-top: 28px; animation: up 0.7s 0.4s ease both; }
 .scroll-indicator { position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; animation: up 0.7s 0.6s ease both; }
 .scroll-line { width: 1px; height: 52px; background: linear-gradient(to bottom, rgba(107,107,101,0.5), transparent); animation: grow 1.8s ease-in-out infinite; }
 
@@ -291,6 +300,7 @@ section { padding: 108px 56px; }
 .footer-cta h2 { font-family: 'Playfair Display', serif; font-size: clamp(38px, 5vw, 68px); font-weight: 400; color: #fff; letter-spacing: -2px; margin-bottom: 20px; line-height: 1.08; }
 .footer-cta h2 em { font-style: italic; color: rgba(255,255,255,0.6); }
 .footer-cta p { font-size: 18px; font-weight: 300; color: rgba(255,255,255,0.6); max-width: 460px; margin: 0 auto 52px; line-height: 1.7; }
+.footer-cta-actions { display: flex; gap: 28px; align-items: center; justify-content: center; flex-wrap: wrap; }
 
 /* ── FOOTER ── */
 footer { background: #141412; padding: 44px 56px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
