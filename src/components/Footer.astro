@@ -4,9 +4,10 @@
  *
  * Structure (top to bottom): hairline divider, four link columns, a tall gap,
  * then the legal row. A landscape image is anchored to the bottom of the block
- * and its sky dissolves into the footer background (--ink) via .footer-media.
+ * and its sky dissolves into the footer background (--warm-white) via .footer-media.
  * Swap the artwork by replacing /public/images/footer-landscape.webp. The image
- * should be around 1600x1000 or larger with a dark, near-black sky in its top third.
+ * should be around 2048x1360 or larger with a pale, near-white sky in its top half
+ * and the landscape in the bottom half; update width/height below if the ratio changes.
  */
 const year = new Date().getFullYear();
 ---
@@ -18,7 +19,7 @@ const year = new Date().getFullYear();
       src="/images/footer-landscape.webp"
       alt=""
       width="2048"
-      height="1280"
+      height="1360"
       loading="lazy"
       decoding="async"
     />
