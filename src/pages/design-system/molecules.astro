@@ -38,16 +38,16 @@ const sections = [
   <section class="ds-section" id="hero-media">
     <div class="ds-section-head">
       <h2>Hero media</h2>
-      <span class="ds-tag">.hero-media · .hero-img · .hero-blur.is-1/2/3 · .hero-fade</span>
+      <span class="ds-tag">.hero-media · .hero-img · .hero-blur.is-1/2/3</span>
     </div>
     <p class="ds-note">
       The home page hero is a full-bleed landscape with the copy anchored bottom-left inside
       <code class="ds-inline">.hero-inner</code>. The picture lives in an absolutely positioned
-      <code class="ds-inline">.hero-media</code> that fills the top 94% of the section. On top of
+      <code class="ds-inline">.hero-media</code> that fills the section, anchored to the bottom edge. On top of
       the base <code class="ds-inline">.hero-img</code> sit three blur layers, each drawing the same
       image via the <code class="ds-inline">--hero-image</code> token and masked to a horizontal
-      band, so the lower part of the picture softens progressively. <code class="ds-inline">.hero-fade</code>
-      finishes the dissolve into <code class="ds-inline">--warm-white</code>. To change the artwork,
+      band, so the lower part of the picture softens progressively. The artwork itself carries the
+      dissolve into <code class="ds-inline">--warm-white</code> (a white bottom quarter). To change the artwork,
       replace <code class="ds-inline">/public/images/hero-landscape.webp</code> and keep the token in
       sync.
     </p>
@@ -58,7 +58,6 @@ const sections = [
     <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-blur is-1"`}</span><span class="tag">{`></div>`}</span>
     <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-blur is-2"`}</span><span class="tag">{`></div>`}</span>
     <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-blur is-3"`}</span><span class="tag">{`></div>`}</span>
-    <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-fade"`}</span><span class="tag">{`></div>`}</span>
   <span class="tag">{`</div>`}</span>
   <span class="tag">{`<div `}</span><span class="attr">class</span><span class="tag">=</span><span class="str">{`"hero-inner"`}</span><span class="tag">{`>`}</span> …eyebrow, h1, .hero-sub, .hero-btns… <span class="tag">{`</div>`}</span>
 <span class="tag">{`</section>`}</span></pre>
