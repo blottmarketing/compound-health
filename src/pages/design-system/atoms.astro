@@ -493,17 +493,28 @@ const sections = [
   <section class="ds-section" id="motion">
     <div class="ds-section-head">
       <h2>Motion</h2>
-      <span class="ds-tag">GSAP 3.12 · CSS keyframes</span>
+      <span class="ds-tag">.reveal · GSAP 3.12 · CSS keyframes</span>
     </div>
     <p class="ds-note">
-      Four named keyframes ship with the system: <code class="ds-inline">up</code> for hero entry,
-      <code class="ds-inline">blink</code> for indicator dots, <code class="ds-inline">grow</code>
-      for the scroll line, and <code class="ds-inline">wfFadeIn</code> for form success. The mobile
-      menu uses a GSAP timeline. Default easing is <code class="ds-inline">power3.out</code> /
+      Scroll reveal is <code class="ds-inline">.reveal</code>: mark a block with it and an
+      IntersectionObserver in <code class="ds-inline">MainLayout</code> adds
+      <code class="ds-inline">.is-in</code> the first time it enters view, then stops watching it.
+      The element rises 16px, fades in and comes out of a 5px blur over 0.7s. No GSAP, no
+      ScrollTrigger. With <code class="ds-inline">prefers-reduced-motion</code>, or with no
+      JavaScript, the block is simply visible. Put it on the section head, the panel, the list, the
+      stat row: one block at a time, never on individual words.
+    </p>
+    <p class="ds-note">
+      Four named keyframes also ship with the system: <code class="ds-inline">up</code> for hero
+      entry, <code class="ds-inline">blink</code> for indicator dots,
+      <code class="ds-inline">grow</code> for the scroll line, and
+      <code class="ds-inline">wfFadeIn</code> for form success. The mobile menu uses a GSAP
+      timeline. Default easing is <code class="ds-inline">power3.out</code> /
       <code class="ds-inline">expo.out</code>. Durations 0.25–0.55s.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-stack">
+        <div class="ds-type-meta"><strong>Scroll reveal</strong> .reveal &rarr; .is-in · translateY(16px) + blur(5px) &rarr; none · 0.7s cubic-bezier(0.22,1,0.36,1)</div>
         <div class="ds-type-meta"><strong>Hover lift (cards, buttons)</strong> transform: translateY(-2 to -4px) · 0.2s ease</div>
         <div class="ds-type-meta"><strong>Hero entry</strong> @keyframes up · 0.7s ease, staggered 0.1s</div>
         <div class="ds-type-meta"><strong>Indicator blink</strong> @keyframes blink · 2s ease infinite</div>

@@ -66,7 +66,7 @@ import MainLayout from '../layouts/MainLayout.astro';
   <!-- HOW IT WORKS -->
   <section class="how" id="how">
     <div class="inner">
-      <div class="s-head">
+      <div class="s-head reveal">
         <p class="s-chip">The process</p>
         <div class="s-head-copy">
           <h2 class="s-title">A new model for<br />human performance</h2>
@@ -79,7 +79,7 @@ import MainLayout from '../layouts/MainLayout.astro';
           <a href="#features" class="btn-pill">What you get &#8594;</a>
         </div>
       </div>
-      <div class="steps">
+      <div class="steps reveal">
         <div class="step">
           <div class="step-n">01</div>
           <div class="step-title">Join through your advisor, firm or organization</div>
@@ -109,10 +109,14 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </section>
 
-  <!-- FEATURES -->
-  <section class="features" id="features">
+  <!-- WHAT YOU GET
+       Product section: a soft panel holding the product surface on the left, the
+       five things the membership includes on the right, the first one in a filled
+       block. Every label inside the panel is copy that already appears in this
+       section; none of it is new. -->
+  <section class="features prod" id="features">
     <div class="inner">
-      <div class="s-head">
+      <div class="s-head reveal">
         <p class="s-chip">What you get</p>
         <div class="s-head-copy">
           <h2 class="s-title">Everything your health<br />has been missing</h2>
@@ -125,52 +129,11 @@ import MainLayout from '../layouts/MainLayout.astro';
           <a href="#membership" class="btn-pill">See membership &#8594;</a>
         </div>
       </div>
-      <div class="feat-grid">
-        <div class="feat">
-          <div class="feat-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-          </div>
-          <div class="feat-title">Curated clinical delivery</div>
-          <p>
-            Physician-led care nationwide, virtual and in person, from partners selected for
-            outcomes, governance, and data ownership. Logistics handled.
-          </p>
-        </div>
-        <div class="feat is-col2">
-          <div class="feat-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M17 3c0 4-10 5-10 9s10 5 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M8.5 6.5h7M7 12h10M8.5 17.5h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="feat-title">Full biomarker tracking</div>
-          <p>
-            Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
-            continuous wearable integration, all synthesized into a single health intelligence layer.
-          </p>
-        </div>
-        <div class="feat span2">
-          <div>
-            <div class="feat-icon">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 4v16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 14l3-4 3 3 4-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div class="feat-title">A dashboard for your body</div>
-            <p>
-              The same rigor your advisor applies to your portfolio, applied to your biology.
-              Track trends, understand risks, and act on what the data reveals.
-            </p>
-          </div>
-          <div class="metrics-panel">
-            <div class="metrics-head">Health score overview</div>
+
+      <div class="prod-grid">
+        <div class="prod-panel reveal">
+          <div class="stack-card">
+            <div class="stack-card-head">Health score overview</div>
             <div class="metric">
               <span class="metric-name">Cardiovascular</span>
               <div class="metric-track"><div class="metric-fill is-good" style="width:82%"></div></div>
@@ -197,41 +160,106 @@ import MainLayout from '../layouts/MainLayout.astro';
               <span class="metric-val">88</span>
             </div>
           </div>
-        </div>
-        <div class="feat">
-          <div class="feat-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+          <div class="stack-back" aria-hidden="true">
+            <div class="stack-row"><span class="stack-mark"></span>Comprehensive panels</div>
+            <div class="stack-row"><span class="stack-mark"></span>DEXA</div>
+            <div class="stack-row"><span class="stack-mark"></span>Performance battery</div>
+            <div class="stack-row"><span class="stack-mark"></span>CGM cycles</div>
+            <div class="stack-row"><span class="stack-mark"></span>Wearable integration</div>
           </div>
-          <div class="feat-title">Personalized protocols</div>
-          <p>
-            Calibrated to your biology, not a template.
-          </p>
         </div>
-        <div class="feat is-col2">
-          <div class="feat-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M5 17a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 7V5M10.5 5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            </svg>
+
+        <div class="prod-list reveal">
+          <div class="prod-item is-lead">
+            <div class="prod-item-head">
+              <span class="prod-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </span>
+              <h3 class="prod-title">Curated clinical delivery</h3>
+            </div>
+            <p>
+              Physician-led care nationwide, virtual and in person, from partners selected for
+              outcomes, governance, and data ownership. Logistics handled.
+            </p>
           </div>
-          <div class="feat-title">Health concierge</div>
-          <p>
-            A dedicated coordinator who handles specialist referrals, appointment logistics, second
-            opinions, and anything else between you and better health.
-          </p>
+          <div class="prod-item">
+            <div class="prod-item-head">
+              <span class="prod-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M17 3c0 4-10 5-10 9s10 5 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M8.5 6.5h7M7 12h10M8.5 17.5h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h3 class="prod-title">Full biomarker tracking</h3>
+            </div>
+            <p>
+              Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
+              continuous wearable integration, all synthesized into a single health intelligence layer.
+            </p>
+          </div>
+          <div class="prod-item">
+            <div class="prod-item-head">
+              <span class="prod-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 4v16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 14l3-4 3 3 4-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <h3 class="prod-title">A dashboard for your body</h3>
+            </div>
+            <p>
+              The same rigor your advisor applies to your portfolio, applied to your biology.
+              Track trends, understand risks, and act on what the data reveals.
+            </p>
+          </div>
+          <div class="prod-item">
+            <div class="prod-item-head">
+              <span class="prod-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h3 class="prod-title">Personalized protocols</h3>
+            </div>
+            <p>
+              Calibrated to your biology, not a template.
+            </p>
+          </div>
+          <div class="prod-item">
+            <div class="prod-item-head">
+              <span class="prod-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M5 17a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 7V5M10.5 5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h3 class="prod-title">Health concierge</h3>
+            </div>
+            <p>
+              A dedicated coordinator who handles specialist referrals, appointment logistics, second
+              opinions, and anything else between you and better health.
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CURATED DELIVERY -->
-  <section class="curated">
+  <!-- HOW WE CHOOSE
+       The same product section, flipped, so the panel alternates sides down the
+       page. The panel shows the standard partners are assessed against; every
+       line in it is a phrase from this section's own copy. -->
+  <section class="curated prod is-flipped">
     <div class="inner">
-      <div class="s-head">
+      <div class="s-head reveal">
         <p class="s-chip">How we choose</p>
         <div class="s-head-copy">
           <h2 class="s-title">The best of each discipline,<br />one membership</h2>
@@ -241,27 +269,84 @@ import MainLayout from '../layouts/MainLayout.astro';
           </p>
         </div>
       </div>
-      <div class="curated-grid">
-        <div class="curated-card">
-          <h3 class="curated-title">Clinical care</h3>
-          <p>Physician-led teams with published outcomes and continuous care between visits.</p>
+
+      <div class="prod-grid">
+        <div class="prod-panel reveal">
+          <div class="stack-card">
+            <div class="stack-card-head">One standard</div>
+            <div class="stack-row" style="padding:9px 0;">
+              <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              Published outcomes
+            </div>
+            <div class="stack-row" style="padding:9px 0;">
+              <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              Continuous care between visits
+            </div>
+            <div class="stack-row" style="padding:9px 0;">
+              <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              Multi-cancer early detection
+            </div>
+            <div class="stack-row" style="padding:9px 0;">
+              <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              Vetted sourcing
+            </div>
+          </div>
+          <div class="stack-back" aria-hidden="true">
+            <div class="stack-row"><span class="stack-mark"></span>Clinical care</div>
+            <div class="stack-row"><span class="stack-mark"></span>Diagnostics and screening</div>
+            <div class="stack-row"><span class="stack-mark"></span>Advanced therapies</div>
+          </div>
         </div>
-        <div class="curated-card">
-          <h3 class="curated-title">Diagnostics and screening</h3>
-          <p>
-            Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and
-            usefulness.
-          </p>
-        </div>
-        <div class="curated-card">
-          <h3 class="curated-title">Advanced therapies</h3>
-          <p>
-            Hormones, peptides, and regenerative therapies, only when your data indicates them,
-            only through vetted sourcing.
-          </p>
+
+        <div class="prod-list reveal">
+          <div class="prod-item is-lead">
+            <div class="prod-item-head">
+              <span class="prod-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
+                </svg>
+              </span>
+              <h3 class="prod-title">Clinical care</h3>
+            </div>
+            <p>Physician-led teams with published outcomes and continuous care between visits.</p>
+          </div>
+          <div class="prod-item">
+            <div class="prod-item-head">
+              <span class="prod-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h3 class="prod-title">Diagnostics and screening</h3>
+            </div>
+            <p>
+              Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and
+              usefulness.
+            </p>
+          </div>
+          <div class="prod-item">
+            <div class="prod-item-head">
+              <span class="prod-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <h3 class="prod-title">Advanced therapies</h3>
+            </div>
+            <p>
+              Hormones, peptides, and regenerative therapies, only when your data indicates them,
+              only through vetted sourcing.
+            </p>
+          </div>
         </div>
       </div>
-      <p class="curated-note">
+
+      <p class="curated-note reveal">
         Every partner is re-reviewed each year. If a better option emerges, the membership moves
         with it.
       </p>
@@ -273,7 +358,7 @@ import MainLayout from '../layouts/MainLayout.astro';
   <!-- PARTNERS (formerly Case study) -->
   <section class="case" id="partners">
     <div class="inner">
-      <div class="s-head">
+      <div class="s-head reveal">
         <p class="s-chip">Partners</p>
         <div class="s-head-copy">
           <h2 class="s-title">A credible way to bring longevity<br />to the people you serve</h2>
@@ -285,7 +370,7 @@ import MainLayout from '../layouts/MainLayout.astro';
       </div>
 
       <!-- Proof block: the first partner engagement, kept as evidence -->
-      <div class="case-stats">
+      <div class="case-stats reveal">
         <div class="case-stat">
           <div class="case-num">400</div>
           <div class="case-stat-label">UHNW clients in the advisory team's book, reached through a single educational session.</div>
@@ -300,7 +385,7 @@ import MainLayout from '../layouts/MainLayout.astro';
         </div>
       </div>
 
-      <div class="case-content is-narrow">
+      <div class="case-content is-narrow reveal">
         <h3 class="case-title">What we delivered</h3>
         <ul class="case-agenda">
           <li>The health data worth paying attention to, and what to ignore</li>
@@ -310,8 +395,11 @@ import MainLayout from '../layouts/MainLayout.astro';
         </ul>
       </div>
 
-      <div class="audience-grid">
+      <div class="audience-grid reveal">
         <div class="audience-tile">
+          <span class="audience-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 10.5v8.5M18.5 10.5v8.5M10 10.5v8.5M14 10.5v8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3.5 20h17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
           <h3 class="audience-title">Wealth firms</h3>
           <p>
             RIAs, family offices, and private bank teams. A client session first, then membership
@@ -319,6 +407,9 @@ import MainLayout from '../layouts/MainLayout.astro';
           </p>
         </div>
         <div class="audience-tile">
+          <span class="audience-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.5h18" stroke="currentColor" stroke-width="1.5"/></svg>
+          </span>
           <h3 class="audience-title">Employers</h3>
           <p>
             Self-insured employers and leadership teams. Clinical outcomes on health spend, from
@@ -326,6 +417,9 @@ import MainLayout from '../layouts/MainLayout.astro';
           </p>
         </div>
         <div class="audience-tile">
+          <span class="audience-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8.5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M16 5.8a3 3 0 0 1 0 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M17.2 19a5.5 5.5 0 0 0-2-4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </span>
           <h3 class="audience-title">Executive and peer networks</h3>
           <p>
             CEO groups, professional networks, sports and entertainment organizations. A shared
@@ -333,6 +427,9 @@ import MainLayout from '../layouts/MainLayout.astro';
           </p>
         </div>
         <div class="audience-tile">
+          <span class="audience-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v10h12V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 20v-5.5h4V20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
           <h3 class="audience-title">Family offices and households</h3>
           <p>
             One program across generations, with each member owning their own data.
@@ -340,7 +437,7 @@ import MainLayout from '../layouts/MainLayout.astro';
         </div>
       </div>
 
-      <div class="partner-notes">
+      <div class="partner-notes reveal">
         <div class="partner-note">
           <div class="partner-note-title">Structured for you</div>
           <p>Tiers and terms are set with each partner, so the program fits the people it serves.</p>
@@ -355,7 +452,7 @@ import MainLayout from '../layouts/MainLayout.astro';
         </div>
       </div>
 
-      <div class="partner-cta">
+      <div class="partner-cta reveal">
         <a href="#joinwaitlist" class="btn-solid" data-wf-role="partner">Talk to us about a program</a>
       </div>
     </div>
@@ -366,7 +463,7 @@ import MainLayout from '../layouts/MainLayout.astro';
   <!-- MEMBERSHIP (formerly Plans) -->
   <section class="plans" id="membership">
     <div class="inner">
-      <div class="s-head">
+      <div class="s-head reveal">
         <p class="s-chip">Membership</p>
         <div class="s-head-copy">
           <h2 class="s-title">Built for founders, executives, and families.<br />Structured for the organizations that serve them.</h2>
@@ -376,7 +473,7 @@ import MainLayout from '../layouts/MainLayout.astro';
           <a href="#joinwaitlist" class="btn-pill">Get access &#8594;</a>
         </div>
       </div>
-      <div class="plans-grid">
+      <div class="plans-grid reveal">
         <div class="plan">
           <div class="plan-name">Baseline</div>
           <p class="plan-price-note">Credited toward year one if you continue.</p>
@@ -419,12 +516,10 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </section>
 
-  <div class="rule"></div>
-
   <!-- WAITLIST FORM -->
   <section class="waitlist" id="joinwaitlist">
     <div class="inner waitlist-inner">
-      <div class="waitlist-copy">
+      <div class="waitlist-copy reveal">
         <p class="s-chip">Access</p>
         <h2 class="s-title">Get access</h2>
         <p class="s-sub">
@@ -432,7 +527,7 @@ import MainLayout from '../layouts/MainLayout.astro';
           and we will be in touch.
         </p>
       </div>
-      <div class="waitlist-form-wrap">
+      <div class="waitlist-form-wrap reveal">
         <div class="waitlist-form" id="waitlistForm">
           <div class="wf-field">
             <span class="wf-label" id="wfRoleLabel">I am</span>

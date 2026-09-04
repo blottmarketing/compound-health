@@ -81,13 +81,15 @@ const ogImage    = new URL(image, siteOrigin).toString();
         <a href="/#features">What you get</a>
         <a href="/#partners">Partners</a>
         <a href="/#membership">Membership</a>
-        <a href="/#joinwaitlist" class="nav-cta">Get access</a>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
+      <div class="nav-actions">
+        <a href="/#joinwaitlist" class="nav-cta">Get access</a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
     </nav>
 
     <!-- Mobile menu overlay -->
@@ -123,6 +125,27 @@ const ogImage    = new URL(image, siteOrigin).toString();
         const update = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
         update();
         window.addEventListener('scroll', update, { passive: true });
+      })();
+
+      // Scroll reveal. Anything marked .reveal rises and sharpens once, when it
+      // first comes into view. No GSAP, no ScrollTrigger: one observer, and it
+      // stops watching an element as soon as it has played.
+      (function () {
+        const items = document.querySelectorAll<HTMLElement>('.reveal');
+        if (!items.length) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) {
+          items.forEach(el => el.classList.add('is-in'));
+          return;
+        }
+        const io = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            (entry.target as HTMLElement).classList.add('is-in');
+            obs.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+        items.forEach(el => io.observe(el));
       })();
 
       (function () {
