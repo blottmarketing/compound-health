@@ -258,6 +258,7 @@ import MainLayout from '../layouts/MainLayout.astro';
               <span class="prod-title">Clinical care</span>
             </span>
             <span class="prod-copy">Physician-led teams with published outcomes and continuous care between visits.</span>
+                      <span class="prod-timer" aria-hidden="true"><span class="prod-timer-fill"></span></span>
           </button>
           <button class="prod-item" type="button" role="tab" id="tab-diagnostics"
                   aria-controls="pane-diagnostics" aria-selected="false" tabindex="-1">
@@ -272,6 +273,7 @@ import MainLayout from '../layouts/MainLayout.astro';
               Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and
               usefulness.
             </span>
+                      <span class="prod-timer" aria-hidden="true"><span class="prod-timer-fill"></span></span>
           </button>
           <button class="prod-item" type="button" role="tab" id="tab-therapies"
                   aria-controls="pane-therapies" aria-selected="false" tabindex="-1">
@@ -286,64 +288,85 @@ import MainLayout from '../layouts/MainLayout.astro';
               Hormones, peptides, and regenerative therapies, only when your data indicates them,
               only through vetted sourcing.
             </span>
+                      <span class="prod-timer" aria-hidden="true"><span class="prod-timer-fill"></span></span>
           </button>
         </div>
 
         <div class="prod-panel reveal">
           <div class="prod-panes">
+            <!-- Clinical care: who is on the team, and that it runs between visits. -->
             <div class="prod-pane is-active" id="pane-clinical" role="tabpanel" aria-labelledby="tab-clinical">
               <div class="stack-card">
-                <div class="stack-card-head">One standard</div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Physician-led teams
-              </div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Published outcomes
-              </div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Continuous care between visits
-              </div>
+                <div class="stack-card-head">Your clinical team</div>
+                <div class="team-row">
+                  <span class="team-badge" aria-hidden="true">M</span>
+                  <span class="team-role">MD-led</span>
+                  <span class="team-note">Published outcomes</span>
+                </div>
+                <div class="team-row">
+                  <span class="team-badge" aria-hidden="true">H</span>
+                  <span class="team-role">Health coaching</span>
+                  <span class="team-note">Monthly</span>
+                </div>
+                <div class="team-row">
+                  <span class="team-badge" aria-hidden="true">D</span>
+                  <span class="team-role">Dietitian hours</span>
+                  <span class="team-note">Monthly</span>
+                </div>
+                <div class="team-row">
+                  <span class="team-badge" aria-hidden="true">C</span>
+                  <span class="team-role">Health concierge</span>
+                  <span class="team-note">Specialist referrals</span>
+                </div>
+                <div class="team-foot">
+                  <span class="team-pulse" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+                  Continuous care between visits
+                </div>
               </div>
             </div>
+
+            <!-- Diagnostics: the breadth of one baseline, as a number and a coverage map. -->
             <div class="prod-pane" id="pane-diagnostics" role="tabpanel" aria-labelledby="tab-diagnostics">
               <div class="stack-card">
-                <div class="stack-card-head">One standard</div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Baseline testing
-              </div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Multi-cancer early detection
-              </div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Imaging
-              </div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Accuracy and usefulness
-              </div>
+                <div class="stack-card-head">Baseline testing</div>
+                <div class="cov-figure">
+                  <span class="cov-num">500+</span>
+                  <span class="cov-label">biomarkers</span>
+                </div>
+                <div class="cov-grid">
+                  <span class="cov-tile">Bloodwork</span>
+                  <span class="cov-tile">Imaging</span>
+                  <span class="cov-tile">Genetics</span>
+                  <span class="cov-tile">Cognitive</span>
+                  <span class="cov-tile">Metabolic</span>
+                  <span class="cov-tile">Gut and toxin panels</span>
+                </div>
+                <div class="cov-foot"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.4 7 9 4.1-1.6 7-4.8 7-9V6l-7-2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2.2 2.2L15.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Multi-cancer early detection</div>
               </div>
             </div>
+
+            <!-- Advanced therapies: available, but behind two gates. -->
             <div class="prod-pane" id="pane-therapies" role="tabpanel" aria-labelledby="tab-therapies">
               <div class="stack-card">
-                <div class="stack-card-head">One standard</div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Hormones, peptides, and regenerative therapies
-              </div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Only when your data indicates them
-              </div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Vetted sourcing
-              </div>
+                <div class="stack-card-head">On a curated add-on layer</div>
+                <div class="gate-chips">
+                  <span class="gate-chip">Hormones</span>
+                  <span class="gate-chip">Peptides</span>
+                  <span class="gate-chip">Regenerative therapies</span>
+                  <span class="gate-chip">NAD</span>
+                  <span class="gate-chip">IV</span>
+                  <span class="gate-chip">CGM</span>
+                </div>
+                <div class="gate-flow">
+                  <div class="gate-step">
+                    <span class="gate-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    Only when your data indicates them
+                  </div>
+                  <div class="gate-step">
+                    <span class="gate-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                    Only through vetted sourcing
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -646,20 +669,33 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </div>
 
-  <!-- Discipline tabs. Choosing a row swaps the card in the panel and marks the
-       matching row in the card behind it. Arrow keys move between tabs, per the
-       tablist pattern. With no JavaScript the first pane stays open and all
-       three rows are still readable in the list. -->
+  <!-- Discipline tabs. Each discipline has its own figure in the panel, not the
+       same list three times, and choosing one marks the matching row in the card
+       behind it.
+
+       The tabs advance on their own every 7s. The countdown bar under the active
+       tab is a CSS animation and the advance is driven by its animationend, so
+       the bar and the switch can never drift apart. Hovering or focusing
+       anywhere in the section pauses both; leaving the viewport pauses them;
+       clicking a tab is taken as the reader taking over, and stops the rotation
+       for good. With reduced motion, or no JavaScript, nothing rotates, the bar
+       never appears and the first pane stays open. -->
   <script>
     (function () {
+      const AUTO_MS = 7000;
       const root = document.getElementById('disciplines');
       if (!root) return;
+      const list  = root.querySelector<HTMLElement>('.prod-list');
       const tabs  = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
       const panes = Array.from(root.querySelectorAll<HTMLElement>('.prod-pane'));
       const backs = Array.from(root.querySelectorAll<HTMLElement>('[data-back]'));
-      if (!tabs.length) return;
+      if (!list || !tabs.length) return;
+
+      let current = 0;
+      let auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       function select(index: number, focus = false) {
+        current = index;
         tabs.forEach((tab, i) => {
           const on = i === index;
           tab.setAttribute('aria-selected', on ? 'true' : 'false');
@@ -668,10 +704,39 @@ import MainLayout from '../layouts/MainLayout.astro';
         panes.forEach((pane, i) => pane.classList.toggle('is-active', i === index));
         backs.forEach((row, i) => row.classList.toggle('is-active', i === index));
         if (focus) tabs[index].focus();
+        if (auto) restartTimer();
       }
 
+      // Re-adding the class after a reflow is what makes the bar start over.
+      function restartTimer() {
+        const fill = tabs[current].querySelector<HTMLElement>('.prod-timer-fill');
+        if (!fill) return;
+        list.classList.remove('is-auto');
+        void fill.offsetWidth;
+        list.classList.add('is-auto');
+      }
+
+      function stopAuto() {
+        auto = false;
+        list.classList.remove('is-auto', 'is-paused');
+      }
+
+      list.addEventListener('animationend', e => {
+        if (!auto) return;
+        if (!(e.target as HTMLElement).classList.contains('prod-timer-fill')) return;
+        select((current + 1) % tabs.length);
+      });
+
+      const pause  = () => { if (auto) list.classList.add('is-paused'); };
+      const resume = () => list.classList.remove('is-paused');
+      root.addEventListener('pointerenter', pause);
+      root.addEventListener('pointerleave', resume);
+      root.addEventListener('focusin', pause);
+      root.addEventListener('focusout', resume);
+
       tabs.forEach((tab, i) => {
-        tab.addEventListener('click', () => select(i));
+        // A click is the reader taking over.
+        tab.addEventListener('click', () => { stopAuto(); select(i); });
         tab.addEventListener('keydown', e => {
           const last = tabs.length - 1;
           let next = -1;
@@ -681,9 +746,25 @@ import MainLayout from '../layouts/MainLayout.astro';
           else if (e.key === 'End') next = last;
           if (next < 0) return;
           e.preventDefault();
+          stopAuto();
           select(next, true);
         });
       });
+
+      list.style.setProperty('--auto-ms', AUTO_MS + 'ms');
+
+      // Only rotate while the section is actually on screen.
+      if (auto && 'IntersectionObserver' in window) {
+        new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!auto) return;
+            if (entry.isIntersecting) { resume(); restartTimer(); }
+            else pause();
+          });
+        }, { threshold: 0.35 }).observe(root);
+      } else if (auto) {
+        restartTimer();
+      }
     })();
   </script>
 

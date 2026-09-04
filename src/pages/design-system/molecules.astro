@@ -202,7 +202,7 @@ const sections = [
   <section class="ds-section" id="product-section">
     <div class="ds-section-head">
       <h2>Product section</h2>
-      <span class="ds-tag">.prod · .prod-grid · .prod-list · .prod-item · .prod-panel · .prod-pane</span>
+      <span class="ds-tag">.prod · .prod-list · .prod-item · .prod-timer · .prod-panel · .prod-pane</span>
     </div>
     <p class="ds-note">
       An interactive section. A <a href="/design-system/atoms#section-heads">section head</a>, then
@@ -215,9 +215,29 @@ const sections = [
       stays open and every choice is still readable in the list.
     </p>
     <p class="ds-note">
+      The tabs also advance on their own every seven seconds. The countdown bar under the active
+      tab (<code class="ds-inline">.prod-timer</code>) is a CSS animation, and the advance is driven
+      by its <code class="ds-inline">animationend</code>, so the bar and the switch can never drift
+      apart. Hovering or focusing anywhere in the section pauses both at once; leaving the viewport
+      pauses them; clicking a tab is taken as the reader taking over and stops the rotation for
+      good. Under <code class="ds-inline">prefers-reduced-motion</code>, or with no JavaScript,
+      nothing rotates and the bar never appears.
+    </p>
+    <p class="ds-note">
       Tabs are real <code class="ds-inline">&lt;button&gt;</code> elements, so their body copy is a
       <code class="ds-inline">.prod-copy</code> span rather than a
       <code class="ds-inline">&lt;p&gt;</code>: flow content is not valid inside a button.
+    </p>
+    <p class="ds-note">
+      <strong>Each pane is a different figure, never the same list with different words.</strong>
+      The three on the home page are a roster (<code class="ds-inline">.team-row</code>, with a
+      dashed footer and a pulse for continuity), a coverage map
+      (<code class="ds-inline">.cov-figure</code> headline number over a
+      <code class="ds-inline">.cov-grid</code> of tiles) and a gated flow
+      (<code class="ds-inline">.gate-chips</code> above a connected
+      <code class="ds-inline">.gate-flow</code>). If a new pane would repeat a shape that is
+      already in the section, it needs a different figure, not different labels. The panel is
+      top-aligned rather than centred so the card does not jump as the heights change.
     </p>
     <p class="ds-note">
       <strong>Every label inside a panel is lifted verbatim from copy that already appears in that
@@ -228,27 +248,9 @@ const sections = [
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
         <div class="prod-grid">
-          <div class="prod-panel">
-            <div class="stack-card">
-              <div class="stack-card-head">One standard</div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Published outcomes
-              </div>
-              <div class="stack-row" style="padding:9px 0;">
-                <span class="stack-check"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                Vetted sourcing
-              </div>
-            </div>
-            <div class="stack-back" aria-hidden="true">
-              <div class="stack-row"><span class="stack-mark"></span>Clinical care</div>
-              <div class="stack-row"><span class="stack-mark"></span>Diagnostics and screening</div>
-              <div class="stack-row"><span class="stack-mark"></span>Advanced therapies</div>
-            </div>
-          </div>
-          <div class="prod-list">
-            <div class="prod-item is-lead">
-              <div class="prod-item-head">
+          <div class="prod-list is-auto" role="tablist" aria-label="Example">
+            <button class="prod-item" type="button" role="tab" aria-selected="true" tabindex="0">
+              <span class="prod-item-head">
                 <span class="prod-icon">
                   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -257,28 +259,57 @@ const sections = [
                     <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
                   </svg>
                 </span>
-                <h3 class="prod-title">Clinical care</h3>
-              </div>
-              <p>Physician-led teams with published outcomes and continuous care between visits.</p>
-            </div>
-            <div class="prod-item">
-              <div class="prod-item-head">
+                <span class="prod-title">Clinical care</span>
+              </span>
+              <span class="prod-copy">Physician-led teams with published outcomes and continuous care between visits.</span>
+              <span class="prod-timer" aria-hidden="true"><span class="prod-timer-fill"></span></span>
+            </button>
+            <button class="prod-item" type="button" role="tab" aria-selected="false" tabindex="-1">
+              <span class="prod-item-head">
                 <span class="prod-icon">
                   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                     <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/>
                     <path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                   </svg>
                 </span>
-                <h3 class="prod-title">Diagnostics and screening</h3>
+                <span class="prod-title">Diagnostics and screening</span>
+              </span>
+              <span class="prod-copy">Baseline testing, multi-cancer early detection and imaging.</span>
+              <span class="prod-timer" aria-hidden="true"><span class="prod-timer-fill"></span></span>
+            </button>
+          </div>
+          <div class="prod-panel">
+            <div class="prod-panes">
+              <div class="prod-pane is-active" role="tabpanel">
+                <div class="stack-card">
+                  <div class="stack-card-head">Your clinical team</div>
+                  <div class="team-row">
+                    <span class="team-badge" aria-hidden="true">M</span>
+                    <span class="team-role">MD-led</span>
+                    <span class="team-note">Published outcomes</span>
+                  </div>
+                  <div class="team-row">
+                    <span class="team-badge" aria-hidden="true">C</span>
+                    <span class="team-role">Health concierge</span>
+                    <span class="team-note">Specialist referrals</span>
+                  </div>
+                  <div class="team-foot">
+                    <span class="team-pulse" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+                    Continuous care between visits
+                  </div>
+                </div>
               </div>
-              <p>Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and usefulness.</p>
+            </div>
+            <div class="stack-back" aria-hidden="true">
+              <div class="stack-row is-active"><span class="stack-mark"></span>Clinical care</div>
+              <div class="stack-row"><span class="stack-mark"></span>Diagnostics and screening</div>
             </div>
           </div>
         </div>
       </div>
       <div class="ds-specimen-meta">
-        <span><strong>.is-flipped</strong> · swaps the panel to the right</span>
-        <span><strong>.prod-item.is-lead</strong> · first item, filled</span>
+        <span><strong>[aria-selected="true"]</strong> · takes the panel fill and shows the timer</span>
+        <span><strong>.prod-timer</strong> · 7s countdown, drives the advance</span>
       </div>
     </div>
   </section>

@@ -269,7 +269,9 @@ section { padding: 160px 56px; }
    Nothing in a panel is new copy. */
 .prod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 76px; align-items: center; }
 
-.prod-panel { background: var(--panel); border-radius: 18px; padding: 48px 44px; min-height: 470px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+/* Top-aligned, not centred: the three figures are different heights, and
+   centring made the whole stack jump every time the tab changed. */
+.prod-panel { background: var(--panel); border-radius: 18px; padding: 52px 44px; min-height: 480px; display: flex; flex-direction: column; justify-content: flex-start; position: relative; overflow: hidden; }
 .stack-card { background: var(--warm-white); border-radius: 12px; padding: 24px 26px; box-shadow: 0 14px 34px rgba(28,28,26,0.10); position: relative; z-index: 2; }
 .stack-card-head { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid); margin-bottom: 18px; }
 /* The card behind is offset and clipped by the panel, so the stack reads as
@@ -285,10 +287,20 @@ section { padding: 160px 56px; }
 .prod-list { display: flex; flex-direction: column; gap: 4px; }
 /* Each item is a tab. The selected one takes the panel fill, so the row and
    the card it drives read as one object. */
-.prod-item { padding: 20px 24px; border-radius: 12px; width: 100%; text-align: left; background: none; border: none; font-family: inherit; cursor: pointer; transition: background 0.25s; display: block; }
+.prod-item { position: relative; padding: 20px 24px 26px; border-radius: 12px; width: 100%; text-align: left; background: none; border: none; font-family: inherit; cursor: pointer; transition: background 0.25s; display: block; }
 .prod-item:hover { background: rgba(28,28,26,0.04); }
 .prod-item[aria-selected='true'] { background: var(--panel); }
 .prod-item:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(74,122,37,0.20); }
+/* Timer for the auto-advance. The bar is a CSS animation, and the advance is
+   driven by its animationend, so the visible countdown and the switch can
+   never drift apart. Hovering the section pauses both at once. */
+.prod-timer { position: absolute; left: 24px; right: 24px; bottom: 14px; height: 2px; border-radius: 2px; background: rgba(28,28,26,0.09); overflow: hidden; opacity: 0; transition: opacity 0.25s; }
+.prod-item[aria-selected='true'] .prod-timer { opacity: 1; }
+.prod-timer-fill { display: block; height: 100%; background: var(--sage); border-radius: 2px; transform: scaleX(0); transform-origin: left center; }
+.prod-list.is-auto .prod-item[aria-selected='true'] .prod-timer-fill { animation: timerFill var(--auto-ms, 7000ms) linear both; }
+.prod-list.is-auto.is-paused .prod-item[aria-selected='true'] .prod-timer-fill { animation-play-state: paused; }
+.prod-list:not(.is-auto) .prod-timer { opacity: 0; }
+
 .prod-panes { position: relative; z-index: 2; }
 .prod-pane { display: none; }
 .prod-pane.is-active { display: block; animation: paneIn 0.35s cubic-bezier(0.22,1,0.36,1) both; }
@@ -297,6 +309,42 @@ section { padding: 160px 56px; }
 .prod-icon svg { width: 22px; height: 22px; display: block; }
 .prod-title { font-family: 'Lato', sans-serif; font-size: 18px; font-weight: 500; color: var(--charcoal); letter-spacing: -0.2px; line-height: 1.3; }
 .prod-copy { display: block; font-size: 14px; font-weight: 300; color: var(--mid); line-height: 1.65; padding-left: 34px; }
+
+/* ── PANEL FIGURES ──
+   One per discipline in 'how we choose'. They are deliberately three different
+   shapes, not the same list three times: a roster, a coverage map, and a gated
+   flow. Every label in them is a phrase from that discipline's own paragraph or
+   from the membership tiers further down the page. */
+
+/* Clinical care: who is on the team, and that it does not stop between visits. */
+.team-row { display: flex; align-items: center; gap: 14px; padding: 11px 0; }
+.team-badge { width: 30px; height: 30px; border-radius: 50%; background: var(--sage-pale); color: var(--sage); font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.team-role { font-size: 14px; color: var(--charcoal); }
+.team-note { margin-left: auto; font-size: 12px; color: var(--mid); }
+.team-foot { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding-top: 18px; border-top: 1px dashed rgba(28,28,26,0.14); font-size: 12px; font-weight: 500; letter-spacing: 0.02em; color: var(--sage); }
+.team-pulse { display: flex; align-items: center; gap: 5px; }
+.team-pulse span { width: 5px; height: 5px; border-radius: 50%; background: var(--sage-light); animation: blink 2.4s ease infinite; }
+.team-pulse span:nth-child(2) { animation-delay: 0.3s; }
+.team-pulse span:nth-child(3) { animation-delay: 0.6s; }
+.team-pulse span:nth-child(4) { animation-delay: 0.9s; }
+
+/* Diagnostics: the breadth of one baseline, as a number and a coverage map. */
+.cov-figure { display: flex; align-items: baseline; gap: 9px; margin-bottom: 22px; }
+.cov-num { font-family: 'Lato', sans-serif; font-size: 46px; font-weight: 400; line-height: 1; letter-spacing: -2px; color: var(--sage); }
+.cov-label { font-size: 13px; color: var(--mid); }
+.cov-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 8px; }
+.cov-tile { background: var(--panel); border-radius: 8px; padding: 11px 13px; font-size: 12.5px; color: var(--charcoal); }
+.cov-foot { display: flex; align-items: center; gap: 9px; margin-top: 18px; font-size: 12.5px; color: var(--sage); }
+.cov-foot svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* Advanced therapies: available, but behind two gates. */
+.gate-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 4px; }
+.gate-chip { background: var(--panel); border-radius: 100px; padding: 7px 14px; font-size: 12.5px; color: var(--charcoal); }
+.gate-flow { position: relative; padding-left: 9px; margin-top: 22px; }
+.gate-flow::before { content: ''; position: absolute; left: 8px; top: 14px; bottom: 14px; width: 1px; background: rgba(45,80,22,0.22); }
+.gate-step { position: relative; display: flex; align-items: center; gap: 16px; padding: 9px 0; font-size: 13px; color: var(--charcoal); }
+.gate-dot { width: 17px; height: 17px; border-radius: 50%; border: 1px solid rgba(45,80,22,0.3); background: var(--warm-white); color: var(--sage); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-left: -8px; z-index: 1; }
+.gate-dot svg { width: 11px; height: 11px; display: block; }
 
 /* ── BENTO ──
    The 'what you get' grid. Filled cells of unequal size on a six-column track:
@@ -770,6 +818,7 @@ section { padding: 160px 56px; }
 }
 @keyframes up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes paneIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes timerFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
 /* ── MOBILE ── */
 @media (max-width: 900px) {
@@ -811,6 +860,9 @@ section { padding: 160px 56px; }
   .rule { padding: 0 24px; }
   .prod-grid { grid-template-columns: 1fr; gap: 32px; }
   .prod-panel { min-height: 0; padding: 32px 24px; }
+  .prod-item { padding: 18px 18px 24px; }
+  .prod-timer { left: 18px; right: 18px; bottom: 12px; }
+  .cov-grid { grid-template-columns: 1fr; }
   .bento { grid-template-columns: 1fr; gap: 12px; }
   .bento-cell, .bento-cell.is-surface, .bento-cell.is-half, .bento-cell.is-wide { grid-column: span 1; grid-row: auto; padding: 28px 24px; }
   .bento-card { padding: 22px 20px; }
