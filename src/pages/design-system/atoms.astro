@@ -15,6 +15,8 @@ const swatches = [
   { name: 'Gold',         token: '--gold',         hex: '#B8862A', text: '#fff' },
   { name: 'Gold bg',      token: '--gold-bg',      hex: '#F5EDD5', text: '#B8862A' },
   { name: 'Hairline',     token: '--hair',         hex: 'rgba(28,28,26,0.10)', text: '#1C1C1A' },
+  { name: 'Charcoal soft', token: '--charcoal-soft', hex: '#3A3A38', text: '#fff' },
+  { name: 'Glass',        token: '--glass',        hex: 'rgba(254,252,250,0.86)', text: '#1C1C1A' },
 ];
 
 const spacing = [
@@ -315,9 +317,16 @@ const sections = [
       <span class="ds-tag">.eyebrow · .s-label · .page-label</span>
     </div>
     <p class="ds-note">
-      Three flavors: hero eyebrow with pill background and dot, plain section label, and the
-      stronger page-hero label. All use the same type spec: 11px, weight 500, uppercase, 0.1em
-      tracking.
+      <code class="ds-inline">.eyebrow</code> is the same object as
+      <a href="#section-heads">.s-chip</a>, given a <code class="ds-inline">var(--glass)</code>
+      surface and a hairline so it holds up over the hero artwork: 13px, weight 500, sentence case,
+      no tracking, with an optional <code class="ds-inline">.eyebrow-dot</code> where something is
+      genuinely live. It reads the same as a section chip because it is doing the same job.
+    </p>
+    <p class="ds-note">
+      <code class="ds-inline">.s-label</code> and <code class="ds-inline">.page-label</code> are the
+      older uppercase markers, still in use on the legal, blog and deck pages: 11px, weight 500,
+      uppercase, 0.1em tracking.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-stack">
