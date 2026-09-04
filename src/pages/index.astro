@@ -370,11 +370,6 @@ import MainLayout from '../layouts/MainLayout.astro';
               </div>
             </div>
           </div>
-          <div class="stack-back" aria-hidden="true">
-            <div class="stack-row is-active" data-back="clinical"><span class="stack-mark"></span>Clinical care</div>
-            <div class="stack-row" data-back="diagnostics"><span class="stack-mark"></span>Diagnostics and screening</div>
-            <div class="stack-row" data-back="therapies"><span class="stack-mark"></span>Advanced therapies</div>
-          </div>
         </div>
       </div>
 
@@ -670,16 +665,17 @@ import MainLayout from '../layouts/MainLayout.astro';
   </div>
 
   <!-- Discipline tabs. Each discipline has its own figure in the panel, not the
-       same list three times, and choosing one marks the matching row in the card
-       behind it.
+       same list three times, and all three figures share one height so nothing
+       moves as the tab changes.
 
        The tabs advance on their own every 7s. The countdown bar under the active
        tab is a CSS animation and the advance is driven by its animationend, so
        the bar and the switch can never drift apart. Hovering or focusing
-       anywhere in the section pauses both; leaving the viewport pauses them;
-       clicking a tab is taken as the reader taking over, and stops the rotation
-       for good. With reduced motion, or no JavaScript, nothing rotates, the bar
-       never appears and the first pane stays open. -->
+       anywhere in the section pauses both, so nothing moves under a reader;
+       leaving the viewport pauses them; choosing a tab restarts the countdown
+       from it rather than ending the rotation. With reduced motion, or no
+       JavaScript, nothing rotates, the bar never appears and the first pane
+       stays open. -->
   <script>
     (function () {
       const AUTO_MS = 7000;
@@ -688,7 +684,6 @@ import MainLayout from '../layouts/MainLayout.astro';
       const list  = root.querySelector<HTMLElement>('.prod-list');
       const tabs  = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
       const panes = Array.from(root.querySelectorAll<HTMLElement>('.prod-pane'));
-      const backs = Array.from(root.querySelectorAll<HTMLElement>('[data-back]'));
       if (!list || !tabs.length) return;
 
       let current = 0;
@@ -702,7 +697,6 @@ import MainLayout from '../layouts/MainLayout.astro';
           tab.tabIndex = on ? 0 : -1;
         });
         panes.forEach((pane, i) => pane.classList.toggle('is-active', i === index));
-        backs.forEach((row, i) => row.classList.toggle('is-active', i === index));
         if (focus) tabs[index].focus();
         if (auto) restartTimer();
       }
@@ -714,11 +708,6 @@ import MainLayout from '../layouts/MainLayout.astro';
         list.classList.remove('is-auto');
         void fill.offsetWidth;
         list.classList.add('is-auto');
-      }
-
-      function stopAuto() {
-        auto = false;
-        list.classList.remove('is-auto', 'is-paused');
       }
 
       list.addEventListener('animationend', e => {
@@ -735,8 +724,10 @@ import MainLayout from '../layouts/MainLayout.astro';
       root.addEventListener('focusout', resume);
 
       tabs.forEach((tab, i) => {
-        // A click is the reader taking over.
-        tab.addEventListener('click', () => { stopAuto(); select(i); });
+        // Choosing a tab restarts the countdown from it rather than ending the
+        // rotation: nothing moves while a reader hovers the section, and it
+        // keeps going once they leave.
+        tab.addEventListener('click', () => select(i));
         tab.addEventListener('keydown', e => {
           const last = tabs.length - 1;
           let next = -1;
@@ -746,7 +737,6 @@ import MainLayout from '../layouts/MainLayout.astro';
           else if (e.key === 'End') next = last;
           if (next < 0) return;
           e.preventDefault();
-          stopAuto();
           select(next, true);
         });
       });

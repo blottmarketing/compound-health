@@ -218,10 +218,11 @@ const sections = [
       The tabs also advance on their own every seven seconds. The countdown bar under the active
       tab (<code class="ds-inline">.prod-timer</code>) is a CSS animation, and the advance is driven
       by its <code class="ds-inline">animationend</code>, so the bar and the switch can never drift
-      apart. Hovering or focusing anywhere in the section pauses both at once; leaving the viewport
-      pauses them; clicking a tab is taken as the reader taking over and stops the rotation for
-      good. Under <code class="ds-inline">prefers-reduced-motion</code>, or with no JavaScript,
-      nothing rotates and the bar never appears.
+      apart. Hovering or focusing anywhere in the section pauses both at once, so nothing moves
+      under a reader, and leaving the viewport pauses them too. Choosing a tab restarts the
+      countdown from it rather than ending the rotation. Under
+      <code class="ds-inline">prefers-reduced-motion</code>, or with no JavaScript, nothing rotates
+      and the bar never appears.
     </p>
     <p class="ds-note">
       Tabs are real <code class="ds-inline">&lt;button&gt;</code> elements, so their body copy is a
@@ -236,14 +237,14 @@ const sections = [
       <code class="ds-inline">.cov-grid</code> of tiles) and a gated flow
       (<code class="ds-inline">.gate-chips</code> above a connected
       <code class="ds-inline">.gate-flow</code>). If a new pane would repeat a shape that is
-      already in the section, it needs a different figure, not different labels. The panel is
-      top-aligned rather than centred so the card does not jump as the heights change.
+      already in the section, it needs a different figure, not different labels.
+      <code class="ds-inline">.prod-panes</code> fixes one height for all of them and each figure
+      pins its own footer with <code class="ds-inline">margin-top: auto</code>, so the card and the
+      footers stay put as the tab changes.
     </p>
     <p class="ds-note">
       <strong>Every label inside a panel is lifted verbatim from copy that already appears in that
-      section.</strong> A panel illustrates the copy; it never introduces new copy. The card behind
-      (<code class="ds-inline">.stack-back</code>) is offset and clipped by the panel so the stack
-      reads as depth, and it is <code class="ds-inline">aria-hidden</code> because it is decoration.
+      section.</strong> A panel illustrates the copy; it never introduces new copy.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-block">
@@ -299,10 +300,6 @@ const sections = [
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="stack-back" aria-hidden="true">
-              <div class="stack-row is-active"><span class="stack-mark"></span>Clinical care</div>
-              <div class="stack-row"><span class="stack-mark"></span>Diagnostics and screening</div>
             </div>
           </div>
         </div>
