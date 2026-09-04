@@ -9,23 +9,39 @@ import MainLayout from '../layouts/MainLayout.astro';
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-blob"></div>
-    <h1>Beyond wealth:<br />the years to <em>enjoy it</em></h1>
-    <p class="hero-sub">
-      A private longevity membership, introduced through the people who already advise you, your
-      firm or your organization. Delivered by clinical partners chosen against one standard. Your
-      data stays yours.
-    </p>
-    <div class="hero-btns">
-      <a href="#joinwaitlist" class="btn-solid">Get access</a>
-      <a href="#how" class="btn-outline">See how it works &#8594;</a>
+    <div class="hero-media" aria-hidden="true">
+      <img
+        class="hero-img"
+        src="/images/hero-landscape.jpg"
+        alt=""
+        width="3024"
+        height="1990"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <div class="hero-blur is-1"></div>
+      <div class="hero-blur is-2"></div>
+      <div class="hero-blur is-3"></div>
+      <div class="hero-fade"></div>
     </div>
-    <div class="hero-note">
-      <a href="#partners" class="link-quiet">
-        Introducing Compound Health to your clients, employees or members?
-      </a>
+    <div class="hero-inner">
+      <a href="#joinwaitlist" class="eyebrow"><span class="eyebrow-dot"></span>Founding member waitlist now open</a>
+      <h1>Beyond wealth:<br />the years to <em>enjoy it</em></h1>
+      <p class="hero-sub">
+        A private longevity membership, introduced through the people who already advise you, your
+        firm or your organization. Delivered by clinical partners chosen against one standard. Your
+        data stays yours.
+      </p>
+      <div class="hero-btns">
+        <a href="#joinwaitlist" class="btn-solid">Get access</a>
+        <a href="#how" class="btn-outline">See how it works &#8594;</a>
+      </div>
+      <div class="hero-note">
+        <a href="#partners" class="link-quiet">
+          Introducing Compound Health to your clients, employees or members?
+        </a>
+      </div>
     </div>
-    <div class="scroll-indicator"><div class="scroll-line"></div></div>
   </section>
 
   <!-- CREDIBILITY BAR -->
