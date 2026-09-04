@@ -4,6 +4,7 @@ import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
 const sections = [
   { id: 'hero-media',       label: 'Hero media' },
   { id: 'footer-columns',   label: 'Footer columns' },
+  { id: 'bento',            label: 'Bento grid' },
   { id: 'product-section',  label: 'Product section' },
   { id: 'credibility-item', label: 'Credibility item' },
   { id: 'step-card',        label: 'Step card' },
@@ -31,7 +32,7 @@ const sections = [
 <DesignSystemLayout
   title="Molecules"
   section="02 · Molecules"
-  lede="Atoms combined into reusable building blocks. Product section, step card, plan card, credibility item, metric row, testimonial, post card, author chip, tag group, form field, mobile menu link, case stat, case quote card, curated card, audience tile, partner note, hero media and footer columns."
+  lede="Atoms combined into reusable building blocks. Bento grid, product section, step card, plan card, credibility item, metric row, testimonial, post card, author chip, tag group, form field, mobile menu link, case stat, case quote card, curated card, audience tile, partner note, hero media and footer columns."
   sections={sections}
 >
 
@@ -98,19 +99,125 @@ const sections = [
   </section>
 
   <!-- ─────────── CREDIBILITY ITEM ─────────── -->
+  <section class="ds-section" id="bento">
+    <div class="ds-section-head">
+      <h2>Bento grid</h2>
+      <span class="ds-tag">.bento · .bento-cell · .is-surface · .is-half · .is-wide · .bento-card</span>
+    </div>
+    <p class="ds-note">
+      Filled cells of unequal size on a six-column track. One
+      <code class="ds-inline">.is-surface</code> cell spans four columns and two rows and carries a
+      white <code class="ds-inline">.bento-card</code> as the product surface; the rest carry a
+      line icon, a title and a sentence at <code class="ds-inline">.is-half</code> (two columns) or
+      <code class="ds-inline">.is-wide</code> (four). Placement is automatic, so the order in the
+      markup is the order on the page.
+    </p>
+    <p class="ds-note">
+      This exists so that two adjacent sections do not read as the same section twice. The home page
+      uses it for “what you get” and the <a href="#product-section">product section</a> for “how we
+      choose”; do not use both patterns for the same kind of content.
+    </p>
+    <div class="ds-specimen">
+      <div class="ds-specimen-preview is-block">
+        <div class="bento">
+          <div class="bento-cell is-surface">
+            <div>
+              <span class="bento-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 4v16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 14l3-4 3 3 4-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <h3 class="bento-title">A dashboard for your body</h3>
+              <p>The same rigor your advisor applies to your portfolio, applied to your biology.</p>
+            </div>
+            <div class="bento-card">
+              <div class="stack-card-head">Health score overview</div>
+              <div class="metric">
+                <span class="metric-name">Cardiovascular</span>
+                <div class="metric-track"><div class="metric-fill is-good" style="width:82%"></div></div>
+                <span class="metric-val">82</span>
+              </div>
+              <div class="metric">
+                <span class="metric-name">Metabolic</span>
+                <div class="metric-track"><div class="metric-fill is-warn" style="width:74%"></div></div>
+                <span class="metric-val">74</span>
+              </div>
+            </div>
+          </div>
+          <div class="bento-cell is-half">
+            <span class="bento-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </span>
+            <h3 class="bento-title">Curated clinical delivery</h3>
+            <p>Physician-led care nationwide, virtual and in person.</p>
+          </div>
+          <div class="bento-cell is-half">
+            <span class="bento-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M17 3c0 4-10 5-10 9s10 5 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8.5 6.5h7M7 12h10M8.5 17.5h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3 class="bento-title">Full biomarker tracking</h3>
+            <p>Multiple comprehensive panels per year, DEXA, CGM cycles.</p>
+          </div>
+          <div class="bento-cell is-half">
+            <span class="bento-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3 class="bento-title">Personalized protocols</h3>
+            <p>Calibrated to your biology, not a template.</p>
+          </div>
+          <div class="bento-cell is-wide">
+            <span class="bento-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M5 17a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 7V5M10.5 5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <h3 class="bento-title">Health concierge</h3>
+            <p>A dedicated coordinator who handles specialist referrals and appointment logistics.</p>
+          </div>
+        </div>
+      </div>
+      <div class="ds-specimen-meta">
+        <span><strong>.is-surface</strong> · 4 cols &times; 2 rows, holds the white card</span>
+        <span><strong>.is-half</strong> / <strong>.is-wide</strong> · 2 and 4 cols</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── PRODUCT SECTION ─────────── -->
   <section class="ds-section" id="product-section">
     <div class="ds-section-head">
       <h2>Product section</h2>
-      <span class="ds-tag">.prod · .prod-grid · .prod-panel · .stack-card · .prod-list</span>
+      <span class="ds-tag">.prod · .prod-grid · .prod-list · .prod-item · .prod-panel · .prod-pane</span>
     </div>
     <p class="ds-note">
-      The main rhythm of the home page. A <a href="/design-system/atoms#section-heads">section
-      head</a>, then a two-column row: a soft <code class="ds-inline">.prod-panel</code> holding
-      floating white cards that stand in for the product, and a
-      <code class="ds-inline">.prod-list</code> whose first item sits in a filled block
-      (<code class="ds-inline">.is-lead</code>) while the rest run as icon rows.
-      <code class="ds-inline">.is-flipped</code> on the section puts the panel on the right, so
-      consecutive product sections alternate down the page.
+      An interactive section. A <a href="/design-system/atoms#section-heads">section head</a>, then
+      a two-column row: <code class="ds-inline">.prod-list</code> is a
+      <code class="ds-inline">role="tablist"</code> of choices on the left, and choosing one swaps
+      the <code class="ds-inline">.prod-pane</code> inside the soft
+      <code class="ds-inline">.prod-panel</code> on the right and marks the matching row in the
+      card behind it. The selected tab takes the panel fill, so the row and the card it drives read
+      as one object. Pointer, arrow keys, Home and End all work; with no JavaScript the first pane
+      stays open and every choice is still readable in the list.
+    </p>
+    <p class="ds-note">
+      Tabs are real <code class="ds-inline">&lt;button&gt;</code> elements, so their body copy is a
+      <code class="ds-inline">.prod-copy</code> span rather than a
+      <code class="ds-inline">&lt;p&gt;</code>: flow content is not valid inside a button.
     </p>
     <p class="ds-note">
       <strong>Every label inside a panel is lifted verbatim from copy that already appears in that

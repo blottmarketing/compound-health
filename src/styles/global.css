@@ -260,16 +260,14 @@ section { padding: 160px 56px; }
 .metric-val { font-size: 13px; font-weight: 500; color: var(--charcoal); min-width: 32px; text-align: right; }
 
 /* ── PRODUCT SECTION ──
-   The main rhythm of the page, after the Duna reference. A section head, then
-   a two-column row: one side is a soft panel holding floating white cards that
-   stand in for the product, the other is a list whose first item sits in a
-   filled block and whose remaining items run as icon rows. .is-flipped puts
-   the panel on the right so consecutive product sections alternate.
+   A section head, then a two-column row: a list of choices on the left, and on
+   the right a soft panel whose floating white card changes with the choice.
+   The list is a tablist, so the section is read and driven by the keyboard as
+   well as the pointer.
 
    Every label inside a panel is lifted verbatim from copy already on the page.
    Nothing in a panel is new copy. */
 .prod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 76px; align-items: center; }
-.prod.is-flipped .prod-panel { order: 2; }
 
 .prod-panel { background: var(--panel); border-radius: 18px; padding: 48px 44px; min-height: 470px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
 .stack-card { background: var(--warm-white); border-radius: 12px; padding: 24px 26px; box-shadow: 0 14px 34px rgba(28,28,26,0.10); position: relative; z-index: 2; }
@@ -278,18 +276,43 @@ section { padding: 160px 56px; }
    depth rather than as two separate cards. */
 .stack-back { background: var(--warm-white); border-radius: 12px; padding: 26px 26px 34px; box-shadow: 0 4px 16px rgba(28,28,26,0.05); margin: -12px 30px -46px; position: relative; z-index: 1; display: flex; flex-direction: column; gap: 14px; }
 .stack-row { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 400; color: var(--mid); }
-.stack-mark { width: 20px; height: 20px; border-radius: 6px; background: rgba(45,80,22,0.10); flex-shrink: 0; }
+.stack-mark { width: 20px; height: 20px; border-radius: 6px; background: rgba(45,80,22,0.10); flex-shrink: 0; transition: background 0.25s; }
+.stack-row.is-active { color: var(--charcoal); font-weight: 500; }
+.stack-row.is-active .stack-mark { background: var(--sage); }
 .stack-check { width: 18px; height: 18px; color: var(--sage-light); flex-shrink: 0; }
 .stack-check svg { width: 18px; height: 18px; display: block; }
 
 .prod-list { display: flex; flex-direction: column; gap: 4px; }
-.prod-item { padding: 20px 24px; border-radius: 12px; }
-.prod-item.is-lead { background: var(--panel); }
+/* Each item is a tab. The selected one takes the panel fill, so the row and
+   the card it drives read as one object. */
+.prod-item { padding: 20px 24px; border-radius: 12px; width: 100%; text-align: left; background: none; border: none; font-family: inherit; cursor: pointer; transition: background 0.25s; display: block; }
+.prod-item:hover { background: rgba(28,28,26,0.04); }
+.prod-item[aria-selected='true'] { background: var(--panel); }
+.prod-item:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(74,122,37,0.20); }
+.prod-panes { position: relative; z-index: 2; }
+.prod-pane { display: none; }
+.prod-pane.is-active { display: block; animation: paneIn 0.35s cubic-bezier(0.22,1,0.36,1) both; }
 .prod-item-head { display: flex; align-items: center; gap: 12px; margin-bottom: 7px; }
 .prod-icon { width: 22px; height: 22px; color: var(--sage); flex-shrink: 0; }
 .prod-icon svg { width: 22px; height: 22px; display: block; }
 .prod-title { font-family: 'Lato', sans-serif; font-size: 18px; font-weight: 500; color: var(--charcoal); letter-spacing: -0.2px; line-height: 1.3; }
-.prod-item p { font-size: 14px; font-weight: 300; color: var(--mid); line-height: 1.65; padding-left: 34px; }
+.prod-copy { display: block; font-size: 14px; font-weight: 300; color: var(--mid); line-height: 1.65; padding-left: 34px; }
+
+/* ── BENTO ──
+   The 'what you get' grid. Filled cells of unequal size on a six-column track:
+   one tall cell carries the product surface, the rest carry a line icon, a
+   title and a sentence. Deliberately not the two-column product pattern, so
+   the two sections either side of it do not read as the same section twice. */
+.bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+.bento-cell { background: var(--panel); border-radius: 18px; padding: 32px 30px; display: flex; flex-direction: column; }
+.bento-cell.is-surface { grid-column: span 4; grid-row: span 2; gap: 34px; justify-content: space-between; padding: 36px 34px; }
+.bento-cell.is-half { grid-column: span 2; }
+.bento-cell.is-wide { grid-column: span 4; }
+.bento-icon { display: block; width: 22px; height: 22px; color: var(--sage); margin-bottom: 18px; }
+.bento-icon svg { width: 22px; height: 22px; display: block; }
+.bento-title { font-family: 'Lato', sans-serif; font-size: 20px; font-weight: 500; color: var(--charcoal); letter-spacing: -0.3px; line-height: 1.25; margin-bottom: 9px; }
+.bento-cell p { font-size: 14px; font-weight: 300; color: var(--mid); line-height: 1.65; }
+.bento-card { background: var(--warm-white); border-radius: 14px; padding: 26px 28px; box-shadow: 0 14px 34px rgba(28,28,26,0.08); }
 
 /* ── PLANS ── */
 .plans { background: var(--warm-white); }
@@ -377,7 +400,7 @@ section { padding: 160px 56px; }
 .audience-grid { display: grid; grid-template-columns: repeat(2, 1fr); margin-top: 96px; }
 .audience-tile { padding: 44px 40px 44px 0; border-top: 1px solid var(--hair); }
 .audience-tile:nth-child(2n) { padding-left: 40px; padding-right: 0; border-left: 1px solid var(--hair); }
-.audience-icon { width: 22px; height: 22px; color: var(--sage); margin-bottom: 20px; }
+.audience-icon { display: block; width: 22px; height: 22px; color: var(--sage); margin-bottom: 20px; }
 .audience-icon svg { width: 22px; height: 22px; display: block; }
 .audience-title { font-family: 'Lato', sans-serif; font-size: 24px; font-weight: 400; color: var(--charcoal); line-height: 1.2; letter-spacing: -0.6px; margin-bottom: 12px; }
 .audience-tile p { font-size: 15px; font-weight: 300; color: var(--mid); line-height: 1.7; }
@@ -746,6 +769,7 @@ section { padding: 160px 56px; }
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 @keyframes up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes paneIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
 /* ── MOBILE ── */
 @media (max-width: 900px) {
@@ -785,9 +809,11 @@ section { padding: 160px 56px; }
   .audience-grid { margin-top: 64px; }
   .partner-notes { margin-top: 56px; }
   .rule { padding: 0 24px; }
-  .prod-grid { grid-template-columns: 1fr; gap: 40px; }
-  .prod.is-flipped .prod-panel { order: 0; }
+  .prod-grid { grid-template-columns: 1fr; gap: 32px; }
   .prod-panel { min-height: 0; padding: 32px 24px; }
+  .bento { grid-template-columns: 1fr; gap: 12px; }
+  .bento-cell, .bento-cell.is-surface, .bento-cell.is-half, .bento-cell.is-wide { grid-column: span 1; grid-row: auto; padding: 28px 24px; }
+  .bento-card { padding: 22px 20px; }
   .stack-back { margin: -12px 12px -34px; }
   .prod-item { padding: 18px 18px; }
   .waitlist-inner { grid-template-columns: 1fr; gap: 40px; }
