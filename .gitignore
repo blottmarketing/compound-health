@@ -16,6 +16,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Client source material (kept local, never committed)
+content_resources/
+
 # Editor / OS
 .DS_Store
 Thumbs.db
