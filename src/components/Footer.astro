@@ -3,11 +3,13 @@
  * Site footer. Shared by MainLayout, LegalLayout and BlogLayout.
  *
  * Structure (top to bottom): hairline divider, four link columns, a tall gap,
- * then the legal row. A landscape image is anchored to the bottom of the block
- * and its sky dissolves into the footer background (--warm-white) via .footer-media.
- * Swap the artwork by replacing /public/images/footer-landscape.webp. The image
- * should be around 2048x1360 or larger with a pale, near-white sky in its top half
- * and the landscape in the bottom half; update width/height below if the ratio changes.
+ * then the legal row. The landscape in .footer-media is held at its own aspect
+ * ratio across the full width, flush with the top of the block, and mirrors the
+ * hero: no gradient or vignette anywhere. Its pale sky carries the link columns
+ * and its grass fringe stops on flat white, where the legal row sits.
+ * Swap the artwork by replacing /public/images/footer-landscape.webp. A
+ * replacement needs a near-white sky over its top third, a fringe that stops on
+ * flat white at the bottom, and its ratio updated below and in global.css.
  */
 const year = new Date().getFullYear();
 ---
@@ -18,8 +20,8 @@ const year = new Date().getFullYear();
       class="footer-img"
       src="/images/footer-landscape.webp"
       alt=""
-      width="2048"
-      height="1360"
+      width="1536"
+      height="1024"
       loading="lazy"
       decoding="async"
     />
