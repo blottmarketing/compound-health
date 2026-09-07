@@ -4,28 +4,38 @@
 // here can never reach /v1 or the live page. Noindex.
 // Copy is the client's: it matches the live page and is not to be rewritten here.
 import V11Layout from '../../layouts/variants/V11Layout.astro';
+
+// The Bayshore-style renders are not in the repo yet. Set these to their paths once the
+// files land in /public/images/v1-1/ and the artwork appears in the hero and the footer;
+// until then both run as gradient environments, which is what those slots are painted for.
+// Expected: HERO_ART around 2400x1600, FOOTER_ART around 2048x1360.
+const HERO_ART: string | null = null;
+const FOOTER_ART: string | null = null;
 ---
 
 <V11Layout
   variant="v1-1"
   base="/v1-1"
+  footerArt={FOOTER_ART}
   title="Compound Health | A private longevity membership, introduced through your advisor, firm or organization"
   description="A private longevity membership introduced through wealth advisors, employers, and executive networks. Diagnostics, continuous tracking, and personalized protocols from curated clinical partners. Your health data stays yours."
 >
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-media" aria-hidden="true">
-      <img
-        class="hero-img"
-        src="/images/hero-landscape.webp"
-        alt=""
-        width="1536"
-        height="1024"
-        fetchpriority="high"
-        decoding="async"
-      />
-    </div>
+    {HERO_ART && (
+      <div class="hero-media" aria-hidden="true">
+        <img
+          class="hero-img"
+          src={HERO_ART}
+          alt=""
+          width="2400"
+          height="1600"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+    )}
     <div class="hero-inner">
       <a href="#joinwaitlist" class="eyebrow"><span class="eyebrow-dot"></span>Founding member waitlist now open</a>
       <h1>Beyond wealth:<br />the years to <em>enjoy it</em></h1>
@@ -137,7 +147,7 @@ import V11Layout from '../../layouts/variants/V11Layout.astro';
       </div>
 
       <div class="bento reveal">
-        <div class="bento-cell is-surface tone-green">
+        <div class="bento-cell is-surface tone-stone">
           <div>
             <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M4 4v16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -151,7 +161,7 @@ import V11Layout from '../../layouts/variants/V11Layout.astro';
           </div>
         </div>
 
-        <div class="bento-cell is-half tone-orange">
+        <div class="bento-cell is-half tone-sand">
           <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -165,7 +175,7 @@ import V11Layout from '../../layouts/variants/V11Layout.astro';
           </p>
         </div>
 
-        <div class="bento-cell is-half tone-pink">
+        <div class="bento-cell is-half tone-lavender">
           <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 <path d="M17 3c0 4-10 5-10 9s10 5 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -178,7 +188,7 @@ import V11Layout from '../../layouts/variants/V11Layout.astro';
           </p>
         </div>
 
-        <div class="bento-cell is-half tone-orange">
+        <div class="bento-cell is-half tone-sand">
           <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
                 <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -189,7 +199,7 @@ import V11Layout from '../../layouts/variants/V11Layout.astro';
           </p>
         </div>
 
-        <div class="bento-cell is-half tone-pink">
+        <div class="bento-cell is-half tone-lavender">
           <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                 <path d="M5 17a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

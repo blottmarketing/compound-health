@@ -21,6 +21,8 @@ interface Props {
   base?: string;
   /** Variant id, so the switcher can mark the current page. */
   variant?: string;
+  /** Footer artwork, or null for the gradient footer. */
+  footerArt?: string | null;
 }
 
 const SITE_NAME = 'Compound Health';
@@ -32,6 +34,7 @@ const {
   description = DEFAULT_DESCRIPTION,
   base = '/v1-1',
   variant = 'v1-1',
+  footerArt = null,
 } = Astro.props;
 
 const anchor = (hash: string) => `${base}#${hash}`;
@@ -63,7 +66,7 @@ const anchor = (hash: string) => `${base}#${hash}`;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=Cinzel:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
@@ -111,7 +114,7 @@ const anchor = (hash: string) => `${base}#${hash}`;
 
     <slot />
 
-    <Footer base={base} />
+    <Footer base={base} art={footerArt} />
 
     <VariantSwitcher current={variant} />
 
@@ -166,7 +169,7 @@ const anchor = (hash: string) => `${base}#${hash}`;
           const tl = gsap.timeline({ paused: true });
           tl.set(mobileMenu, { visibility: 'visible' })
             .fromTo(menuBg,
-              { scaleX: 0, scaleY: 0, transformOrigin: 'top right', borderRadius: '0 0 0 60px' },
+              { scaleX: 0, scaleY: 0, transformOrigin: 'top right', borderRadius: '0' },
               { scaleX: 1, scaleY: 1, duration: 0.55, ease: 'expo.out' }
             )
             .to(lines[0], { y: 7,  rotation: 45,  duration: 0.3, ease: 'power2.inOut' }, 0.05)

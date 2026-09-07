@@ -63,7 +63,9 @@ compound-health/
 │       ├── design-system.css                # documentation chrome for /design-system/*
 │       └── variants/
 │           ├── v1.css                       # the v1 system, loaded by /v1 only
-│           └── v1-1.css                     # the v1.1 system, forked from v1.css, loaded by /v1-1 only
+│           └── v1-1.css                     # the v1.1 system, Bayshore-influenced, loaded by /v1-1 only
+├── docs/
+│   └── v1-1-art-brief.md   # the brief for the two v1.1 renders, and how to drop them in
 ├── PAGES.xlsx              # source of truth for live page inventory
 └── CLAUDE.md               # this file
 ```
@@ -129,6 +131,15 @@ Each design has one source of truth for visual style. Use it. Do not invent new 
 
 - **Live system lives in `src/styles/global.css`.** All tokens (colour, type, spacing), atoms (buttons, eyebrows, badges, inputs, avatars, dividers, links) and molecules (step card, plan card, feature card, metric row, post card, author chip, form field, mobile menu link, case stat, case quote card, testimonial, breadcrumb, author panel) are defined there. It is the system behind `/`, the legal pages, the blog, `for-advisors` and the deck, and it is what `/design-system` documents.
 - **The v1 system lives in `src/styles/variants/v1.css`,** loaded by `/v1` alone. Rules 3 to 7 below describe that system, not the live one. It is not documented under `/design-system` yet; when v1 is chosen, its documentation moves there in the same pass.
+- **The v1.1 system lives in `src/styles/variants/v1-1.css`,** loaded by `/v1-1` alone. It answers the client's feedback of 2026-09-07, that v1 did not feel premium, by blending v1's structure with [bayshore.ai](https://www.bayshore.ai/). Same sections, same copy, same layout skeleton as v1; everything else differs:
+  1. **Bayshore's palette, lifted from their own swatches.** Ground bone `#F2EFEB`, ink `#1B1B1A`, warm greys down to `#6F6D69`, accent chestnut `#6D464C`, and the environment colours dusk blue `#2E558B`, sand `#EACBA6`, beige `#D4C1AB`, lavender `#EFEBF1`, deep stone `#2E2124`. The brand green is gone from this variation entirely. The primary action is near-black, as theirs is; chestnut is for links, marks and hovers.
+  2. **Gradient environments, not flat bands.** `--hero-grad` is dusk sky into sand, resolving to the ground at its last stop so the section below joins with no seam. `--cta-grad` runs the same sky into chestnut and sand. `--panel-grad` is quarried stone. Those three, plus `--footer-grad`, are the only places the blue and the sand appear.
+  3. **Square, not rounded.** Every radius is 0 except circles (dots, avatars, rings). No pills anywhere: buttons, chips, cards and panels are rectangles.
+  4. **The grid is left showing.** `body::before` draws two fixed hairlines at the container edges, running the full height of the page and visible over every section including the hero, under the nav. Hidden below 1280px.
+  5. **Labels are Roman caps.** `.s-chip` and `.step-n` are Cinzel, letterspaced, uppercase, no fill and no box, which is Bayshore's own secondary face. Display type is one weight at line-height 1.0 and -0.045em; there is no italic anywhere, so emphasis in a heading carries in sand instead.
+  6. **The bento is a divided plane.** Cells touch on a 1px ground gap, and one cell (`.tone-stone`) is a deep panel carrying cream copy. Three pastels of equal value is what made v1 read flat. The other two tones are `.tone-sand` and `.tone-lavender`.
+  7. **The nav inverts over the hero.** Cream logo, mark and links while the bar is transparent; ink on bone once scrolled.
+  8. **The two renders are not in the repo yet.** `HERO_ART` and `FOOTER_ART` in `src/pages/v1-1/index.astro` are `null`, so both slots run as gradients. `docs/v1-1-art-brief.md` is the brief for generating them and the two lines to change once they land.
 - **Documentation lives at `/design-system`.** Three routes, all noindex via `DesignSystemLayout`:
   - `/design-system` — overview and working rules.
   - `/design-system/atoms` — colour, typography, spacing, radii, buttons, badges, eyebrows, dots, avatars, dividers, inputs, links, motion.

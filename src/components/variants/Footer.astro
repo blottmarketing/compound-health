@@ -13,25 +13,30 @@ import Logo from './Logo.astro';
  * `base` is the home route of the variation this footer sits in ('/v1' and so on), so the
  * in-page links resolve inside that variation. Links that leave the variation
  * (legal, for-advisors, mail) stay absolute.
+ *
+ * `art` is the landscape. Pass null for a variation whose footer is a gradient rather than a
+ * photograph, and .footer-media is left out of the markup entirely.
  */
-interface Props { base?: string; }
-const { base = '/' } = Astro.props;
+interface Props { base?: string; art?: string | null; }
+const { base = '/', art = '/images/footer-landscape.webp' } = Astro.props;
 const anchor = (hash: string) => `${base === '/' ? '/' : base}#${hash}`;
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="footer-media" aria-hidden="true">
-    <img
-      class="footer-img"
-      src="/images/footer-landscape.webp"
-      alt=""
-      width="2048"
-      height="1360"
-      loading="lazy"
-      decoding="async"
-    />
-  </div>
+  {art && (
+    <div class="footer-media" aria-hidden="true">
+      <img
+        class="footer-img"
+        src={art}
+        alt=""
+        width="2048"
+        height="1360"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  )}
 
   <div class="footer-inner">
     <div class="footer-divider"></div>
