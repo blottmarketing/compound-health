@@ -1,0 +1,18 @@
+---
+// Compound Health logo: the mark plus the wordmark. Used by the design variations only.
+// `variant` picks the nav or footer lockup class from the variation's stylesheet. The wordmark is
+// Lato, Compound 700 and Health 400, one color; the mark alone carries sage. The mark itself is
+// the .logo-mark atom: three groups of two nested chevrons around one center, legs parallel to the
+// neighbouring axes, stroke and gap equal. It takes its color from currentColor.
+// `base` is the home route of the variation this sits in, so the logo returns to that variation
+// rather than to the live page.
+interface Props { variant?: 'nav' | 'footer'; base?: string; }
+const { variant = 'nav', base = '/' } = Astro.props;
+const cls = variant === 'footer' ? 'footer-logo' : 'nav-logo';
+---
+<a href={base} class={cls} aria-label="Compound Health, home">
+  <svg class="logo-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true" focusable="false">
+    <path d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38" stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"/>
+  </svg>
+  <span class="logo-word">Compound <span class="logo-word-light">Health</span></span>
+</a>

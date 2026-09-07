@@ -120,19 +120,17 @@ body {
   color: var(--sage); margin-bottom: 14px;
 }
 .ds-pagehead h1 {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Playfair Display', serif;
   font-size: clamp(36px, 4vw, 52px); font-weight: 400; line-height: 1.06; letter-spacing: -1.4px;
   color: var(--charcoal); margin-bottom: 16px;
 }
 .ds-lede { font-size: 17px; font-weight: 300; color: var(--mid); line-height: 1.65; max-width: 620px; }
 
 /* ── Section block (one per atom or molecule) ── */
-/* The documentation chrome owns its own rhythm: reset the marketing
-   section padding from global.css so it does not double up on .ds-main-content. */
-.ds-section { padding: 0; margin-bottom: 88px; scroll-margin-top: 88px; }
+.ds-section { margin-bottom: 64px; scroll-margin-top: 88px; }
 .ds-section-head { margin-bottom: 24px; display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
 .ds-section-head h2 {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Playfair Display', serif;
   font-size: 26px; font-weight: 400; letter-spacing: -0.6px; color: var(--charcoal);
 }
 .ds-section-head .ds-tag {
@@ -157,7 +155,6 @@ body {
   min-height: 120px;
 }
 .ds-specimen-preview.is-dark { background: var(--charcoal); }
-.ds-specimen-preview.is-band { background: var(--sage-pale); }
 .ds-specimen-preview.is-tight { padding: 24px; min-height: 0; }
 .ds-specimen-preview.is-stack { flex-direction: column; align-items: flex-start; gap: 24px; }
 .ds-specimen-preview.is-block { display: block; }
@@ -195,7 +192,7 @@ body {
 }
 .ds-type-row:last-child { border-bottom: none; }
 .ds-type-meta { font-family: var(--ds-mono); font-size: 12px; color: var(--mid); line-height: 1.6; }
-.ds-type-meta strong { color: var(--charcoal); display: block; margin-bottom: 4px; font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 500; }
+.ds-type-meta strong { color: var(--charcoal); display: block; margin-bottom: 4px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; }
 
 /* ── Scale / size token list ── */
 .ds-scale { display: flex; flex-direction: column; gap: 10px; }
@@ -250,7 +247,7 @@ code.ds-inline {
 .ds-overview-card:hover { transform: translateY(-3px); border-color: rgba(45,80,22,0.28); }
 .ds-overview-card-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage); }
 .ds-overview-card h2 {
-  font-family: 'Lato', sans-serif;
+  font-family: 'Playfair Display', serif;
   font-size: 28px; font-weight: 400; color: var(--charcoal); letter-spacing: -0.6px;
 }
 .ds-overview-card p { font-size: 14px; color: var(--mid); line-height: 1.7; }

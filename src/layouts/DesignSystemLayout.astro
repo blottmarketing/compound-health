@@ -1,6 +1,5 @@
 ---
 import '../styles/global.css';
-import Logo from '../components/Logo.astro';
 import '../styles/design-system.css';
 
 interface SectionLink {
@@ -68,14 +67,14 @@ const nav = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
 
     <nav class="ds-topnav">
-      <Logo />
+      <a href="/" class="nav-logo">Compound <em>Health</em></a>
       <div class="ds-topnav-meta">
         <span class="ds-eyebrow">Design system · Internal</span>
         <a href="/" class="nav-back">

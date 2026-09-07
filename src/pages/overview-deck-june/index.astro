@@ -236,7 +236,7 @@ const survival = [
       <p class="plans-lead">Every member starts at Baseline. The Baseline fee is credited toward year one.</p>
       <div class="plans-grid">
         <div class="plan">
-          <div class="plan-head"><div class="plan-name">Baseline</div></div>
+          <div class="plan-name">Baseline</div>
           <div class="plan-price"><span class="plan-price-amount">$3,500</span><span class="plan-price-period">one-time</span></div>
           <p class="plan-price-note">Where every member starts. Credited toward year one.</p>
           <ul class="plan-features">
@@ -247,7 +247,8 @@ const survival = [
           </ul>
         </div>
         <div class="plan featured">
-          <div class="plan-head"><div class="plan-name">Optimize</div><span class="plan-badge">Most members join</span></div>
+          <div class="plan-badge">Most members join</div>
+          <div class="plan-name">Optimize</div>
           <div class="plan-price"><span class="plan-price-amount">$15,000</span><span class="plan-price-period">/ year</span></div>
           <p class="plan-price-note">MD-led and coach-supported, year round.</p>
           <ul class="plan-features">
@@ -258,7 +259,7 @@ const survival = [
           </ul>
         </div>
         <div class="plan">
-          <div class="plan-head"><div class="plan-name">Eternal</div></div>
+          <div class="plan-name">Eternal</div>
           <div class="plan-price"><span class="plan-price-amount">$65,000</span><span class="plan-price-period">/ year</span></div>
           <p class="plan-price-note">The full stack, always on.</p>
           <ul class="plan-features">
@@ -277,7 +278,7 @@ const survival = [
   <div class="footer-cta">
     <h2>Wealth is what you have.<br />Healthspan is what you <em>have it for</em></h2>
     <p>Live longer. Live better. To discuss a partnership, reach us directly.</p>
-    <a href="mailto:hello@compoundhealth.io" class="btn-dark">hello@compoundhealth.io</a>
+    <a href="mailto:hello@compoundhealth.io" class="btn-white">hello@compoundhealth.io</a>
   </div>
 
   <style>
@@ -288,7 +289,7 @@ const survival = [
       background: var(--cream); position: relative; overflow: hidden;
     }
     .deck-hero h1 {
-      font-family: 'Lato', sans-serif; font-size: clamp(44px, 6.4vw, 86px);
+      font-family: 'Playfair Display', serif; font-size: clamp(44px, 6.4vw, 86px);
       font-weight: 400; line-height: 1.05; letter-spacing: -2.5px; color: var(--charcoal);
       max-width: 920px; margin-bottom: 28px; animation: up 0.7s 0.1s ease both; position: relative; z-index: 1;
     }
@@ -311,13 +312,13 @@ const survival = [
 
     /* How-it-works 3-up grid override */
     .feat-grid-3 { grid-template-columns: repeat(3, 1fr) !important; }
-    .feat-grid-3 .feat { background: transparent; }
+    .feat-grid-3 .feat { background: var(--charcoal); }
 
     /* ── PULL QUOTES ── */
     .deck-quote { background: var(--sage); padding: 120px 56px; }
     .deck-quote .inner { max-width: 920px; text-align: center; }
     .dq-text {
-      font-family: 'Lato', sans-serif; font-style: italic; font-weight: 400;
+      font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
       font-size: clamp(26px, 3.4vw, 42px); line-height: 1.34; letter-spacing: -0.6px;
       color: #fff; margin-bottom: 28px;
     }
@@ -342,7 +343,7 @@ const survival = [
     .lg-late { background: var(--gold); }
     .chart-rows { display: flex; flex-direction: column; gap: 26px; }
     .chart-row { display: grid; grid-template-columns: 110px 1fr; gap: 20px; align-items: center; }
-    .chart-type { font-family: 'Lato', sans-serif; font-size: 19px; color: var(--charcoal); letter-spacing: -0.4px; }
+    .chart-type { font-family: 'Playfair Display', serif; font-size: 19px; color: var(--charcoal); letter-spacing: -0.4px; }
     .chart-bars { display: flex; flex-direction: column; gap: 8px; }
     .bar-track { height: 30px; background: rgba(45,80,22,0.05); border-radius: 7px; overflow: hidden; }
     .bar {
@@ -362,7 +363,7 @@ const survival = [
     .exp-stat { background: var(--warm-white); padding: 48px 40px; transition: background 0.25s; }
     .exp-stat:hover { background: var(--cream); }
     .exp-num {
-      font-family: 'Lato', sans-serif; font-size: clamp(48px, 5.4vw, 72px); font-weight: 400;
+      font-family: 'Playfair Display', serif; font-size: clamp(48px, 5.4vw, 72px); font-weight: 400;
       color: var(--sage); line-height: 1; letter-spacing: -2px; margin-bottom: 16px;
     }
     .exp-num-sub { font-size: 0.34em; color: var(--mid); letter-spacing: 0; margin-left: 4px; font-style: italic; }

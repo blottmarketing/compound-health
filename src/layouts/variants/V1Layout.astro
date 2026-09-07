@@ -1,29 +1,40 @@
 ---
-import '../styles/global.css';
+/**
+ * Layout for design variation v1 (and any iteration of it that shares its stylesheet).
+ *
+ * It is a copy of the production MainLayout with three differences: it loads
+ * src/styles/variants/v1.css instead of global.css, every in-page link is prefixed with
+ * `base` so navigation stays inside the variation, and it is noindex, always.
+ *
+ * The live layout at src/layouts/MainLayout.astro is the production one. Do not fold the two
+ * together: a variation has to be changeable without touching the live site.
+ */
+import '../../styles/variants/v1.css';
+import Logo from '../../components/variants/Logo.astro';
+import Footer from '../../components/variants/Footer.astro';
+import VariantSwitcher from '../../components/variants/VariantSwitcher.astro';
 
 interface Props {
   title: string;
   description?: string;
-  image?: string;
-  noindex?: boolean;
+  /** Home route of this variation, prefixed onto every in-page link. */
+  base?: string;
+  /** Variant id, so the switcher can mark the current page. */
+  variant?: string;
 }
 
 const SITE_NAME = 'Compound Health';
 const DEFAULT_DESCRIPTION =
   'A private longevity membership introduced by your wealth advisor. Your health data stays yours, and you decide what, if anything, to share. Founding member waitlist now open.';
-const DEFAULT_OG = '/og-image.png';
 
 const {
   title,
   description = DEFAULT_DESCRIPTION,
-  image = DEFAULT_OG,
-  noindex = false,
+  base = '/v1',
+  variant = 'v1',
 } = Astro.props;
 
-// Astro.site is set in astro.config.mjs and used for absolute URLs
-const siteOrigin = Astro.site ?? new URL('https://compoundhealth.io');
-const canonical  = new URL(Astro.url.pathname, siteOrigin).toString();
-const ogImage    = new URL(image, siteOrigin).toString();
+const anchor = (hash: string) => `${base}#${hash}`;
 ---
 
 <!doctype html>
@@ -34,39 +45,25 @@ const ogImage    = new URL(image, siteOrigin).toString();
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
-    {!noindex && <link rel="canonical" href={canonical} />}
+    <!-- Variations are internal review pages and never indexed. -->
+    <meta name="robots" content="noindex, nofollow" />
 
-    <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <!-- Favicons. The variations carry the new mark; the live site keeps its own. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon-v1.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#2D5016" />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Compound Health, a private longevity membership introduced by your advisor" />
-
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
 
     <!-- Performance hints for fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap"
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
@@ -74,31 +71,33 @@ const ogImage    = new URL(image, siteOrigin).toString();
   <body>
 
     <nav class="main-nav">
-      <a href="/" class="nav-logo">Compound <em>Health</em></a>
+      <Logo base={base} />
       <div class="nav-links">
-        <a href="/#how">How it works</a>
-        <a href="/#features">What you get</a>
-        <a href="/#case">Case study</a>
-        <a href="/#plans">Plans</a>
-        <a href="/#joinwaitlist" class="nav-cta">Get access</a>
+        <a href={anchor('how')}>How it works</a>
+        <a href={anchor('features')}>What you get</a>
+        <a href={anchor('partners')}>Partners</a>
+        <a href={anchor('membership')}>Membership</a>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
+      <div class="nav-actions">
+        <a href={anchor('joinwaitlist')} class="nav-cta">Get access</a>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
     </nav>
 
     <!-- Mobile menu overlay -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <div class="mobile-menu-bg" id="menuBg"></div>
       <nav class="mobile-nav-links">
-        <a href="/#how" class="mobile-nav-link" data-menu-link>How it <em>works</em></a>
-        <a href="/#features" class="mobile-nav-link" data-menu-link>What you <em>get</em></a>
-        <a href="/#case" class="mobile-nav-link" data-menu-link>Case <em>study</em></a>
-        <a href="/#plans" class="mobile-nav-link" data-menu-link>Plans</a>
+        <a href={anchor('how')} class="mobile-nav-link" data-menu-link>How it <em>works</em></a>
+        <a href={anchor('features')} class="mobile-nav-link" data-menu-link>What you <em>get</em></a>
+        <a href={anchor('partners')} class="mobile-nav-link" data-menu-link>Partners</a>
+        <a href={anchor('membership')} class="mobile-nav-link" data-menu-link>Membership</a>
       </nav>
-      <a href="/#joinwaitlist" class="mobile-nav-cta" id="menuCta" data-menu-link>
+      <a href={anchor('joinwaitlist')} class="mobile-nav-cta" id="menuCta" data-menu-link>
         Get access
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -112,17 +111,41 @@ const ogImage    = new URL(image, siteOrigin).toString();
 
     <slot />
 
-    <footer>
-      <div class="footer-logo">Compound Health</div>
-      <nav class="footer-nav">
-        <a href="/#case">Case study</a>
-        <a href="/privacy-policy">Privacy Policy</a>
-        <a href="/website-terms">Website Terms</a>
-      </nav>
-      <div class="footer-copy">&copy; 2026 Compound Health. All rights reserved.</div>
-    </footer>
+    <Footer base={base} />
+
+    <VariantSwitcher current={variant} />
 
     <script>
+      // Nav is transparent over the top of the page and gains its surface once scrolled.
+      (function () {
+        const nav = document.querySelector<HTMLElement>('.main-nav');
+        if (!nav) return;
+        const update = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+      })();
+
+      // Scroll reveal. Anything marked .reveal rises and sharpens once, when it
+      // first comes into view. No GSAP, no ScrollTrigger: one observer, and it
+      // stops watching an element as soon as it has played.
+      (function () {
+        const items = document.querySelectorAll<HTMLElement>('.reveal');
+        if (!items.length) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) {
+          items.forEach(el => el.classList.add('is-in'));
+          return;
+        }
+        const io = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            (entry.target as HTMLElement).classList.add('is-in');
+            obs.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
+        items.forEach(el => io.observe(el));
+      })();
+
       (function () {
         const hamburger  = document.getElementById('hamburger') as HTMLButtonElement;
         const mobileMenu = document.getElementById('mobileMenu') as HTMLDivElement;

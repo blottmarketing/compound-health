@@ -46,7 +46,7 @@ import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
         <h2>Molecules</h2>
         <p>
           Step card, plan card, testimonial, credibility item, metric row, post card, author chip,
-          tag chip, form field, mobile menu link, hero media, footer columns. Atoms combined into reusable building blocks.
+          tag chip, form field, mobile menu link. Atoms combined into reusable building blocks.
         </p>
         <span class="ds-overview-card-meta">/design-system/molecules</span>
       </a>
@@ -60,13 +60,8 @@ import DesignSystemLayout from '../../layouts/DesignSystemLayout.astro';
     <p class="ds-note">
       One: every visual change starts here. If a token, atom, or molecule does not exist for what you
       need, add it before using it. Two: do not inline colors or sizes on elements. If a value is
-      reused, it lives in <code class="ds-inline">global.css</code> as a token or class. Three: the
-      page runs on one ground. <code class="ds-inline">var(--warm-white)</code> carries the whole
-      marketing page and <code class="ds-inline">var(--panel)</code> is the only other surface: the
-      single light block and every filled card. Four: group content with fills and hairlines, never
-      with outlines. Grids are separated by <code class="ds-inline">var(--hair)</code> on the top and
-      left of their cells, not wrapped in a bordered, rounded box. Five: this directory and
-      everything under it must stay noindexed and out of
+      reused, it lives in <code class="ds-inline">global.css</code> as a token or class. Three: this
+      directory and everything under it must stay noindexed and out of
       <code class="ds-inline">public/sitemap.xml</code>.
     </p>
   </section>

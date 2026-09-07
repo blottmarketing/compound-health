@@ -1,0 +1,182 @@
+---
+/**
+ * Variation switcher. A small fixed pill at the foot of every variant page, so the
+ * live design and each candidate are one click apart.
+ *
+ * Deliberately self-contained: its own scoped styles, no design tokens, no classes from
+ * any variant stylesheet. It has to look and behave identically on top of every
+ * variation, and it must never be the reason a variation renders differently.
+ *
+ * It does not appear on `/`. The live page stays exactly as it ships.
+ */
+import { SWITCHER } from '../../data/variants';
+
+interface Props {
+  /** Variant id of the page this sits on, so it can mark itself. */
+  current: string;
+}
+const { current } = Astro.props;
+---
+
+<div class="vs" data-variant-switcher>
+  <button class="vs-toggle" type="button" aria-label="Hide variation switcher" data-vs-toggle>
+    <span class="vs-toggle-dot"></span>
+  </button>
+
+  <div class="vs-body">
+    <span class="vs-label">Design</span>
+    <nav class="vs-links" aria-label="Design variations">
+      {SWITCHER.map(v => (
+        <a
+          href={v.path}
+          class:list={['vs-link', { 'is-current': v.id === current, 'is-planned': v.status === 'planned' }]}
+          aria-current={v.id === current ? 'page' : undefined}
+          title={v.note}
+        >
+          {v.label}
+        </a>
+      ))}
+    </nav>
+  </div>
+</div>
+
+<style>
+  .vs {
+    position: fixed;
+    z-index: 9999;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 999px;
+    background: rgba(22, 24, 22, 0.86);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    transition: opacity 0.2s ease, transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .vs-body {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 8px;
+    transition: opacity 0.18s ease;
+  }
+
+  .vs-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.42);
+    padding-left: 6px;
+    white-space: nowrap;
+  }
+
+  .vs-links {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .vs-link {
+    display: block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, 0.66);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.16s ease, color 0.16s ease;
+  }
+
+  .vs-link:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+
+  .vs-link.is-current {
+    background: #fff;
+    color: #161816;
+  }
+
+  /* A variation with no page yet still resolves, to a placeholder. Say so quietly. */
+  .vs-link.is-planned { color: rgba(255, 255, 255, 0.34); }
+  .vs-link.is-planned:hover { color: rgba(255, 255, 255, 0.8); }
+  .vs-link.is-planned.is-current { color: #161816; }
+
+  .vs-toggle {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.16s ease;
+  }
+
+  .vs-toggle:hover { background: rgba(255, 255, 255, 0.18); }
+
+  .vs-toggle-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #7FB069;
+    box-shadow: 0 0 0 3px rgba(127, 176, 105, 0.22);
+  }
+
+  /* Collapsed: the pill shrinks to the dot, so it can be moved out of the way of the
+     bottom of a page without leaving the page. */
+  .vs.is-collapsed .vs-body {
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    padding-right: 0;
+    overflow: hidden;
+  }
+
+  @media (max-width: 560px) {
+    .vs { bottom: 12px; gap: 4px; }
+    .vs-label { display: none; }
+    .vs-link { padding: 5px 10px; font-size: 11px; }
+  }
+
+  @media print {
+    .vs { display: none; }
+  }
+</style>
+
+<script>
+  // Collapsed state is remembered for the session, so switching variations does not
+  // re-open a pill the reviewer has just tucked away.
+  (function () {
+    const el = document.querySelector<HTMLElement>('[data-variant-switcher]');
+    const btn = document.querySelector<HTMLButtonElement>('[data-vs-toggle]');
+    if (!el || !btn) return;
+
+    const KEY = 'ch-variant-switcher-collapsed';
+    const apply = (collapsed: boolean) => {
+      el.classList.toggle('is-collapsed', collapsed);
+      btn.setAttribute('aria-label', collapsed ? 'Show variation switcher' : 'Hide variation switcher');
+    };
+
+    let collapsed = false;
+    try { collapsed = sessionStorage.getItem(KEY) === '1'; } catch {}
+    apply(collapsed);
+
+    btn.addEventListener('click', () => {
+      collapsed = !collapsed;
+      apply(collapsed);
+      try { sessionStorage.setItem(KEY, collapsed ? '1' : '0'); } catch {}
+    });
+  })();
+</script>

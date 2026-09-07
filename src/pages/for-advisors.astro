@@ -112,7 +112,7 @@ import MainLayout from '../layouts/MainLayout.astro';
       <p class="plans-lead">Every member starts at Baseline. The Baseline fee is credited toward year one.</p>
       <div class="plans-grid">
         <div class="plan">
-          <div class="plan-head"><div class="plan-name">Baseline</div></div>
+          <div class="plan-name">Baseline</div>
           <p class="plan-price-note">Where every member starts. Credited toward year one.</p>
           <ul class="plan-features">
             <li>Single Day 1 workup: advanced and standard bloods</li>
@@ -122,7 +122,8 @@ import MainLayout from '../layouts/MainLayout.astro';
           </ul>
         </div>
         <div class="plan featured">
-          <div class="plan-head"><div class="plan-name">Optimize</div><span class="plan-badge">Most members join</span></div>
+          <div class="plan-badge">Most members join</div>
+          <div class="plan-name">Optimize</div>
           <p class="plan-price-note">MD-led and coach-supported, year round.</p>
           <ul class="plan-features">
             <li>Day 1 and Day 180 reviews, quarterly check-ins</li>
@@ -132,7 +133,7 @@ import MainLayout from '../layouts/MainLayout.astro';
           </ul>
         </div>
         <div class="plan">
-          <div class="plan-head"><div class="plan-name">Eternal</div></div>
+          <div class="plan-name">Eternal</div>
           <p class="plan-price-note">The full stack, always on.</p>
           <ul class="plan-features">
             <li>Annual Executive Physical: 500+ biomarkers</li>
@@ -303,7 +304,7 @@ import MainLayout from '../layouts/MainLayout.astro';
   <div class="footer-cta">
     <h2>A credible program,<br />run inside <em>your practice</em></h2>
     <p>From a first educational session to an ongoing program. To discuss a partnership, reach us directly.</p>
-    <a href="mailto:hello@compoundhealth.io" class="btn-dark">hello@compoundhealth.io</a>
+    <a href="mailto:hello@compoundhealth.io" class="btn-white">hello@compoundhealth.io</a>
   </div>
 
   <style>
@@ -318,7 +319,7 @@ import MainLayout from '../layouts/MainLayout.astro';
       background: var(--cream); position: relative; overflow: hidden;
     }
     .deck-hero h1 {
-      font-family: 'Lato', sans-serif; font-size: clamp(44px, 6.4vw, 86px);
+      font-family: 'Playfair Display', serif; font-size: clamp(44px, 6.4vw, 86px);
       font-weight: 400; line-height: 1.05; letter-spacing: -2.5px; color: var(--charcoal);
       max-width: 920px; margin-bottom: 28px; position: relative; z-index: 1;
     }
@@ -334,7 +335,7 @@ import MainLayout from '../layouts/MainLayout.astro';
     .deck-meta-div { width: 1px; height: 28px; background: var(--border); }
 
     .feat-grid-3 { grid-template-columns: repeat(3, 1fr) !important; }
-    .feat-grid-3 .feat { background: transparent; }
+    .feat-grid-3 .feat { background: var(--charcoal); }
 
     .adv-body { margin-top: 32px; font-size: 15px; line-height: 1.7; color: var(--mid); max-width: 760px; }
     .adv-todo { color: var(--gold); font-style: italic; }

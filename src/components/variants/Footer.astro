@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 /**
- * Site footer. Shared by MainLayout, LegalLayout and BlogLayout.
+ * Site footer for the design variations.
  *
  * Structure (top to bottom): hairline divider, three columns (brand, site links,
  * contact), a tall gap, then the legal row. A landscape image is anchored to the bottom of the block
@@ -9,7 +9,14 @@ import Logo from './Logo.astro';
  * Swap the artwork by replacing /public/images/footer-landscape.webp. The image
  * should be around 2048x1360 or larger with a pale, near-white sky in its top half
  * and the landscape in the bottom half; update width/height below if the ratio changes.
+ *
+ * `base` is the home route of the variation this footer sits in ('/v1' and so on), so the
+ * in-page links resolve inside that variation. Links that leave the variation
+ * (legal, for-advisors, mail) stay absolute.
  */
+interface Props { base?: string; }
+const { base = '/' } = Astro.props;
+const anchor = (hash: string) => `${base === '/' ? '/' : base}#${hash}`;
 const year = new Date().getFullYear();
 ---
 
@@ -31,7 +38,7 @@ const year = new Date().getFullYear();
 
     <div class="footer-cols">
       <div class="footer-brand">
-        <Logo variant="footer" />
+        <Logo variant="footer" base={base} />
         <p class="footer-tagline">
           A private longevity membership, introduced through the people who already advise you.
         </p>
@@ -39,11 +46,11 @@ const year = new Date().getFullYear();
 
       <div class="footer-col">
         <div class="footer-col-title">Site</div>
-        <a href="/#how">How it works</a>
-        <a href="/#features">What you get</a>
-        <a href="/#membership">Membership</a>
+        <a href={anchor('how')}>How it works</a>
+        <a href={anchor('features')}>What you get</a>
+        <a href={anchor('membership')}>Membership</a>
         <a href="/for-advisors">For advisors and firms</a>
-        <a href="/#joinwaitlist">Get access</a>
+        <a href={anchor('joinwaitlist')}>Get access</a>
       </div>
 
       <div class="footer-col">

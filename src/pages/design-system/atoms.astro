@@ -8,26 +8,10 @@ const swatches = [
   { name: 'Sage pale',    token: '--sage-pale',    hex: '#EAF2E0', text: '#2D5016' },
   { name: 'Cream',        token: '--cream',        hex: '#F7F4EF', text: '#1C1C1A' },
   { name: 'Warm white',   token: '--warm-white',   hex: '#FEFCFA', text: '#1C1C1A' },
-  { name: 'Panel',        token: '--panel',        hex: '#F1EFEA', text: '#1C1C1A' },
-  { name: 'Panel deep',   token: '--panel-deep',   hex: '#EBE8E2', text: '#1C1C1A' },
   { name: 'Charcoal',     token: '--charcoal',     hex: '#1C1C1A', text: '#fff' },
-  { name: 'Ink',          token: '--ink',          hex: '#141412', text: '#fff' },
   { name: 'Mid',          token: '--mid',          hex: '#6B6B65', text: '#fff' },
   { name: 'Gold',         token: '--gold',         hex: '#B8862A', text: '#fff' },
   { name: 'Gold bg',      token: '--gold-bg',      hex: '#F5EDD5', text: '#B8862A' },
-  { name: 'Hairline',     token: '--hair',         hex: 'rgba(28,28,26,0.10)', text: '#1C1C1A' },
-  { name: 'Charcoal soft', token: '--charcoal-soft', hex: '#3A3A38', text: '#fff' },
-  { name: 'Glass',        token: '--glass',        hex: 'rgba(254,252,250,0.86)', text: '#1C1C1A' },
-  { name: 'Glass card',   token: '--glass-card',   hex: 'rgba(254,252,250,0.72)', text: '#1C1C1A' },
-  { name: 'Tint green',   token: '--tint-green',   hex: '#CFE3BD', text: '#2D5016' },
-  { name: 'Green ink',    token: '--tint-green-ink', hex: '#2D5016', text: '#fff' },
-  { name: 'Green deep',   token: '--tint-green-deep', hex: '#4A7A25', text: '#fff' },
-  { name: 'Tint orange',  token: '--tint-orange',  hex: '#F4A97F', text: '#7A2431' },
-  { name: 'Orange ink',   token: '--tint-orange-ink', hex: '#7A2431', text: '#fff' },
-  { name: 'Orange deep',  token: '--tint-orange-deep', hex: '#E8865A', text: '#fff' },
-  { name: 'Tint pink',    token: '--tint-pink',    hex: '#F5B8D2', text: '#7A1F4C' },
-  { name: 'Pink ink',     token: '--tint-pink-ink', hex: '#7A1F4C', text: '#fff' },
-  { name: 'Pink deep',    token: '--tint-pink-deep', hex: '#E98BB5', text: '#fff' },
 ];
 
 const spacing = [
@@ -40,7 +24,6 @@ const spacing = [
   { name: 'space-8',  px: '56px',  bar: '56px'  },
   { name: 'space-9',  px: '72px',  bar: '72px'  },
   { name: 'space-10', px: '108px', bar: '108px' },
-  { name: 'space-11', px: '160px', bar: '160px' },
 ];
 
 const radii = [
@@ -60,7 +43,6 @@ const sections = [
   { id: 'radii',         label: 'Radii' },
   { id: 'section-heads', label: 'Section heads' },
   { id: 'buttons',       label: 'Buttons' },
-  { id: 'logo',          label: 'Logo' },
   { id: 'eyebrows',      label: 'Eyebrows' },
   { id: 'dots',          label: 'Dots & indicators' },
   { id: 'badges',        label: 'Badges' },
@@ -86,13 +68,9 @@ const sections = [
       <span class="ds-tag">--sage · --cream · --charcoal</span>
     </div>
     <p class="ds-note">
-      Sage carries brand and primary action. Cream and warm white handle surfaces. Charcoal and mid
-      handle text. Gold is reserved for value and pricing context. The three tints, the brand green
-      with pink and orange, and their inks colour the bento cells and nothing else; a tinted cell is
-      monochrome, fill and ink from the same pair. The deep ends feed the two data gradients,
-      <code class="ds-inline">--grad-cool</code> (green, a good reading) and
-      <code class="ds-inline">--grad-warm</code> (orange, one to watch), and
-      <code class="ds-inline">--panel-grad</code> is a pale sweep of all three for the product panel. Use the CSS custom property, never the hex.
+      The palette is short on purpose. Sage carries brand and primary action. Cream and warm white
+      handle surfaces. Charcoal and mid handle text. Gold is reserved for value and pricing context.
+      Use the CSS custom property, never the hex.
     </p>
 
     <div class="ds-grid cols-4">
@@ -113,12 +91,11 @@ const sections = [
   <section class="ds-section" id="typography">
     <div class="ds-section-head">
       <h2>Typography</h2>
-      <span class="ds-tag">Lato</span>
+      <span class="ds-tag">Playfair Display · DM Sans</span>
     </div>
     <p class="ds-note">
-      One family, Lato, across the whole site. Weight 400 for headlines and large stat numbers, 300
-      and 400 for body, 500 for labels and buttons. Hierarchy comes from size, weight and tracking
-      rather than a second typeface. Italic is meaningful — it earns
+      Playfair Display for editorial headlines and large stat numbers, always weight 400, often with
+      italic emphasis. DM Sans 300/400/500 for everything else. Italic is meaningful — it earns
       color shift, not just a slant.
     </p>
 
@@ -128,17 +105,17 @@ const sections = [
           <div class="ds-type-row">
             <div class="ds-type-meta">
               <strong>Hero h1</strong>
-              Lato · 400 · clamp(34 → 58)<br/>
+              Playfair · 400 · clamp(48 → 92)<br/>
               letter-spacing -2.5px
             </div>
-            <h1 style="font-family:'Lato', sans-serif;font-size:clamp(48px,7vw,92px);font-weight:400;line-height:1.04;letter-spacing:-2.5px;color:var(--charcoal);margin:0;">
+            <h1 style="font-family:'Playfair Display',serif;font-size:clamp(48px,7vw,92px);font-weight:400;line-height:1.04;letter-spacing:-2.5px;color:var(--charcoal);margin:0;">
               Beyond wealth: <em style="font-style:italic;color:var(--sage);">enjoy it</em>
             </h1>
           </div>
           <div class="ds-type-row">
             <div class="ds-type-meta">
               <strong>Section title (.s-title)</strong>
-              Lato · 400 · clamp(34 → 56)<br/>
+              Playfair · 400 · clamp(34 → 56)<br/>
               letter-spacing -1.5px
             </div>
             <h2 class="s-title" style="margin:0;">A new model for human performance</h2>
@@ -146,7 +123,7 @@ const sections = [
           <div class="ds-type-row">
             <div class="ds-type-meta">
               <strong>Card title (.step-title)</strong>
-              Lato · 400 · 22px<br/>
+              Playfair · 400 · 22px<br/>
               letter-spacing -0.4px
             </div>
             <div class="step-title">Deep diagnostic intake</div>
@@ -154,14 +131,14 @@ const sections = [
           <div class="ds-type-row">
             <div class="ds-type-meta">
               <strong>Quote (.testi-quote)</strong>
-              Lato italic · 400 · 18px
+              Playfair italic · 400 · 18px
             </div>
             <div class="testi-quote" style="margin:0;">A quiet, considered way to keep the years that count.</div>
           </div>
           <div class="ds-type-row">
             <div class="ds-type-meta">
               <strong>Section sub (.s-sub)</strong>
-              Lato · 300 · 18px
+              DM Sans · 300 · 18px
             </div>
             <p class="s-sub" style="margin:0;">
               We built the infrastructure that connects your advisory firm to world-class preventive
@@ -171,7 +148,7 @@ const sections = [
           <div class="ds-type-row">
             <div class="ds-type-meta">
               <strong>Body (.prose p)</strong>
-              Lato · 300 · 15px · line-height 1.8
+              DM Sans · 300 · 15px · line-height 1.8
             </div>
             <p style="font-size:15px;font-weight:300;color:#3A3A38;line-height:1.8;margin:0;max-width:520px;">
               The same rigor your advisor applies to your portfolio, applied to your biology.
@@ -181,7 +158,7 @@ const sections = [
           <div class="ds-type-row">
             <div class="ds-type-meta">
               <strong>Eyebrow / label (.s-label)</strong>
-              Lato · 500 · 11px · letter-spacing 0.1em
+              DM Sans · 500 · 11px · letter-spacing 0.1em
             </div>
             <p class="s-label" style="margin:0;">The process</p>
           </div>
@@ -198,10 +175,10 @@ const sections = [
   <section class="ds-section" id="spacing">
     <div class="ds-section-head">
       <h2>Spacing</h2>
-      <span class="ds-tag">section 160px · gutter 56px</span>
+      <span class="ds-tag">section 108px · gutter 56px</span>
     </div>
     <p class="ds-note">
-      Sections use 160px top and bottom on desktop, 96px on mobile. Horizontal gutter is 56px on
+      Sections use 108px top and bottom on desktop, 80px on mobile. Horizontal gutter is 56px on
       desktop, 24px on mobile. Inside containers, gaps step through the scale below.
     </p>
 
@@ -252,38 +229,21 @@ const sections = [
   <section class="ds-section" id="section-heads">
     <div class="ds-section-head">
       <h2>Section heads</h2>
-      <span class="ds-tag">.s-head · .s-chip · .s-title · .s-sub · .s-head-action</span>
+      <span class="ds-tag">.s-label · .s-title · .s-sub</span>
     </div>
-    <p class="ds-note">
-      Every content section opens with the same block: a chip, a title, a standfirst, and an
-      optional pill action pinned right on the title. The chip spans both grid columns so the
-      action starts level with the title. Use <code class="ds-inline">.s-head-action</code> only
-      where there is a real destination; it is not decoration.
-      <code class="ds-inline">.s-label</code>, the older uppercase label, is still used on the
-      legal, blog and deck pages.
-    </p>
+    <p class="ds-note">Every section opens with this trio. Label, title, sub — in that order.</p>
     <div class="ds-specimen">
-      <div class="ds-specimen-preview is-block">
-        <div class="s-head" style="margin-bottom:0;">
-          <p class="s-chip">The process</p>
-          <div class="s-head-copy">
-            <h2 class="s-title" style="margin-bottom:18px;">A new model for human performance</h2>
-            <p class="s-sub">We built the infrastructure that connects your advisory firm to world-class preventive care.</p>
-          </div>
-          <div class="s-head-action">
-            <a href="#" class="btn-pill">What you get &#8594;</a>
-          </div>
+      <div class="ds-specimen-preview">
+        <div>
+          <p class="s-label">The process</p>
+          <h2 class="s-title" style="margin-bottom:18px;">A new model for human performance</h2>
+          <p class="s-sub">We built the infrastructure that connects your advisory firm to world-class preventive care.</p>
         </div>
       </div>
       <pre class="ds-code"><span class="com">{`<!-- Section head -->`}</span>
-<span class="tag">{`<div `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-head"`}</span><span class="tag">{`>`}</span>
-  <span class="tag">{`<p `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-chip"`}</span><span class="tag">{`>`}</span>The process<span class="tag">{`</p>`}</span>
-  <span class="tag">{`<div `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-head-copy"`}</span><span class="tag">{`>`}</span>
-    <span class="tag">{`<h2 `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-title"`}</span><span class="tag">{`>`}</span>A new model for human performance<span class="tag">{`</h2>`}</span>
-    <span class="tag">{`<p `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-sub"`}</span><span class="tag">{`>`}</span>...<span class="tag">{`</p>`}</span>
-  <span class="tag">{`</div>`}</span>
-  <span class="tag">{`<div `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-head-action"`}</span><span class="tag">{`>`}</span><span class="tag">{`<a `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"btn-pill"`}</span><span class="tag">{`>`}</span>What you get<span class="tag">{`</a>`}</span><span class="tag">{`</div>`}</span>
-<span class="tag">{`</div>`}</span></pre>
+<span class="tag">{`<p `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-label"`}</span><span class="tag">{`>`}</span>The process<span class="tag">{`</p>`}</span>
+<span class="tag">{`<h2 `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-title"`}</span><span class="tag">{`>`}</span>A new model for human performance<span class="tag">{`</h2>`}</span>
+<span class="tag">{`<p `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"s-sub"`}</span><span class="tag">{`>`}</span>...<span class="tag">{`</p>`}</span></pre>
     </div>
   </section>
 
@@ -291,31 +251,22 @@ const sections = [
   <section class="ds-section" id="buttons">
     <div class="ds-section-head">
       <h2>Buttons</h2>
-      <span class="ds-tag">.btn-solid · .btn-outline · .btn-pill · .btn-dark · .btn-white · .nav-cta</span>
+      <span class="ds-tag">.btn-solid · .btn-outline · .btn-white · .nav-cta</span>
     </div>
     <p class="ds-note">
-      One primary on a section, never two. Outline is the secondary partner to a solid in hero. Dark
-      is the charcoal pill for the gradient CTA card, where sage would fight the colour. White is for
-      sage-colored surfaces. <code class="ds-inline">.nav-cta</code> is the compact navbar variant.
+      One primary on a section, never two. Outline is the secondary partner to a solid in hero. White
+      is for sage-colored surfaces. <code class="ds-inline">.nav-cta</code> is the compact navbar
+      variant.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview">
         <a href="#" class="btn-solid">Get access</a>
         <a href="#" class="btn-outline">See how it works &#8594;</a>
-        <a href="#" class="btn-dark">Request access</a>
         <a href="#" class="nav-cta" style="text-decoration:none;">Get access</a>
       </div>
       <pre class="ds-code"><span class="tag">{`<a `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"btn-solid"`}</span><span class="tag">{`>`}</span>Get access<span class="tag">{`</a>`}</span>
 <span class="tag">{`<a `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"btn-outline"`}</span><span class="tag">{`>`}</span>See how it works<span class="tag">{`</a>`}</span>
 <span class="tag">{`<a `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"nav-cta"`}</span><span class="tag">{`>`}</span>Get access<span class="tag">{`</a>`}</span></pre>
-    </div>
-    <div class="ds-specimen">
-      <div class="ds-specimen-preview">
-        <a href="#" class="btn-pill">Explore &#8594;</a>
-      </div>
-      <div class="ds-specimen-meta">
-        <span><strong>.btn-pill</strong> · compact secondary, used for <code class="ds-inline">.s-head-action</code></span>
-      </div>
     </div>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-dark">
@@ -328,58 +279,15 @@ const sections = [
   </section>
 
   <!-- ─────────── EYEBROWS ─────────── -->
-  <!-- ─────────── LOGO ─────────── -->
-  <section class="ds-section" id="logo">
-    <div class="ds-section-head">
-      <h2>Logo</h2>
-      <span class="ds-tag">.logo-mark · .nav-logo · .footer-logo</span>
-    </div>
-    <p class="ds-note">
-      The mark is three groups of two nested chevrons around one center, a trefoil. Each group sits between two
-      radial axes; its legs run parallel to those axes, and stroke and gap are equal everywhere, so
-      the channels between groups read as one continuous grid. Each layer sits on the one before it:
-      compounding, drawn literally. It is a single <code class="ds-inline">&lt;path&gt;</code> in
-      <code class="ds-inline">currentColor</code>, so it takes the color of its lockup: sage beside the
-      charcoal wordmark in the nav and footer, cream on sage for the favicon.
-    </p>
-    <p class="ds-note">
-      Use the <code class="ds-inline">&lt;Logo /&gt;</code> component
-      (<code class="ds-inline">src/components/Logo.astro</code>) rather than pasting the SVG. It renders
-      the mark at 28px beside the wordmark with a 10px gap. The wordmark is Lato in charcoal, Compound at 700 and Health at 400: one color, upright, with weight doing the work the original's italic did. The mark carries the green. Never recolor the mark inline, stretch
-      it, or set it smaller than 20px; below that use the favicon.
-    </p>
-    <div class="ds-specimen">
-      <div class="ds-specimen-preview is-stack">
-        <a href="/" class="nav-logo">
-          <svg class="logo-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38" stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"/></svg>
-          <span class="logo-word">Compound <span class="logo-word-light">Health</span></span>
-        </a>
-        <a href="/" class="footer-logo">
-          <svg class="logo-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38" stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"/></svg>
-          <span class="logo-word">Compound <span class="logo-word-light">Health</span></span>
-        </a>
-        <svg class="logo-mark" style="width:120px;height:120px;color:var(--sage);" viewBox="0 0 120 120" fill="none" aria-hidden="true"><path d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38" stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"/></svg>
-        <img src="/favicon.svg" alt="Favicon" width="32" height="32" />
-      </div>
-    </div>
-  </section>
-
   <section class="ds-section" id="eyebrows">
     <div class="ds-section-head">
       <h2>Eyebrows</h2>
       <span class="ds-tag">.eyebrow · .s-label · .page-label</span>
     </div>
     <p class="ds-note">
-      <code class="ds-inline">.eyebrow</code> is the same object as
-      <a href="#section-heads">.s-chip</a>, given a <code class="ds-inline">var(--glass)</code>
-      surface and a hairline so it holds up over the hero artwork: 13px, weight 500, sentence case,
-      no tracking, with an optional <code class="ds-inline">.eyebrow-dot</code> where something is
-      genuinely live. It reads the same as a section chip because it is doing the same job.
-    </p>
-    <p class="ds-note">
-      <code class="ds-inline">.s-label</code> and <code class="ds-inline">.page-label</code> are the
-      older uppercase markers, still in use on the legal, blog and deck pages: 11px, weight 500,
-      uppercase, 0.1em tracking.
+      Three flavors: hero eyebrow with pill background and dot, plain section label, and the
+      stronger page-hero label. All use the same type spec: 11px, weight 500, uppercase, 0.1em
+      tracking.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-stack">
@@ -457,22 +365,14 @@ const sections = [
   <section class="ds-section" id="dividers">
     <div class="ds-section-head">
       <h2>Dividers</h2>
-      <span class="ds-tag">.rule · 1px var(--hair)</span>
+      <span class="ds-tag">.cred-divider · 1px var(--border)</span>
     </div>
-    <p class="ds-note">
-      The page runs on one ground, so a hairline is what separates one thing from the next.
-      <code class="ds-inline">.rule</code> is the container-width break placed between sections;
-      inside a grid the same hairline runs as a <code class="ds-inline">border-top</code> on each
-      cell and a <code class="ds-inline">border-left</code> on every cell that is not first in its
-      row. Content is never boxed in to group it. Form controls sit on the same hairline, so
-      <code class="ds-inline">var(--border)</code>, the green-tinted line, is no longer used on the marketing page.
-    </p>
+    <p class="ds-note">A single border color, used for hairlines, grid splits, and section breaks.</p>
     <div class="ds-specimen">
-      <div class="ds-specimen-preview is-block">
-        <div class="rule" style="padding:0;"></div>
-      </div>
-      <div class="ds-specimen-meta">
-        <span><strong>.rule</strong> · between sections, as a sibling of <code class="ds-inline">&lt;section&gt;</code></span>
+      <div class="ds-specimen-preview">
+        <span>before</span>
+        <div class="cred-divider"></div>
+        <span>after</span>
       </div>
     </div>
   </section>
@@ -512,7 +412,7 @@ const sections = [
   <section class="ds-section" id="links">
     <div class="ds-section-head">
       <h2>Links</h2>
-      <span class="ds-tag">.prose a · .nav-back · .link-quiet</span>
+      <span class="ds-tag">.prose a · .nav-back</span>
     </div>
     <p class="ds-note">In-body links are sage with a 2px underline offset. Navigation back-links use mid color and turn sage on hover.</p>
     <div class="ds-specimen">
@@ -528,55 +428,23 @@ const sections = [
         </a>
       </div>
     </div>
-    <p class="ds-note">
-      <code class="ds-inline">.link-quiet</code> is the low-emphasis link that sends a secondary
-      audience elsewhere on the page without competing with a button. It sits under the hero
-      buttons and beside the closing CTA. Add
-      <code class="ds-inline">.is-on-dark</code> on sage or charcoal surfaces.
-    </p>
-    <div class="ds-specimen">
-      <div class="ds-specimen-preview">
-        <a href="#" class="link-quiet">Introducing Compound Health to your clients, employees or members?</a>
-      </div>
-      <pre class="ds-code"><span class="tag">{`<a `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"link-quiet"`}</span><span class="tag">{`>`}</span>Introducing Compound Health to your clients?<span class="tag">{`</a>`}</span>
-<span class="tag">{`<a `}</span><span class="attr">{`class`}</span><span class="tag">{`=`}</span><span class="str">{`"link-quiet is-on-dark"`}</span><span class="tag">{`>`}</span>Partners<span class="tag">{`</a>`}</span></pre>
-    </div>
-    <div class="ds-specimen">
-      <div class="ds-specimen-preview is-dark">
-        <a href="#" class="link-quiet is-on-dark">Partners</a>
-      </div>
-      <div class="ds-specimen-meta">
-        <span><strong>.link-quiet.is-on-dark</strong> &middot; only on sage or charcoal surfaces</span>
-      </div>
-    </div>
   </section>
 
   <!-- ─────────── MOTION ─────────── -->
   <section class="ds-section" id="motion">
     <div class="ds-section-head">
       <h2>Motion</h2>
-      <span class="ds-tag">.reveal · GSAP 3.12 · CSS keyframes</span>
+      <span class="ds-tag">GSAP 3.12 · CSS keyframes</span>
     </div>
     <p class="ds-note">
-      Scroll reveal is <code class="ds-inline">.reveal</code>: mark a block with it and an
-      IntersectionObserver in <code class="ds-inline">MainLayout</code> adds
-      <code class="ds-inline">.is-in</code> the first time it enters view, then stops watching it.
-      The element rises 16px, fades in and comes out of a 5px blur over 0.7s. No GSAP, no
-      ScrollTrigger. With <code class="ds-inline">prefers-reduced-motion</code>, or with no
-      JavaScript, the block is simply visible. Put it on the section head, the panel, the list, the
-      stat row: one block at a time, never on individual words.
-    </p>
-    <p class="ds-note">
-      Four named keyframes also ship with the system: <code class="ds-inline">up</code> for hero
-      entry, <code class="ds-inline">blink</code> for indicator dots,
-      <code class="ds-inline">grow</code> for the scroll line, and
-      <code class="ds-inline">wfFadeIn</code> for form success. The mobile menu uses a GSAP
-      timeline. Default easing is <code class="ds-inline">power3.out</code> /
+      Four named keyframes ship with the system: <code class="ds-inline">up</code> for hero entry,
+      <code class="ds-inline">blink</code> for indicator dots, <code class="ds-inline">grow</code>
+      for the scroll line, and <code class="ds-inline">wfFadeIn</code> for form success. The mobile
+      menu uses a GSAP timeline. Default easing is <code class="ds-inline">power3.out</code> /
       <code class="ds-inline">expo.out</code>. Durations 0.25–0.55s.
     </p>
     <div class="ds-specimen">
       <div class="ds-specimen-preview is-stack">
-        <div class="ds-type-meta"><strong>Scroll reveal</strong> .reveal &rarr; .is-in · translateY(16px) + blur(5px) &rarr; none · 0.7s cubic-bezier(0.22,1,0.36,1)</div>
         <div class="ds-type-meta"><strong>Hover lift (cards, buttons)</strong> transform: translateY(-2 to -4px) · 0.2s ease</div>
         <div class="ds-type-meta"><strong>Hero entry</strong> @keyframes up · 0.7s ease, staggered 0.1s</div>
         <div class="ds-type-meta"><strong>Indicator blink</strong> @keyframes blink · 2s ease infinite</div>

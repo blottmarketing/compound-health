@@ -3,48 +3,29 @@ import MainLayout from '../layouts/MainLayout.astro';
 ---
 
 <MainLayout
-  title="Compound Health | A private longevity membership, introduced through your advisor, firm or organization"
-  description="A private longevity membership introduced through wealth advisors, employers, and executive networks. Diagnostics, continuous tracking, and personalized protocols from curated clinical partners. Your health data stays yours."
+  title="Compound Health | A private longevity membership, introduced by your advisor"
+  description="A private longevity membership introduced by your wealth advisor. Comprehensive diagnostics, continuous biomarker tracking, and personalized longevity protocols, introduced through your advisory firm. Your health data stays yours, and you decide what, if anything, to share. Founding member waitlist now open."
 >
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-media" aria-hidden="true">
-      <img
-        class="hero-img"
-        src="/images/hero-landscape.webp"
-        alt=""
-        width="1536"
-        height="1024"
-        fetchpriority="high"
-        decoding="async"
-      />
+    <div class="hero-blob"></div>
+    <h1>Beyond wealth:<br />the years to <em>enjoy it</em></h1>
+    <p class="hero-sub">
+      A private longevity membership, introduced by your advisor. The same rigor your advisor
+      brings to your wealth, applied to your health. Your data stays yours, and you decide what,
+      if anything, to share.
+    </p>
+    <div class="hero-btns">
+      <a href="#joinwaitlist" class="btn-solid">Get access</a>
+      <a href="#how" class="btn-outline">See how it works &#8594;</a>
     </div>
-    <div class="hero-inner">
-      <a href="#joinwaitlist" class="eyebrow"><span class="eyebrow-dot"></span>Founding member waitlist now open</a>
-      <h1>Beyond wealth:<br />the years to <em>enjoy it</em></h1>
-      <p class="hero-sub">
-        A private longevity membership, introduced through the people who already advise you, your
-        firm or your organization. Delivered by clinical partners chosen against one standard. Your
-        data stays yours.
-      </p>
-      <div class="hero-actions">
-        <div class="hero-btns">
-          <a href="#joinwaitlist" class="btn-solid">Get access</a>
-          <a href="#how" class="btn-outline">See how it works &#8594;</a>
-        </div>
-        <div class="hero-note">
-          <a href="#partners" class="link-quiet">
-            Introducing Compound Health to your clients, employees or members?
-          </a>
-        </div>
-      </div>
-    </div>
+    <div class="scroll-indicator"><div class="scroll-line"></div></div>
   </section>
 
   <!-- CREDIBILITY BAR -->
   <div class="credbar">
-    <span class="cred-label">Where we are</span>
+    <span class="cred-label">Our first delivery</span>
     <div class="cred-item">
       <span class="cred-num">400</span>
       <span class="cred-text">UHNW clients in the advisory book we delivered our first session to</span>
@@ -61,31 +42,22 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </div>
 
-  <div class="rule"></div>
-
   <!-- HOW IT WORKS -->
   <section class="how" id="how">
     <div class="inner">
-      <div class="s-head reveal">
-        <p class="s-chip">The process</p>
-        <div class="s-head-copy">
-          <h2 class="s-title">A new model for<br />human performance</h2>
-          <p class="s-sub">
-            We built the infrastructure that connects the people who advise you to world-class
-            preventive care.
-          </p>
-        </div>
-        <div class="s-head-action">
-          <a href="#features" class="btn-pill">What you get &#8594;</a>
-        </div>
-      </div>
-      <div class="steps reveal">
+      <p class="s-label">The process</p>
+      <h2 class="s-title">A new model for<br />human performance</h2>
+      <p class="s-sub">
+        We built the infrastructure that connects your advisory firm to world-class preventive
+        care, with none of the friction.
+      </p>
+      <div class="steps">
         <div class="step">
           <div class="step-n">01</div>
-          <div class="step-title">Join through your advisor, firm or organization</div>
+          <div class="step-title">Join through your advisor</div>
           <p>
-            Access Compound Health as a benefit through a relationship you already have. No cold
-            starts. No separate onboarding.
+            Access Compound Health as a benefit through your wealth advisor. No cold starts, no
+            separate onboarding. Your existing relationship is the door.
           </p>
         </div>
         <div class="step">
@@ -101,95 +73,118 @@ import MainLayout from '../layouts/MainLayout.astro';
           <div class="step-n">03</div>
           <div class="step-title">Personalized longevity plan</div>
           <p>
-            Your clinical team, chosen for this program, and a dedicated health concierge build
-            and actively manage a protocol tailored to your data, goals, and lifestyle.
+            Your clinical team and a dedicated health concierge build and actively manage a protocol
+            tailored to your data, goals, and lifestyle. Updated continuously.
           </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- WHAT YOU GET
-       Bento grid: one tall cell carries the product surface, the rest carry a
-       line icon, a title and a sentence. Deliberately not the two-column
-       product pattern used by 'How we choose' below, so the two sections do
-       not read as the same section twice. -->
+  <!-- FEATURES -->
   <section class="features" id="features">
     <div class="inner">
-      <div class="s-head reveal">
-        <p class="s-chip">What you get</p>
-        <div class="s-head-copy">
-          <h2 class="s-title">Everything your health<br />has been missing</h2>
-          <p class="s-sub">
-            Compound Health is not a gym membership or a supplement subscription. It is a medical
-            relationship, sustained and personalized.
-          </p>
-        </div>
-        <div class="s-head-action">
-          <a href="#membership" class="btn-pill">See membership &#8594;</a>
-        </div>
-      </div>
-
-      <div class="bento reveal">
-        <div class="bento-cell is-surface tone-green">
-          <div>
-            <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 4v16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 14l3-4 3 3 4-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg></span>
-            <h3 class="bento-title">A dashboard for your body</h3>
-            <p>
-              The same rigor your advisor applies to your portfolio, applied to your biology.
-              Track trends, understand risks, and act on what the data reveals.
-            </p>
+      <p class="s-label">What you get</p>
+      <h2 class="s-title">Everything your health<br />has been missing</h2>
+      <p class="s-sub">
+        Compound Health is not a gym membership or a supplement subscription. It is a medical
+        relationship, sustained and personalized.
+      </p>
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
           </div>
-        </div>
-
-        <div class="bento-cell is-half tone-orange">
-          <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
-              </svg></span>
-          <h3 class="bento-title">Curated clinical delivery</h3>
+          <div class="feat-title">Elite clinical delivery</div>
           <p>
-            Physician-led care nationwide, virtual and in person, from partners selected for
-            outcomes, governance, and data ownership. Logistics handled.
+            Virtual care nationwide, with local provider coordination for in-person diagnostics.
+            White-glove logistics included throughout.
           </p>
         </div>
-
-        <div class="bento-cell is-half tone-pink">
-          <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M17 3c0 4-10 5-10 9s10 5 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M8.5 6.5h7M7 12h10M8.5 17.5h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg></span>
-          <h3 class="bento-title">Full biomarker tracking</h3>
+        <div class="feat">
+          <div class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M17 3c0 4-10 5-10 9s10 5 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M8.5 6.5h7M7 12h10M8.5 17.5h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="feat-title">Full biomarker tracking</div>
           <p>
             Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
             continuous wearable integration, all synthesized into a single health intelligence layer.
           </p>
         </div>
-
-        <div class="bento-cell is-half tone-orange">
-          <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg></span>
-          <h3 class="bento-title">Personalized protocols</h3>
+        <div class="feat span2">
+          <div>
+            <div class="feat-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 4v16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 14l3-4 3 3 4-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="feat-title">A dashboard for your body</div>
+            <p>
+              The same rigor your advisor applies to your portfolio, applied to your biology.
+              Track trends, understand risks, and act on what the data reveals.
+            </p>
+          </div>
+          <div class="metrics-panel">
+            <div class="metrics-head">Health score overview</div>
+            <div class="metric">
+              <span class="metric-name">Cardiovascular</span>
+              <div class="metric-track"><div class="metric-fill is-good" style="width:82%"></div></div>
+              <span class="metric-val">82</span>
+            </div>
+            <div class="metric">
+              <span class="metric-name">Metabolic</span>
+              <div class="metric-track"><div class="metric-fill is-warn" style="width:74%"></div></div>
+              <span class="metric-val">74</span>
+            </div>
+            <div class="metric">
+              <span class="metric-name">Cognitive</span>
+              <div class="metric-track"><div class="metric-fill is-good" style="width:91%"></div></div>
+              <span class="metric-val">91</span>
+            </div>
+            <div class="metric">
+              <span class="metric-name">Hormonal</span>
+              <div class="metric-track"><div class="metric-fill is-warn" style="width:67%"></div></div>
+              <span class="metric-val">67</span>
+            </div>
+            <div class="metric">
+              <span class="metric-name">Sleep quality</span>
+              <div class="metric-track"><div class="metric-fill is-good" style="width:88%"></div></div>
+              <span class="metric-val">88</span>
+            </div>
+          </div>
+        </div>
+        <div class="feat">
+          <div class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="feat-title">Personalized protocols</div>
           <p>
-            Calibrated to your biology, not a template.
+            Pharmaceutical-grade longevity protocols across nutrition, supplementation, hormones,
+            and sleep, calibrated to your biology, not a template.
           </p>
         </div>
-
-        <div class="bento-cell is-half tone-pink">
-          <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M5 17a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 7V5M10.5 5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg></span>
-          <h3 class="bento-title">Health concierge</h3>
+        <div class="feat">
+          <div class="feat-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M5 17a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 7V5M10.5 5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="feat-title">Health concierge</div>
           <p>
             A dedicated coordinator who handles specialist referrals, appointment logistics, second
             opinions, and anything else between you and better health.
@@ -199,216 +194,18 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </section>
 
-  <!-- HOW WE CHOOSE
-       The three disciplines are a tablist. Choosing one swaps the card in the
-       panel and marks the row in the card behind it. Every line inside the
-       panel is a phrase from that discipline's own paragraph. -->
-  <section class="curated prod">
+  <!-- CASE STUDY -->
+  <section class="case" id="case">
     <div class="inner">
-      <div class="s-head reveal">
-        <p class="s-chip">How we choose</p>
-        <div class="s-head-copy">
-          <h2 class="s-title">The best of each discipline,<br />one membership</h2>
-          <p class="s-sub">
-            Longevity medicine is not one company. We assessed the field, set one standard, and
-            chose the partners who meet it.
-          </p>
-        </div>
-      </div>
-
-      <div class="prod-grid" id="disciplines">
-        <div class="prod-list reveal" role="tablist" aria-label="Disciplines">
-          <button class="prod-item" type="button" role="tab" id="tab-clinical"
-                  aria-controls="pane-clinical" aria-selected="true" tabindex="0">
-            <span class="prod-item-head">
-              <span class="prod-icon">
-              <svg class="prod-ring" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-                <circle class="prod-ring-track" cx="22" cy="22" r="20"/>
-                <circle class="prod-ring-fill" cx="22" cy="22" r="20"/>
-              </svg>
-              <svg class="prod-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
-              </svg></span>
-              <span class="prod-title">Clinical care</span>
-            </span>
-            <span class="prod-copy">Physician-led teams with published outcomes and continuous care between visits.</span>
-          </button>
-          <button class="prod-item" type="button" role="tab" id="tab-diagnostics"
-                  aria-controls="pane-diagnostics" aria-selected="false" tabindex="-1">
-            <span class="prod-item-head">
-              <span class="prod-icon">
-              <svg class="prod-ring" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-                <circle class="prod-ring-track" cx="22" cy="22" r="20"/>
-                <circle class="prod-ring-fill" cx="22" cy="22" r="20"/>
-              </svg>
-              <svg class="prod-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <circle cx="12" cy="12" r="3.5" stroke="currentColor" stroke-width="1.5"/>
-                  <path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                </svg></span>
-              <span class="prod-title">Diagnostics and screening</span>
-            </span>
-            <span class="prod-copy">
-              Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and
-              usefulness.
-            </span>
-          </button>
-          <button class="prod-item" type="button" role="tab" id="tab-therapies"
-                  aria-controls="pane-therapies" aria-selected="false" tabindex="-1">
-            <span class="prod-item-head">
-              <span class="prod-icon">
-              <svg class="prod-ring" viewBox="0 0 44 44" fill="none" aria-hidden="true">
-                <circle class="prod-ring-track" cx="22" cy="22" r="20"/>
-                <circle class="prod-ring-fill" cx="22" cy="22" r="20"/>
-              </svg>
-              <svg class="prod-glyph" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg></span>
-              <span class="prod-title">Advanced therapies</span>
-            </span>
-            <span class="prod-copy">
-              Hormones, peptides, and regenerative therapies, only when your data indicates them,
-              only through vetted sourcing.
-            </span>
-          </button>
-        </div>
-
-        <div class="prod-panel reveal">
-          <div class="prod-panes">
-            <!-- Clinical care: who is on the team, and that it runs between visits. -->
-            <div class="prod-pane is-active" id="pane-clinical" role="tabpanel" aria-labelledby="tab-clinical">
-              <div class="stack-card">
-                <div class="stack-card-head">Your clinical team</div>
-                <!-- The team as one bar in four colours, with a legend of who
-                     is on it. -->
-                <div class="team">
-                  <div class="team-bar" aria-hidden="true"><span class="team-seg"></span><span class="team-seg"></span><span class="team-seg"></span><span class="team-seg"></span></div>
-                  <div class="team-legend">
-                    <div class="team-row">
-                      <span class="team-role">MD-led</span>
-                      <span class="team-note">Published outcomes</span>
-                    </div>
-                    <div class="team-row">
-                      <span class="team-role">Health coaching</span>
-                      <span class="team-note">Monthly</span>
-                    </div>
-                    <div class="team-row">
-                      <span class="team-role">Dietitian hours</span>
-                      <span class="team-note">Monthly</span>
-                    </div>
-                    <div class="team-row">
-                      <span class="team-role">Health concierge</span>
-                      <span class="team-note">Specialist referrals</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="team-foot">
-                  <span class="team-pulse" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
-                  Continuous care between visits
-                </div>
-              </div>
-            </div>
-
-            <!-- Diagnostics: the breadth of one baseline, as a number and a coverage map. -->
-            <div class="prod-pane" id="pane-diagnostics" role="tabpanel" aria-labelledby="tab-diagnostics">
-              <div class="stack-card">
-                <div class="stack-card-head">Baseline testing</div>
-                <!-- Six arcs, one per panel, draw in around the number; the
-                     legend names them. Without JS the figure reads 500+. -->
-                <div class="cov">
-                  <div class="cov-body">
-                    <div class="cov-ring">
-                      <svg viewBox="0 0 120 120" aria-hidden="true">
-                        <circle class="cov-arc" cx="60" cy="60" r="48" transform="rotate(0 60 60)"/>
-                        <circle class="cov-arc" cx="60" cy="60" r="48" transform="rotate(60 60 60)"/>
-                        <circle class="cov-arc" cx="60" cy="60" r="48" transform="rotate(120 60 60)"/>
-                        <circle class="cov-arc" cx="60" cy="60" r="48" transform="rotate(180 60 60)"/>
-                        <circle class="cov-arc" cx="60" cy="60" r="48" transform="rotate(240 60 60)"/>
-                        <circle class="cov-arc" cx="60" cy="60" r="48" transform="rotate(300 60 60)"/>
-                      </svg>
-                      <div class="cov-figure">
-                        <span class="cov-value">
-                          <span class="cov-num" data-count-to="500">500</span><span class="cov-plus">+</span>
-                        </span>
-                        <span class="cov-label">biomarkers</span>
-                      </div>
-                    </div>
-                    <ul class="cov-legend">
-                      <li>Bloodwork</li>
-                      <li>Imaging</li>
-                      <li>Genetics</li>
-                      <li>Cognitive</li>
-                      <li>Metabolic</li>
-                      <li>Gut and toxin panels</li>
-                    </ul>
-                  </div>
-                  <div class="cov-foot"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.4 7 9 4.1-1.6 7-4.8 7-9V6l-7-2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 12l2.2 2.2L15.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Multi-cancer early detection</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Advanced therapies: available, but behind two gates. -->
-            <div class="prod-pane" id="pane-therapies" role="tabpanel" aria-labelledby="tab-therapies">
-              <div class="stack-card is-feature">
-                <div class="stack-card-head">On a curated add-on layer</div>
-                <!-- The therapies are frosted chips on the gradient; the two
-                     conditions sit under them in a glass strip and are ticked
-                     in turn. -->
-                <div class="gate">
-                  <div class="gate-chips">
-                    <span class="gate-chip">Hormones</span>
-                    <span class="gate-chip">Peptides</span>
-                    <span class="gate-chip">Regenerative therapies</span>
-                    <span class="gate-chip">NAD</span>
-                    <span class="gate-chip">IV</span>
-                    <span class="gate-chip">CGM</span>
-                  </div>
-                  <div class="gate-flow">
-                    <div class="gate-step">
-                      <span class="gate-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                      <span class="gate-label">Only when your data indicates them</span>
-                    </div>
-                    <div class="gate-step">
-                      <span class="gate-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                      <span class="gate-label">Only through vetted sourcing</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <p class="curated-note reveal">
-        Every partner is re-reviewed each year. If a better option emerges, the membership moves
-        with it.
+      <p class="s-label">Case study</p>
+      <h2 class="s-title">The Longevity Playbook,<br />delivered with a global private bank</h2>
+      <p class="s-sub">
+        In May 2026, Compound Health delivered its first educational session with an advisory team
+        at one of the largest private banks globally, introducing longevity to the team's UHNW
+        client book.
       </p>
-    </div>
-  </section>
 
-  <div class="rule"></div>
-
-  <!-- PARTNERS (formerly Case study) -->
-  <section class="case" id="partners">
-    <div class="inner">
-      <div class="s-head reveal">
-        <p class="s-chip">Partners</p>
-        <div class="s-head-copy">
-          <h2 class="s-title">A credible way to bring longevity<br />to the people you serve</h2>
-          <p class="s-sub">
-            Compound Health is introduced, not sold. Whether you advise clients, employ a
-            workforce or lead a network, you make the introduction and we run the program.
-          </p>
-        </div>
-      </div>
-
-      <!-- Proof block: the first partner engagement, kept as evidence. Three
-           hairline cells, not three billboard numbers. -->
-      <div class="case-stats reveal">
+      <div class="case-stats">
         <div class="case-stat">
           <div class="case-num">400</div>
           <div class="case-stat-label">UHNW clients in the advisory team's book, reached through a single educational session.</div>
@@ -423,100 +220,45 @@ import MainLayout from '../layouts/MainLayout.astro';
         </div>
       </div>
 
-      <!-- The agenda reads as a list, not as a card: the heading holds the left
-           column and the four items are hairline rows in the right. -->
-      <div class="deliver reveal">
-        <h3 class="deliver-title">What we delivered</h3>
-        <ul class="deliver-list">
-          <li>The health data worth paying attention to, and what to ignore</li>
-          <li>The tests and metrics that matter in each decade of life</li>
-          <li>High-impact habits for busy professionals and entrepreneurs</li>
-          <li>How to support aging parents alongside your own health</li>
-        </ul>
-      </div>
+      <div class="case-body">
+        <div class="case-content">
+          <div class="case-eyebrow">The session</div>
+          <h3 class="case-title">What actually matters for living longer and better</h3>
+          <p class="case-desc">
+            The session cut through the noise of wearables, advanced diagnostics, and preventive
+            care to give UHNW clients a practical lens on what to actually pay attention to, when,
+            and why. Built for busy professionals, entrepreneurs, and the people supporting aging
+            parents alongside their own health.
+          </p>
+          <ul class="case-agenda">
+            <li>The health data worth paying attention to, and what to ignore</li>
+            <li>The tests and metrics that matter in each decade of life</li>
+            <li>High-impact habits for busy professionals and entrepreneurs</li>
+            <li>How to support aging parents alongside your own health</li>
+          </ul>
+        </div>
 
-      <div class="audience-grid reveal">
-        <div class="audience-tile">
-          <span class="audience-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 9.5 12 4l9 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 10.5v8.5M18.5 10.5v8.5M10 10.5v8.5M14 10.5v8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3.5 20h17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </span>
-          <h3 class="audience-title">Wealth firms</h3>
-          <p>
-            RIAs, family offices, and private bank teams. A client session first, then membership
-            your clients join through you.
-          </p>
+        <div class="case-quote-card">
+          <div class="case-quote-eyebrow">The model</div>
+          <div class="case-quote">One trusted advisor relationship. One conversation about longevity. Introduced to a wealth channel's clients.</div>
+          <div class="case-quote-footer">
+            <strong>Now opening to RIAs, family offices, and additional private bank and wirehouse advisory teams.</strong>
+            Compound Health gives wealth firms a credible way to introduce longevity to their clients, from a first educational session to an ongoing program.
+          </div>
         </div>
-        <div class="audience-tile">
-          <span class="audience-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="7.5" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M9 7.5V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M3 12.5h18" stroke="currentColor" stroke-width="1.5"/></svg>
-          </span>
-          <h3 class="audience-title">Employers</h3>
-          <p>
-            Self-insured employers and leadership teams. Clinical outcomes on health spend, from
-            the C-suite to the wider organization.
-          </p>
-        </div>
-        <div class="audience-tile">
-          <span class="audience-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8.5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M16 5.8a3 3 0 0 1 0 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M17.2 19a5.5 5.5 0 0 0-2-4.2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          </span>
-          <h3 class="audience-title">Executive and peer networks</h3>
-          <p>
-            CEO groups, professional networks, sports and entertainment organizations. A shared
-            baseline for your members and results you can publish.
-          </p>
-        </div>
-        <div class="audience-tile">
-          <span class="audience-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10v10h12V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 20v-5.5h4V20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <h3 class="audience-title">Family offices and households</h3>
-          <p>
-            One program across generations, with each member owning their own data.
-          </p>
-        </div>
-      </div>
-
-      <div class="partner-notes reveal">
-        <div class="partner-note">
-          <div class="partner-note-title">Structured for you</div>
-          <p>Tiers and terms are set with each partner, so the program fits the people it serves.</p>
-        </div>
-        <div class="partner-note">
-          <div class="partner-note-title">Nothing crosses the line</div>
-          <p>Health data belongs to the individual. You see engagement, never medical information.</p>
-        </div>
-        <div class="partner-note">
-          <div class="partner-note-title">Introduced, not sold</div>
-          <p>Your people join through you. You are never the intermediary for care or data.</p>
-        </div>
-      </div>
-
-      <div class="partner-cta reveal">
-        <a href="#joinwaitlist" class="btn-solid" data-wf-role="partner">Talk to us about a program</a>
       </div>
     </div>
   </section>
 
-  <div class="rule"></div>
-
-  <!-- MEMBERSHIP (formerly Plans) -->
-  <section class="plans" id="membership">
+  <!-- PLANS -->
+  <section class="plans" id="plans">
     <div class="inner">
-      <div class="s-head reveal">
-        <p class="s-chip">Membership</p>
-        <div class="s-head-copy">
-          <h2 class="s-title">Built for founders, executives, and families.</h2>
-          <p class="s-sub">Structured for the organizations that serve them.</p>
-          <p class="plans-lead">One way in. Two ways forward.</p>
-        </div>
-        <div class="s-head-action">
-          <a href="#joinwaitlist" class="btn-pill">Get access &#8594;</a>
-        </div>
-      </div>
-      <div class="plans-grid reveal">
+      <p class="s-label">Membership</p>
+      <h2 class="s-title">Built for founders,<br />executives, and their families</h2>
+      <p class="plans-lead">One way in. Two ways forward.</p>
+      <div class="plans-grid">
         <div class="plan">
-          <div class="plan-head"><div class="plan-name">Baseline</div></div>
+          <div class="plan-name">Baseline</div>
           <p class="plan-price-note">Credited toward year one if you continue.</p>
           <ul class="plan-features">
             <li>Advanced and standard bloodwork, mobile-drawn at home</li>
@@ -524,10 +266,11 @@ import MainLayout from '../layouts/MainLayout.astro';
             <li>Body composition and strength assessment</li>
             <li>Written longevity plan reviewed by an MD</li>
           </ul>
-          <a href="#joinwaitlist" class="plan-btn">Start here &rarr;</a>
+          <a href="#joinwaitlist" class="plan-btn ghost">Start here &rarr;</a>
         </div>
         <div class="plan featured">
-          <div class="plan-head"><div class="plan-name">Optimize</div><span class="plan-badge">Most popular</span></div>
+          <div class="plan-badge">Most popular</div>
+          <div class="plan-name">Optimize</div>
           <p class="plan-price-note">The annual program for sustained performance.</p>
           <ul class="plan-features">
             <li>MD-led, coach-supported program</li>
@@ -535,12 +278,12 @@ import MainLayout from '../layouts/MainLayout.astro';
             <li>30 minutes per month of MD async messaging, monthly health coaching, and dietitian hours</li>
             <li>Multi-cancer early detection and biological-age and healthspan tracking</li>
             <li>Care navigation, with foundational supplements included</li>
-            <li>Hormones, peptides, NAD, IV, and CGM available on a curated add-on layer</li>
+            <li>Hormones, peptides, NAD, IV, and CGM available on a curated add-on layer at member pricing</li>
           </ul>
-          <a href="#joinwaitlist" class="plan-btn is-solid">Get access &rarr;</a>
+          <a href="#joinwaitlist" class="plan-btn white">Get access &rarr;</a>
         </div>
         <div class="plan">
-          <div class="plan-head"><div class="plan-name">Eternal</div></div>
+          <div class="plan-name">Eternal</div>
           <p class="plan-price-note">Top of practice, always on.</p>
           <ul class="plan-features">
             <li>Everything in Optimize</li>
@@ -549,48 +292,26 @@ import MainLayout from '../layouts/MainLayout.astro';
             <li>Unlimited messaging with a five-person concierge care team</li>
             <li>Hormones, supplements, and quarterly re-testing included</li>
           </ul>
-          <a href="#joinwaitlist" class="plan-btn">Contact us &rarr;</a>
+          <a href="#joinwaitlist" class="plan-btn dark">Contact us &rarr;</a>
         </div>
       </div>
-      <p class="family-note">Family and household coverage is available as an extension across all tiers. Terms are structured with each partner. Ask your introducer, or ask us.</p>
+      <p class="family-note">Family and household coverage is available as an extension across all tiers.</p>
     </div>
   </section>
 
-  <!-- ACCESS: the closing call and the form, one section. The card on the
-       left is the one gradient surface on the page; the form sits beside it
-       on the page ground. -->
-  <section class="cta" id="joinwaitlist">
-    <div class="inner cta-grid">
-      <div class="cta-card reveal">
-        <div class="cta-card-top">
-          <p class="s-chip">Access</p>
-          <h2>The years to <em>enjoy it</em> start now</h2>
-          <p class="cta-lead">Compound Health is enrolling through partner advisors, firms, and organizations, with limited first-wave capacity.</p>
-        </div>
-        <div class="cta-card-foot">
-          <h3 class="cta-form-title">Get access</h3>
-          <p class="cta-sub">
-            Founding member places and first-wave partner slots are limited. Leave your details
-            and we will be in touch.
-          </p>
-        </div>
+  <!-- WAITLIST FORM -->
+  <section class="waitlist" id="joinwaitlist">
+    <div class="inner waitlist-inner">
+      <div class="waitlist-copy">
+        <p class="s-label">Access</p>
+        <h2 class="s-title">Get access</h2>
+        <p class="s-sub">
+          Founding member spots are limited. Leave your details and we'll be in touch
+          when your tier becomes available.
+        </p>
       </div>
-      <div class="cta-form reveal">
       <div class="waitlist-form-wrap">
         <div class="waitlist-form" id="waitlistForm">
-          <div class="wf-field">
-            <span class="wf-label" id="wfRoleLabel">I am</span>
-            <div class="wf-segmented" id="wfRole" role="radiogroup" aria-labelledby="wfRoleLabel">
-              <button class="wf-segment is-active" type="button" role="radio" aria-checked="true"
-                      data-role="client" data-audience="client">A client</button>
-              <button class="wf-segment" type="button" role="radio" aria-checked="false"
-                      data-role="wealth-firm" data-audience="partner">A wealth firm</button>
-              <button class="wf-segment" type="button" role="radio" aria-checked="false"
-                      data-role="employer" data-audience="partner">An employer</button>
-              <button class="wf-segment" type="button" role="radio" aria-checked="false"
-                      data-role="network" data-audience="partner">A network or organization</button>
-            </div>
-          </div>
           <div class="wf-row">
             <div class="wf-field">
               <label class="wf-label" for="wf-fname">First name</label>
@@ -605,9 +326,7 @@ import MainLayout from '../layouts/MainLayout.astro';
             <label class="wf-label" for="wf-email">Email address</label>
             <input class="wf-input" type="email" id="wf-email" placeholder="james@example.com" autocomplete="email" />
           </div>
-
-          <!-- Client path. Same two fields, and the same card height, as before. -->
-          <div class="wf-field" data-shown-to="client">
+          <div class="wf-field">
             <label class="wf-label" for="wf-tier">Membership tier of interest</label>
             <select class="wf-input wf-select" id="wf-tier">
               <option value="" disabled selected>Select a tier</option>
@@ -616,27 +335,10 @@ import MainLayout from '../layouts/MainLayout.astro';
               <option value="eternal">Eternal</option>
             </select>
           </div>
-          <div class="wf-field" data-shown-to="client">
+          <div class="wf-field">
             <label class="wf-label" for="wf-advisor">Referring advisor or firm (optional)</label>
             <input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" />
           </div>
-
-          <!-- Partner path. Swaps in for the two client fields. -->
-          <div class="wf-field" data-shown-to="partner" hidden>
-            <label class="wf-label" for="wf-org">Organization name</label>
-            <input class="wf-input" type="text" id="wf-org" placeholder="e.g. Pemberton Family Office" autocomplete="organization" />
-          </div>
-          <div class="wf-field" data-shown-to="partner" hidden>
-            <label class="wf-label" for="wf-reach">People you would introduce (optional)</label>
-            <select class="wf-input wf-select" id="wf-reach">
-              <option value="" disabled selected>Select a range</option>
-              <option value="under-100">Under 100</option>
-              <option value="100-500">100 to 500</option>
-              <option value="500-2000">500 to 2,000</option>
-              <option value="over-2000">Over 2,000</option>
-            </select>
-          </div>
-
           <button class="wf-submit" id="wfSubmit" type="button">
             <span class="wf-submit-label">Reserve my place</span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -664,280 +366,29 @@ import MainLayout from '../layouts/MainLayout.astro';
               <path d="M10 16.5l4 4 8-9" stroke="#4A7A25" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <h3 id="wsTitle">You're on the list</h3>
-          <p id="wsBody">
-            Thank you. Your founding member request has been received.
+          <h3>You're on the list</h3>
+          <p>
+            Thank you<span id="wsName"></span>. Your founding member request has been received.
             Our team will be in touch as soon as your tier opens.
           </p>
+          <div class="ws-meta">A confirmation will arrive at <span id="wsEmail">your inbox</span></div>
           <button class="ws-reset" id="wsReset" type="button">Submit another response</button>
         </div>
-      </div>
       </div>
     </div>
   </section>
 
-  <!-- Discipline tabs. Each discipline has its own figure in the panel, not the
-       same list three times, and all three figures share one height so nothing
-       moves as the tab changes.
-
-       The tabs advance on their own every 7s. The countdown is the ring around
-       the icon of the open tab: a CSS animation on the ring's stroke, with the
-       advance driven by its animationend, so the ring and the switch can never
-       drift apart. Hovering does not stop it. Keyboard
-       focus does, so nothing moves under someone reading with the keyboard, and
-       so does leaving the viewport. Choosing a tab restarts the countdown from
-       it rather than ending the rotation. With reduced motion, or no
-       JavaScript, nothing rotates, the rings stay as plain hairlines and the
-       first pane stays open. -->
-  <script>
-    (function () {
-      const AUTO_MS = 7000;
-      const root = document.getElementById('disciplines');
-      if (!root) return;
-      const list  = root.querySelector<HTMLElement>('.prod-list');
-      const rings = Array.from(root.querySelectorAll<SVGCircleElement>('.prod-ring-fill'));
-      const tabs  = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-      const panes = Array.from(root.querySelectorAll<HTMLElement>('.prod-pane'));
-      if (!list || !tabs.length) return;
-
-      let current = 0;
-      let auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      function select(index: number, focus = false) {
-        current = index;
-        tabs.forEach((tab, i) => {
-          const on = i === index;
-          tab.setAttribute('aria-selected', on ? 'true' : 'false');
-          tab.tabIndex = on ? 0 : -1;
-        });
-        panes.forEach((pane, i) => pane.classList.toggle('is-active', i === index));
-        if (focus) tabs[index].focus();
-        if (auto) restartTimer();
-      }
-
-      // Clearing the animation and forcing a reflow is what makes the ring
-      // start over, including when the open tab is chosen again.
-      function restartTimer() {
-        const ring = rings[current];
-        if (!ring) return;
-        ring.style.animation = 'none';
-        void ring.getBoundingClientRect();
-        ring.style.animation = '';
-      }
-
-      list.addEventListener('animationend', e => {
-        if (!auto) return;
-        const el = e.target as Element;
-        if (!el.classList || !el.classList.contains('prod-ring-fill')) return;
-        select((current + 1) % tabs.length);
-      });
-
-      const pause  = () => { if (auto) list.classList.add('is-paused'); };
-      const resume = () => list.classList.remove('is-paused');
-
-      // Only a keyboard focus pauses. A mouse click focuses the tab too, and
-      // pausing on that left the rotation stuck until the pointer moved away.
-      root.addEventListener('focusin', e => {
-        const el = e.target as HTMLElement;
-        if (el.matches && el.matches(':focus-visible')) pause();
-      });
-      root.addEventListener('focusout', resume);
-
-      tabs.forEach((tab, i) => {
-        // Choosing a tab restarts the countdown from it rather than ending the
-        // rotation.
-        tab.addEventListener('click', () => select(i));
-        tab.addEventListener('keydown', e => {
-          const last = tabs.length - 1;
-          let next = -1;
-          if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = i === last ? 0 : i + 1;
-          else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = i === 0 ? last : i - 1;
-          else if (e.key === 'Home') next = 0;
-          else if (e.key === 'End') next = last;
-          if (next < 0) return;
-          e.preventDefault();
-          select(next, true);
-        });
-      });
-
-      // Both the ring and the panel figures run on this length.
-      root.style.setProperty('--auto-ms', AUTO_MS + 'ms');
-      if (auto) list.classList.add('is-auto');
-
-      // Only rotate while the section is actually on screen.
-      if (auto && 'IntersectionObserver' in window) {
-        new IntersectionObserver(entries => {
-          entries.forEach(entry => {
-            if (!auto) return;
-            if (entry.isIntersecting) { resume(); restartTimer(); }
-            else pause();
-          });
-        }, { threshold: 0.35 }).observe(root);
-      } else if (auto) {
-        restartTimer();
-      }
-    })();
-  </script>
-
-  <!-- Custom dropdowns. Each select.wf-select is wrapped in .wf-dd and given a
-       button and a listbox; the native select stays as the value the form
-       script reads, and is updated on every choice. Arrow keys, Home, End,
-       Enter, Space and Escape work; a click outside closes. Without JavaScript
-       the native select is what the reader sees. -->
-  <script>
-    (function () {
-      const CHEV = '<svg class="wf-dd-chev" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      const TICK = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-
-      document.querySelectorAll<HTMLSelectElement>('select.wf-select').forEach((sel, n) => {
-        const label = sel.id ? document.querySelector<HTMLLabelElement>(`label[for="${sel.id}"]`) : null;
-        const wrap  = document.createElement('div');
-        wrap.className = 'wf-dd';
-        sel.parentNode?.insertBefore(wrap, sel);
-        wrap.appendChild(sel);
-        sel.tabIndex = -1;
-        sel.setAttribute('aria-hidden', 'true');
-
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'wf-dd-btn';
-        btn.id = `${sel.id || 'wf-dd-' + n}-btn`;
-        btn.setAttribute('aria-haspopup', 'listbox');
-        btn.setAttribute('aria-expanded', 'false');
-        if (label) { btn.setAttribute('aria-label', label.textContent?.trim() || ''); label.htmlFor = btn.id; }
-        const text = document.createElement('span');
-        btn.appendChild(text);
-        btn.insertAdjacentHTML('beforeend', CHEV);
-
-        const list = document.createElement('ul');
-        list.className = 'wf-dd-list';
-        list.setAttribute('role', 'listbox');
-        list.id = `${btn.id}-list`;
-        btn.setAttribute('aria-controls', list.id);
-
-        const opts = Array.from(sel.options).filter((o) => !o.disabled);
-        const items = opts.map((o) => {
-          const li = document.createElement('li');
-          li.className = 'wf-dd-opt';
-          li.setAttribute('role', 'option');
-          li.dataset.value = o.value;
-          li.innerHTML = `<span>${o.textContent}</span>${TICK}`;
-          li.addEventListener('click', () => { choose(o.value); close(); btn.focus(); });
-          list.appendChild(li);
-          return li;
-        });
-        wrap.appendChild(btn);
-        wrap.appendChild(list);
-
-        const placeholder = sel.options[0]?.disabled ? sel.options[0].textContent || '' : '';
-        let focus = -1;
-
-        function render() {
-          const cur = sel.value;
-          const selected = opts.find((o) => o.value === cur && cur !== '');
-          text.textContent = selected ? selected.textContent : placeholder;
-          btn.classList.toggle('is-empty', !selected);
-          items.forEach((li) => li.setAttribute('aria-selected', String(li.dataset.value === cur && cur !== '')));
-        }
-        function choose(value: string) {
-          sel.value = value;
-          sel.dispatchEvent(new Event('change', { bubbles: true }));
-          render();
-        }
-        function setFocus(i: number) {
-          focus = Math.max(0, Math.min(items.length - 1, i));
-          items.forEach((li, k) => li.classList.toggle('is-focus', k === focus));
-          items[focus]?.scrollIntoView({ block: 'nearest' });
-        }
-        function open() {
-          list.classList.add('is-open');
-          btn.setAttribute('aria-expanded', 'true');
-          const cur = items.findIndex((li) => li.getAttribute('aria-selected') === 'true');
-          setFocus(cur >= 0 ? cur : 0);
-        }
-        function close() {
-          list.classList.remove('is-open');
-          btn.setAttribute('aria-expanded', 'false');
-          items.forEach((li) => li.classList.remove('is-focus'));
-          focus = -1;
-        }
-        const isOpen = () => list.classList.contains('is-open');
-
-        btn.addEventListener('click', () => (isOpen() ? close() : open()));
-        btn.addEventListener('keydown', (e) => {
-          if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-            e.preventDefault();
-            if (!isOpen()) open();
-            else setFocus(focus + (e.key === 'ArrowDown' ? 1 : -1));
-          } else if (e.key === 'Home' && isOpen()) { e.preventDefault(); setFocus(0); }
-          else if (e.key === 'End' && isOpen()) { e.preventDefault(); setFocus(items.length - 1); }
-          else if ((e.key === 'Enter' || e.key === ' ') && isOpen()) {
-            e.preventDefault();
-            const li = items[focus];
-            if (li) choose(li.dataset.value || '');
-            close();
-          } else if (e.key === 'Escape' && isOpen()) { e.preventDefault(); close(); }
-          else if (e.key === 'Tab' && isOpen()) { close(); }
-        });
-        document.addEventListener('click', (e) => { if (isOpen() && !wrap.contains(e.target as Node)) close(); });
-        sel.addEventListener('change', render);
-        render();
-      });
-    })();
-  </script>
-
-  <!-- The diagnostics figure runs up to its number. The count reads the clock
-       of the first arc of the ring rather than a clock of its own, so it can
-       never land ahead of the ring, and it writes nothing while another tab is
-       open. With reduced motion, or no JavaScript, the figure simply
-       reads what is in the markup. -->
-  <script>
-    (function () {
-      const num = document.querySelector<HTMLElement>('[data-count-to]');
-      if (!num) return;
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-      const target = Number(num.dataset.countTo);
-      const light  = num.closest('.cov')?.querySelector<SVGElement>('.cov-arc');
-      const pane   = num.closest('.prod-pane');
-      if (!target || !light || !pane) return;
-
-      // The window the panels land in, as a fraction of one rotation.
-      const START = 0.02;
-      const END   = 0.30;
-      const ease  = (t: number) => 1 - Math.pow(1 - t, 3);
-      let shown = -1;
-
-      function tick() {
-        requestAnimationFrame(tick);
-        if (!pane.classList.contains('is-active')) return;
-
-        const anim = light.getAnimations()[0];
-        if (!anim || anim.currentTime === null) return;
-        const cycle = Number(anim.effect?.getTiming().duration) || 7000;
-        const phase = (Number(anim.currentTime) % cycle) / cycle;
-
-        const t = Math.max(0, Math.min(1, (phase - START) / (END - START)));
-        const value = Math.round(ease(t) * target);
-        if (value !== shown) { num.textContent = String(value); shown = value; }
-      }
-      requestAnimationFrame(tick);
-    })();
-  </script>
+  <!-- FOOTER CTA -->
+  <div class="footer-cta">
+    <h2>The years to <em>enjoy it</em><br />start now</h2>
+    <p>Join the premier cohort. Compound Health is enrolling through partner wealth advisors, with limited capacity in the first wave.</p>
+    <a href="#joinwaitlist" class="btn-white">Request access</a>
+  </div>
 
   <!-- Waitlist form script -->
   <script>
     const WAITLIST_ENDPOINT =
-      'https://script.google.com/macros/s/AKfycbw9x1Q9dVIDbTRRnsgajzbXHrL2Y3mz7SSWO2qHGtDeK9XsrxKhtBpItlPaY3oDn28/exec';
-
-    // Routing. The Apps Script endpoint branches on `audience` so partner
-    // submissions land somewhere other than the client waitlist. The tag values
-    // are placeholders: the inbox / CRM tag for partners is still an open point
-    // in the designer brief, and changing them here is a one-line edit.
-    const ROUTING_TAG: Record<string, string> = {
-      client:  'client-waitlist',
-      partner: 'partner-pipeline',
-    };
+      'https://script.google.com/macros/s/AKfycbzY5RvWk2brJh-UXMCrmje97TMZK3u6iEWYOexglSWQfaxGZD4-I5RsZUlQq-AlfH1fpw/exec';
 
     const waitlistForm    = document.getElementById('waitlistForm')    as HTMLDivElement | null;
     const waitlistSuccess = document.getElementById('waitlistSuccess') as HTMLDivElement | null;
@@ -945,27 +396,10 @@ import MainLayout from '../layouts/MainLayout.astro';
     const wfError         = document.getElementById('wfError')         as HTMLDivElement | null;
     const wfErrorMsg      = wfError?.querySelector('.wf-error-msg')    as HTMLSpanElement | null;
     const wfLabel         = wfSubmit?.querySelector('.wf-submit-label') as HTMLSpanElement | null;
-    const wfRole          = document.getElementById('wfRole')          as HTMLDivElement | null;
-    const wsTitle         = document.getElementById('wsTitle')         as HTMLHeadingElement | null;
-    const wsBody          = document.getElementById('wsBody')          as HTMLParagraphElement | null;
+    const wsName          = document.getElementById('wsName')          as HTMLSpanElement | null;
+    const wsEmail         = document.getElementById('wsEmail')         as HTMLSpanElement | null;
     const wsReset         = document.getElementById('wsReset')         as HTMLButtonElement | null;
     const ORIGINAL_LABEL  = wfLabel?.textContent ?? 'Reserve my place';
-
-    const segments = Array.from(
-      wfRole?.querySelectorAll<HTMLButtonElement>('.wf-segment') ?? []
-    );
-
-    /** 'client' or 'partner', from the currently selected segment. */
-    function currentAudience(): string {
-      const active = segments.find((s) => s.classList.contains('is-active'));
-      return active?.dataset.audience ?? 'client';
-    }
-
-    /** The specific segment value, e.g. 'client', 'wealth-firm', 'employer', 'network'. */
-    function currentRole(): string {
-      const active = segments.find((s) => s.classList.contains('is-active'));
-      return active?.dataset.role ?? 'client';
-    }
 
     function showError(message: string) {
       if (!wfError) return;
@@ -977,52 +411,6 @@ import MainLayout from '../layouts/MainLayout.astro';
       wfError?.classList.remove('visible');
     }
 
-    /**
-     * Reveal the fields for one audience and hide the other's. Both paths carry
-     * two conditional fields, so the card keeps the same height either way.
-     */
-    function applyAudience(audience: string) {
-      document
-        .querySelectorAll<HTMLElement>('[data-shown-to]')
-        .forEach((field) => {
-          field.hidden = field.dataset.shownTo !== audience;
-        });
-    }
-
-    /** Select a segment by role slug. 'partner' picks the first partner option. */
-    function selectRole(role: string) {
-      const target =
-        segments.find((s) => s.dataset.role === role) ??
-        (role === 'partner'
-          ? segments.find((s) => s.dataset.audience === 'partner')
-          : undefined);
-      if (!target) return;
-
-      segments.forEach((s) => {
-        const isActive = s === target;
-        s.classList.toggle('is-active', isActive);
-        s.setAttribute('aria-checked', String(isActive));
-      });
-      applyAudience(target.dataset.audience ?? 'client');
-      clearError();
-    }
-
-    segments.forEach((segment) => {
-      segment.addEventListener('click', () => {
-        selectRole(segment.dataset.role ?? 'client');
-      });
-    });
-
-    // Links elsewhere on the page can preset the selector before the browser
-    // scrolls to the form, e.g. the Partners CTA. Delegated, so triggers added
-    // to the page later are wired without touching this file.
-    document.addEventListener('click', (event) => {
-      const trigger = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-wf-role]');
-      if (trigger) selectRole(trigger.dataset.wfRole ?? 'partner');
-    });
-
-    applyAudience(currentAudience());
-
     if (wfSubmit && waitlistForm && waitlistSuccess) {
       wfSubmit.addEventListener('click', async () => {
         clearError();
@@ -1032,51 +420,32 @@ import MainLayout from '../layouts/MainLayout.astro';
         const emailInput   = document.getElementById('wf-email')   as HTMLInputElement | null;
         const tierInput    = document.getElementById('wf-tier')    as HTMLSelectElement | null;
         const advisorInput = document.getElementById('wf-advisor') as HTMLInputElement | null;
-        const orgInput     = document.getElementById('wf-org')     as HTMLInputElement | null;
-        const reachInput   = document.getElementById('wf-reach')   as HTMLSelectElement | null;
-
-        const audience  = currentAudience();
-        const isPartner = audience === 'partner';
 
         const firstName = fnameInput?.value.trim()   ?? '';
         const lastName  = lnameInput?.value.trim()   ?? '';
         const email     = emailInput?.value.trim()   ?? '';
         const tier      = tierInput?.value           ?? '';
         const advisor   = advisorInput?.value.trim() ?? '';
-        const org       = orgInput?.value.trim()     ?? '';
-        const reach     = reachInput?.value          ?? '';
 
-        // Minimal validation, matching the existing pattern: focus the first
-        // field that needs attention. Required fields differ by audience.
+        // Minimal validation: require first name, last name, email, tier
         if (!firstName) { fnameInput?.focus(); return; }
         if (!lastName)  { lnameInput?.focus(); return; }
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           emailInput?.focus();
           return;
         }
-        if (isPartner) {
-          if (!org) { orgInput?.focus(); return; }
-        } else if (!tier) {
-          tierInput?.focus();
-          return;
-        }
+        if (!tier) { tierInput?.focus(); return; }
 
         // Submitting state
         wfSubmit.disabled = true;
         if (wfLabel) wfLabel.textContent = 'Submitting…';
 
         const payload = new URLSearchParams({
-          role:        currentRole(),
-          audience,
-          routingTag:  ROUTING_TAG[audience] ?? ROUTING_TAG.client,
           firstName,
           lastName,
           email,
-          // Only the fields belonging to the chosen path are sent.
-          tier:         isPartner ? '' : tier,
-          advisor:      isPartner ? '' : advisor,
-          organization: isPartner ? org : '',
-          reach:        isPartner ? reach : '',
+          tier,
+          advisor,
           source:      'compoundhealth.io',
           submittedAt: new Date().toISOString(),
           userAgent:   navigator.userAgent,
@@ -1093,23 +462,10 @@ import MainLayout from '../layouts/MainLayout.astro';
 
           if (!res.ok) throw new Error('Request failed: ' + res.status);
 
-          // Confirmation copy differs by audience.
-          if (isPartner) {
-            if (wsTitle) wsTitle.textContent = 'Request received';
-            if (wsBody) {
-              wsBody.textContent =
-                'Thank you. We will be in touch to discuss a program for your organization.';
-            }
-          } else {
-            if (wsTitle) wsTitle.textContent = "You're on the list";
-            if (wsBody) {
-              // Personalize: "Thank you, {First Name}." Without a name: "Thank you."
-              wsBody.textContent =
-                'Thank you' + (firstName ? ', ' + firstName : '') +
-                '. Your founding member request has been received. Our team will be in ' +
-                'touch as soon as your tier opens.';
-            }
-          }
+          // Personalize and reveal the success panel.
+          // With a name: "Thank you, {First Name}." Without: "Thank you."
+          if (wsName)  wsName.textContent  = firstName ? ', ' + firstName : '';
+          if (wsEmail) wsEmail.textContent = email;
 
           waitlistForm.style.display = 'none';
           waitlistSuccess.classList.add('visible');
@@ -1128,17 +484,20 @@ import MainLayout from '../layouts/MainLayout.astro';
     // Allow the user to submit another response without a page reload
     if (wsReset && waitlistForm && waitlistSuccess && wfSubmit) {
       wsReset.addEventListener('click', () => {
-        ['wf-fname', 'wf-lname', 'wf-email', 'wf-advisor', 'wf-org'].forEach((id) => {
+        // Reset the form fields
+        (document.getElementById('wf-fname')   as HTMLInputElement | null)?.setAttribute('value', '');
+        (document.getElementById('wf-lname')   as HTMLInputElement | null)?.setAttribute('value', '');
+        (document.getElementById('wf-email')   as HTMLInputElement | null)?.setAttribute('value', '');
+        (document.getElementById('wf-advisor') as HTMLInputElement | null)?.setAttribute('value', '');
+
+        ['wf-fname', 'wf-lname', 'wf-email', 'wf-advisor'].forEach((id) => {
           const el = document.getElementById(id) as HTMLInputElement | null;
           if (el) el.value = '';
         });
-        ['wf-tier', 'wf-reach'].forEach((id) => {
-          const el = document.getElementById(id) as HTMLSelectElement | null;
-          if (el) { el.value = ''; el.dispatchEvent(new Event('change')); }
-        });
+        const tierEl = document.getElementById('wf-tier') as HTMLSelectElement | null;
+        if (tierEl) tierEl.value = '';
 
-        // Restore form, reset button, and return the selector to the client path
-        selectRole('client');
+        // Restore form, reset button
         waitlistSuccess.classList.remove('visible');
         waitlistForm.style.display = '';
         wfSubmit.disabled = false;
