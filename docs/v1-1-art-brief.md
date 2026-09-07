@@ -48,8 +48,19 @@ occupies the bottom half only. Same materials, same raking light, same haze.
 > #F2EFEB. Physically-based materials, high detail, 8k, no people, no buildings, no animals, no
 > lens flare, no text, no watermark.
 
-For the footer, swap the last part of the first sentence for a low wide horizon with the tree
-distant or absent, and ask for the top half of the frame to be near-empty pale sand sky.
+And for the footer:
+
+> Photoreal 3D render, cinematic wide shot, low horizon. A still empty landscape of pale veined
+> marble outcrops and fine drifted sand, seen wide, with a single sculptural marble tree small and
+> distant on the horizon. Low raking sun from behind left, long soft shadows, faint atmospheric
+> haze. The top half of the frame is near-empty sky in pale sand and bone tones, light and almost
+> white, with nothing in it; the landscape occupies only the bottom half. Muted, expensive,
+> restrained palette: bone #F2EFEB, pale sand #EDE6DC, sand #E4D3BE, warm marble white.
+> Physically-based materials, high detail, 8k, no people, no buildings, no animals, no lens flare,
+> no text, no watermark.
+
+Ask for a 3:2 landscape frame in both cases, or the generator will hand back a square. Whatever it
+returns as PNG, convert to WebP before it goes into `public/`.
 
 ## Dropping them in
 
