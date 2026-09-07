@@ -36,6 +36,7 @@ compound-health/
 │   │   ├── DesignSystemLayout.astro  # /design-system/*; always noindex
 │   │   └── variants/
 │   │       ├── V1Layout.astro           # variation v1; loads styles/variants/v1.css, always noindex
+│   │       ├── V11Layout.astro          # variation v1.1; loads styles/variants/v1-1.css, always noindex
 │   │       └── VariantStubLayout.astro  # placeholder for a variation not started yet
 │   ├── pages/                  # one .astro file per route
 │   │   ├── index.astro                      # the live home page
@@ -44,7 +45,7 @@ compound-health/
 │   │   ├── for-advisors.astro
 │   │   ├── overview-deck-june/index.astro   # private RIA deck, noindex
 │   │   ├── v1/index.astro                   # design variation v1, noindex
-│   │   ├── v1-1/index.astro                 # design variation v1.1, placeholder, noindex
+│   │   ├── v1-1/index.astro                 # design variation v1.1, forked from v1, noindex
 │   │   ├── v2/index.astro                   # design variation v2, placeholder, noindex
 │   │   ├── v3/index.astro                   # design variation v3, placeholder, noindex
 │   │   ├── design-system/                   # internal design system, all routes noindex
@@ -61,7 +62,8 @@ compound-health/
 │       ├── global.css                       # tokens + atoms + molecules — the live design system
 │       ├── design-system.css                # documentation chrome for /design-system/*
 │       └── variants/
-│           └── v1.css                       # the v1 system, loaded by /v1 only
+│           ├── v1.css                       # the v1 system, loaded by /v1 only
+│           └── v1-1.css                     # the v1.1 system, forked from v1.css, loaded by /v1-1 only
 ├── PAGES.xlsx              # source of truth for live page inventory
 └── CLAUDE.md               # this file
 ```
@@ -105,7 +107,7 @@ compound-health/
 | Author — Imogen Asher | https://compoundhealth.io/authors/imogen-asher | Live | Noindex | BlogLayout |
 | Author — Henry Cavendish | https://compoundhealth.io/authors/henry-cavendish | Live | Noindex | BlogLayout |
 | Design v1 | https://compoundhealth.io/v1 | Live | Noindex | V1Layout |
-| Design v1.1 | https://compoundhealth.io/v1-1 | Draft | Noindex | VariantStubLayout |
+| Design v1.1 | https://compoundhealth.io/v1-1 | Live | Noindex | V11Layout |
 | Design v2 | https://compoundhealth.io/v2 | Draft | Noindex | VariantStubLayout |
 | Design v3 | https://compoundhealth.io/v3 | Draft | Noindex | VariantStubLayout |
 
@@ -118,7 +120,7 @@ compound-health/
 - **Variations are noindex, always.** Their layouts hard-code `<meta name="robots" content="noindex, nofollow" />`, they are excluded from `public/sitemap.xml`, and each route is listed under `Disallow:` in `public/robots.txt`. No canonical tag either, so a stray crawl cannot fold a variation into `/`.
 - **The switcher.** `src/components/variants/VariantSwitcher.astro` is a fixed pill at the foot of the live page and every variation, listing Live plus each variation. It carries its own scoped styles and uses no design tokens, so it renders identically on top of any design and can never be the reason two variations differ. It rides along on `/` because the whole set lives on the `redesign` branch for review; that is the one non-production thing on the live page, and it comes off before anything ships (delete the import and the `<VariantSwitcher current="live" />` at the foot of `src/pages/index.astro`).
 - **In-page links inside a variation take a `base`.** `V1Layout`, `Logo` and `Footer` accept a `base` prop (`/v1`), and every anchor is built from it, so navigating inside a variation never drops the reviewer onto the live page. Links that genuinely leave the variation (legal, `for-advisors`, mail) stay absolute.
-- **Starting a new variation.** Set the row in `variants.ts` to `ready`, add `src/styles/variants/<v>.css` and `src/layouts/variants/<V>Layout.astro` (copy the closest existing pair), then replace `src/pages/<v>/index.astro`. Never point two variations at one stylesheet.
+- **Starting a new variation.** Set the row in `variants.ts` to `ready`, add `src/styles/variants/<v>.css` and `src/layouts/variants/<V>Layout.astro` (copy the closest existing pair), then replace `src/pages/<v>/index.astro`. Never point two variations at one stylesheet. v1.1 was forked from v1 this way on 2026-09-07: an exact copy of the page, the layout and the stylesheet, iterated from there. Two variations with identical stylesheets are served one shared CSS asset because Vite hashes by content; the moment one changes it gets its own. The source files are separate regardless, which is what matters.
 - **Copy is the client's, in every variation.** A variation changes layout and visual system, not words. See rule 7 below.
 
 ## Design system
