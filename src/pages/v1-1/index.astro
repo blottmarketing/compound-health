@@ -5,11 +5,11 @@
 // Copy is the client's: it matches the live page and is not to be rewritten here.
 import V11Layout from '../../layouts/variants/V11Layout.astro';
 
-// The Bayshore-style renders are not in the repo yet. Set these to their paths once the
-// files land in /public/images/v1-1/ and the artwork appears in the hero and the footer;
-// until then both run as gradient environments, which is what those slots are painted for.
-// Expected: HERO_ART around 2400x1600, FOOTER_ART around 2048x1360.
-const HERO_ART: string | null = null;
+// The hero render landed on 2026-09-07: a marble tree in a sand landscape under a dusk sky,
+// generated from the prompt in docs/v1-1-art-brief.md. It is mirrored in CSS so the tree sits
+// right of the copy. The footer render is still pending, so that slot runs as a gradient,
+// which is what it is painted for. FOOTER_ART wants around 2048x1360.
+const HERO_ART: string | null = '/images/v1-1/hero-monolith.webp';
 const FOOTER_ART: string | null = null;
 ---
 
@@ -29,8 +29,8 @@ const FOOTER_ART: string | null = null;
           class="hero-img"
           src={HERO_ART}
           alt=""
-          width="2400"
-          height="1600"
+          width="1536"
+          height="1024"
           fetchpriority="high"
           decoding="async"
         />

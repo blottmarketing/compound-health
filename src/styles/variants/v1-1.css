@@ -264,9 +264,13 @@ section { padding: 160px 56px; }
    ground at its last stop so the credibility bar joins with no seam. When the
    Bayshore-style render arrives it drops into .hero-media on top of this and the
    gradient becomes its backdrop. */
-.hero { position: relative; min-height: min(94vh, 1000px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 148px 56px 132px; background: var(--hero-grad); overflow: hidden; }
+/* The copy block is anchored to the upper part of the frame, not centred, so all of it
+   including the quiet link at its foot sits on the dark sky rather than on the bright sand
+   band where cream type disappears. The tree and the sand take the lower third. */
+.hero { position: relative; min-height: min(72vw, 1040px); display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: left; padding: clamp(148px, 14.5vw, 196px) 56px 96px; background: var(--hero-grad); overflow: hidden; }
 .hero-media { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; background: var(--hero-grad); }
-.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+/* Mirrored: the render has the tree on the left and the copy needs that side. */
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center center; transform: scaleX(-1); display: block; }
 .hero-inner { position: relative; z-index: 1; width: 100%; max-width: 1120px; margin: 0 auto; }
 .hero-blob { position: absolute; top: -10%; left: 50%; transform: translateX(-50%); width: 900px; height: 700px; background: radial-gradient(ellipse at center, rgba(234,203,166,0.16) 0%, transparent 65%); pointer-events: none; }
 /* The same chip as .s-chip, given a translucent surface and a hairline so it
@@ -287,15 +291,15 @@ section { padding: 160px 56px; }
    surface so it survives the painting underneath. */
 .hero .btn-outline { background: transparent; color: #F2EFEB; border-color: rgba(242,239,235,0.38); backdrop-filter: none; box-shadow: none; }
 .hero .btn-outline:hover { background: rgba(242,239,235,0.12); border-color: rgba(242,239,235,0.6); color: #F2EFEB; }
-.hero .hero-note .link-quiet { color: rgba(242,239,235,0.86); text-decoration-color: rgba(242,239,235,0.45); }
-.hero .hero-note .link-quiet:hover { color: #F2EFEB; }
+.hero .hero-note .link-quiet { color: rgba(27,27,26,0.74); text-decoration-color: rgba(27,27,26,0.32); }
+.hero .hero-note .link-quiet:hover { color: var(--ink); text-decoration-color: rgba(27,27,26,0.6); }
 /* Bayshore sets its display line at line-height 1 and -0.05em, in one weight.
    No italic anywhere on the site, so the emphasis carries in sand instead. */
-.hero h1 { font-family: 'Lato', sans-serif; font-size: clamp(38px, 5.6vw, 82px); font-weight: 400; line-height: 1.0; letter-spacing: -0.048em; color: #F2EFEB; max-width: 940px; margin: 0 auto 22px; animation: up 0.7s 0.1s ease both; }
+.hero h1 { font-family: 'Lato', sans-serif; font-size: clamp(38px, 4.6vw, 66px); font-weight: 400; line-height: 1.0; letter-spacing: -0.046em; color: #F2EFEB; max-width: 660px; margin: 0 0 22px; animation: up 0.7s 0.1s ease both; }
 .hero h1 em { font-style: normal; color: var(--sand); }
-.hero-sub { font-size: 18px; font-weight: 300; color: rgba(242,239,235,0.84); max-width: 640px; line-height: 1.7; margin: 0 auto 38px; animation: up 0.7s 0.2s ease both; }
-.hero-btns { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; animation: up 0.7s 0.3s ease both; }
-.hero-actions { display: flex; flex-direction: column; align-items: center; gap: 22px; animation: up 0.7s 0.3s ease both; }
+.hero-sub { font-size: 18px; font-weight: 300; color: rgba(242,239,235,0.84); max-width: 480px; line-height: 1.7; margin: 0 0 38px; animation: up 0.7s 0.2s ease both; }
+.hero-btns { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: flex-start; animation: up 0.7s 0.3s ease both; }
+.hero-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; animation: up 0.7s 0.3s ease both; }
 .hero-note { margin-top: 0; animation: up 0.7s 0.4s ease both; }
 .scroll-indicator { position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; animation: up 0.7s 0.6s ease both; }
 .scroll-line { width: 1px; height: 52px; background: linear-gradient(to bottom, rgba(107,107,101,0.5), transparent); animation: grow 1.8s ease-in-out infinite; }
@@ -1123,11 +1127,17 @@ section { padding: 160px 56px; }
   .hamburger { display: flex; }
   .site-nav { padding: 16px 24px; }
   section { padding: 96px 24px; }
-  .hero { padding: 116px 24px 0; min-height: 0; justify-content: flex-start; }
+  /* The art becomes a block below the copy here, so the hero must not run the whole dusk
+     gradient: it ends on the colour the top of the render starts with, and the sky reads as
+     continuous instead of going warm and then blue again. */
+  .hero { padding: 116px 24px 0; min-height: 0; justify-content: flex-start; background: linear-gradient(180deg, #24446F 0%, #2E4B78 100%); }
   .hero-inner { order: 1; }
   .hero-media { position: relative; order: 2; width: calc(100% + 48px); margin: 36px -24px 0; height: auto; aspect-ratio: 1536 / 1024; }
   .hero-img { position: absolute; object-position: center top; }
   .hero-sub { max-width: 100%; }
+  /* The art moves below the copy here, so the copy is back on the dusk gradient. */
+  .hero .hero-note .link-quiet { color: rgba(242,239,235,0.86); text-decoration-color: rgba(242,239,235,0.45); }
+  .hero .hero-note .link-quiet:hover { color: #F2EFEB; }
       .hero h1 { letter-spacing: -1.5px; }
   .logos-strip { padding: 24px; gap: 28px; }
   .credbar { padding: 32px 24px; row-gap: 22px; }

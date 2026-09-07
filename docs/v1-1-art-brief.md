@@ -4,9 +4,15 @@ The client's feedback on v1 was that it did not feel premium, and asked for a bl
 site with [bayshore.ai](https://www.bayshore.ai/): their colours, their gradient backgrounds, and
 the tree and landscape redrawn in their style (3D, realistic, marble).
 
-The palette and the gradients are done in `src/styles/variants/v1-1.css`. The two renders are not,
-because they have to be generated outside the repo. Until they exist, both slots run as gradient
-environments, which is what they are painted for. This file is the brief for generating them.
+The palette and the gradients are done in `src/styles/variants/v1-1.css`. The renders have to be
+generated outside the repo, and a slot with no render runs as a gradient environment, which is what
+it is painted for.
+
+**Status, 2026-09-07.** The hero render is in: `public/images/v1-1/hero-monolith.webp`, from the
+first prompt below, generated at 1536x1024. It is mirrored in CSS because it puts the tree left of
+centre and the copy needs that side, and its bottom edge meets the page ground on a hard edge
+rather than resolving to bone, which is Bayshore's own move and needs no fade. The footer render is
+still to do; prompt two below.
 
 ## What to generate
 
@@ -22,10 +28,14 @@ with long shadows. Low sun behind and to the left, raking light, deep soft shado
 the horizon.
 
 The sky is a dusk gradient: deep desert blue `#2A4E82` at the top, cooling through grey-blue
-`#6E7A93` at the middle, into warm sand `#EACBA6` near the horizon, and the very bottom edge of
-the frame resolves to bone `#F2EFEB` so the image joins the page ground with no seam. The tree
-occupies the lower third and sits left or right of centre, never dead centre. The upper half of
-the frame is quiet sky, because the headline sits there.
+`#6E7A93` at the middle, into warm sand `#EACBA6` near the horizon. The tree occupies the lower
+third and sits left or right of centre, never dead centre. The upper half of the frame is quiet
+sky, because the headline sits there.
+
+The prompt asks for the bottom edge to resolve to bone as well, and the render that landed does
+not: it ends on sand in shadow. That turned out not to matter, because v1.1 meets the page ground
+on a hard edge rather than a dissolve. Keep the line in the prompt, but do not reject a render
+over it.
 
 Wide, calm, expensive. No people, no buildings, no wildlife, no lens flare, no text.
 
@@ -78,6 +88,10 @@ const FOOTER_ART: string | null = '/images/v1-1/footer-stone.webp';
 If the ratio is not 3:2, update the `width` and `height` on the `<img>` in the same file (hero) and
 in `src/components/variants/Footer.astro` (footer), so the browser reserves the right space.
 
-The transition into the page ground lives in the artwork, never in a CSS fade, scrim or blur. If
-the bottom edge of the hero render is not bone, it will show a seam, and the fix is to regenerate
-the image rather than to gradient over it.
+In v1.1 the artwork meets the page ground on a hard horizontal edge, the way Bayshore's own image
+blocks do. Do not add a CSS fade, scrim or blur to soften it. (The Duna rule that the transition
+into white must live inside the artwork belongs to v1, whose hero dissolves into the page.)
+
+What does need checking in a render is the copy side: the hero copy sits high and left over the
+sky, so keep that region quiet, and expect to mirror the image in CSS if the subject lands on the
+wrong side.
