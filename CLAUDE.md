@@ -28,7 +28,8 @@ compound-health/
 │   │   └── variants/                     # used by the variations only, never by the live site
 │   │       ├── Logo.astro                # mark + wordmark lockup, takes a `base` route
 │   │       ├── Footer.astro              # three-column footer with landscape art, takes a `base` route
-│   │       └── VariantSwitcher.astro     # the fixed pill for moving between variations
+│   │       ├── VariantSwitcher.astro     # the fixed pill for moving between variations
+│   │       └── V2ThemeSwitcher.astro     # v2 only: the pill for its three colour themes
 │   ├── layouts/
 │   │   ├── MainLayout.astro          # live marketing pages; supports `noindex` prop
 │   │   ├── LegalLayout.astro         # privacy/terms; always indexed
@@ -150,6 +151,7 @@ Each design has one source of truth for visual style. Use it. Do not invent new 
   5. **Cards, pills, discs.** `.card` is cream with a 1px white edge and a 1.25rem radius; `.is-lift` raises it on hover. Every primary action is `.btn-primary`, Dawn's radial orange-to-gold pill, and every button scales to 0.95 on hover. `.tag-brand` is the gradient chip. `.disc` is the peach icon circle. `.pill-past` (dim, dashed) and `.pill-glow` (gradient, glowing, blurred in by scroll) are Dawn's past-and-future contrast; on v2 they carry the "what you get" standfirst's own words.
   6. **Figures.** `.chat` in the wide feature card is a thread of gradient bubbles carrying the sentence's three verbs. `#disciplines` is a tablist of gradient pills driving one cream card with chips lifted from the discipline's sentence. `#audiences` is the coverflow carousel of the four audience cards (arrows, keys, swipe). The closing `.sky` card is a CSS sky with drifting clouds and a second scroll-drawn arc; the form sits beneath it on cream. The footer is Dawn's plain dark block, written in `V2Layout`.
   7. **Motion.** Arcs and the stage copy are scrubbed by scroll; everything else is a one-shot `.reveal`. The bar hides on the way down, returns on the way up, frosts once scrolled, and turns ink over the light ground via the `[data-nav-light]` sentinel. Reduced motion draws the arcs in full and disables the scrubs.
+  8. **Three colour themes, one structure.** Every colour in `v2.css` is a token, including the rgb triplets for translucent uses (`--ink-rgb`, `--cream-rgb`, `--glow-rgb`, `--tint-rgb`) and the stops of the brown, deep and sunrise gradients (`--brown-*`, `--deep-*`, `--sun-*`); the SVG gradient stops in the page are coloured from CSS too. `html[data-theme="sage"]` (forest, moss, lime: the brand green) and `html[data-theme="dusk"]` (midnight, lavender, rose, champagne) override the colour tokens only, never a size or a layout; Dawn is the default. `V2ThemeSwitcher` is the fixed pill bottom-right that sets `data-theme`, remembers it in localStorage (`ch-v2-theme`) and honours `?theme=<id>` in the URL; `V2Layout` applies the saved theme in `<head>` before first paint. When adding a colour to v2, add it as a token and give every theme a value.
 - **Documentation lives at `/design-system`.** Three routes, all noindex via `DesignSystemLayout`:
   - `/design-system` — overview and working rules.
   - `/design-system/atoms` — colour, typography, spacing, radii, buttons, badges, eyebrows, dots, avatars, dividers, inputs, links, motion.

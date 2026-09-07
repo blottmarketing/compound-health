@@ -13,6 +13,7 @@
 import '../../styles/variants/v2.css';
 import Logo from '../../components/variants/Logo.astro';
 import VariantSwitcher from '../../components/variants/VariantSwitcher.astro';
+import V2ThemeSwitcher from '../../components/variants/V2ThemeSwitcher.astro';
 
 interface Props {
   title: string;
@@ -52,6 +53,22 @@ const year = new Date().getFullYear();
     <link rel="icon" type="image/svg+xml" href="/favicon-v1.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#321C04" />
+
+    <!-- Colour theme, applied before first paint. `?theme=<id>` in the URL wins and is
+         remembered; otherwise the last choice from localStorage; otherwise Dawn. The three
+         ids live in src/styles/variants/v2.css and V2ThemeSwitcher. -->
+    <script is:inline>
+      (function () {
+        var ids = ['dawn', 'sage', 'dusk'];
+        var pick = null;
+        try {
+          var q = new URLSearchParams(location.search).get('theme');
+          if (q && ids.indexOf(q) >= 0) { pick = q; localStorage.setItem('ch-v2-theme', q); }
+          if (!pick) { var saved = localStorage.getItem('ch-v2-theme'); if (saved && ids.indexOf(saved) >= 0) pick = saved; }
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', pick || 'dawn');
+      })();
+    </script>
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
@@ -137,6 +154,7 @@ const year = new Date().getFullYear();
     </footer>
 
     <VariantSwitcher current={variant} />
+    <V2ThemeSwitcher />
 
     <script>
       // The bar. Transparent at the top; frosted once scrolled; hides on the way down
