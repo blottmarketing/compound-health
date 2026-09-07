@@ -37,7 +37,6 @@
   --panel-deep: #D5CDC1;
   --hair: rgba(155,151,146,0.38);
   --border: rgba(155,151,146,0.38);
-  --rule-line: rgba(155,151,146,0.30);
 
   /* Cell tints. Two pale stones and one deep panel, so the bento carries real
      contrast instead of three pastels of the same weight. */
@@ -76,22 +75,6 @@ body {
   overflow-x: hidden;
   overscroll-behavior-y: none;
 }
-
-/* Two hairlines at the container edges, running the whole height of the viewport
-   and visible over every section including the hero. Bayshore's signature: the
-   grid it is built on is left showing. Behind all content (z-index 1, painted
-   before the sections), under the nav. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    linear-gradient(var(--rule-line), var(--rule-line)) calc(50% - 560px) 0 / 1px 100% no-repeat,
-    linear-gradient(var(--rule-line), var(--rule-line)) calc(50% + 560px) 0 / 1px 100% no-repeat;
-}
-@media (max-width: 1280px) { body::before { display: none; } }
 
 /* ── MAIN NAV ── */
 .main-nav {
