@@ -1,5 +1,9 @@
 ---
 import MainLayout from '../layouts/MainLayout.astro';
+// The variation switcher rides along on the redesign branch so the live design can be compared
+// with the candidates. It is the one thing on this page that is not production; drop the import
+// and the <VariantSwitcher /> at the foot before this page ships.
+import VariantSwitcher from '../components/variants/VariantSwitcher.astro';
 ---
 
 <MainLayout
@@ -506,5 +510,7 @@ import MainLayout from '../layouts/MainLayout.astro';
       });
     }
   </script>
+
+  <VariantSwitcher current="live" />
 
 </MainLayout>
