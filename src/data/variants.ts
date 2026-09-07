@@ -51,8 +51,8 @@ export const VARIANTS: Variant[] = [
     id: 'v2',
     label: 'v2',
     path: '/v2',
-    note: 'A second direction.',
-    status: 'planned',
+    note: 'The joindawn.com idiom: a dark ground that a sunrise gradient carries into cream, one great circle drawn by scroll, serif display type, gradient pills.',
+    status: 'ready',
   },
   {
     id: 'v3',

@@ -37,6 +37,7 @@ compound-health/
 │   │   └── variants/
 │   │       ├── V1Layout.astro           # variation v1; loads styles/variants/v1.css, always noindex
 │   │       ├── V11Layout.astro          # variation v1.1; loads styles/variants/v1-1.css, always noindex
+│   │       ├── V2Layout.astro           # variation v2; loads styles/variants/v2.css, own dark footer, always noindex
 │   │       └── VariantStubLayout.astro  # placeholder for a variation not started yet
 │   ├── pages/                  # one .astro file per route
 │   │   ├── index.astro                      # the live home page
@@ -46,7 +47,7 @@ compound-health/
 │   │   ├── overview-deck-june/index.astro   # private RIA deck, noindex
 │   │   ├── v1/index.astro                   # design variation v1, noindex
 │   │   ├── v1-1/index.astro                 # design variation v1.1, forked from v1, noindex
-│   │   ├── v2/index.astro                   # design variation v2, placeholder, noindex
+│   │   ├── v2/index.astro                   # design variation v2, the joindawn.com idiom, noindex
 │   │   ├── v3/index.astro                   # design variation v3, placeholder, noindex
 │   │   ├── design-system/                   # internal design system, all routes noindex
 │   │   │   ├── index.astro                  # /design-system  overview
@@ -63,7 +64,8 @@ compound-health/
 │       ├── design-system.css                # documentation chrome for /design-system/*
 │       └── variants/
 │           ├── v1.css                       # the v1 system, loaded by /v1 only
-│           └── v1-1.css                     # the v1.1 system, Bayshore-influenced, loaded by /v1-1 only
+│           ├── v1-1.css                     # the v1.1 system, Bayshore-influenced, loaded by /v1-1 only
+│           └── v2.css                       # the v2 system, the joindawn.com idiom, loaded by /v2 only
 ├── docs/
 │   └── v1-1-art-brief.md   # the brief for the two v1.1 renders, and how to drop them in
 ├── PAGES.xlsx              # source of truth for live page inventory
@@ -110,7 +112,7 @@ compound-health/
 | Author — Henry Cavendish | https://compoundhealth.io/authors/henry-cavendish | Live | Noindex | BlogLayout |
 | Design v1 | https://compoundhealth.io/v1 | Live | Noindex | V1Layout |
 | Design v1.1 | https://compoundhealth.io/v1-1 | Live | Noindex | V11Layout |
-| Design v2 | https://compoundhealth.io/v2 | Draft | Noindex | VariantStubLayout |
+| Design v2 | https://compoundhealth.io/v2 | Live | Noindex | V2Layout |
 | Design v3 | https://compoundhealth.io/v3 | Draft | Noindex | VariantStubLayout |
 
 ## Design variations
@@ -140,6 +142,14 @@ Each design has one source of truth for visual style. Use it. Do not invent new 
   6. **The bento is a divided plane.** Cells touch on a 1px ground gap, and one cell (`.tone-stone`) is a deep panel carrying cream copy. Three pastels of equal value is what made v1 read flat. The other two tones are `.tone-sand` and `.tone-lavender`.
   7. **The nav inverts over the hero.** Cream logo, mark and links while the bar is transparent; ink on bone once scrolled.
   8. **The two renders are not in the repo yet.** `HERO_ART` and `FOOTER_ART` in `src/pages/v1-1/index.astro` are `null`, so both slots run as gradients. `docs/v1-1-art-brief.md` is the brief for generating them and the two lines to change once they land.
+- **The v2 system lives in `src/styles/variants/v2.css`,** loaded by `/v2` alone, built 2026-09-07. It follows [joindawn.com](https://joindawn.com): their layouts, palette, type, motion and interactions, with the client's copy unchanged. Nothing is shared with v1 or v1.1 beyond the `Logo` component and the switcher.
+  1. **Dawn's warm scale.** Cream `#FBF3EB`, sand `#F8E7D5`, peach `#FACE9F`, orange `#FF9C31`, amber, gold, yellow `#FBC81C`, burnt `#C36500`, cocoa `#5B3205`, ink `#321C04` (which is also the dark ground), plus a sky blue pair for the closing card. Text is ink or cream; muted text is ink at 70%.
+  2. **Type.** Source Serif 4 (regular, with italic for `em`) for every heading and figure; Figtree for reading, labels and buttons; Lato only in the wordmark. Eyebrows are 12px caps letterspaced 0.2em with no box.
+  3. **The page opens dark and the sun comes up.** The hero is two rounded cards on the ink ground inside a 0.5rem inset: the warm gradient card carries the headline, the photo card carries the standfirst and actions, and one circle spans both, dotted on the left and solid on the right. Then `.scroller` (260vh) pins a stage in which a gradient arc draws itself around a dotted ring as the reader scrolls (GSAP ScrollTrigger, scrubbed) with the "process" head in burnt orange, and `.sunrise` (a fixed-height gradient from ink through orange and yellow to cream) hands the page to the light ground, with the three step cards sitting at its foot.
+  4. **Stacked sections with rounded feet.** Every section from the sunrise on is `.stack`: a 5rem bottom radius, pulled up under the section above by the same amount, with descending z-index classes (`.z7` down to `.z1`) so each lies over the next. Grounds alternate cream, sand, the brown gradient (`.bg-brown.is-dark`), sand with a silk sheen (`.silk`), cream.
+  5. **Cards, pills, discs.** `.card` is cream with a 1px white edge and a 1.25rem radius; `.is-lift` raises it on hover. Every primary action is `.btn-primary`, Dawn's radial orange-to-gold pill, and every button scales to 0.95 on hover. `.tag-brand` is the gradient chip. `.disc` is the peach icon circle. `.pill-past` (dim, dashed) and `.pill-glow` (gradient, glowing, blurred in by scroll) are Dawn's past-and-future contrast; on v2 they carry the "what you get" standfirst's own words.
+  6. **Figures.** `.chat` in the wide feature card is a thread of gradient bubbles carrying the sentence's three verbs. `#disciplines` is a tablist of gradient pills driving one cream card with chips lifted from the discipline's sentence. `#audiences` is the coverflow carousel of the four audience cards (arrows, keys, swipe). The closing `.sky` card is a CSS sky with drifting clouds and a second scroll-drawn arc; the form sits beneath it on cream. The footer is Dawn's plain dark block, written in `V2Layout`.
+  7. **Motion.** Arcs and the stage copy are scrubbed by scroll; everything else is a one-shot `.reveal`. The bar hides on the way down, returns on the way up, frosts once scrolled, and turns ink over the light ground via the `[data-nav-light]` sentinel. Reduced motion draws the arcs in full and disables the scrubs.
 - **Documentation lives at `/design-system`.** Three routes, all noindex via `DesignSystemLayout`:
   - `/design-system` — overview and working rules.
   - `/design-system/atoms` — colour, typography, spacing, radii, buttons, badges, eyebrows, dots, avatars, dividers, inputs, links, motion.
@@ -157,6 +167,7 @@ Each design has one source of truth for visual style. Use it. Do not invent new 
   9. All `/design-system/*` routes must stay noindex and out of `public/sitemap.xml`.
 - **Product cards are glass (v1).** `.stack-card` and `.bento-card` are `--glass-card` with a bright hairline edge, backdrop blur and an ambient shadow. The health score is `.bars`: gradient columns on one 0 to 100 plot, `.is-good` green (`--grad-cool`), `.is-warn` orange (`--grad-warm`), `.is-peak` glowing, and `--v` on `.bar` the only inline value. The panel figures are the team bar (`.team-bar` + `.team-legend`), the ring (`.cov-ring` of six `.cov-arc`) and the gradient card (`.stack-card.is-feature` with `.gate-chip` and `.gate-flow`). `.metric-*` and `.vault-*` no longer exist.
 - **Visual reference (v1).** v1 follows [duna.com](https://duna.com). Its idiom: one ground, fills and hairlines instead of outlines, a chip-plus-title section head with a pill action, product panels alternating sides, generous air, and per-block scroll reveal.
+- **Visual reference (v2).** v2 follows [joindawn.com](https://joindawn.com). Its idiom: a dark opening, a split hero of rounded cards, one great circle drawn by scroll, a sunrise gradient into cream, stacked sections with rounded feet, serif display type, gradient pills, a coverflow carousel and a sky card.
 
 ## Blog system
 
