@@ -8,11 +8,24 @@ The palette and the gradients are done in `src/styles/variants/v1-1.css`. The re
 generated outside the repo, and a slot with no render runs as a gradient environment, which is what
 it is painted for.
 
-**Status, 2026-09-07.** The hero render is in: `public/images/v1-1/hero-monolith.webp`, from the
-first prompt below, generated at 1536x1024. It is mirrored in CSS because it puts the tree left of
-centre and the copy needs that side, and its bottom edge meets the page ground on a hard edge
-rather than resolving to bone, which is Bayshore's own move and needs no fade. The footer render is
-still to do; prompt two below.
+**Status, 2026-09-07.** Both renders are in, each generated at 1536x1024 from the prompts below.
+
+`public/images/v1-1/hero-monolith.webp` is mirrored in CSS, because it puts the tree left of centre
+and the copy needs that side. Its bottom edge meets the page ground on a hard edge rather than
+resolving to bone, which is Bayshore's own move and needs no fade.
+
+`public/images/v1-1/footer-stone.webp` came back on brief: empty pale sky over the top half, low
+horizon, distant tree. One change was made to the file. Its top row was `#ECE8E3` against a
+`#F2EFEB` ground, which left a faint step at the join, and `object-position: center bottom` crops
+the top of it on wide screens, so the step could not be fixed by choosing a crop. The top 20% of
+the image is now the ground colour outright, ramping back to the render by 42%. That whole band is
+flat, empty sky in the original, so nothing is lost. The method, in `PIL` and about fifteen lines:
+build a solid strip in the ground colour the height of the band, build an `L` mask that is 255 down
+to 20% of the height and then eases to 0 by 42%, resize the mask to the image width, and
+`im.paste(strip, (0, 0), mask)`.
+
+If a future render needs the same treatment, do it to the asset. Do not put a CSS fade over the
+top of the image.
 
 ## What to generate
 

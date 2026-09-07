@@ -763,11 +763,11 @@ section { padding: 160px 56px; }
 .footer-col-title { font-size: 14px; font-weight: 500; color: var(--charcoal); margin-bottom: 6px; }
 .footer-col a { font-size: 14px; font-weight: 300; color: var(--mid); text-decoration: none; transition: color 0.2s; width: fit-content; }
 .footer-col a:hover { color: var(--sage); }
-.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: clamp(96px, 11vw, 150px); padding-top: 28px; border-top: 1px solid var(--hair); }
-.footer-copy { font-size: 13px; color: var(--charcoal-soft); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: clamp(220px, 26vw, 400px); }
+.footer-copy { font-size: 13px; color: rgba(242,239,235,0.92); }
 .footer-legal { display: flex; gap: 28px; }
-.footer-legal a { font-size: 13px; color: var(--charcoal-soft); text-decoration: none; transition: color 0.2s; }
-.footer-legal a:hover { color: var(--sage); }
+.footer-legal a { font-size: 13px; color: rgba(242,239,235,0.92); text-decoration: none; transition: color 0.2s; }
+.footer-legal a:hover { color: #F2EFEB; }
 
 /* ── LEGAL PAGES ── */
 .page-hero { background: var(--cream); padding: 152px 56px 80px; border-bottom: 1px solid var(--border); }

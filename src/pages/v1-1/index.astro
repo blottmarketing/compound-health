@@ -5,12 +5,11 @@
 // Copy is the client's: it matches the live page and is not to be rewritten here.
 import V11Layout from '../../layouts/variants/V11Layout.astro';
 
-// The hero render landed on 2026-09-07: a marble tree in a sand landscape under a dusk sky,
-// generated from the prompt in docs/v1-1-art-brief.md. It is mirrored in CSS so the tree sits
-// right of the copy. The footer render is still pending, so that slot runs as a gradient,
-// which is what it is painted for. FOOTER_ART wants around 2048x1360.
+// Both renders landed on 2026-09-07, from the prompts in docs/v1-1-art-brief.md: the same
+// marble-and-sand world at the same hour. The hero is mirrored in CSS so the tree sits right of
+// the copy; the footer is a low horizon whose near-white sky carries the link columns.
 const HERO_ART: string | null = '/images/v1-1/hero-monolith.webp';
-const FOOTER_ART: string | null = null;
+const FOOTER_ART: string | null = '/images/v1-1/footer-stone.webp';
 ---
 
 <V11Layout
