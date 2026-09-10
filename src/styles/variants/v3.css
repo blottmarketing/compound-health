@@ -1194,7 +1194,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
     left: 2.4rem;
     /* The reference's own 257px at 1280, where the plate leaves nothing else,
        growing with the viewport rather than staying cramped at every width. */
-    width: clamp(25.7rem, 18vw, 27rem);
+    width: clamp(25.7rem, 17vw, 30rem);
     max-width: none;
   }
   .car-panel.is-right .car-copy { left: auto; right: 2.4rem; }
@@ -1240,11 +1240,14 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .orbit-copy {
   position: relative;
   z-index: 3;
-  max-width: 74rem;
+  max-width: 30rem;
   padding-inline: var(--gutter);
   text-align: center;
   pointer-events: none;
 }
+@media (min-width: 700px) { .orbit-copy { max-width: 46rem; } }
+@media (min-width: 1280px) { .orbit-copy { max-width: 74rem; } }
+
 .orbit-fig {
   display: block;
   margin-bottom: 0.8rem;
@@ -1273,7 +1276,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   border-radius: 1.6rem;
   overflow: hidden;
 }
-.orb-photo .ph-label { font-size: 0.9rem; }
+.orb-photo .ph-label { font-size: 1rem; padding: 1rem; }
 .orb-photo .ph,
 .orb-photo img {
   transform: scale(var(--counter, 1));

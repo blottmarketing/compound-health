@@ -1264,6 +1264,7 @@ const PANELS = [
         const section = document.querySelector<HTMLElement>('[data-orbit]');
         const stage = document.querySelector<HTMLElement>('[data-orbit-stage]');
         const orbs = Array.from(document.querySelectorAll<HTMLElement>('[data-orb]'));
+        const copy = document.querySelector<HTMLElement>('.orbit-copy');
         const h1 = document.querySelector<HTMLElement>('[data-orbit-h1]');
         const h2 = document.querySelector<HTMLElement>('[data-orbit-h2]');
         if (!section || !stage || !orbs.length) return;
@@ -1276,24 +1277,67 @@ const PANELS = [
         const OFFSETS = [[0, 0], [-80, 10], [-25, -60], [-50, 40], [25, -60], [50, -100]];
 
         function place(p: number) {
-          const narrow = window.innerWidth < 1024;
-          const set = narrow ? NARROW : WIDE;
-          const rx = 0.37 * window.innerWidth;
-          const ry = 0.32 * window.innerHeight;
-          const k = narrow ? 0.55 : 1;
-          // The bar is a fixed object at the top of the window; the orbit has to
-          // clear it, so the whole composition sits a little below centre.
-          const bias = narrow ? 20 : 62;
+          const w = window.innerWidth;
+          const narrow = w < 700;
+          const mid = w >= 700 && w < 1280;
+          const half = w / 2;
+          const copyBox = copy ? copy.getBoundingClientRect() : null;
+
+          // On a phone the ring cannot clear the line: a 300px headline in a
+          // 390px window leaves no horizontal room for a tile beside it. So
+          // there the objects give the middle back and take the bands above
+          // and below, measured off the copy itself rather than guessed, and
+          // still rise with the scroll. Above 700 the ellipse returns.
+          if (narrow && copyBox) {
+            const halfH = copyBox.height / 2;
+            const gap = 28;
+            const LANES = [-0.58, -0.02, 0.58, 0.52, -0.56, 0.12];
+            const STACK = [0, -130, -46, 34, 96, 8];
+            const ABOVE = [true, true, true, false, false, false];
+            orbs.forEach((el, i) => {
+              const scale = 0.46;
+              const ow = el.offsetWidth * scale;
+              const oh = el.offsetHeight * scale;
+              const cx = LANES[i] * half;
+              const cy = (ABOVE[i] ? -(halfH + gap) - oh / 2 : halfH + gap + oh / 2)
+                + STACK[i] + (1 - p) * 70;
+              let x = cx - el.offsetWidth / 2;
+              const bleed = ow * 0.3;
+              const lo = -half - (el.offsetWidth - ow) / 2 + bleed;
+              const hi = half - ow - (el.offsetWidth - ow) / 2 - bleed;
+              x = Math.max(lo, Math.min(hi, x));
+              const y = cy - el.offsetHeight / 2;
+              el.style.transform = `translate(${x}px, ${y}px) scale(${Math.min(1, 2 * p) * scale})`;
+              const inner = el.querySelector<HTMLElement>('.orb-photo .ph, .orb-photo img');
+              if (inner) inner.style.setProperty('--counter', String(2 - Math.min(1, p)));
+            });
+            return;
+          }
+
+          const set = w < 1024 ? NARROW : WIDE;
+          const rx = (mid ? 0.36 : 0.37) * w;
+          const ry = (mid ? 0.34 : 0.32) * window.innerHeight;
+          const k = mid ? 0.6 : 1;
+          const scale = mid ? 0.78 : 1;
+          // The bar is a fixed object at the top of the window; the orbit has
+          // to clear it, so the whole composition sits below centre.
+          const bias = 62;
+
           orbs.forEach((el, i) => {
             const [a0, a1] = set[i % set.length];
             const ang = a0 + (a1 - a0) * p;
             const rad = ((ang - 60) * Math.PI) / 180;
-            const x = Math.cos(rad) * rx * k - el.offsetWidth / 2 + OFFSETS[i][0] * k;
-            const y = Math.sin(rad) * ry * k - el.offsetHeight / 2 + OFFSETS[i][1] * k + bias;
-            // One set of objects at every width; the phone gets the same
-            // composition at about 60 per cent, bleeding off both edges.
-            const s = Math.min(1, 2 * p) * (narrow ? 0.62 : 1);
-            el.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+            const ow = el.offsetWidth * scale;
+            let x = Math.cos(rad) * rx - el.offsetWidth / 2 + OFFSETS[i][0] * k;
+            const y = Math.sin(rad) * ry - el.offsetHeight / 2 + OFFSETS[i][1] * k + bias;
+
+            // Nothing is cut by a border: the sweep takes a card through
+            // cos = 1, and without this it would be sliced there.
+            const lo = -half - (el.offsetWidth - ow) / 2 + 16;
+            const hi = half - ow - (el.offsetWidth - ow) / 2 - 16;
+            x = Math.max(lo, Math.min(hi, x));
+
+            el.style.transform = `translate(${x}px, ${y}px) scale(${Math.min(1, 2 * p) * scale})`;
             const inner = el.querySelector<HTMLElement>('.orb-photo .ph, .orb-photo img');
             if (inner) inner.style.setProperty('--counter', String(2 - Math.min(1, p)));
           });
