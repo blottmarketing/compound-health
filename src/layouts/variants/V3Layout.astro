@@ -217,6 +217,29 @@ const NAV_LINKS = [
         g.ticker.add((t: number) => lenis.raf(t * 1000));
         g.ticker.lagSmoothing(0);
 
+        // Focus has to move the page, and with Lenis owning the scroll position
+        // it does not: the browser scrolls the element into view and Lenis puts
+        // the page straight back. A keyboard reader tabbing down this page was
+        // landing on controls thousands of pixels off screen.
+        document.addEventListener('focusin', (e) => {
+          const el = e.target as HTMLElement | null;
+          if (!el || typeof el.getBoundingClientRect !== 'function') return;
+          // A click that moves focus is already taking the reader somewhere.
+          if (el.matches(':focus-visible') === false) return;
+          // Anything inside a fixed subtree cannot be scrolled to: the bar sits
+          // at 16px whatever the page does, and a pinned stage is fixed while
+          // it is pinned. Asking Lenis to bring one into view walks the page
+          // away from the reader one tab at a time.
+          for (let n: HTMLElement | null = el; n && n !== document.body; n = n.parentElement) {
+            const pos = getComputedStyle(n).position;
+            if (pos === 'fixed' || pos === 'sticky') return;
+          }
+          const r = el.getBoundingClientRect();
+          const top = 96;
+          if (r.top >= top && r.bottom <= window.innerHeight - 24) return;
+          lenis.scrollTo(el, { offset: -top, duration: 0.4 });
+        });
+
         // In-page anchors have to go through Lenis or they fight it.
         document.addEventListener('click', (e) => {
           const a = (e.target as HTMLElement | null)?.closest('a[href*="#"]') as HTMLAnchorElement | null;
