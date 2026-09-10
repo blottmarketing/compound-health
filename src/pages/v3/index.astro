@@ -1,8 +1,1727 @@
 ---
-// Design variation v3. Placeholder until work starts: give it its own layout under
-// src/layouts/variants/ and its own stylesheet under src/styles/variants/, then replace
-// this page.
-import VariantStubLayout from '../../layouts/variants/VariantStubLayout.astro';
+// Design variation v3. The live home page is src/pages/index.astro; this one is a
+// candidate redesign on its own stylesheet (src/styles/variants/v3.css) and is noindex.
+//
+// It follows lassie.ai: the floating glass nav pill, a full-height photograph whose
+// window pulls its own corners in on scroll, a pinned carousel of panels rising over
+// one another, six tiles parked on a scroll-scrubbed ellipse around a counting figure,
+// square drawn illustrations, an accordion, and a footer standing on a fixed panel.
+//
+// Copy is the client's: it matches the live page and is not rewritten here. Every label
+// inside a figure is a phrase from copy already on this page. Photographs are
+// placeholders until the renders land; the prompts are in docs/v3-art-brief.md.
+import V3Layout from '../../layouts/variants/V3Layout.astro';
+
+/**
+ * PHOTOGRAPHY. Four slots, each `string | null`. A null slot renders its styled
+ * placeholder instead, so renders can land one at a time without touching any
+ * layout. Sizes, crops and the prompt for each are in docs/v3-art-brief.md.
+ * The three process steps are drawn rather than photographed, so the brief's
+ * step-01/02/03 prompts are unused unless that decision is reversed.
+ */
+const HERO_ART: string | null = null;                       // 2880x1620, 16:9
+const QUAD_ART: (string | null)[] = [null, null];           // 1000x1100, 10:11
+const CLOSING_ART: string | null = null;                    // 2752x1448, 1.9:1
+
+/** The hero ticker: one promise at a time, each one a phrase from the page. */
+const TICKER = [
+  { label: 'A dashboard for your body', icon: 'grid' },
+  { label: 'Full biomarker tracking', icon: 'pulse' },
+  { label: 'Personalized protocols', icon: 'doc' },
+  { label: 'Curated clinical delivery', icon: 'shield' },
+  { label: 'Health concierge', icon: 'user' },
+  { label: 'Healthspan score, owned by the client', icon: 'check' },
+];
+
+/** The three process steps, in the pinned carousel. Captions alternate side. */
+const STEPS = [
+  {
+    n: '01',
+    title: 'Join through your advisor, firm or organization',
+    body: 'Access Compound Health as a benefit through a relationship you already have. No cold starts. No separate onboarding.',
+    side: 'left',
+    art: 'step-01 · an introduction arriving from a firm',
+  },
+  {
+    n: '02',
+    title: 'Deep diagnostic intake',
+    body: 'A comprehensive baseline: advanced bloodwork, imaging, genetic risk, cognitive and metabolic assessments. Not a wellness check. A full-picture biological audit by elite clinicians.',
+    side: 'right',
+    art: 'step-02 · the baseline being collected',
+  },
+  {
+    n: '03',
+    title: 'Personalized longevity plan',
+    body: 'Your clinical team, chosen for this program, and a dedicated health concierge build and actively manage a protocol tailored to your data, goals, and lifestyle.',
+    side: 'left',
+    art: 'step-03 · a protocol under active management',
+  },
+];
+
+/** The three drawn interface panels, one per step. Raw markup so the loop
+    above stays readable; the drawings themselves are in the stylesheet. */
+const PANELS = [
+  `<div class="fig-panel" data-panel="01">
+  <div class="fig-panel-stage fig-panel-split">
+
+    <div class="fig-card fig-panel-a">
+      <div class="fig-head">
+        <span class="fig-tile">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.2 20.8V5.4A2.4 2.4 0 0 1 6.6 3h6.6a2.4 2.4 0 0 1 2.4 2.4v15.4"/><path d="M15.6 10.2h2.4a2.4 2.4 0 0 1 2.4 2.4v8.2"/><path d="M3 20.8h18"/><path d="M8.2 7.4h3.4"/><path d="M8.2 11.4h3.4"/><path d="M8.2 15.4h3.4"/></svg>
+        </span>
+        <span class="fig-title">your advisor, firm or organization</span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg>
+        <span class="fig-label">Advisor</span>
+        <span class="fig-val">2026-04-09</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.2 20.8V5.4A2.4 2.4 0 0 1 6.6 3h6.6a2.4 2.4 0 0 1 2.4 2.4v15.4"/><path d="M15.6 10.2h2.4a2.4 2.4 0 0 1 2.4 2.4v8.2"/><path d="M3 20.8h18"/><path d="M8.2 7.4h3.4"/><path d="M8.2 11.4h3.4"/><path d="M8.2 15.4h3.4"/></svg>
+        <span class="fig-label">Firm</span>
+        <span class="fig-dot"></span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
+        <span class="fig-label">Organization</span>
+        <span class="fig-dot"></span>
+      </div>
+    </div>
+
+    <div class="fig-link">
+      <span class="fig-link-line"></span>
+      <span class="fig-chip">No separate onboarding</span>
+      <span class="fig-link-line"></span>
+    </div>
+
+    <div class="fig-card fig-panel-b">
+      <div class="fig-head">
+        <span class="fig-title">Access Compound Health</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+      <div class="fig-row is-inset">
+        <span class="fig-label">as a benefit</span>
+        <span class="fig-val">2026-04-09</span>
+      </div>
+      <div class="fig-row is-inset">
+        <span class="fig-label">No cold starts</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
+
+  </div>
+</div>`,
+  `<div class="fig-panel" data-panel="02">
+  <div class="fig-panel-stage">
+
+    <div class="fig-card fig-panel-single">
+      <div class="fig-head">
+        <span class="fig-tile">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
+        </span>
+        <span class="fig-title">Deep diagnostic intake</span>
+        <span class="fig-val">5/5</span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
+        <span class="fig-label">Advanced bloodwork</span>
+        <span class="fig-val">2026-03-02</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
+        <span class="fig-label">Imaging</span>
+        <span class="fig-val">2026-03-04</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
+        <span class="fig-label">Genetic risk</span>
+        <span class="fig-val">2026-03-11</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6.5 5 13L17 12h4"/></svg>
+        <span class="fig-label">Cognitive</span>
+        <span class="fig-val">2026-03-18</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
+        <span class="fig-label">Metabolic</span>
+        <span class="fig-val">2026-03-18</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
+
+    <div class="fig-link">
+      <span class="fig-chip">A comprehensive baseline</span>
+    </div>
+
+  </div>
+</div>`,
+  `<div class="fig-panel" data-panel="03">
+  <div class="fig-panel-stage fig-panel-split">
+
+    <div class="fig-card fig-panel-a">
+      <div class="fig-head">
+        <span class="fig-tile">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
+        </span>
+        <span class="fig-title">Your clinical team</span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <span class="fig-avatars">
+          <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
+        </span>
+        <span class="fig-label">chosen for this program</span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg>
+        <span class="fig-label">a dedicated health concierge</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
+
+    <div class="fig-link">
+      <span class="fig-link-line"></span>
+      <span class="fig-chip">actively manage</span>
+      <span class="fig-link-line"></span>
+    </div>
+
+    <div class="fig-card fig-panel-b">
+      <div class="fig-head">
+        <span class="fig-title">Personalized longevity plan</span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <span class="fig-label">your data</span>
+        <span class="fig-bars">
+          <span class="fig-bar" style="--h:38%"></span>
+          <span class="fig-bar" style="--h:64%"></span>
+          <span class="fig-bar is-good" style="--h:92%"></span>
+          <span class="fig-bar" style="--h:52%"></span>
+          <span class="fig-bar" style="--h:74%"></span>
+        </span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <span class="fig-label">goals</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+
+      <div class="fig-row is-inset">
+        <span class="fig-label">lifestyle</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
+
+  </div>
+</div>`,
+];
 ---
 
-<VariantStubLayout variant="v3" />
+<V3Layout
+  variant="v3"
+  base="/v3"
+  title="Compound Health | A private longevity membership, introduced through your advisor, firm or organization"
+  description="A private longevity membership introduced through wealth advisors, employers, and executive networks. Diagnostics, continuous tracking, and personalized protocols from curated clinical partners. Your health data stays yours."
+>
+
+  <!-- ===================================================================
+       HERO
+       A full-height photograph. Once the reader moves, the window pulls in
+       16px and rounds 24px (32/64 from 1280 up); the picture itself never
+       moves. [data-nav-dark] is the sentinel that keeps the nav inverted
+       for exactly as long as the pill is over the picture.
+       =================================================================== -->
+  <section class="hero" id="hero" data-nav-dark aria-label="Compound Health">
+    <div class="hero-media" data-hero-media>
+      {HERO_ART ? (
+        <img src={HERO_ART} alt="" width="2880" height="1620" fetchpriority="high" decoding="async" />
+      ) : (
+        <div class="ph is-dark">
+          <span class="ph-label">
+            <b>hero-cover</b>
+            <span>2880&times;1620 &middot; 16:9 &middot; full bleed, no radius</span>
+            <span>Tended ground at first light. Mid-dark centre, cold blue warming to low gold.</span>
+          </span>
+        </div>
+      )}
+    </div>
+
+    <div class="hero-inner">
+      <h1 class="t-display t-balance">Beyond wealth:<br class="br-wide" />the years to <em>enjoy it</em></h1>
+
+      <p class="hero-sub t-body">
+        A private longevity membership, introduced through the people who already advise you, your
+        firm or your organization. Delivered by clinical partners chosen against one standard. Your
+        data stays yours.
+      </p>
+
+      <div class="hero-ticker" data-ticker aria-live="polite">
+        {TICKER.map(item => (
+          <div class="hero-ticker-item t-body" data-ticker-item>
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={{
+              grid:  '<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>',
+              pulse: '<path d="M3 12h4l2-6 4 12 2-6h6"/>',
+              doc:   '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4"/>',
+              shield:'<path d="M12 3l7 3v6c0 4.4-3 7.7-7 9-4-1.3-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/>',
+              user:  '<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM5 20a7 7 0 0 1 14 0"/>',
+              check: '<path d="M4 12.5l5 5L20 6"/>',
+            }[item.icon]} />
+            <span>{item.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <p class="hero-note t-body-sm">
+        <a href="#partners">Introducing Compound Health to your clients, employees or members?</a>
+      </p>
+    </div>
+
+    <!-- The inline capture, at the foot of the picture. It does not post from
+         here: it carries the address down to the real form, which is the one
+         place a submission happens. -->
+    <form class="hero-form" id="heroForm" novalidate>
+      <label class="u-sr-only" for="heroEmail">Email address</label>
+      <div class="field-glass">
+        <input id="heroEmail" type="email" placeholder="Your email address" autocomplete="email" />
+        <button class="btn btn-primary" type="submit">
+          <span class="btn-label">Get access</span>
+          <span class="btn-icon">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ===================================================================
+       THE INTRO
+       The mark draws its own strokes, then one line. The reference plays a
+       Lottie flower in this slot; ours is the Compound Health mark.
+       =================================================================== -->
+  <section class="intro wrap" aria-labelledby="processHead">
+    <svg class="intro-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true" data-draw>
+      <path
+        d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"
+        stroke="currentColor"
+        stroke-width="5.88"
+        stroke-linejoin="round"
+      />
+    </svg>
+    <h2 class="t-h2 t-balance" id="processHead">A new model for<br />human <em>performance</em></h2>
+    <p class="intro-sub t-body">
+      We built the infrastructure that connects the people who advise you to world-class
+      preventive care.
+    </p>
+  </section>
+
+  <!-- ===================================================================
+       HOW IT WORKS
+       Three panels on one pinned stage, each rising over the one before it,
+       scrubbed by scroll. The caption travels with its panel and alternates
+       side. Below 1024px the caption sits under the panel.
+       =================================================================== -->
+  <section class="car" id="how" data-car aria-label="How it works">
+    <div class="car-stage" data-car-stage>
+      {STEPS.map((step, i) => (
+        <article class:list={['car-panel', { 'is-right': step.side === 'right' }]} data-car-odd={i}>
+          <div class="car-media">
+            <Fragment set:html={PANELS[i]} />
+          </div>
+          <div class="car-copy">
+            <span class="car-n">{step.n}</span>
+            <h3 class="t-h4">{step.title}</h3>
+            <p class="t-body-sm">{step.body}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       WHAT YOU GET
+       The pinned ellipse. Six tiles are parked around the copy on a scroll
+       scrubbed orbit: two photographs and four data cards. The first line
+       leaves as the second arrives, which is the reference's own move.
+       Below the pin, the two wide panels and the three cards.
+       =================================================================== -->
+  <section class="orbit" id="features" data-orbit aria-labelledby="featuresHead">
+    <div class="orbit-stage" data-orbit-stage>
+
+      <div class="orbit-copy">
+        <span class="sec-label" data-orbit-tag>What you get</span>
+        <div class="orbit-line">
+          <h2 class="t-h2 t-balance" id="featuresHead" data-orbit-h1>
+            Everything your health<br />has been <em>missing</em>
+          </h2>
+          <p class="orbit-line-2 t-h3 t-balance" data-orbit-h2>
+            Compound Health is not a gym membership or a supplement subscription.
+            It is a medical relationship, sustained and personalized.
+          </p>
+        </div>
+      </div>
+
+      <canvas class="trail" data-trail aria-hidden="true"></canvas>
+
+      <!-- The six. Their transforms are written by script from the scroll
+           position, which is the one legitimate inline style in this file. -->
+      <div class="orb" data-orb="0">
+        <div class="orb-photo">
+          {QUAD_ART[0] ? (
+            <img src={QUAD_ART[0]} alt="" width="1000" height="1100" loading="lazy" decoding="async" />
+          ) : (
+            <div class="ph">
+              <span class="ph-label">
+                <b>quad-photo-a</b>
+                <span>1000&times;1100 &middot; 10:11</span>
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+      <div class="orb" data-orb="1"><div class="orb-card">
+          <div class="dcard">
+            <div class="dcard-head">
+              <span class="ico-tile">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
+              </span>
+              <span class="dcard-title">Healthspan score</span>
+              <span class="dcard-val">72</span>
+            </div>
+            <div class="dcard-row">
+              <span class="dcard-label">owned by the client</span>
+              <span class="tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+            </div>
+          </div>
+        </div></div>
+      <div class="orb" data-orb="2"><div class="orb-card">
+          <div class="dcard">
+            <div class="dcard-head">
+              <span class="ico-tile">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6.5 5 13L17 12h4"/></svg>
+              </span>
+              <span class="dcard-title">Full biomarker tracking</span>
+              <span class="dcard-val">148</span>
+            </div>
+            <div class="dcard-row">
+              <span class="dcard-bars">
+                <span class="dcard-bar" style="--h:42%"></span>
+                <span class="dcard-bar" style="--h:66%"></span>
+                <span class="dcard-bar is-good" style="--h:100%"></span>
+                <span class="dcard-bar" style="--h:58%"></span>
+                <span class="dcard-bar" style="--h:78%"></span>
+                <span class="dcard-bar" style="--h:50%"></span>
+              </span>
+              <span class="dcard-meta">2026-04-09</span>
+            </div>
+          </div>
+        </div></div>
+      <div class="orb" data-orb="3">
+        <div class="orb-photo">
+          {QUAD_ART[1] ? (
+            <img src={QUAD_ART[1]} alt="" width="1000" height="1100" loading="lazy" decoding="async" />
+          ) : (
+            <div class="ph">
+              <span class="ph-label">
+                <b>quad-photo-b</b>
+                <span>1000&times;1100 &middot; 10:11</span>
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
+      <div class="orb" data-orb="4"><div class="orb-card">
+          <div class="dcard">
+            <div class="dcard-head">
+              <span class="ico-tile">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
+              </span>
+              <span class="dcard-title">Personalized protocols</span>
+              <span class="dcard-val">12</span>
+            </div>
+            <div class="dcard-row">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.8"/><path d="M12 7v5.3l3.4 2"/></svg>
+              <span class="dcard-meta">2026-04-09</span>
+              <span class="tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+            </div>
+          </div>
+        </div></div>
+      <div class="orb" data-orb="5"><div class="orb-card">
+          <div class="dcard">
+            <div class="dcard-head">
+              <span class="ico-tile">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
+              </span>
+              <span class="dcard-title">Health concierge</span>
+            </div>
+            <div class="dcard-row">
+              <span class="dcard-avatars">
+                <span class="dcard-avatar"></span><span class="dcard-avatar"></span><span class="dcard-avatar"></span>
+              </span>
+              <span class="tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+            </div>
+          </div>
+        </div></div>
+    </div>
+  </section>
+
+  <section class="sec wrap" aria-label="What the membership includes">
+    <div class="panels">
+      <article class="panel is-sky">
+        <div class="panel-art" aria-hidden="true">
+          <div class="fig-panel" data-fig="dashboard">
+            <div class="fig-panel-stage is-tr">
+              <div class="fig-tr-block">
+
+                <div class="fig-card">
+                  <div class="fig-head">
+                    <span class="fig-tile">
+                      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5h16"/><path d="M7.2 20.5v-6.8"/><path d="M12 20.5V6.5"/><path d="M16.8 20.5v-9.8"/></svg>
+                    </span>
+                    <span class="fig-title">Track trends</span>
+                    <span class="fig-val">2026-04-09</span>
+                  </div>
+
+                  <div class="fig-chart-wrap">
+                    <svg class="fig-chart" viewBox="0 0 300 52" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="fig-chart-grid" d="M0 10h300M0 27h300M0 44h300"/>
+                      <path class="fig-chart-line" d="M4 41 34 38 64 43 94 31 124 34 154 24 184 27 214 17 244 20 274 11"/>
+                    </svg>
+                    <span class="fig-chart-mark" style="--x:91.3%; --y:21.2%"></span>
+                  </div>
+
+                  <div class="fig-row is-inset">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 19.3 5.9v5.4c0 4.4-3 8.2-7.3 9.9-4.3-1.7-7.3-5.5-7.3-9.9V5.9z"/></svg>
+                    <span class="fig-label">understand risks</span>
+                    <span class="fig-bars">
+                      <span class="fig-bar" style="--h:44%"></span>
+                      <span class="fig-bar" style="--h:70%"></span>
+                      <span class="fig-bar is-good" style="--h:96%"></span>
+                      <span class="fig-bar" style="--h:56%"></span>
+                    </span>
+                  </div>
+
+                  <div class="fig-row is-inset">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8.5 7H17v8.5"/></svg>
+                    <span class="fig-label">act on what the data reveals</span>
+                    <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <h3 class="t-h4">A dashboard for your body</h3>
+          <p class="t-body-sm">
+            The same rigor your advisor applies to your portfolio, applied to your biology.
+            Track trends, understand risks, and act on what the data reveals.
+          </p>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-art" aria-hidden="true">
+          <div class="fig-panel" data-fig="delivery">
+            <div class="fig-panel-stage is-tr">
+
+              <div class="fig-field">
+                <svg viewBox="0 0 300 190" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+                  <defs>
+                    <pattern id="figFieldDots" width="15" height="15" patternUnits="userSpaceOnUse">
+                      <circle class="fig-field-dot" cx="7.5" cy="7.5" r="1.1"/>
+                    </pattern>
+                  </defs>
+                  <rect width="300" height="190" fill="url(#figFieldDots)"/>
+                  <circle class="fig-field-pin" cx="52.5" cy="67.5" r="3.4"/>
+                  <circle class="fig-field-pin" cx="112.5" cy="37.5" r="3.4"/>
+                  <circle class="fig-field-pin" cx="97.5" cy="112.5" r="3.4"/>
+                  <circle class="fig-field-pin" cx="172.5" cy="82.5" r="3.4"/>
+                  <circle class="fig-field-pin" cx="232.5" cy="52.5" r="3.4"/>
+                  <circle class="fig-field-pin" cx="217.5" cy="142.5" r="3.4"/>
+                  <circle class="fig-field-pin" cx="277.5" cy="97.5" r="3.4"/>
+                </svg>
+              </div>
+
+              <div class="fig-tr-block">
+
+                <div class="fig-card">
+                  <div class="fig-head">
+                    <span class="fig-tile">
+                      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
+                    </span>
+                    <span class="fig-title">Physician-led care nationwide</span>
+                  </div>
+
+                  <div class="fig-row is-inset">
+                    <span class="fig-pair">
+                      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg>
+                      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.2 20.8V5.4A2.4 2.4 0 0 1 6.6 3h6.6a2.4 2.4 0 0 1 2.4 2.4v15.4"/><path d="M15.6 10.2h2.4a2.4 2.4 0 0 1 2.4 2.4v8.2"/><path d="M3 20.8h18"/><path d="M8.2 7.4h3.4"/><path d="M8.2 11.4h3.4"/><path d="M8.2 15.4h3.4"/></svg>
+                    </span>
+                    <span class="fig-label">virtual and in person</span>
+                    <span class="fig-val">2026-04-09</span>
+                  </div>
+
+                  <div class="fig-row is-inset">
+                    <span class="fig-chips">
+                      <span class="fig-chip is-quiet">outcomes</span>
+                      <span class="fig-chip is-quiet">governance</span>
+                      <span class="fig-chip is-quiet">data ownership</span>
+                    </span>
+                  </div>
+                </div>
+
+                <span class="fig-chip">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>
+                  Logistics handled
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <h3 class="t-h4">Curated clinical delivery</h3>
+          <p class="t-body-sm">
+            Physician-led care nationwide, virtual and in person, from partners selected for
+            outcomes, governance, and data ownership. Logistics handled.
+          </p>
+        </div>
+      </article>
+    </div>
+
+    <div class="fcards">
+      <article class="fcard">
+        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6.5 5 13L17 12h4"/></svg></div>
+        <h3 class="t-body-lg">Full biomarker tracking</h3>
+        <p class="t-body-sm t-muted">
+          Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
+          continuous wearable integration, all synthesized into a single health intelligence layer.
+        </p>
+      </article>
+      <article class="fcard">
+        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg></div>
+        <h3 class="t-body-lg">Personalized protocols</h3>
+        <p class="t-body-sm t-muted">Calibrated to your biology, not a template.</p>
+      </article>
+      <article class="fcard">
+        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg></div>
+        <h3 class="t-body-lg">Health concierge</h3>
+        <p class="t-body-sm t-muted">
+          A dedicated coordinator who handles specialist referrals, appointment logistics, second
+          opinions, and anything else between you and better health.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       HOW WE CHOOSE
+       Three square illustrations with a line under each. No fill, no border,
+       no shadow: the drawing is the card. A snap carousel below 1024px.
+       =================================================================== -->
+  <section class="statics" id="disciplines" aria-labelledby="chooseHead">
+    <div class="wrap statics-head sec-head">
+      <span class="sec-label">How we choose</span>
+      <h2 class="t-h2 t-balance" id="chooseHead">The best of each discipline,<br />one <em>membership</em></h2>
+      <p class="t-body">
+        Longevity medicine is not one company. We assessed the field, set one standard, and
+        chose the partners who meet it.
+      </p>
+    </div>
+
+    <div class="statics-row">
+      <article class="static-card">
+        <div class="static-art" aria-hidden="true">
+          <div class="disc is-bare" data-disc="clinical-care">
+            <div class="disc-stage">
+              <div class="fig-card disc-top">
+                <div class="fig-row">
+                  <span class="fig-avatars">
+                    <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
+                  </span>
+                  <span class="fig-label">physician-led teams</span>
+                </div>
+              </div>
+
+              <div class="fig-link">
+                <span class="fig-link-line"></span>
+                <span class="fig-chip">continuous care between visits</span>
+                <span class="fig-link-line"></span>
+              </div>
+
+              <div class="fig-card disc-bottom">
+                <div class="fig-row">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
+                  <span class="fig-label">published outcomes</span>
+                  <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="t-body-lg">Clinical care</h3>
+        <p class="t-body-sm">
+          Physician-led teams with published outcomes and continuous care between visits.
+        </p>
+      </article>
+      <article class="static-card">
+        <div class="static-art" aria-hidden="true">
+          <div class="disc is-bare" data-disc="diagnostics-and-screening">
+            <div class="disc-stage">
+              <div class="fig-card disc-top">
+                <div class="fig-row">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
+                  <span class="fig-label">baseline testing</span>
+                  <span class="fig-val">2026-03-02</span>
+                </div>
+              </div>
+
+              <div class="fig-link">
+                <span class="fig-link-line"></span>
+                <span class="fig-chip">imaging</span>
+                <span class="fig-link-line"></span>
+              </div>
+
+              <div class="fig-card disc-bottom">
+                <div class="fig-row">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 19.3 5.9v5.4c0 4.4-3 8.2-7.3 9.9-4.3-1.7-7.3-5.5-7.3-9.9V5.9z"/><path d="m8.9 11.8 2.2 2.2 4-4.4"/></svg>
+                  <span class="fig-label">multi-cancer early detection</span>
+                  <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="t-body-lg">Diagnostics and screening</h3>
+        <p class="t-body-sm">
+          Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and
+          usefulness.
+        </p>
+      </article>
+      <article class="static-card">
+        <div class="static-art" aria-hidden="true">
+          <div class="disc is-bare" data-disc="advanced-therapies">
+            <div class="disc-stage">
+              <div class="fig-card disc-top">
+                <div class="fig-row">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
+                  <span class="fig-label">hormones</span>
+                  <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+                </div>
+              </div>
+
+              <div class="fig-link">
+                <span class="fig-link-line"></span>
+                <span class="fig-chip">peptides</span>
+                <span class="fig-link-line"></span>
+              </div>
+
+              <div class="fig-card disc-bottom">
+                <div class="fig-row">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
+                  <span class="fig-label">regenerative therapies</span>
+                  <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3 class="t-body-lg">Advanced therapies</h3>
+        <p class="t-body-sm">
+          Hormones, peptides, and regenerative therapies, only when your data indicates them,
+          only through vetted sourcing.
+        </p>
+      </article>
+    </div>
+
+    <p class="statics-note t-body-sm wrap">
+      Every partner is re-reviewed each year. If a better option emerges, the membership moves
+      with it.
+    </p>
+  </section>
+
+  <!-- ===================================================================
+       PARTNERS
+       The stats, then the seven rows: who a program is for, and the three
+       lines that say what it is and is not. One open at a time.
+       =================================================================== -->
+  <section class="sec wrap sec-pad" id="partners" aria-labelledby="partnersHead">
+    <div class="sec-head">
+      <span class="sec-label">Partners</span>
+      <h2 class="t-h2 t-balance" id="partnersHead">
+        A credible way to bring longevity<br />to the people you <em>serve</em>
+      </h2>
+      <p class="t-body">
+        Compound Health is introduced, not sold. Whether you advise clients, employ a
+        workforce or lead a network, you make the introduction and we run the program.
+      </p>
+    </div>
+
+    <div class="stats u-mt-lg">
+      <div class="stat">
+        <div class="stat-fig"><span data-count="400">0</span></div>
+        <p class="t-body-sm">UHNW clients in the advisory team's book, reached through a single educational session.</p>
+      </div>
+      <div class="stat">
+        <div class="stat-fig">First</div>
+        <p class="t-body-sm">Educational session of its kind delivered with a private bank advisory team.</p>
+      </div>
+      <div class="stat">
+        <div class="stat-fig">May &rsquo;26</div>
+        <p class="t-body-sm">From first conversation to delivered session in days, not quarters.</p>
+      </div>
+    </div>
+
+    <div class="partners-grid u-mt-lg">
+      <div class="acc" data-acc>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            <span class="t-body-lg">Wealth firms</span>
+            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+            RIAs, family offices, and private bank teams. A client session first, then membership
+            your clients join through you.
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            <span class="t-body-lg">Employers</span>
+            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+            Self-insured employers and leadership teams. Clinical outcomes on health spend, from
+            the C-suite to the wider organization.
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            <span class="t-body-lg">Executive and peer networks</span>
+            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+            CEO groups, professional networks, sports and entertainment organizations. A shared
+            baseline for your members and results you can publish.
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            <span class="t-body-lg">Family offices and households</span>
+            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+            One program across generations, with each member owning their own data.
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            <span class="t-body-lg">Structured for you</span>
+            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+            Tiers and terms are set with each partner, so the program fits the people it serves.
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            <span class="t-body-lg">Nothing crosses the line</span>
+            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+            Health data belongs to the individual. You see engagement, never medical information.
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-btn" type="button" aria-expanded="false">
+            <span class="t-body-lg">Introduced, not sold</span>
+            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+          </button>
+          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+            Your people join through you. You are never the intermediary for care or data.
+          </div></div>
+        </div>
+      </div>
+
+      <aside class="deliver">
+        <h3 class="t-h5 deliver-title">What we delivered</h3>
+        <ul>
+          <li><span class="deliver-n">01</span><span class="t-body-sm">The health data worth paying attention to, and what to ignore</span></li>
+          <li><span class="deliver-n">02</span><span class="t-body-sm">The tests and metrics that matter in each decade of life</span></li>
+          <li><span class="deliver-n">03</span><span class="t-body-sm">High-impact habits for busy professionals and entrepreneurs</span></li>
+          <li><span class="deliver-n">04</span><span class="t-body-sm">How to support aging parents alongside your own health</span></li>
+        </ul>
+        <div class="u-mt-md">
+          <a class="btn btn-secondary" href="#joinwaitlist" data-wf-role="partner">
+            <span class="btn-label">Talk to us about a program</span>
+            <span class="btn-icon">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </span>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       MEMBERSHIP
+       Three white cards. The one people take carries the dark fill rather
+       than a badge shouting at the reader; the badge is a quiet mono chip.
+       =================================================================== -->
+  <section class="sec wrap sec-pad" id="membership" aria-labelledby="membershipHead">
+    <div class="sec-head u-mb-lg">
+      <span class="sec-label">Membership</span>
+      <h2 class="t-h2 t-balance" id="membershipHead">
+        Built for founders, executives, and families.<br />
+        Structured for the <em>organizations</em> that serve them.
+      </h2>
+      <p class="t-body">One way in. Two ways forward.</p>
+    </div>
+
+    <div class="tiers">
+      <article class="tier">
+        <div class="tier-name">
+          <h3 class="t-h4">Baseline</h3>
+        </div>
+        <p class="tier-lede t-body-sm">Credited toward year one if you continue.</p>
+        <ul class="tier-list t-body-sm">
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Advanced and standard bloodwork, mobile-drawn at home</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>DEXA scan, VO2 max with training zones, resting metabolic rate</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Body composition and strength assessment</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Written longevity plan reviewed by an MD</span></li>
+        </ul>
+        <div class="tier-foot">
+          <a class="btn btn-secondary" href="#joinwaitlist">
+            <span class="btn-label">Start here</span>
+            <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tier is-feature">
+        <div class="tier-name">
+          <h3 class="t-h4">Optimize</h3>
+          <span class="tag">Most popular</span>
+        </div>
+        <p class="tier-lede t-body-sm">The annual program for sustained performance.</p>
+        <ul class="tier-list t-body-sm">
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>MD-led, coach-supported program</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Day 1 and Day 180 full reviews, plus quarterly check-ins</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>30 minutes per month of MD async messaging, monthly health coaching, and dietitian hours</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Multi-cancer early detection and biological-age and healthspan tracking</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Care navigation, with foundational supplements included</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Hormones, peptides, NAD, IV, and CGM available on a curated add-on layer</span></li>
+        </ul>
+        <div class="tier-foot">
+          <a class="btn btn-primary" href="#joinwaitlist">
+            <span class="btn-label">Get access</span>
+            <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tier">
+        <div class="tier-name">
+          <h3 class="t-h4">Eternal</h3>
+        </div>
+        <p class="tier-lede t-body-sm">Top of practice, always on.</p>
+        <ul class="tier-list t-body-sm">
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Everything in Optimize</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Annual Executive Physical with 500+ biomarkers</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Multi-cancer early detection, whole-body and brain imaging, genetics, and gut and toxin panels</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Unlimited messaging with a five-person concierge care team</span></li>
+          <li><svg class="ico ico-sm tick" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6"/></svg><span>Hormones, supplements, and quarterly re-testing included</span></li>
+        </ul>
+        <div class="tier-foot">
+          <a class="btn btn-secondary" href="#joinwaitlist">
+            <span class="btn-label">Contact us</span>
+            <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </a>
+        </div>
+      </article>
+    </div>
+
+    <p class="tiers-note t-body-sm">
+      Family and household coverage is available as an extension across all tiers. Terms are
+      structured with each partner. Ask your introducer, or ask us.
+    </p>
+  </section>
+
+  <!-- ===================================================================
+       THE CLOSING CARD
+       One photograph the width of the page, deeply rounded, the mark and one
+       line centred on it. The band behind it carries the ground into white so
+       the footer can begin.
+       =================================================================== -->
+  <section class="cta-band" aria-labelledby="accessHead">
+    <div class="cta-card">
+      {CLOSING_ART ? (
+        <img class="cta-img" src={CLOSING_ART} alt="" width="2752" height="1448" loading="lazy" decoding="async" />
+      ) : (
+        <div class="ph is-dark">
+          <span class="ph-label">
+            <b>closing-frame</b>
+            <span>2752&times;1448 &middot; 1.9:1 &middot; 64px radius, inset 32px</span>
+            <span>The same world at the same hour, read wide. Centre kept clear for the mark.</span>
+          </span>
+        </div>
+      )}
+      <div class="cta-inner">
+        <svg class="cta-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+          <path
+            d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"
+            stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"
+          />
+        </svg>
+        <h2 class="t-h2 t-balance" id="accessHead">The years to <em>enjoy it</em><br />start now</h2>
+        <p class="t-body">
+          Compound Health is enrolling through partner advisors, firms, and organizations, with
+          limited first-wave capacity.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       ACCESS
+       The form. Its class names, ids, audience routing and endpoint are the
+       live form's and are not renamed here; only the surface is this
+       variation's.
+       =================================================================== -->
+  <section class="access wrap" id="joinwaitlist" aria-labelledby="formHead">
+    <div class="access-grid">
+      <div>
+        <span class="sec-label">Access</span>
+        <h2 class="t-h3" id="formHead">Get access</h2>
+        <p class="access-lede t-body">
+          Founding member places and first-wave partner slots are limited. Leave your details
+          and we will be in touch.
+        </p>
+      </div>
+
+      <div class="waitlist-card">
+        <div id="waitlistForm">
+          <div class="wf-role" id="wfRole" role="radiogroup" aria-label="I am">
+            <span class="wf-role-label">I am</span>
+            <div class="wf-segments">
+              <button class="wf-segment is-active" type="button" role="radio" aria-checked="true"
+                      data-role="client" data-audience="client">A client</button>
+              <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                      data-role="wealth-firm" data-audience="partner">A wealth firm</button>
+              <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                      data-role="employer" data-audience="partner">An employer</button>
+              <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                      data-role="network" data-audience="partner">A network or organization</button>
+            </div>
+          </div>
+
+          <div class="wf-row">
+            <div class="wf-field">
+              <label class="wf-label" for="wf-fname">First name</label>
+              <input class="wf-input" type="text" id="wf-fname" placeholder="James" autocomplete="given-name" />
+            </div>
+            <div class="wf-field">
+              <label class="wf-label" for="wf-lname">Last name</label>
+              <input class="wf-input" type="text" id="wf-lname" placeholder="Pemberton" autocomplete="family-name" />
+            </div>
+          </div>
+
+          <div class="wf-field">
+            <label class="wf-label" for="wf-email">Email address</label>
+            <input class="wf-input" type="email" id="wf-email" placeholder="james@example.com" autocomplete="email" />
+          </div>
+
+          <div class="wf-field" data-shown-to="client">
+            <label class="wf-label" for="wf-tier">Membership tier of interest</label>
+            <select class="wf-input wf-select" id="wf-tier">
+              <option value="" disabled selected>Select a tier</option>
+              <option value="baseline">Baseline</option>
+              <option value="optimize">Optimize</option>
+              <option value="eternal">Eternal</option>
+            </select>
+          </div>
+          <div class="wf-field" data-shown-to="client">
+            <label class="wf-label" for="wf-advisor">Referring advisor or firm (optional)</label>
+            <input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" />
+          </div>
+
+          <div class="wf-field" data-shown-to="partner" hidden>
+            <label class="wf-label" for="wf-org">Organization name</label>
+            <input class="wf-input" type="text" id="wf-org" placeholder="e.g. Pemberton Family Office" autocomplete="organization" />
+          </div>
+          <div class="wf-field" data-shown-to="partner" hidden>
+            <label class="wf-label" for="wf-reach">People you would introduce (optional)</label>
+            <select class="wf-input wf-select" id="wf-reach">
+              <option value="" disabled selected>Select a range</option>
+              <option value="under-100">Under 100</option>
+              <option value="100-500">100 to 500</option>
+              <option value="500-2000">500 to 2,000</option>
+              <option value="over-2000">Over 2,000</option>
+            </select>
+          </div>
+
+          <button class="btn btn-secondary wf-submit" id="wfSubmit" type="button">
+            <span class="btn-label"><span class="wf-submit-label">Reserve my place</span></span>
+            <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </button>
+
+          <div class="wf-error" id="wfError" aria-live="polite" role="alert">
+            <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>
+            <span class="wf-error-msg">Something went wrong. Please try again.</span>
+          </div>
+
+          <p class="wf-note t-body-sm">
+            Your data is handled in accordance with our <a href="/privacy-policy">Privacy Policy</a>.
+            We do not share your details with third parties.
+          </p>
+        </div>
+
+        <div class="waitlist-success" id="waitlistSuccess" role="status" aria-live="polite">
+          <div class="ws-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-7"/>
+            </svg>
+          </div>
+          <h3 class="t-h4" id="wsTitle">You're on the list</h3>
+          <p class="t-body-sm" id="wsBody">
+            Thank you. Your founding member request has been received.
+            Our team will be in touch as soon as your tier opens.
+          </p>
+          <button class="ws-reset" id="wsReset" type="button">Submit another response</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       MOTION
+       Three scrubbed set pieces (the hero window, the pinned carousel, the
+       orbit) and four small behaviours. With reduced motion every scrub is
+       skipped and the two pinned sections lay themselves out as plain
+       stacks, which is what .is-static does.
+       =================================================================== -->
+  <script>
+    (function () {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const g = (window as any).gsap;
+      const ST = (window as any).ScrollTrigger;
+      const canScrub = !!(g && ST) && !reduce;
+
+      // --- the hero window -------------------------------------------------
+      // clip-path from inset(0) to inset(32px round 64px). The picture never
+      // moves; the window pulls in around it.
+      (function () {
+        const hero = document.getElementById('hero');
+        if (!hero) return;
+        let ticking = false;
+        const update = () => {
+          ticking = false;
+          hero.classList.toggle('is-zoomed', window.scrollY > 100);
+        };
+        window.addEventListener('scroll', () => {
+          if (!ticking) { ticking = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        update();
+      })();
+
+      // --- the hero ticker ---------------------------------------------------
+      // One line at a time, rising into a fixed window every 2.5s.
+      (function () {
+        const items = Array.from(document.querySelectorAll<HTMLElement>('[data-ticker-item]'));
+        if (!items.length) return;
+        items[0].classList.add('is-in');
+        if (reduce || items.length === 1) return;
+        let i = 0;
+        setInterval(() => {
+          const out = items[i];
+          i = (i + 1) % items.length;
+          const next = items[i];
+          out.classList.remove('is-in');
+          out.classList.add('is-out');
+          next.classList.remove('is-out');
+          // A frame at translateY(100%) before the class lands, so it rises.
+          requestAnimationFrame(() => next.classList.add('is-in'));
+          window.setTimeout(() => out.classList.remove('is-out'), 1000);
+        }, 2500);
+      })();
+
+      // --- the mark draws itself ---------------------------------------------
+      (function () {
+        const svg = document.querySelector<SVGSVGElement>('[data-draw]');
+        if (!svg) return;
+        const path = svg.querySelector('path');
+        if (!path) return;
+        const len = Math.ceil(path.getTotalLength());
+        svg.style.setProperty('--len', String(len));
+        if (reduce || !('IntersectionObserver' in window)) { svg.classList.add('is-drawn'); return; }
+        new IntersectionObserver((entries, obs) => {
+          entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            svg.classList.add('is-drawn');
+            obs.disconnect();
+          });
+        }, { threshold: 0.4 }).observe(svg);
+      })();
+
+      // --- the pinned carousel ------------------------------------------------
+      // Three panels on one stage. Each rises over the one before it and the
+      // one it covers settles back and dims. Scrubbed, never snapped.
+      (function () {
+        const section = document.querySelector<HTMLElement>('[data-car]');
+        const stage = document.querySelector<HTMLElement>('[data-car-stage]');
+        const panels = Array.from(document.querySelectorAll<HTMLElement>('.car-panel'));
+        if (!section || !stage || panels.length < 2) return;
+        const wide = window.matchMedia('(min-width: 1024px)');
+        if (!canScrub || !wide.matches) { section.classList.add('is-static'); return; }
+
+        // The first card is on top and the queued ones sit under it, which is why
+        // the reference writes this deck backwards in the DOM. Only the rounded
+        // edge of the next card shows below the one in front.
+        panels.forEach((p, i) => { p.style.zIndex = String(panels.length - i); });
+        // Queued cards wait below, small and dim; the front card is whole.
+        g.set(panels.slice(1), { yPercent: 10, scale: 0.95, opacity: 0.3 });
+        const copies = panels.map(p => p.querySelector<HTMLElement>('.car-copy'));
+        g.set(copies.slice(1), { opacity: 0 });
+
+        const tl = g.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: section,
+            start: 'center center',
+            end: () => `+=${2.4 * window.innerHeight}`,
+            pin: stage,
+            scrub: 0.3,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        for (let i = 1; i < panels.length; i++) {
+          const at = 0.25 + (i - 1) * 1.3;
+          tl.to(panels[i - 1], { y: () => -window.innerHeight, duration: 1 }, at)
+            .to(copies[i - 1], { opacity: 0, duration: 0.3 }, at)
+            .to(panels[i], { yPercent: 0, scale: 1, opacity: 1, duration: 1 }, at)
+            .to(copies[i], { opacity: 1, duration: 0.4 }, at + 0.5);
+        }
+        tl.to({}, { duration: 0.4 });
+      })();
+
+      // --- the orbit ------------------------------------------------------------
+      // Six tiles parked on an ellipse whose polar angle is scrubbed by scroll,
+      // around a line that leaves as the next one arrives.
+      (function () {
+        const section = document.querySelector<HTMLElement>('[data-orbit]');
+        const stage = document.querySelector<HTMLElement>('[data-orbit-stage]');
+        const orbs = Array.from(document.querySelectorAll<HTMLElement>('[data-orb]'));
+        const h1 = document.querySelector<HTMLElement>('[data-orbit-h1]');
+        const h2 = document.querySelector<HTMLElement>('[data-orbit-h2]');
+        if (!section || !stage || !orbs.length) return;
+        if (!canScrub) { section.classList.add('is-static'); return; }
+
+        // Each tile sweeps from its first angle to its second. The narrow set
+        // keeps them on screen when the ellipse is small.
+        const WIDE = [[-174, -74], [-120, -74], [-125, 35], [5, 105], [95, 195], [30, 105]];
+        const NARROW = [[-154, -84], [-120, -74], [-25, 35], [110, 130], [180, 205], [100, 120]];
+        const OFFSETS = [[0, 0], [-80, 10], [-25, -60], [-50, 40], [25, -60], [50, -100]];
+
+        function place(p: number) {
+          const narrow = window.innerWidth < 1024;
+          const set = narrow ? NARROW : WIDE;
+          const rx = 0.37 * window.innerWidth;
+          const ry = 0.32 * window.innerHeight;
+          const k = narrow ? 0.55 : 1;
+          // The bar is a fixed object at the top of the window; the orbit has to
+          // clear it, so the whole composition sits a little below centre.
+          const bias = narrow ? 20 : 62;
+          orbs.forEach((el, i) => {
+            const [a0, a1] = set[i % set.length];
+            const ang = a0 + (a1 - a0) * p;
+            const rad = ((ang - 60) * Math.PI) / 180;
+            const x = Math.cos(rad) * rx * k - el.offsetWidth / 2 + OFFSETS[i][0] * k;
+            const y = Math.sin(rad) * ry * k - el.offsetHeight / 2 + OFFSETS[i][1] * k + bias;
+            // One set of objects at every width; the phone gets the same
+            // composition at about 60 per cent, bleeding off both edges.
+            const s = Math.min(1, 2 * p) * (narrow ? 0.62 : 1);
+            el.style.transform = `translate(${x}px, ${y}px) scale(${s})`;
+            const inner = el.querySelector<HTMLElement>('.orb-photo .ph, .orb-photo img');
+            if (inner) inner.style.setProperty('--counter', String(2 - Math.min(1, p)));
+          });
+        }
+        place(0);
+        window.addEventListener('resize', () => place(lastP), { passive: true });
+        let lastP = 0;
+
+        const tl = g.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            trigger: section,
+            start: 'center center',
+            end: () => `+=${2.2 * window.innerHeight}`,
+            pin: stage,
+            scrub: 0.4,
+            invalidateOnRefresh: true,
+            onUpdate: (self: any) => { lastP = self.progress; place(self.progress); },
+          },
+        });
+        if (h1 && h2) {
+          tl.fromTo(h1, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.8 }, 0)
+            .to({}, { duration: 1.6 })
+            .to(h1, { autoAlpha: 0, y: -40, duration: 0.7 })
+            .fromTo(h2, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.7 }, '<0.2')
+            .to({}, { duration: 0.8 });
+        }
+      })();
+
+      // --- the mark trail ---------------------------------------------------
+      // The pointer leaves a line of marks across the orbit; each one blooms and
+      // then wilts over two seconds. Pointer devices only, and never under
+      // reduced motion. It is the cheapest memorable thing on the reference and
+      // it costs one canvas.
+      (function () {
+        const canvas = document.querySelector<HTMLCanvasElement>('[data-trail]');
+        const host = document.querySelector<HTMLElement>('[data-orbit-stage]');
+        if (!canvas || !host) return;
+        if (reduce || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          canvas.remove();
+          return;
+        }
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const D =
+          'M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53' +
+          'M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1' +
+          'M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38';
+        const mark = new Path2D(D);
+        const LIFE = 2000;
+        const SIZE = 46;
+        const stamps: { x: number; y: number; t: number; r: number }[] = [];
+        let dpr = 1;
+        let last = { x: -999, y: -999 };
+        let raf = 0;
+
+        function size() {
+          dpr = Math.min(2, window.devicePixelRatio || 1);
+          canvas!.width = host!.clientWidth * dpr;
+          canvas!.height = host!.clientHeight * dpr;
+          canvas!.style.width = host!.clientWidth + 'px';
+          canvas!.style.height = host!.clientHeight + 'px';
+        }
+        size();
+        window.addEventListener('resize', size, { passive: true });
+
+        host.addEventListener('pointermove', e => {
+          const r = host.getBoundingClientRect();
+          const x = e.clientX - r.left;
+          const y = e.clientY - r.top;
+          if (Math.hypot(x - last.x, y - last.y) < 38) return;
+          last = { x, y };
+          stamps.push({ x, y, t: performance.now(), r: (Math.random() - 0.5) * 0.9 });
+          if (stamps.length > 26) stamps.shift();
+          if (!raf) raf = requestAnimationFrame(draw);
+        }, { passive: true });
+
+        function draw(now: number) {
+          raf = 0;
+          ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+          ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+          let alive = false;
+          for (const st of stamps) {
+            const age = (now - st.t) / LIFE;
+            if (age >= 1) continue;
+            alive = true;
+            // Bloom over the first fifth, wilt over the rest.
+            const bloom = age < 0.2 ? 1 - Math.pow(1 - age / 0.2, 3) : 1;
+            const wilt = age < 0.2 ? 1 : 1 - 0.38 * ((age - 0.2) / 0.8);
+            const alpha = (age < 0.2 ? age / 0.2 : 1 - (age - 0.2) / 0.8) * 0.34;
+            const k = (SIZE * bloom * wilt) / 120;
+            ctx!.save();
+            ctx!.translate(st.x, st.y);
+            ctx!.rotate(st.r);
+            ctx!.scale(k, k);
+            ctx!.translate(-60, -60);
+            ctx!.strokeStyle = `rgba(26, 22, 19, ${alpha})`;
+            ctx!.lineWidth = 5.88;
+            ctx!.lineJoin = 'round';
+            ctx!.lineCap = 'round';
+            ctx!.stroke(mark);
+            ctx!.restore();
+          }
+          if (alive) raf = requestAnimationFrame(draw);
+        }
+      })();
+
+      // --- the accordion ----------------------------------------------------
+      // One open at a time. The panel's height is animated from its measured
+      // content height, so it works with any amount of copy.
+      (function () {
+        const root = document.querySelector<HTMLElement>('[data-acc]');
+        if (!root) return;
+        const items = Array.from(root.querySelectorAll<HTMLElement>('.acc-item'));
+
+        function close(item: HTMLElement) {
+          const panel = item.querySelector<HTMLElement>('.acc-panel');
+          const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
+          if (!panel || !btn) return;
+          panel.style.height = panel.scrollHeight + 'px';
+          requestAnimationFrame(() => { panel.style.height = '0px'; });
+          item.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+        function open(item: HTMLElement) {
+          const panel = item.querySelector<HTMLElement>('.acc-panel');
+          const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
+          if (!panel || !btn) return;
+          items.forEach(other => { if (other !== item) close(other); });
+          item.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+          panel.style.height = panel.scrollHeight + 'px';
+          panel.addEventListener('transitionend', function done(e) {
+            if (e.propertyName !== 'height') return;
+            if (item.classList.contains('is-open')) panel.style.height = 'auto';
+            panel.removeEventListener('transitionend', done);
+          });
+        }
+
+        items.forEach(item => {
+          const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
+          btn?.addEventListener('click', () => {
+            if (item.classList.contains('is-open')) close(item);
+            else open(item);
+          });
+        });
+      })();
+
+      // --- the count -----------------------------------------------------------
+      (function () {
+        const el = document.querySelector<HTMLElement>('[data-count]');
+        if (!el) return;
+        const target = Number(el.dataset.count);
+        if (reduce || !('IntersectionObserver' in window)) { el.textContent = String(target); return; }
+        const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+        new IntersectionObserver((entries, obs) => {
+          entries.forEach(e => {
+            if (!e.isIntersecting) return;
+            obs.disconnect();
+            const t0 = performance.now();
+            const tick = (now: number) => {
+              const t = Math.min(1, (now - t0) / 1400);
+              el.textContent = String(Math.round(ease(t) * target));
+              if (t < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+          });
+        }, { threshold: 0.5 }).observe(el);
+      })();
+
+      // --- the hero capture hands its address to the real form -----------------
+      (function () {
+        const form = document.getElementById('heroForm') as HTMLFormElement | null;
+        if (!form) return;
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const from = document.getElementById('heroEmail') as HTMLInputElement | null;
+          const to = document.getElementById('wf-email') as HTMLInputElement | null;
+          if (from && to && from.value.trim()) to.value = from.value.trim();
+          const target = document.getElementById('joinwaitlist');
+          const lenis = (window as any).__lenis;
+          if (lenis && target) lenis.scrollTo(target, { offset: -80 });
+          else target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          window.setTimeout(() => {
+            const first = document.getElementById('wf-fname') as HTMLInputElement | null;
+            first?.focus({ preventScroll: true });
+          }, 700);
+        });
+      })();
+    })();
+  </script>
+
+  <!-- Custom dropdowns. Each select.wf-select is wrapped and given a button and a
+       listbox; the native select stays as the value the form script reads. Without
+       JavaScript the native select is what the reader sees. -->
+  <script>
+    (function () {
+      const CHEV = '<svg class="wf-dd-chev" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      const TICK = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+      document.querySelectorAll<HTMLSelectElement>('select.wf-select').forEach((sel, n) => {
+        const label = sel.id ? document.querySelector<HTMLLabelElement>(`label[for="${sel.id}"]`) : null;
+        const wrap = document.createElement('div');
+        wrap.className = 'wf-dd';
+        sel.parentNode?.insertBefore(wrap, sel);
+        wrap.appendChild(sel);
+        sel.tabIndex = -1;
+        sel.setAttribute('aria-hidden', 'true');
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'wf-dd-btn';
+        btn.id = `${sel.id || 'wf-dd-' + n}-btn`;
+        btn.setAttribute('aria-haspopup', 'listbox');
+        btn.setAttribute('aria-expanded', 'false');
+        if (label) { btn.setAttribute('aria-label', label.textContent?.trim() || ''); label.htmlFor = btn.id; }
+        const text = document.createElement('span');
+        btn.appendChild(text);
+        btn.insertAdjacentHTML('beforeend', CHEV);
+
+        const list = document.createElement('ul');
+        list.className = 'wf-dd-list';
+        list.setAttribute('role', 'listbox');
+        list.id = `${btn.id}-list`;
+        btn.setAttribute('aria-controls', list.id);
+
+        const opts = Array.from(sel.options).filter(o => !o.disabled);
+        const items = opts.map(o => {
+          const li = document.createElement('li');
+          li.className = 'wf-dd-opt';
+          li.setAttribute('role', 'option');
+          li.dataset.value = o.value;
+          li.innerHTML = `<span>${o.textContent}</span>${TICK}`;
+          li.addEventListener('click', () => { choose(o.value); close(); btn.focus(); });
+          list.appendChild(li);
+          return li;
+        });
+        wrap.appendChild(btn);
+        wrap.appendChild(list);
+
+        const placeholder = sel.options[0]?.disabled ? sel.options[0].textContent || '' : '';
+        let focus = -1;
+
+        function render() {
+          const cur = sel.value;
+          const selected = opts.find(o => o.value === cur && cur !== '');
+          text.textContent = selected ? (selected.textContent || '') : placeholder;
+          btn.classList.toggle('is-empty', !selected);
+          items.forEach(li => li.setAttribute('aria-selected', String(li.dataset.value === cur && cur !== '')));
+        }
+        function choose(value: string) {
+          sel.value = value;
+          sel.dispatchEvent(new Event('change', { bubbles: true }));
+          render();
+        }
+        function open() {
+          list.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+          focus = Math.max(0, opts.findIndex(o => o.value === sel.value));
+          paint();
+        }
+        function close() {
+          list.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+          focus = -1;
+          paint();
+        }
+        function paint() {
+          items.forEach((li, i) => li.classList.toggle('is-focus', i === focus));
+        }
+
+        btn.addEventListener('click', () => (list.classList.contains('is-open') ? close() : open()));
+        btn.addEventListener('keydown', e => {
+          const last = items.length - 1;
+          if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
+            if (!list.classList.contains('is-open')) { e.preventDefault(); open(); return; }
+          }
+          if (!list.classList.contains('is-open')) return;
+          if (e.key === 'ArrowDown') { e.preventDefault(); focus = focus >= last ? 0 : focus + 1; paint(); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); focus = focus <= 0 ? last : focus - 1; paint(); }
+          else if (e.key === 'Home') { e.preventDefault(); focus = 0; paint(); }
+          else if (e.key === 'End') { e.preventDefault(); focus = last; paint(); }
+          else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (focus >= 0) { choose(opts[focus].value); close(); } }
+          else if (e.key === 'Escape') { e.preventDefault(); close(); }
+          else if (e.key === 'Tab') close();
+        });
+        document.addEventListener('click', e => { if (!wrap.contains(e.target as Node)) close(); });
+        sel.addEventListener('change', render);
+        render();
+      });
+    })();
+  </script>
+
+  <!-- The waitlist form. Endpoint, routing and validation are the live form's. -->
+  <script>
+    const WAITLIST_ENDPOINT =
+      'https://script.google.com/macros/s/AKfycbw9x1Q9dVIDbTRRnsgajzbXHrL2Y3mz7SSWO2qHGtDeK9XsrxKhtBpItlPaY3oDn28/exec';
+
+    const ROUTING_TAG: Record<string, string> = {
+      client: 'client-waitlist',
+      partner: 'partner-pipeline',
+    };
+
+    const waitlistForm = document.getElementById('waitlistForm') as HTMLDivElement | null;
+    const waitlistSuccess = document.getElementById('waitlistSuccess') as HTMLDivElement | null;
+    const wfSubmit = document.getElementById('wfSubmit') as HTMLButtonElement | null;
+    const wfError = document.getElementById('wfError') as HTMLDivElement | null;
+    const wfErrorMsg = wfError?.querySelector('.wf-error-msg') as HTMLSpanElement | null;
+    const wfLabel = wfSubmit?.querySelector('.wf-submit-label') as HTMLSpanElement | null;
+    const wfRole = document.getElementById('wfRole') as HTMLDivElement | null;
+    const wsTitle = document.getElementById('wsTitle') as HTMLHeadingElement | null;
+    const wsBody = document.getElementById('wsBody') as HTMLParagraphElement | null;
+    const wsReset = document.getElementById('wsReset') as HTMLButtonElement | null;
+    const ORIGINAL_LABEL = wfLabel?.textContent ?? 'Reserve my place';
+
+    const segments = Array.from(wfRole?.querySelectorAll<HTMLButtonElement>('.wf-segment') ?? []);
+
+    function currentAudience(): string {
+      const active = segments.find(s => s.classList.contains('is-active'));
+      return active?.dataset.audience ?? 'client';
+    }
+    function currentRole(): string {
+      const active = segments.find(s => s.classList.contains('is-active'));
+      return active?.dataset.role ?? 'client';
+    }
+    function showError(message: string) {
+      if (!wfError) return;
+      if (wfErrorMsg) wfErrorMsg.textContent = message;
+      wfError.classList.add('visible');
+    }
+    function clearError() { wfError?.classList.remove('visible'); }
+
+    function applyAudience(audience: string) {
+      document.querySelectorAll<HTMLElement>('[data-shown-to]').forEach(field => {
+        field.hidden = field.dataset.shownTo !== audience;
+      });
+    }
+
+    function selectRole(role: string) {
+      const target =
+        segments.find(s => s.dataset.role === role) ??
+        (role === 'partner' ? segments.find(s => s.dataset.audience === 'partner') : undefined);
+      if (!target) return;
+      segments.forEach(s => {
+        const isActive = s === target;
+        s.classList.toggle('is-active', isActive);
+        s.setAttribute('aria-checked', String(isActive));
+      });
+      applyAudience(target.dataset.audience ?? 'client');
+      clearError();
+    }
+
+    segments.forEach(segment => {
+      segment.addEventListener('click', () => selectRole(segment.dataset.role ?? 'client'));
+    });
+
+    document.addEventListener('click', event => {
+      const trigger = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-wf-role]');
+      if (trigger) selectRole(trigger.dataset.wfRole ?? 'partner');
+    });
+
+    applyAudience(currentAudience());
+
+    if (wfSubmit && waitlistForm && waitlistSuccess) {
+      wfSubmit.addEventListener('click', async () => {
+        clearError();
+        const fnameInput = document.getElementById('wf-fname') as HTMLInputElement | null;
+        const lnameInput = document.getElementById('wf-lname') as HTMLInputElement | null;
+        const emailInput = document.getElementById('wf-email') as HTMLInputElement | null;
+        const tierInput = document.getElementById('wf-tier') as HTMLSelectElement | null;
+        const advisorInput = document.getElementById('wf-advisor') as HTMLInputElement | null;
+        const orgInput = document.getElementById('wf-org') as HTMLInputElement | null;
+        const reachInput = document.getElementById('wf-reach') as HTMLSelectElement | null;
+
+        const audience = currentAudience();
+        const isPartner = audience === 'partner';
+
+        const firstName = fnameInput?.value.trim() ?? '';
+        const lastName = lnameInput?.value.trim() ?? '';
+        const email = emailInput?.value.trim() ?? '';
+        const tier = tierInput?.value ?? '';
+        const advisor = advisorInput?.value.trim() ?? '';
+        const org = orgInput?.value.trim() ?? '';
+        const reach = reachInput?.value ?? '';
+
+        if (!firstName) { fnameInput?.focus(); return; }
+        if (!lastName) { lnameInput?.focus(); return; }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { emailInput?.focus(); return; }
+        if (isPartner) { if (!org) { orgInput?.focus(); return; } }
+        else if (!tier) { tierInput?.focus(); return; }
+
+        wfSubmit.disabled = true;
+        if (wfLabel) wfLabel.textContent = 'Submitting…';
+
+        const payload = new URLSearchParams({
+          role: currentRole(),
+          audience,
+          routingTag: ROUTING_TAG[audience] ?? ROUTING_TAG.client,
+          firstName,
+          lastName,
+          email,
+          tier: isPartner ? '' : tier,
+          advisor: isPartner ? '' : advisor,
+          organization: isPartner ? org : '',
+          reach: isPartner ? reach : '',
+          source: 'compoundhealth.io',
+          submittedAt: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+        });
+
+        try {
+          const res = await fetch(WAITLIST_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+            body: payload.toString(),
+          });
+          if (!res.ok) throw new Error('Request failed: ' + res.status);
+
+          if (isPartner) {
+            if (wsTitle) wsTitle.textContent = 'Request received';
+            if (wsBody) {
+              wsBody.textContent =
+                'Thank you. We will be in touch to discuss a program for your organization.';
+            }
+          } else {
+            if (wsTitle) wsTitle.textContent ="You're on the list";
+            if (wsBody) {
+              wsBody.textContent =
+                'Thank you' + (firstName ? ', ' + firstName : '') +
+                '. Your founding member request has been received. Our team will be in ' +
+                'touch as soon as your tier opens.';
+            }
+          }
+
+          waitlistForm.style.display = 'none';
+          waitlistSuccess.classList.add('visible');
+          waitlistSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } catch (err) {
+          console.error('Waitlist submission failed', err);
+          wfSubmit.disabled = false;
+          if (wfLabel) wfLabel.textContent = ORIGINAL_LABEL;
+          showError("We couldn't submit your details. Please check your connection and try again.");
+        }
+      });
+    }
+
+    if (wsReset && waitlistForm && waitlistSuccess && wfSubmit) {
+      wsReset.addEventListener('click', () => {
+        ['wf-fname', 'wf-lname', 'wf-email', 'wf-advisor', 'wf-org'].forEach(id => {
+          const el = document.getElementById(id) as HTMLInputElement | null;
+          if (el) el.value = '';
+        });
+        ['wf-tier', 'wf-reach'].forEach(id => {
+          const el = document.getElementById(id) as HTMLSelectElement | null;
+          if (el) { el.value = ''; el.dispatchEvent(new Event('change')); }
+        });
+        selectRole('client');
+        waitlistSuccess.classList.remove('visible');
+        waitlistForm.style.display = '';
+        wfSubmit.disabled = false;
+        if (wfLabel) wfLabel.textContent = ORIGINAL_LABEL;
+        clearError();
+      });
+    }
+  </script>
+
+</V3Layout>

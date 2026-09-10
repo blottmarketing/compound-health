@@ -1,0 +1,355 @@
+---
+/**
+ * Layout for design variation v3, the lassie.ai idiom.
+ *
+ * Loads src/styles/variants/v3.css and nothing else from the design side. Every in-page
+ * link is prefixed with `base` so navigation stays inside the variation, and the page is
+ * noindex, always.
+ *
+ * The chrome here is the reference's own: a floating glass pill instead of a bar, with a
+ * white indicator that chases the pointer and a wordmark that collapses to the mark once
+ * the reader is 400px down; and a footer that stands on a fixed gradient panel carrying
+ * the wordmark at almost the full width of the page, uncovered by scrolling rather than
+ * by script.
+ *
+ * The live layout at src/layouts/MainLayout.astro is production and is not to be touched.
+ */
+import '../../styles/variants/v3.css';
+import Logo from '../../components/variants/Logo.astro';
+import VariantSwitcher from '../../components/variants/VariantSwitcher.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Home route of this variation, prefixed onto every in-page link. */
+  base?: string;
+  /** Variant id, so the switcher can mark the current page. */
+  variant?: string;
+}
+
+const SITE_NAME = 'Compound Health';
+const DEFAULT_DESCRIPTION =
+  'A private longevity membership introduced by your wealth advisor. Your health data stays yours, and you decide what, if anything, to share. Founding member waitlist now open.';
+
+const {
+  title,
+  description = DEFAULT_DESCRIPTION,
+  base = '/v3',
+  variant = 'v3',
+} = Astro.props;
+
+const anchor = (hash: string) => `${base}#${hash}`;
+const year = new Date().getFullYear();
+
+const NAV_LINKS = [
+  { label: 'How it works', hash: 'how' },
+  { label: 'What you get', hash: 'features' },
+  { label: 'Partners', hash: 'partners' },
+  { label: 'Membership', hash: 'membership' },
+];
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <!-- Variations are internal review pages and never indexed. -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon-v1.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#f9f8f5" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+
+    <!--
+      Newsreader stands in for ABC Marist, the reference's display serif: a variable
+      weight axis so the display can sit on 350 exactly rather than rounding up to 400,
+      a low x-height against a generous cap, and a true italic. DM Sans and DM Mono are
+      the reference's own faces. Lato carries the wordmark, as it does everywhere else.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=DM+Sans:opsz,wght@9..40,300..700&family=Lato:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" is:inline></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" is:inline></script>
+  </head>
+  <body>
+
+    <nav class="nav" id="nav" aria-label="Main navigation">
+      <div class="nav-shell" aria-hidden="true"></div>
+      <div class="nav-pill" id="navPill" aria-hidden="true"></div>
+
+      <Logo base={base} />
+
+      <div class="nav-links">
+        {NAV_LINKS.map(l => <a class="nav-item" href={anchor(l.hash)}>{l.label}</a>)}
+      </div>
+
+      <a class="nav-item is-cta" href={anchor('joinwaitlist')}>Get access</a>
+
+      <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navDrop">
+        Menu
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+    </nav>
+
+    <!-- The pill opens into a small glass card directly beneath it. There is no
+         full-screen drawer in this system: the chrome stays a floating object. -->
+    <div class="nav-drop" id="navDrop" aria-hidden="true">
+      {NAV_LINKS.map(l => (
+        <a href={anchor(l.hash)} data-menu-link>
+          {l.label}
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      ))}
+      <a href="/for-advisors" data-menu-link>
+        For advisors and firms
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div>
+            <p class="t-h2 footer-statement">Beyond wealth:<br />the years to <em>enjoy it</em></p>
+            <a class="btn btn-secondary" href={anchor('joinwaitlist')}>
+              <span class="btn-label">Get access</span>
+              <span class="btn-icon">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </a>
+          </div>
+
+          <div class="footer-cols">
+            <div class="footer-col">
+              <div class="footer-col-title">Site</div>
+              <a class="link t-body-sm" href={anchor('how')}>How it works</a>
+              <a class="link t-body-sm" href={anchor('features')}>What you get</a>
+              <a class="link t-body-sm" href={anchor('membership')}>Membership</a>
+              <a class="link t-body-sm" href="/for-advisors">For advisors and firms</a>
+              <a class="link t-body-sm" href={anchor('joinwaitlist')}>Get access</a>
+            </div>
+            <div class="footer-col">
+              <div class="footer-col-title">Contact</div>
+              <a class="link t-body-sm" href="mailto:hello@compoundhealth.io">hello@compoundhealth.io</a>
+              <a class="link t-body-sm" href="mailto:privacy@compoundhealth.io">privacy@compoundhealth.io</a>
+            </div>
+            <div class="footer-col">
+              <div class="footer-col-title">Legal</div>
+              <a class="link t-body-sm" href="/privacy-policy">Privacy Policy</a>
+              <a class="link t-body-sm" href="/website-terms">Website Terms</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- The colophon sits at the foot of the link zone: the mark, then the
+             machine voice. Mono appears exactly twice on this page, here and on
+             a figure, which is what keeps it reading as a signature. -->
+        <div class="footer-bottom">
+          <div class="footer-colophon">
+            <svg class="logo-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+              <path
+                d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"
+                stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"
+              />
+            </svg>
+            <div>
+              <div class="t-label">&copy; {year} Compound Health. All rights reserved.</div>
+              <div class="t-label">Introduced, not sold.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- The panel the footer stands on. Uncovered by the footer's own bottom margin
+         scrolling past it; no script anywhere near it. -->
+    <div class="footer-panel" aria-hidden="true">
+      <div class="footer-wordmark">Compound <em>Health</em></div>
+      <svg class="footer-disc" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+        <path
+          d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"
+          stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+
+    <VariantSwitcher current={variant} />
+
+    <script>
+      // ---------------------------------------------------------------------
+      // Smooth scroll. Lenis at lerp 0.2, driven off the GSAP ticker with lag
+      // smoothing off, which is the reference's own configuration. Exposed on
+      // window so a headless capture can stop it and jump to a position.
+      // ---------------------------------------------------------------------
+      (function () {
+        const g = (window as any).gsap;
+        const ST = (window as any).ScrollTrigger;
+        const L = (window as any).Lenis;
+        if (g && ST) g.registerPlugin(ST);
+
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!L || !g || reduce) return;
+
+        document.documentElement.style.scrollBehavior = 'auto';
+        const lenis = new L({ lerp: 0.2 });
+        (window as any).__lenis = lenis;
+        if (ST) lenis.on('scroll', ST.update);
+        g.ticker.add((t: number) => lenis.raf(t * 1000));
+        g.ticker.lagSmoothing(0);
+
+        // In-page anchors have to go through Lenis or they fight it.
+        document.addEventListener('click', (e) => {
+          const a = (e.target as HTMLElement | null)?.closest('a[href*="#"]') as HTMLAnchorElement | null;
+          if (!a) return;
+          const url = new URL(a.href, location.href);
+          if (url.pathname !== location.pathname || !url.hash) return;
+          const target = document.querySelector(url.hash);
+          if (!target) return;
+          e.preventDefault();
+          lenis.scrollTo(target as HTMLElement, { offset: -80 });
+          history.replaceState(null, '', url.hash);
+        });
+      })();
+
+      // ---------------------------------------------------------------------
+      // The nav. Three behaviours: the indicator chases the pointer, the
+      // wordmark collapses past 400px with a 40px hysteresis band, and the
+      // whole pill inverts while it is over the hero photograph.
+      // ---------------------------------------------------------------------
+      (function () {
+        const nav = document.getElementById('nav');
+        const pill = document.getElementById('navPill');
+        if (!nav || !pill) return;
+
+        const g = (window as any).gsap;
+        const items = Array.from(nav.querySelectorAll<HTMLElement>('.nav-item, .nav-logo'));
+        const word = nav.querySelector<HTMLElement>('.logo-word');
+        const hasTouch = window.matchMedia('(hover: none)').matches;
+
+        // --- the indicator -------------------------------------------------
+        function moveTo(el: HTMLElement | null) {
+          if (!g || !pill) return;
+          if (!el) { g.to(pill, { width: 0, opacity: 0, duration: 0.3, ease: 'expo.out' }); return; }
+          g.to(pill, {
+            width: el.offsetWidth,
+            x: el.offsetLeft,
+            y: el.offsetTop,
+            opacity: 1,
+            duration: 0.3,
+            ease: 'expo.out',
+          });
+        }
+        if (!hasTouch) {
+          items.forEach(el => el.addEventListener('mouseenter', () => moveTo(el)));
+          nav.addEventListener('mouseleave', () => moveTo(null));
+        }
+
+        // --- the wordmark collapse ------------------------------------------
+        let collapsed = false;
+        let natural = 0;
+        function measure() {
+          if (!word) return;
+          const had = collapsed;
+          word.style.width = '';
+          natural = word.scrollWidth;
+          if (had) word.style.width = '0px';
+        }
+        measure();
+        window.addEventListener('resize', () => { measure(); }, { passive: true });
+
+        function setCollapsed(next: boolean) {
+          if (next === collapsed || !word) return;
+          collapsed = next;
+          if (!g) { word.style.width = next ? '0px' : ''; return; }
+          g.to(word, {
+            width: next ? 0 : natural,
+            duration: 0.6,
+            ease: 'power4.out',
+            onComplete: () => { if (!next) word.style.width = ''; },
+          });
+        }
+
+        // --- dark over the hero ---------------------------------------------
+        const darkZone = document.querySelector<HTMLElement>('[data-nav-dark]');
+        let ticking = false;
+        function update() {
+          ticking = false;
+          const y = window.scrollY;
+          if (y >= 400) setCollapsed(true);
+          else if (y <= 360) setCollapsed(false);
+
+          if (darkZone) {
+            const r = darkZone.getBoundingClientRect();
+            nav!.classList.toggle('is-dark', r.bottom > 72);
+          }
+        }
+        window.addEventListener('scroll', () => {
+          if (!ticking) { ticking = true; requestAnimationFrame(update); }
+        }, { passive: true });
+        update();
+
+        // --- the pill menu ---------------------------------------------------
+        const btn = document.getElementById('navMenuBtn');
+        const drop = document.getElementById('navDrop');
+        if (btn && drop) {
+          const close = () => {
+            drop.classList.remove('is-open');
+            drop.setAttribute('aria-hidden', 'true');
+            btn.setAttribute('aria-expanded', 'false');
+          };
+          btn.addEventListener('click', () => {
+            const open = drop.classList.toggle('is-open');
+            drop.setAttribute('aria-hidden', String(!open));
+            btn.setAttribute('aria-expanded', String(open));
+          });
+          drop.querySelectorAll('[data-menu-link]').forEach(a => a.addEventListener('click', close));
+          document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+          document.addEventListener('click', e => {
+            if (!drop.contains(e.target as Node) && !btn.contains(e.target as Node)) close();
+          });
+        }
+      })();
+
+      // ---------------------------------------------------------------------
+      // Reveal. One observer, each element played once.
+      // ---------------------------------------------------------------------
+      (function () {
+        const items = document.querySelectorAll<HTMLElement>('.reveal');
+        if (!items.length) return;
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce || !('IntersectionObserver' in window)) {
+          items.forEach(el => el.classList.add('is-in'));
+          return;
+        }
+        const io = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            (entry.target as HTMLElement).classList.add('is-in');
+            obs.unobserve(entry.target);
+          });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+        items.forEach(el => io.observe(el));
+      })();
+    </script>
+  </body>
+</html>

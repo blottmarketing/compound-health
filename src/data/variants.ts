@@ -58,8 +58,8 @@ export const VARIANTS: Variant[] = [
     id: 'v3',
     label: 'v3',
     path: '/v3',
-    note: 'A third direction.',
-    status: 'planned',
+    note: 'The lassie.ai idiom: one cream ground and no bands, a light serif at 350, a floating glass nav pill, and scroll used as a mechanism — the hero window closes, a deck of panels deals itself, six tiles orbit a line that changes under them.',
+    status: 'ready',
   },
 ];
 

@@ -39,6 +39,7 @@ compound-health/
 │   │       ├── V1Layout.astro           # variation v1; loads styles/variants/v1.css, always noindex
 │   │       ├── V11Layout.astro          # variation v1.1; loads styles/variants/v1-1.css, always noindex
 │   │       ├── V2Layout.astro           # variation v2; loads styles/variants/v2.css, own dark footer, always noindex
+│   │       ├── V3Layout.astro           # variation v3; loads styles/variants/v3.css, glass nav pill, own footer, always noindex
 │   │       └── VariantStubLayout.astro  # placeholder for a variation not started yet
 │   ├── pages/                  # one .astro file per route
 │   │   ├── index.astro                      # the live home page
@@ -49,7 +50,7 @@ compound-health/
 │   │   ├── v1/index.astro                   # design variation v1, noindex
 │   │   ├── v1-1/index.astro                 # design variation v1.1, forked from v1, noindex
 │   │   ├── v2/index.astro                   # design variation v2, the joindawn.com idiom, noindex
-│   │   ├── v3/index.astro                   # design variation v3, placeholder, noindex
+│   │   ├── v3/index.astro                   # design variation v3, the lassie.ai idiom, noindex
 │   │   ├── design-system/                   # internal design system, all routes noindex
 │   │   │   ├── index.astro                  # /design-system  overview
 │   │   │   ├── atoms.astro                  # /design-system/atoms
@@ -66,9 +67,11 @@ compound-health/
 │       └── variants/
 │           ├── v1.css                       # the v1 system, loaded by /v1 only
 │           ├── v1-1.css                     # the v1.1 system, Bayshore-influenced, loaded by /v1-1 only
-│           └── v2.css                       # the v2 system, the joindawn.com idiom, loaded by /v2 only
+│           ├── v2.css                       # the v2 system, the joindawn.com idiom, loaded by /v2 only
+│           └── v3.css                       # the v3 system, the lassie.ai idiom, loaded by /v3 only
 ├── docs/
-│   └── v1-1-art-brief.md   # the brief for the two v1.1 renders, and how to drop them in
+│   ├── v1-1-art-brief.md   # the brief for the two v1.1 renders, and how to drop them in
+│   └── v3-art-brief.md     # the seven v3 photography slots, their prompts, and how to drop them in
 ├── PAGES.xlsx              # source of truth for live page inventory
 └── CLAUDE.md               # this file
 ```
@@ -114,7 +117,7 @@ compound-health/
 | Design v1 | https://compoundhealth.io/v1 | Live | Noindex | V1Layout |
 | Design v1.1 | https://compoundhealth.io/v1-1 | Live | Noindex | V11Layout |
 | Design v2 | https://compoundhealth.io/v2 | Live | Noindex | V2Layout |
-| Design v3 | https://compoundhealth.io/v3 | Draft | Noindex | VariantStubLayout |
+| Design v3 | https://compoundhealth.io/v3 | Live | Noindex | V3Layout |
 
 ## Design variations
 
@@ -170,6 +173,20 @@ Each design has one source of truth for visual style. Use it. Do not invent new 
 - **Product cards are glass (v1).** `.stack-card` and `.bento-card` are `--glass-card` with a bright hairline edge, backdrop blur and an ambient shadow. The health score is `.bars`: gradient columns on one 0 to 100 plot, `.is-good` green (`--grad-cool`), `.is-warn` orange (`--grad-warm`), `.is-peak` glowing, and `--v` on `.bar` the only inline value. The panel figures are the team bar (`.team-bar` + `.team-legend`), the ring (`.cov-ring` of six `.cov-arc`) and the gradient card (`.stack-card.is-feature` with `.gate-chip` and `.gate-flow`). `.metric-*` and `.vault-*` no longer exist.
 - **Visual reference (v1).** v1 follows [duna.com](https://duna.com). Its idiom: one ground, fills and hairlines instead of outlines, a chip-plus-title section head with a pill action, product panels alternating sides, generous air, and per-block scroll reveal.
 - **Visual reference (v2).** v2 follows [joindawn.com](https://joindawn.com). Its idiom: a dark opening, a split hero of rounded cards, one great circle drawn by scroll, a sunrise gradient into cream, stacked sections with rounded feet, serif display type, gradient pills, a coverflow carousel and a sky card.
+- **Visual reference (v3).** v3 follows [lassie.ai](https://www.lassie.ai/). Its idiom: one cream ground and no bands, no shadows and no hairlines, a light serif display at 350 with nothing above it, a floating glass nav pill, scroll used as a mechanism rather than as decoration, drawn product figures where other designs would put a photograph, DM Mono reserved for machine facts, and a giant wordmark on pale blue under a rounded-foot footer.
+
+- **The v3 system lives in `src/styles/variants/v3.css`,** loaded by `/v3` alone, built 2026-09-10. It follows [lassie.ai](https://www.lassie.ai/): their layouts, palette, type, motion and interactions, with the client's copy unchanged. Nothing is shared with v1, v1.1 or v2 beyond the `Logo` component and the switcher.
+  1. **One ground, no bands.** `--bg-primary` (`#F9F8F5`) runs the whole page. Sections are separated by air alone, 100px rising to 200px at desktop, never by a change of background. White is the surface of everything raised; `--stone-300` (`#F3F0E9`) is the one second ground and it is always a card, never a band. Warm-black `#1A1613` is the text, `#120C08` the dark fill, `#666666` the muted. The pale blue `#C3EAF4` appears only as sky (the wide panel, the footer band) and as focus. Colour otherwise comes only from photography and from the drawn figures.
+  2. **`font-size: 62.5%` on `html`,** so 1rem is 10px and every value in the stylesheet is authored in whole tens of a pixel, as the reference does. Do not change it without rewriting the file.
+  3. **Three faces.** Newsreader at weight 350 stands in for ABC Marist, the reference's commercial display serif: a variable axis so the display sits on 350 exactly, a low x-height against a generous cap, and a true italic. DM Sans reads, DM Mono is the machine voice and appears exactly twice, on a figure and on the colophon. Lato still carries the wordmark. Emphasis inside a heading is the serif italic, never a weight or a colour.
+  4. **No shadows, no borders, no hairlines in the layout.** Elevation is radius and fill. Two shadow strings exist in the whole system and one of them is the focus ring. Form controls are fills rather than outlines. Focus is a design element: 2px `#42B5DC` plus a 3px halo, on everything.
+  5. **No entrance animation anywhere.** There is no fade-up, no stagger and no per-block reveal; both the CSS study and the live interaction study of the reference confirmed it. Everything outside a pinned stage sits still at full opacity, and that is what makes the scrubbed set pieces read as events. The only one-shot entrances are the mark drawing itself and the figure counting, both of which the reference also plays once on enter.
+  6. **Scroll is a mechanism, not an effect.** Three set pieces carry all the motion, driven by GSAP ScrollTrigger over Lenis (`lerp: 0.2`, on the GSAP ticker, `lagSmoothing(0)`, exposed as `window.__lenis` so a headless capture can jump): the hero window closes from `inset(0)` to `inset(32px round 64px)` over 1s `cubic-bezier(.22,1,.36,1)` while the picture stays still; `.car` pins a stage in which three panels deal like a deck, the front one leaving upward as the next arrives from below (dropped below 1024px, where the reference stacks them too); and `.orbit` pins a stage in which six tiles are parked on a scroll-scrubbed ellipse around a line that leaves as the next arrives, each photograph counter-scaling its own image 2 → 1 so the crop settles rather than pops.
+  7. **The nav is a floating glass pill,** not a bar: `w-max`, centred, 16px down, `rgba(227,221,207,.4)` behind `blur(13px)`, never hiding and never changing colour. A white indicator chases the pointer at `expo.out`; the wordmark collapses to the mark past `scrollY` 400 and comes back at 360. Below 1024px the four section links move into a small glass card that drops from under the pill, and below 760px the wordmark gives up its space to the mark.
+  8. **The footer stands on a fixed panel.** A white block with 64px feet, and beneath it a fixed gradient panel carrying the wordmark in white serif at almost the full page width, uncovered by the footer's own `margin-bottom: 30vw` scrolling past it. No script.
+  9. **The figures are drawn, never photographed.** `fig-`, `dcard-` and `disc-` are the three families: three product-interface panels for the process steps, four data cards for the orbit, three discipline squares, two wide panel figures, and one stroke-only icon set at 1.4. They scale by a container-query unit `--u` against a nominal design box, so a composition can never push its frame out of shape. Every word inside a figure is lifted verbatim from that section's copy and every number is a neutral illustrative reading.
+  10. **Photography is placeholder-only until the renders land.** Seven slots, each holding its exact frame, ratio and radius and naming itself in mono in the corner. The prompts are in `docs/v3-art-brief.md`. The register is tended ground at first light and the private rooms that serve it: no faces, no props, one light and one hour across all seven, mostly empty frames because a card or a headline sits on each. The hero and the closing frame are mid-dark in the centre so white type sits on them without a scrim; there is never a scrim.
+  11. **One deliberate departure from the reference.** It puts nothing above a heading, and the client's copy names every section. The label is `.sec-label`: the mono voice at 12px, no box, no caps, no letterspacing, which is the quietest thing this system can do with a word that has to be there.
 
 ## Blog system
 

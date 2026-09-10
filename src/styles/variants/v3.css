@@ -1,0 +1,2468 @@
+/* ============================================================================
+   v3 — the lassie.ai idiom, for Compound Health.
+   Loaded by /v3 alone, through src/layouts/variants/V3Layout.astro.
+
+   Nothing here is shared with the live site, v1, v1.1 or v2. src/styles/global.css
+   is production and is never edited to serve this file.
+
+   The system, in one paragraph: one warm cream ground (#F9F8F5), warm-black text
+   (#1A1613), a pale blue that appears only as sky and as focus, and white as the
+   surface of everything raised. Display type is a light serif at weight 350 set
+   tight and large; reading type is DM Sans; every label, figure and colophon is
+   DM Mono. Elevation is carried by radius, fill and blur, never by shadow: the
+   whole page ships four shadows and three of them are focus rings. Radii are big
+   and grow with the viewport (24 → 56 → 64px on media, 12/16px on chrome).
+
+   The root trick, as on the reference: font-size 62.5% so 1rem = 10px and every
+   value below is authored in whole tens of a pixel.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   1. TOKENS
+   --------------------------------------------------------------------------- */
+
+:root {
+  /* --- the cream ramp: every ground and every quiet fill ------------------ */
+  --stone-50:  #fcfbf8;
+  --stone-100: #f9f8f5;
+  --stone-200: #f8f6f2;
+  --stone-300: #f3f0e9;
+  --stone-400: #ede8de;
+  --stone-500: #e3ddcf;
+  --stone-600: #d8d1c0;
+  --stone-700: #cdc5b1;
+  --stone-800: #c2b9a3;
+
+  /* --- warm black: the text and the dark fills. never neutral grey -------- */
+  --black-100: #766f6f;
+  --black-200: #696563;
+  --black-300: #605852;
+  --black-400: #564b43;
+  --black-500: #473d37;
+  --black-600: #37302c;
+  --black-700: #342e2b;
+  --black-800: #1a1613;
+  --black-900: #120c08;
+  --black-1000:#070503;
+  --white:     #ffffff;
+
+  /* --- the pale blue: sky, selection, focus, and nothing else ------------- */
+  --blue-50:  #eaf8fb;
+  --blue-100: #ddf3f9;
+  --blue-200: #c3eaf4;
+  --blue-300: #98daec;
+  --blue-400: #6dc8e4;
+  --blue-500: #42b5dc;
+  --blue-600: #259bc6;
+  --blue-700: #1d779b;
+  --blue-900: #0d3345;
+
+  /* --- green: ticks and healthy readings only ----------------------------- */
+  --green-300: #dcf6dc;
+  --green-500: #99e59f;
+  --green-600: #6cda76;
+  --green-700: #46a758;
+  --green-900: #297c3b;
+
+  /* --- alpha ramps -------------------------------------------------------- */
+  --stone-a-100: rgba(227, 221, 207, 0.10);
+  --stone-a-200: rgba(227, 221, 207, 0.20);
+  --stone-a-300: rgba(227, 221, 207, 0.30);
+  --stone-a-400: rgba(227, 221, 207, 0.40);
+  --stone-a-600: rgba(227, 221, 207, 0.60);
+  --white-a-100: rgba(255, 255, 255, 0.10);
+  --white-a-200: rgba(255, 255, 255, 0.20);
+  --white-a-300: rgba(255, 255, 255, 0.30);
+  --white-a-400: rgba(255, 255, 255, 0.40);
+  --white-a-600: rgba(255, 255, 255, 0.60);
+  --white-a-700: rgba(255, 255, 255, 0.70);
+  --black-a-100: rgba(0, 0, 0, 0.10);
+  --black-a-200: rgba(0, 0, 0, 0.20);
+  --black-a-400: rgba(0, 0, 0, 0.40);
+
+  /* --- semantic ----------------------------------------------------------- */
+  --bg-primary:    var(--stone-100);   /* the page ground, end to end */
+  --bg-secondary:  var(--white);       /* the footer, and cards */
+  --bg-tertiary:   var(--blue-200);    /* sky */
+  --text-primary:  var(--black-800);
+  --text-secondary:#666666;
+  --text-invert:   var(--white);
+  --text-brand:    var(--blue-600);
+  --text-success:  var(--green-700);
+  --surface-primary:   var(--white);
+  --surface-secondary: var(--stone-100);
+  --surface-tertiary:  var(--black-900);
+  --surface-quaternary:var(--stone-300);
+  --surface-pressed:   var(--black-500);
+  --surface-button:    var(--black-1000);
+  --stroke-stone: var(--stone-600);
+  --stroke-light: var(--stone-200);
+  --stroke-focus: var(--blue-500);
+
+  /* --- type --------------------------------------------------------------- */
+  --font-heading: 'Newsreader', 'Times New Roman', Times, serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-word: 'Lato', var(--font-body);
+  /* the display weight. 350 is ABC Marist Book; Newsreader is variable, so we
+     can sit on it exactly rather than rounding up to 400. */
+  --weight-display: 350;
+
+  /* --- the gap / pad / module scale, responsive at 1024, 1280, 1440 ------- */
+  --gap-xxs: 0.2rem;
+  --gap-xs:  0.4rem;
+  --gap-sm:  0.8rem;
+  --gap-md:  1.6rem;
+  --gap-lg:  1.6rem;
+  --gap-xl:  3.2rem;
+  --gap-xxl: 4.8rem;
+  --gap-xxxl:9.6rem;
+  --pad-xs:  0.4rem;
+  --pad-sm:  0.8rem;
+  --pad-md:  1.2rem;
+  --pad-lg:  2.4rem;
+  --pad-xl:  1.6rem;
+  --pad-xxl: 4.8rem;
+  --module-sm:  2.4rem;
+  --module-md:  4.8rem;
+  --module-lg:  3.2rem;
+  --module-xl:  4.8rem;
+  --module-xxl: 12rem;
+  --module-xxxl:16rem;
+
+  /* --- the page gutter ladder --------------------------------------------- */
+  --gutter: 1.6rem;
+  --page-max: 205.6rem;
+
+  /* --- radius. media grows with the viewport; chrome does not ------------- */
+  --r-chrome-sm: 0.8rem;
+  --r-chrome:    1.2rem;   /* buttons */
+  --r-shell:     1.6rem;   /* the nav shell, cards, accordion rows */
+  --r-tile:      1.2rem;   /* infographic tiles */
+  --r-media:     2.4rem;   /* media, at every width below 1024 */
+  --r-panel:     1.6rem;
+
+  /* --- motion. the reference's own constants ------------------------------ */
+  --dur-fast:   0.3s;
+  --dur-medium: 0.6s;
+  --dur-slow:   1s;
+  --ease-out:       cubic-bezier(0, 0, 0.2, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-default:   cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* --- the only shadows on the page --------------------------------------- */
+  --shadow-card: 0 0.4rem 2rem rgba(18, 12, 8, 0.06);
+  --shadow-pill: 0 0.0978rem 1.1738rem rgba(0, 0, 0, 0.08);
+  --ring-focus:  0 0 0 3px rgba(66, 181, 220, 0.30);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --gap-xl: 4rem;  --gap-xxl: 6.4rem; --gap-xxxl: 12rem;
+    --pad-xs: 0.8rem; --pad-sm: 1.2rem; --pad-md: 1.6rem; --pad-xl: 2.4rem;
+    --module-sm: 3.2rem; --module-md: 5.6rem; --module-lg: 4rem;
+    --module-xl: 5.6rem; --module-xxl: 14.4rem;
+    --gutter: 2.4rem;
+    --r-media: 5.6rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --gap-sm: 1.2rem; --gap-md: 2.4rem; --gap-lg: 4rem;
+    --gap-xl: 4.8rem; --gap-xxl: 9.6rem; --gap-xxxl: 24rem;
+    --module-sm: 4.8rem; --module-md: 6.4rem; --module-lg: 8rem;
+    --module-xl: 9.6rem; --module-xxl: 16rem; --module-xxxl: 24rem;
+    --gutter: 3.2rem;
+    --r-media: 6.4rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --gap-xxs: 0.4rem; --gap-xs: 0.8rem;
+    --gap-xl: 5.6rem; --gap-xxl: 12rem;
+    --module-lg: 9.6rem; --module-xl: 14.4rem; --module-xxl: 24rem; --module-xxxl: 27.2rem;
+    --pad-xl: 3.2rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   2. RESET AND PAGE SHELL
+   --------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+/* 1rem = 10px for the whole variation. Every value in this file is authored
+   against it, so do not change it without rewriting the file. */
+html {
+  font-size: 62.5%;
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-variant-ligatures: common-ligatures;
+}
+
+img, svg, video { display: block; max-width: 100%; }
+img, video { height: auto; }
+
+::selection { background: var(--blue-200); color: var(--text-primary); }
+
+h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font: inherit; color: inherit; }
+
+main { position: relative; z-index: 1; background: var(--bg-primary); }
+
+/* The focus idiom, applied to everything interactive: a 2px transparent border
+   that turns blue, plus a soft halo. Focus is a design element here, not a
+   browser default that we suppress. */
+:focus { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--stroke-focus);
+  outline-offset: 2px;
+  border-radius: var(--r-chrome-sm);
+}
+
+.u-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   3. TYPE SCALE
+   Display is the serif at 350, line-height under 1.1, tracked in.
+   Reading is DM Sans. Labels and figures are DM Mono.
+   --------------------------------------------------------------------------- */
+
+.t-display {                                   /* the H1, and the counting figure */
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: clamp(5rem, 12.69vw, 6.4rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-variation-settings: 'opsz' 60;
+}
+.t-h2 {                                        /* every section head */
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: clamp(3.6rem, 9.13vw, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  font-variation-settings: 'opsz' 48;
+}
+.t-h3 {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: clamp(2.4rem, 6.09vw, 3.2rem);
+  line-height: 1.1;
+  font-variation-settings: 'opsz' 36;
+}
+.t-h4 {                                        /* the pinned-panel captions */
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: clamp(2.1rem, 5.33vw, 2.8rem);
+  line-height: 1.1;
+  letter-spacing: -0.02rem;
+  font-variation-settings: 'opsz' 28;
+}
+.t-h5 {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: clamp(1.6rem, 4.06vw, 1.7rem);
+  line-height: 1.3;
+}
+.t-body-lg {                                   /* card titles */
+  font-size: 1.6rem;
+  line-height: 1.6rem;
+  letter-spacing: 0.01em;
+}
+.t-body {                                      /* the reading size */
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+}
+.t-body-sm {
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+  letter-spacing: 0.005em;
+}
+.t-label {                                     /* mono, the colophon size */
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+  letter-spacing: -0.01em;
+}
+.t-label-sm {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+@media (min-width: 1024px) {
+  .t-display { font-size: clamp(7.4rem, 7.22vw, 7.69rem); }
+  .t-h2 { font-size: clamp(5.6rem, 5.46vw, 6.6rem); }
+  .t-h3 { font-size: clamp(3.2rem, 3.1vw, 4.2rem); }
+  .t-h4 { font-size: clamp(2.8rem, 2.73vw, 3rem); }
+  .t-h5 { font-size: clamp(1.7rem, 1.66vw, 1.9rem); }
+  .t-body-lg { font-size: 1.8rem; line-height: 1.8rem; }
+  .t-body { font-size: 1.6rem; line-height: 2rem; }
+  .t-body-sm { font-size: 1.4rem; line-height: 2rem; }
+}
+@media (min-width: 1280px) {
+  .t-display { font-size: clamp(7.69rem, 6.01vw, 10.4rem); }
+  .t-h2 { font-size: clamp(5.18rem, 4.05vw, 7rem); }
+  .t-h3 { font-size: clamp(2.96rem, 2.31vw, 4rem); }
+  .t-h4 { font-size: clamp(2.22rem, 1.73vw, 3rem); }
+  .t-h5 { font-size: 1.9rem; }
+  .t-body-lg { font-size: 2rem; line-height: 2rem; }
+  .t-body { line-height: 2.4rem; }
+  .t-body-sm { font-size: 1.5rem; }
+  .t-label { font-size: 1.4rem; line-height: 1.6rem; }
+}
+@media (min-width: 1440px) {
+  .t-body { font-size: 1.7rem; }
+}
+
+/* Emphasis inside a heading is the serif italic, never a weight or a colour.
+   There is no uppercase, letterspaced eyebrow anywhere in this system. */
+.t-display em, .t-h2 em, .t-h3 em, .t-h4 em, .t-h5 em {
+  font-style: italic;
+  font-synthesis: none;
+}
+
+.t-muted { color: var(--text-secondary); }
+.t-invert { color: var(--text-invert); }
+.t-invert-muted { color: var(--white-a-700); }
+.t-balance { text-wrap: balance; }
+.t-nums { font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------------------
+   4. LAYOUT HELPERS
+   --------------------------------------------------------------------------- */
+
+.wrap {
+  width: 100%;
+  max-width: var(--page-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.wrap-narrow { max-width: 136rem; }
+
+.sec { position: relative; }
+/* Air is the only divider in this system: 100px, 160px, 200px. There is no rule,
+   no band and no change of ground between sections. */
+.sec-pad { padding-block: 10rem; }
+@media (min-width: 1024px) { .sec-pad { padding-block: 16rem; } }
+@media (min-width: 1280px) { .sec-pad { padding-block: 20rem; } }
+
+/* The head of a plain section: one serif line, optionally a standfirst under it. */
+/* The one departure from the reference, and a deliberate one: it puts nothing
+   above a heading, and the client's copy names every section. The label is set
+   in the mono voice at 12px with no box and no caps, which is the quietest
+   thing this system can do with a word that has to be there. */
+.sec-label {
+  display: block;
+  margin-bottom: 2rem;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+}
+
+.sec-head { text-align: center; }
+.sec-head h2 { max-width: 96rem; margin-inline: auto; }
+.sec-head p {
+  margin-top: 1.6rem;
+  max-width: 60rem;
+  margin-inline: auto;
+  color: var(--text-secondary);
+}
+.sec-head.is-left { text-align: left; }
+.sec-head.is-left p { margin-inline: 0; }
+
+/* ---------------------------------------------------------------------------
+   5. BUTTONS
+   One component, two themes, and the icon pill that is tucked behind the label
+   and slides out on hover. That slide is the whole personality of the button:
+   no lift, no shadow, no colour wash.
+   --------------------------------------------------------------------------- */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  isolation: isolate;
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  line-height: 1.8rem;
+  letter-spacing: 0.005em;
+  text-align: left;
+}
+.btn-label {
+  display: flex;
+  align-items: center;
+  height: 4rem;
+  padding-inline: 1.4rem;
+  border: 2px solid transparent;
+  border-radius: var(--r-chrome);
+  z-index: 1;
+  transition: background-color 0.15s var(--ease-default),
+              color 0.15s var(--ease-default);
+}
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 3.6rem;
+  height: 4rem;
+  border-radius: var(--r-chrome);
+  z-index: 0;
+  transition: margin 0.15s var(--ease-default);
+}
+.btn-icon svg { width: 2rem; height: 2rem; }
+
+@media (hover: hover) {
+  .btn-icon { margin-left: -3.6rem; }
+  .btn:hover .btn-icon,
+  .btn:focus-visible .btn-icon { margin-left: 0; }
+}
+
+/* Primary: white label on the cream ground, inverting to near-black on hover
+   when it carries no icon. */
+.btn-primary .btn-label,
+.btn-primary .btn-icon {
+  background: var(--surface-primary);
+  color: var(--text-primary);
+}
+.btn-primary.is-plain:hover .btn-label {
+  background: var(--surface-tertiary);
+  color: var(--text-invert);
+}
+.btn-primary:active .btn-label,
+.btn-primary:active .btn-icon {
+  background: var(--surface-pressed);
+  color: var(--text-invert);
+}
+
+/* Secondary: the near-black pill. */
+.btn-secondary .btn-label,
+.btn-secondary .btn-icon {
+  background: var(--surface-tertiary);
+  color: var(--text-invert);
+}
+.btn-secondary.is-plain:hover .btn-label {
+  background: var(--surface-quaternary);
+  color: var(--text-primary);
+}
+.btn-secondary:active .btn-label,
+.btn-secondary:active .btn-icon {
+  background: var(--surface-pressed);
+}
+
+.btn:focus-visible { outline: none; }
+.btn:focus-visible .btn-label {
+  border-color: var(--stroke-focus);
+  box-shadow: var(--ring-focus);
+}
+.btn[disabled] { cursor: not-allowed; }
+.btn-primary[disabled] .btn-label,
+.btn-primary[disabled] .btn-icon { background: var(--white-a-600); color: var(--text-secondary); }
+.btn-secondary[disabled] .btn-label,
+.btn-secondary[disabled] .btn-icon { background: #e5e5e5; color: var(--text-secondary); }
+
+@media (min-width: 1024px) {
+  .btn-label, .btn-icon { height: 4.2rem; }
+}
+
+/* The quiet inline link: always underlined, but the rule only colours in on
+   hover. The ::after is an inflated focus ring, nothing else. */
+.link {
+  position: relative;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 2px;
+  transition: text-decoration-color var(--dur-fast) var(--ease-default);
+}
+.link:hover { text-decoration-color: currentColor; }
+.link:focus-visible { outline: none; }
+.link:focus-visible::after {
+  content: '';
+  position: absolute;
+  inset: -2px -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 4px);
+  border: 2px solid var(--stroke-focus);
+  border-radius: var(--r-chrome-sm);
+  box-shadow: var(--ring-focus);
+}
+
+/* ---------------------------------------------------------------------------
+   6. SMALL ATOMS
+   --------------------------------------------------------------------------- */
+
+/* The mono chip. Nudged up a quarter of a rem, as the reference's is. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  translate: 0 -0.25rem;
+  background: var(--surface-primary);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  letter-spacing: -0.01em;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.4rem;
+}
+.tag.is-quiet { background: var(--stone-300); color: var(--text-secondary); }
+.tag.is-dark { background: var(--black-800); color: var(--white); }
+
+/* Icons: stroke only, 1.25–1.5, round caps, currentColor, no box. */
+.ico {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.ico-sm { width: 1.8rem; height: 1.8rem; stroke-width: 1.5; }
+.ico-lg { width: 2.4rem; height: 2.4rem; stroke-width: 1.25; }
+
+/* The one boxed icon in the system: a dark tile inside a data card. */
+.ico-tile {
+  display: grid;
+  place-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 0.8rem;
+  background: var(--black-800);
+  color: var(--green-500);
+  flex-shrink: 0;
+}
+.ico-tile .ico { width: 1.8rem; height: 1.8rem; }
+
+/* The green tick, used in every list of what a tier includes. */
+.tick { color: var(--green-700); }
+
+/* A hairline. */
+.rule { height: 1px; background: var(--stroke-light); border: 0; margin: 0; }
+.rule-stone { background: var(--stone-500); }
+
+/* ---------------------------------------------------------------------------
+   7. PHOTOGRAPHY PLACEHOLDERS
+   Every photograph in this variation is a placeholder until a render lands.
+   A placeholder is not a grey box: it holds the exact frame, ratio and radius
+   of the shot it stands in for, and names it in mono, so the page can be
+   reviewed at full size and the art can be dropped in without touching layout.
+   Prompts for each slot live in docs/v3-art-brief.md.
+   --------------------------------------------------------------------------- */
+
+.ph {
+  position: relative;
+  display: grid;
+  place-items: end start;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: var(--stone-300);
+  color: var(--text-secondary);
+}
+/* A hatch at 2% so the frame reads as reserved, not as a flat panel. */
+.ph::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(26, 22, 19, 0.022) 0 1px,
+    transparent 1px 9px
+  );
+  pointer-events: none;
+}
+.ph-label {
+  position: relative;
+  max-width: 34rem;
+  padding: 1.6rem;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+.ph-label b { display: block; font-weight: 400; color: var(--text-primary); }
+.ph-label span { display: block; opacity: 0.62; }
+
+/* The dark slots: the hero and the closing frame, where white type sits on top.
+   The fill is warm-black through to the edge, because the artwork that replaces
+   it carries its own dark centre. No scrim is ever laid over a photograph here. */
+.ph.is-dark {
+  background:
+    radial-gradient(120% 90% at 50% 42%, #2b2320 0%, #1a1613 46%, #120c08 100%);
+  color: var(--white-a-600);
+}
+.ph.is-dark .ph-label b { color: var(--white-a-700); }
+.ph.is-dark::before {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.018) 0 1px,
+    transparent 1px 9px
+  );
+}
+/* The sky slots, where a frame opens onto the pale blue. */
+.ph.is-sky {
+  background: linear-gradient(180deg, var(--blue-200) 0%, var(--blue-100) 58%, var(--stone-100) 100%);
+  color: var(--blue-900);
+}
+
+.ph img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------------------------------------------------------------------------
+   8. THE NAV
+   Not a bar. A floating glass pill, sized to its contents, centred, 16px down
+   from the top, with a white indicator that chases the pointer and a wordmark
+   that collapses to the mark once the reader is 400px down the page.
+   --------------------------------------------------------------------------- */
+
+.nav {
+  position: fixed;
+  top: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  width: max-content;
+  max-width: calc(100vw - 3.2rem);
+  padding: 0;
+}
+
+/* The shell is drawn as an oversized sibling so the items sit inside it with
+   an even 4px of glass all round. */
+.nav-shell {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: calc(100% + 8px);
+  height: 5.2rem;
+  border-radius: var(--r-shell);
+  border: 1px solid var(--white-a-100);
+  background: var(--stone-a-400);
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+  pointer-events: none;
+}
+
+/* The white indicator. Positioned and sized from JS; hidden until it has a
+   target, so it never flashes at the origin. */
+.nav-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 4.4rem;
+  width: 0;
+  border-radius: var(--r-chrome);
+  background: var(--white);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 4.4rem;
+  padding-inline: 1.4rem;
+  border-radius: var(--r-chrome);
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--text-primary);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-default);
+}
+.nav-item.is-cta { font-weight: 500; }
+
+/* Over the hero the whole pill is on a dark photograph, so the type inverts.
+   The sentinel that flips this is [data-nav-dark] on the hero. */
+.nav.is-dark .nav-item { color: var(--white); }
+
+.nav-item:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--stroke-focus), var(--ring-focus);
+}
+
+/* The logo lockup inside the pill. The wordmark's width is tweened to zero on
+   scroll, which leaves the mark alone in the pill. */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  height: 4.4rem;
+  padding-inline: 1.4rem;
+  border-radius: var(--r-chrome);
+  position: relative;
+  color: var(--text-primary);
+  transition: color var(--dur-fast) var(--ease-default);
+}
+.nav.is-dark .nav-logo { color: var(--white); }
+.nav-logo .logo-mark { width: 2.1rem; height: 2.1rem; flex-shrink: 0; }
+.nav-logo .logo-word {
+  display: none;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--font-word);
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.nav-logo .logo-word-light { font-weight: 400; }
+
+@media (min-width: 760px) { .nav-logo .logo-word { display: block; } }
+
+/* The four section links are hidden below 1024px, where the pill would not fit;
+   the menu item takes over. There is no full-screen drawer in this system: the
+   pill itself opens into a small glass card directly beneath it. */
+.nav-links { display: none; }
+@media (min-width: 1024px) {
+  .nav-links { display: flex; }
+  .nav-shell { height: 5.6rem; top: -6px; left: -6px; width: calc(100% + 12px); }
+  .nav-menu-btn { display: none !important; }
+}
+
+.nav-menu-btn {
+  /* The shell is an absolutely positioned sibling, so a static item paints
+     underneath its translucent fill and comes out washed. */
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  height: 4.4rem;
+  padding-inline: 1.4rem;
+  border: 0;
+  background: none;
+  border-radius: var(--r-chrome);
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  color: inherit;
+  cursor: pointer;
+}
+.nav-menu-btn .ico { width: 1.6rem; height: 1.6rem; }
+.nav.is-dark .nav-menu-btn { color: var(--white); }
+
+.nav-drop {
+  position: fixed;
+  top: 7.6rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(-0.8rem);
+  z-index: 39;
+  width: calc(100vw - 3.2rem);
+  max-width: 42rem;
+  padding: 0.8rem;
+  border-radius: var(--r-shell);
+  border: 1px solid var(--white-a-100);
+  background: var(--stone-a-600);
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              visibility var(--dur-fast);
+}
+.nav-drop.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+.nav-drop a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--r-chrome);
+  font-size: 1.6rem;
+  color: var(--text-primary);
+  transition: background-color var(--dur-fast) var(--ease-default);
+}
+.nav-drop a:hover { background: var(--white); }
+.nav-drop .ico { width: 1.6rem; height: 1.6rem; opacity: 0.4; }
+
+/* ---------------------------------------------------------------------------
+   9. THE HERO
+   A full-height photograph that, once the reader moves, pulls its own corners
+   in and rounds them: clip-path inset(0) to inset(32px round 64px). The image
+   never scales and never crops. The window shrinks.
+   --------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100svh;
+  min-height: 60rem;
+  overflow: hidden;
+}
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  clip-path: inset(0);
+  transition: clip-path var(--dur-slow) var(--ease-out-quint);
+  will-change: clip-path;
+  contain: layout paint;
+}
+.hero.is-zoomed .hero-media { clip-path: inset(16px round 24px); }
+@media (min-width: 1280px) {
+  .hero.is-zoomed .hero-media { clip-path: inset(32px round 64px); }
+}
+.hero-media .ph,
+.hero-media img { width: 100%; height: 100%; object-fit: cover; }
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 96rem;
+  padding-inline: var(--gutter);
+  text-align: center;
+  color: var(--white);
+  transition: transform var(--dur-medium) var(--ease-out);
+}
+.hero.is-zoomed .hero-inner { transform: translateY(-2.4rem); }
+
+.hero h1 { margin-bottom: 4rem; }
+.hero-sub {
+  max-width: 62rem;
+  margin: 0 auto 0.8rem;
+  color: var(--white);
+}
+
+/* The ticker: one line of proof at a time, rising into a fixed window every
+   two and a half seconds. Eight items would be too many; ours are three. */
+.hero-ticker {
+  position: relative;
+  height: 3rem;
+  margin-top: 1.6rem;
+  overflow: hidden;
+}
+.hero-ticker-item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  color: var(--white);
+  opacity: 0.7;
+}
+.hero-ticker-item .ico { width: 1.8rem; height: 1.8rem; opacity: 0.85; }
+.hero-ticker-item {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.68s var(--ease-out-quint), opacity 0.68s var(--ease-out-quint);
+}
+.hero-ticker-item.is-in { transform: none; opacity: 0.7; }
+.hero-ticker-item.is-out { transform: translateY(-100%); opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-ticker-item { transition: none; }
+}
+
+/* The inline capture, on the reference's glass pill. Submitting it carries the
+   address down to the real form rather than posting from here. */
+.hero-form {
+  position: absolute;
+  left: 50%;
+  bottom: 7.2rem;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  width: calc(100% - 3.2rem);
+  max-width: 52rem;
+}
+@media (max-width: 640px) { .hero-form { bottom: 4.8rem; } }
+.field-glass {
+  display: flex;
+  align-items: center;
+  height: 5.6rem;
+  border-radius: var(--r-shell);
+  background: var(--stone-a-200);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.7rem 0.7rem 0.7rem 1.8rem;
+  gap: 0.8rem;
+}
+.field-glass input {
+  width: 27.5rem;
+  border: 0;
+  background: none;
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  color: var(--white);
+  transition: width var(--dur-fast) var(--ease-out);
+}
+.field-glass input::placeholder { color: var(--white-a-600); }
+.field-glass input:focus { outline: none; }
+.field-glass:focus-within input { width: 36rem; }
+@media (max-width: 560px) {
+  .field-glass input, .field-glass:focus-within input { width: 100%; }
+  .field-glass { width: 100%; }
+}
+
+.hero-note {
+  margin-top: 2.4rem;
+  color: var(--white-a-700);
+}
+.hero-note a {
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.45);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s var(--ease-default);
+}
+.hero-note a:hover { text-decoration-color: currentColor; }
+
+/* ---------------------------------------------------------------------------
+   10. THE FOOTER AND THE PANEL BEHIND IT
+   The footer is white with its own rounded feet, and it stands on a fixed
+   gradient panel carrying the wordmark at almost the full width of the page.
+   Scrolling the last screen slides the footer off it. No JavaScript.
+   --------------------------------------------------------------------------- */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: var(--bg-secondary);
+  border-bottom-left-radius: 3.2rem;
+  border-bottom-right-radius: 3.2rem;
+  padding: 3.2rem var(--gutter) 2.4rem;
+  margin-bottom: 30vw;
+}
+@media (min-width: 1024px) {
+  .footer { border-bottom-left-radius: 5.6rem; border-bottom-right-radius: 5.6rem; margin-bottom: 29vw; min-height: 51.7rem; }
+}
+@media (min-width: 1280px) {
+  .footer { border-bottom-left-radius: 6.4rem; border-bottom-right-radius: 6.4rem; padding-top: 8rem; }
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6.4rem;
+  height: 100%;
+  max-width: 212rem;
+  margin-inline: auto;
+}
+.footer-top {
+  display: flex;
+  flex-direction: column;
+  gap: 3.2rem;
+}
+@media (min-width: 1024px) {
+  .footer-top { flex-direction: row; justify-content: space-between; align-items: flex-start; }
+}
+.footer-statement { max-width: 52rem; margin-bottom: 1.6rem; }
+@media (min-width: 1280px) { .footer-statement { margin-bottom: 3.2rem; } }
+
+.footer-cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4.8rem;
+}
+@media (min-width: 1280px) { .footer-cols { gap: 10rem; } }
+.footer-col { display: flex; flex-direction: column; gap: 1.2rem; min-width: 14rem; }
+.footer-col-title { font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
+.footer-col a { color: var(--text-primary); }
+
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6rem 3.2rem;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+@media (min-width: 1024px) { .footer-bottom { justify-content: flex-end; } }
+.footer-colophon { display: flex; align-items: flex-end; gap: 1.6rem; color: var(--text-secondary); }
+.footer-colophon .logo-mark { width: 4rem; height: 4rem; color: var(--text-primary); flex-shrink: 0; }
+.footer-colophon div { display: flex; flex-direction: column; gap: 0.2rem; }
+
+/* The panel. Fixed to the bottom of the viewport, uncovered as the footer's own
+   bottom margin scrolls past it. */
+.footer-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 48rem;
+  background: linear-gradient(#ffffff 0%, #f9f8f5 30%, var(--blue-200) 100%);
+  overflow: hidden;
+  pointer-events: none;
+}
+@media (min-width: 1280px) { .footer-panel { height: 90rem; } }
+.footer-wordmark {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  width: 96%;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.16em;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: 13vw;
+  line-height: 0.78;
+  letter-spacing: -0.035em;
+  color: var(--white);
+  white-space: nowrap;
+}
+.footer-wordmark em { font-style: italic; }
+/* The mark repeated in white at the wordmark's shoulder, which is the one piece
+   of graphic bravado in the whole design and only lands because nothing else is. */
+.footer-disc {
+  position: absolute;
+  right: 4%;
+  bottom: 19%;
+  width: 6.2rem;
+  height: 6.2rem;
+  color: var(--white);
+}
+
+/* ---------------------------------------------------------------------------
+   11. REVEAL
+   One transition, played once, on anything that carries .reveal. Everything
+   else on the page is scrubbed by scroll and lives in section 12 onward.
+   --------------------------------------------------------------------------- */
+
+/* There is deliberately no fade-up, no stagger and no per-block reveal in this
+   system. Everything outside a pinned stage sits still at full opacity, which
+   is what makes the three scrubbed set pieces read as events rather than as
+   more of the same. The only one-shot entrances are the mark drawing itself and
+   the figure counting, both of which the reference also plays once on enter. */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ---------------------------------------------------------------------------
+   12. THE INTRO
+   The mark draws itself, then one serif line. The reference plays a Lottie
+   flower here; ours is the Compound Health mark drawing its own strokes.
+   --------------------------------------------------------------------------- */
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10rem;
+  margin-bottom: 8rem;
+  text-align: center;
+}
+@media (min-width: 1024px) { .intro { padding-top: 15rem; margin-bottom: 6rem; } }
+@media (min-width: 1280px) { .intro { padding-top: 27rem; } }
+
+.intro-mark {
+  width: 8.4rem;
+  height: 8.4rem;
+  margin-bottom: 3.2rem;
+  color: var(--text-primary);
+}
+@media (min-width: 1024px) { .intro-mark { width: 11rem; height: 11rem; } }
+.intro-mark path {
+  stroke-dasharray: var(--len, 0);
+  stroke-dashoffset: var(--len, 0);
+}
+.intro-mark.is-drawn path {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.6s var(--ease-out-quint);
+}
+.intro h2 { max-width: 18ch; }
+.intro-sub { max-width: 58rem; margin: 2.4rem auto 0; color: var(--text-secondary); }
+
+/* ---------------------------------------------------------------------------
+   13. THE PINNED CAROUSEL
+   Three panels on one pinned stage. Each rises over the one before it as the
+   reader scrolls, scrubbed, never snapped. Its caption travels with it and
+   alternates side. Below 1024px the caption sits under the panel.
+   --------------------------------------------------------------------------- */
+
+.car {
+  position: relative;
+  width: 100%;
+  max-width: 205rem;
+  margin-inline: auto;
+  margin-bottom: 10rem;
+}
+@media (min-width: 1024px) { .car { margin-bottom: 20rem; } }
+@media (min-width: 1280px) { .car { margin-bottom: 10rem; } }
+
+.car-stage {
+  position: relative;
+  width: 100%;
+  height: 100vw;
+  padding-inline: var(--gutter);
+}
+@media (min-width: 1024px) { .car-stage { height: 75svh; max-height: 70rem; } }
+@media (min-width: 1280px) { .car-stage { height: 36vw; max-height: 50rem; } }
+@media (min-width: 1440px) { .car-stage { height: 37vw; max-height: 60rem; } }
+
+.car-panel {
+  position: absolute;
+  inset: 0 var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2.4rem;
+}
+@media (min-width: 1024px) {
+  .car-panel {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4.8rem;
+  }
+  .car-panel.is-right { flex-direction: row-reverse; }
+}
+
+.car-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 362 / 346;
+  border-radius: var(--r-media);
+  overflow: hidden;
+  background: var(--stone-300);
+  flex-shrink: 0;
+}
+@media (min-width: 1024px) {
+  .car-media { width: auto; height: 100%; aspect-ratio: 975 / 614; }
+}
+@media (min-width: 1280px) {
+  .car-media { aspect-ratio: 1100 / 693; }
+}
+
+.car-copy {
+  width: 100%;
+  max-width: 50rem;
+  transition: opacity 0.3s var(--ease-out);
+}
+@media (min-width: 1280px) {
+  .car-copy {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0.8rem;
+    width: 25.7rem;
+    max-width: 25.7rem;
+  }
+  .car-panel.is-right .car-copy { left: auto; right: 0.8rem; }
+}
+.car-copy h3 { margin-bottom: 1.2rem; }
+.car-copy p { color: var(--text-secondary); }
+.car-n {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  margin-bottom: 1.2rem;
+}
+
+/* ---------------------------------------------------------------------------
+   14. THE ORBIT
+   A pinned stage with a figure counting up in the middle and six tiles parked
+   on an ellipse around it, their polar angle scrubbed by scroll. Two of the
+   six are photographs, four are data cards. Positions come from JS, which is
+   the one legitimate use of an inline transform in this file.
+   --------------------------------------------------------------------------- */
+
+.orbit {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+/* This is the pinned element, so it is also the one that clips: an ancestor's
+   overflow does not contain a fixed child, and a pinned child is fixed. */
+.orbit-stage {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.orbit-copy {
+  position: relative;
+  z-index: 3;
+  max-width: 74rem;
+  padding-inline: var(--gutter);
+  text-align: center;
+  pointer-events: none;
+}
+.orbit-fig {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+.orbit-line { position: relative; }
+.orbit-line-2 {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  will-change: transform;
+}
+.orb-photo {
+  width: 23.6rem;
+  height: 26.1rem;
+  border-radius: 1.6rem;
+  overflow: hidden;
+}
+.orb-photo .ph-label { font-size: 0.9rem; }
+.orb-photo .ph,
+.orb-photo img {
+  transform: scale(var(--counter, 1));
+  transform-origin: center;
+}
+.orb-card { width: 34rem; }
+
+/* ---------------------------------------------------------------------------
+   15. THE WIDE PANELS
+   A big rounded field in a quiet fill, with one white card sitting inside it.
+   The field is where colour is allowed; the card is where the words are.
+   --------------------------------------------------------------------------- */
+
+.panels {
+  display: grid;
+  gap: 1.6rem;
+  padding-block: var(--module-xl);
+}
+@media (min-width: 1024px) { .panels { grid-template-columns: 1fr 1fr; gap: 2.4rem; } }
+
+.panel {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 42rem;
+  padding: 2.4rem;
+  border-radius: var(--r-media);
+  overflow: hidden;
+  background: var(--stone-300);
+}
+@media (min-width: 1280px) { .panel { min-height: 49.2rem; padding: 3.2rem; } }
+.panel.is-sky { background: linear-gradient(180deg, var(--blue-200) 0%, var(--blue-100) 100%); }
+.panel.is-dark { background: var(--black-800); color: var(--white); }
+.panel-art {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.panel-card {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 44rem;
+  padding: 2.4rem;
+  border-radius: var(--r-shell);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+}
+.panel-card h3 { margin-bottom: 0.4rem; }
+.panel-card p { color: var(--text-secondary); }
+.panel.is-wide { grid-column: 1 / -1; }
+
+/* ---------------------------------------------------------------------------
+   16. THE STATIC FEATURE ROW
+   Three square illustrations with a line of copy under each. No fill, no
+   border, no shadow: the illustration is the card. Below 1024px the row is a
+   snap carousel with the scrollbar hidden.
+   --------------------------------------------------------------------------- */
+
+.statics { padding-top: 8rem; padding-bottom: 4rem; position: relative; z-index: 2; }
+@media (min-width: 1024px) { .statics { padding-top: 16rem; padding-bottom: 9.6rem; } }
+@media (min-width: 1280px) { .statics { padding-top: 20rem; } }
+
+.statics-head { margin-bottom: 4.8rem; }
+@media (min-width: 1024px) { .statics-head { margin-bottom: 5.6rem; } }
+
+.statics-row {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+  width: 100%;
+  max-width: 205.6rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.statics-row::-webkit-scrollbar { display: none; }
+@media (min-width: 1024px) {
+  .statics-row { overflow-x: visible; scroll-snap-type: none; }
+}
+@media (min-width: 1280px) { .statics-row { gap: 2.4rem; } }
+
+.static-card {
+  width: calc(100% - 6.2rem);
+  max-width: 36.2rem;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+}
+@media (min-width: 1024px) {
+  .static-card { width: 32%; max-width: none; flex-grow: 1; }
+}
+.static-art {
+  aspect-ratio: 442 / 440;
+  width: 100%;
+  margin-bottom: 1.6rem;
+  border-radius: 2.4rem;
+  overflow: hidden;
+  /* The only second ground on the page, and it is a card rather than a band. */
+  background: var(--stone-300);
+}
+@media (min-width: 1280px) { .static-art { margin-bottom: 3.2rem; } }
+.static-card h3 { margin-bottom: 0.4rem; }
+.static-card p { color: var(--text-secondary); padding-right: 1.6rem; }
+
+.statics-note {
+  max-width: 60rem;
+  margin: 4.8rem auto 0;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+/* ---------------------------------------------------------------------------
+   17. STATS
+   Three facts in mono, on hairlines, no boxes.
+   --------------------------------------------------------------------------- */
+
+.stats {
+  display: grid;
+  gap: 4rem;
+}
+@media (min-width: 768px) { .stats { grid-template-columns: repeat(3, 1fr); gap: 4.8rem; } }
+.stat-fig {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: clamp(4rem, 6vw, 6.4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+.stat p { color: var(--text-secondary); max-width: 32rem; }
+
+/* ---------------------------------------------------------------------------
+   18. THE ACCORDION
+   White rows on the cream ground, 16px radius, one open at a time. The chevron
+   sits in a holder that fills in on hover and stays filled while open.
+   --------------------------------------------------------------------------- */
+
+/* Two pixels of ground between rows, so the column reads as one white slab
+   notched at the edges where the corner radii meet. That notch is the detail. */
+.acc { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+.acc-item {
+  position: relative;
+  z-index: 0;
+  border-radius: var(--r-shell);
+  background: var(--surface-primary);
+  border: 2px solid transparent;
+}
+.acc-item:focus-within { z-index: 1; }
+.acc-btn {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 3.2rem;
+  width: 100%;
+  padding: 1.6rem;
+  border: 0;
+  background: none;
+  border-radius: var(--r-shell);
+  cursor: pointer;
+  text-align: left;
+}
+@media (min-width: 1024px) { .acc-btn { padding: 2.4rem; } }
+.acc-btn:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--stroke-focus), var(--ring-focus);
+}
+.acc-chev {
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: transparent;
+  transition: background-color 0.2s var(--ease-out);
+}
+.acc-btn:hover .acc-chev,
+.acc-item.is-open .acc-chev { background: var(--stone-300); }
+.acc-chev .ico { transition: transform 0.2s var(--ease-out); }
+.acc-item.is-open .acc-chev .ico { transform: rotate(180deg); }
+.acc-panel {
+  height: 0;
+  overflow: clip;
+  transition: height 0.2s var(--ease-out);
+}
+.acc-panel-inner {
+  padding: 0 1.6rem 2rem;
+  max-width: 72rem;
+  color: var(--text-secondary);
+}
+@media (min-width: 1024px) { .acc-panel-inner { padding: 0 2.4rem 2.4rem; } }
+@media (prefers-reduced-motion: reduce) { .acc-panel { transition: none; } }
+
+/* ---------------------------------------------------------------------------
+   19. MEMBERSHIP TIERS
+   Three white cards. The middle one is the one people take, so it carries the
+   dark fill rather than a badge shouting at the reader.
+   --------------------------------------------------------------------------- */
+
+.tiers { display: grid; gap: 1.6rem; }
+@media (min-width: 1024px) { .tiers { grid-template-columns: repeat(3, 1fr); gap: 2.4rem; align-items: start; } }
+
+.tier {
+  display: flex;
+  flex-direction: column;
+  padding: 2.4rem;
+  border-radius: var(--r-shell);
+  background: var(--surface-primary);
+  height: 100%;
+}
+@media (min-width: 1280px) { .tier { padding: 3.2rem; } }
+.tier-name { display: flex; align-items: center; justify-content: space-between; gap: 1.6rem; margin-bottom: 0.8rem; }
+.tier-lede { color: var(--text-secondary); margin-bottom: 2.4rem; }
+.tier-list { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 3.2rem; }
+.tier-list li { display: flex; gap: 1.2rem; align-items: flex-start; }
+.tier-list .ico { margin-top: 0.2rem; }
+.tier-foot { margin-top: auto; }
+
+.tier.is-feature { background: var(--black-800); color: var(--white); }
+.tier.is-feature .tier-lede { color: var(--white-a-700); }
+.tier.is-feature .tick { color: var(--green-500); }
+.tier.is-feature .tag { background: var(--white-a-200); color: var(--white); }
+
+.tiers-note { margin-top: 2.4rem; color: var(--text-secondary); max-width: 78rem; }
+
+/* ---------------------------------------------------------------------------
+   20. THE CLOSING CARD
+   The reference's last move: one photograph the width of the page, deeply
+   rounded, the mark and one line centred on it, and the band behind it fading
+   from the ground to white so the footer can begin.
+   --------------------------------------------------------------------------- */
+
+.cta-band {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1.6rem;
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+@media (min-width: 1024px) { .cta-band { padding: 2.4rem; } }
+@media (min-width: 1280px) { .cta-band { padding: 3.2rem; } }
+
+.cta-card {
+  position: relative;
+  width: 100%;
+  max-width: 205.6rem;
+  aspect-ratio: 362 / 463;
+  max-height: 46.5rem;
+  border-radius: var(--r-media);
+  overflow: hidden;
+}
+@media (min-width: 1024px) { .cta-card { aspect-ratio: auto; height: 56rem; max-height: 70rem; } }
+@media (min-width: 1280px) { .cta-card { aspect-ratio: 1664 / 876; height: auto; max-height: 87.6rem; } }
+.cta-card .ph,
+.cta-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cta-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 3.2rem var(--gutter);
+  text-align: center;
+  color: var(--white);
+}
+.cta-mark { width: 6.4rem; height: 6.4rem; margin-bottom: 2.4rem; }
+@media (min-width: 1024px) { .cta-mark { width: 10rem; height: 10rem; margin-bottom: 3.2rem; } }
+@media (min-width: 1280px) { .cta-mark { width: 12rem; height: 12rem; } }
+.cta-inner h2 { margin-bottom: 1.6rem; max-width: 20ch; }
+@media (min-width: 1024px) { .cta-inner h2 { margin-bottom: 2.4rem; } }
+.cta-inner p { max-width: 56rem; color: var(--white-a-700); }
+
+/* ---------------------------------------------------------------------------
+   21. THE DELIVERED LIST
+   One white card holding what a partner session covered. Rows on hairlines,
+   a mono index, no bullets.
+   --------------------------------------------------------------------------- */
+
+.deliver {
+  padding: 2.4rem;
+  border-radius: var(--r-shell);
+  background: var(--surface-primary);
+}
+@media (min-width: 1280px) { .deliver { padding: 3.2rem; } }
+.deliver-title { margin-bottom: 1.6rem; }
+.deliver ul { display: flex; flex-direction: column; gap: 1.6rem; }
+.deliver li { display: flex; gap: 1.6rem; align-items: baseline; }
+.deliver-n {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+
+/* ---------------------------------------------------------------------------
+   22. THE WAITLIST FORM
+   The class names come from the live form's script and are not to be renamed:
+   the same ids, the same audience routing, the same endpoint. Only the surface
+   is this variation's.
+   --------------------------------------------------------------------------- */
+
+.access {
+  padding-block: var(--module-xl);
+}
+.access-grid {
+  display: grid;
+  gap: 3.2rem;
+  align-items: start;
+}
+@media (min-width: 1024px) {
+  .access-grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: 6.4rem; }
+}
+.access-lede { color: var(--text-secondary); margin-top: 1.6rem; max-width: 48rem; }
+
+.waitlist-card {
+  padding: 2.4rem;
+  border-radius: var(--r-shell);
+  background: var(--surface-primary);
+}
+@media (min-width: 1280px) { .waitlist-card { padding: 3.2rem; } }
+
+.wf-role { margin-bottom: 2.4rem; }
+.wf-role-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+  margin-bottom: 1.2rem;
+}
+.wf-segments { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+.wf-segment {
+  padding: 0.9rem 1.4rem;
+  border: 0;
+  border-radius: var(--r-chrome);
+  background: var(--surface-quaternary);
+  color: var(--text-secondary);
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-default),
+              color var(--dur-fast) var(--ease-default),
+              border-color var(--dur-fast) var(--ease-default);
+}
+.wf-segment:hover { background: var(--stone-400); color: var(--text-primary); }
+.wf-segment.is-active { background: var(--black-800); color: var(--white); }
+.wf-segment:focus-visible { outline: none; box-shadow: var(--ring-focus); }
+
+.wf-row { display: grid; gap: 1.6rem; }
+@media (min-width: 560px) { .wf-row { grid-template-columns: 1fr 1fr; } }
+.wf-field { margin-bottom: 1.6rem; }
+.wf-row .wf-field { margin-bottom: 0; }
+.wf-row { margin-bottom: 1.6rem; }
+.wf-label {
+  display: block;
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.8rem;
+}
+.wf-input {
+  width: 100%;
+  height: 5.2rem;
+  padding: 0 1.6rem;
+  border: 0;
+  border-radius: var(--r-chrome);
+  background: var(--surface-quaternary);
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  transition: border-color var(--dur-fast) var(--ease-default),
+              background-color var(--dur-fast) var(--ease-default);
+}
+.wf-input::placeholder { color: var(--stone-800); }
+.wf-input:hover { background: var(--stone-400); }
+.wf-input:focus {
+  outline: none;
+  background: var(--stone-200);
+  box-shadow: var(--ring-focus);
+}
+select.wf-input { appearance: none; cursor: pointer; }
+
+/* The custom listbox that stands in front of the native select. The select is
+   still the value the submit script reads. */
+.wf-dd { position: relative; }
+.wf-dd select.wf-select { position: absolute; opacity: 0; pointer-events: none; width: 100%; height: 100%; }
+.wf-dd-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  width: 100%;
+  height: 5.2rem;
+  padding: 0 1.6rem;
+  border: 0;
+  border-radius: var(--r-chrome);
+  background: var(--surface-quaternary);
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: left;
+}
+.wf-dd-btn.is-empty { color: var(--stone-800); }
+.wf-dd-btn:hover { background: var(--stone-400); }
+.wf-dd-btn:focus-visible { outline: none; box-shadow: var(--ring-focus); }
+.wf-dd-chev { width: 1.2rem; height: 0.8rem; flex-shrink: 0; transition: transform var(--dur-fast) var(--ease-out); }
+.wf-dd-btn[aria-expanded='true'] .wf-dd-chev { transform: rotate(180deg); }
+.wf-dd-list {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  left: 0;
+  z-index: 20;
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: var(--r-shell);
+  background: var(--white);
+  box-shadow: var(--shadow-card);
+  display: none;
+}
+.wf-dd-list.is-open { display: block; }
+.wf-dd-opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--r-chrome);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.wf-dd-opt svg { width: 1.6rem; height: 1.6rem; opacity: 0; stroke: currentColor; fill: none; stroke-width: 1.5; }
+.wf-dd-opt[aria-selected='true'] svg { opacity: 1; color: var(--green-700); }
+.wf-dd-opt:hover, .wf-dd-opt.is-focus { background: var(--surface-secondary); }
+
+.wf-submit { margin-top: 0.8rem; }
+.wf-error {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.6rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--r-chrome);
+  background: #ffdbe0;
+  color: #8a3a1a;
+  font-size: 1.3rem;
+}
+.wf-error.visible { display: flex; }
+.wf-note { margin-top: 1.6rem; color: var(--text-secondary); }
+.wf-note a { text-decoration: underline; text-underline-offset: 2px; }
+
+.waitlist-success { display: none; text-align: center; padding: 2.4rem 0; }
+.waitlist-success.visible { display: block; }
+.ws-icon { display: grid; place-items: center; margin: 0 auto 2rem; color: var(--green-700); }
+.waitlist-success h3 { margin-bottom: 1.2rem; }
+.waitlist-success p { color: var(--text-secondary); max-width: 46rem; margin-inline: auto; }
+.ws-reset {
+  margin-top: 2.4rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   23. UTILITIES USED BY THE PAGE
+   --------------------------------------------------------------------------- */
+
+.u-center { text-align: center; }
+.u-mt-sm { margin-top: 1.6rem; }
+.u-mt-md { margin-top: 2.4rem; }
+.u-mt-lg { margin-top: 4.8rem; }
+.u-mb-md { margin-bottom: 2.4rem; }
+.u-mb-lg { margin-bottom: 4.8rem; }
+.u-row { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
+.u-row-center { justify-content: center; }
+.u-stack { display: flex; flex-direction: column; }
+
+
+/* ---------------------------------------------------------------------------
+   24. THE STATIC FALLBACKS
+   With reduced motion, or without GSAP, neither pinned stage can run. Each one
+   lays itself out as an ordinary stack instead of freezing mid-animation.
+   --------------------------------------------------------------------------- */
+
+/* The deck becomes three blocks with a screen of air between them, which is
+   what the reference itself does below 1024px. The stage's max-height has to
+   go with its height, or the section clamps and the blocks pile up inside it. */
+.car.is-static .car-stage {
+  height: auto;
+  max-height: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9.6rem;
+}
+.car.is-static .car-panel {
+  position: static;
+  inset: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 90rem;
+}
+.car.is-static .car-copy {
+  position: static;
+  transform: none;
+  width: 100%;
+  max-width: 50rem;
+  opacity: 1 !important;
+}
+.car.is-static .car-media { width: 100%; height: auto; }
+
+/* The orbit becomes its centred line with the six objects laid out under it. */
+.orbit.is-static { min-height: 0; padding-block: 10rem; }
+.orbit.is-static .orbit-stage {
+  height: auto;
+  overflow: visible;
+  flex-flow: row wrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2.4rem;
+  padding-inline: var(--gutter);
+}
+.orbit.is-static .orbit-copy { flex: 1 0 100%; margin-bottom: 4.8rem; }
+.orbit.is-static .orbit-line-2 {
+  position: static;
+  opacity: 1;
+  margin-top: 2.4rem;
+  transform: none !important;
+  visibility: visible !important;
+}
+.orbit.is-static [data-orbit-h1] { opacity: 1 !important; visibility: visible !important; }
+.orbit.is-static .orb { position: static; transform: none !important; }
+.orbit.is-static .trail { display: none; }
+
+/* ---------------------------------------------------------------------------
+   25. THE THREE PLAIN FEATURES
+   No fill, no border, no card. A line icon, a title in the sans, a paragraph.
+   The reference's own answer to a three-up: the drawing is the card, and where
+   there is no drawing there is no card either.
+   --------------------------------------------------------------------------- */
+
+.fcards {
+  display: grid;
+  gap: 4.8rem;
+  margin-top: 9.6rem;
+}
+@media (min-width: 1024px) { .fcards { grid-template-columns: repeat(3, 1fr); gap: 2.4rem; } }
+.fcard-art { margin-bottom: 2rem; color: var(--text-primary); }
+.fcard-art .ico { width: 2.8rem; height: 2.8rem; stroke-width: 1.25; }
+.fcard h3 { margin-bottom: 0.8rem; }
+.fcard p { padding-right: 1.6rem; }
+
+/* The partner column and the card beside it. */
+.partners-grid { display: grid; gap: 2.4rem; align-items: start; }
+@media (min-width: 1024px) { .partners-grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 4rem; } }
+
+/* The mark trail. A canvas laid over the orbit, stamping the mark along the
+   pointer's path so it blooms and wilts. Pointer devices only, and never under
+   reduced motion. */
+.trail {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------------------------
+   26. UNDRAWN FIGURE SLOTS
+   A slot with no figure in it yet prints its own id. The moment the drawing
+   lands the element stops being empty and the rule stops applying, so nothing
+   has to be removed by hand.
+   --------------------------------------------------------------------------- */
+
+[data-fig]:empty::after {
+  content: attr(data-fig);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  color: var(--text-secondary);
+}
+.orb-card:empty,
+.fcard-art:empty {
+  display: grid;
+  place-items: center;
+  min-height: 12rem;
+  border-radius: var(--r-tile);
+  background: var(--stone-300);
+}
+.static-art:empty,
+.panel-art:empty { display: grid; place-items: center; }
+.fcard-art:empty { margin-bottom: 2rem; }
+
+
+/* ============================================================================
+   v3 — THE DRAWN FIGURE KIT
+   Merge into src/styles/variants/v3.css, after section 7 (photography
+   placeholders) and before section 8 (the nav).
+
+   Everything here is drawn: no images, no icon font, no library. Four families,
+   four prefixes, and nothing outside them is touched:
+
+     fig-    the shared primitives, and the three product-interface panels
+             (fig-panel*, because .panel and .panel-art are the page's own)
+     dcard-  the four data cards for the scroll-orbit figure
+     disc-   the three discipline squares
+
+   No token is redefined and no raw hex appears below. Elevation is radius and
+   fill; the only shadow used is --shadow-card, which the system already ships.
+
+   HOW THE FIGURES SCALE. A panel and a disc are drawn compositions, so they are
+   authored against a nominal design box and scaled by container query units.
+   One custom property, --u, is one design pixel; every size inside is a whole
+   multiple of it. --u is clamped by the frame's width and its height together,
+   so a composition can never push its frame out of shape or spill out of it.
+   The data cards do not scale: they are 340px by specification at every width.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   F1. SHARED FIGURE PRIMITIVES
+   Used by the panels and the discipline squares. Every size resolves through
+   --u, --pad, --gap, --r and the three --t-* sizes, which the two stages below
+   set. Nothing here works outside a stage, by design.
+   --------------------------------------------------------------------------- */
+
+/* The white surface everything in a figure sits on. */
+.fig-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: var(--pad);
+  border-radius: var(--r);
+  background: var(--white);
+  box-shadow: var(--shadow-card);
+}
+
+.fig-head {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+/* The one boxed icon in the system, scaled. The unscaled atom is .ico-tile and
+   is used as-is by the data cards; this is its figure-sized twin. */
+.fig-tile {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: calc(var(--u) * 36);
+  height: calc(var(--u) * 36);
+  border-radius: calc(var(--u) * 8);
+  background: var(--black-800);
+  color: var(--green-500);
+}
+.fig-tile .ico { width: calc(var(--u) * 18); height: calc(var(--u) * 18); }
+
+.fig-title {
+  font-size: var(--t-title);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+/* A row of one fact. Inset rows are the reference's nested strips. */
+.fig-row {
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+.fig-row.is-inset {
+  padding: calc(var(--u) * 10) calc(var(--u) * 12);
+  border-radius: calc(var(--u) * 8);
+  background: var(--stone-200);
+}
+.fig-row .ico {
+  width: calc(var(--u) * 18);
+  height: calc(var(--u) * 18);
+  color: var(--text-secondary);
+}
+
+.fig-label {
+  font-size: var(--t-label);
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+/* Mono, tabular, and always pushed to the end of its row. Every value carried
+   here is illustrative: a date, a count, a reading. */
+.fig-val {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Green appears here and nowhere else in a figure: something is done. */
+.fig-tick { display: flex; flex-shrink: 0; color: var(--text-success); }
+.fig-tick .ico { width: calc(var(--u) * 16); height: calc(var(--u) * 16); color: var(--text-success); }
+.fig-val + .fig-tick { margin-left: 0; }
+.fig-tick:first-child + .fig-label { margin-left: 0; }
+.fig-head .fig-tick:last-child { margin-left: auto; }
+
+/* Not done yet: a dashed ring, which is the reference's own pending mark. */
+.fig-dot {
+  flex-shrink: 0;
+  margin-left: auto;
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 16);
+  border: calc(var(--u) * 1.5) dashed var(--stone-700);
+  border-radius: 50%;
+}
+
+/* The connector chip. Blue is the reference's colour for a link being made
+   between two states, and it is used for nothing else. */
+.fig-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--u) * 6);
+  padding: calc(var(--u) * 5) calc(var(--u) * 9);
+  border-radius: calc(var(--u) * 6);
+  background: var(--blue-100);
+  color: var(--text-brand);
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+.fig-chip.is-quiet { background: var(--stone-300); color: var(--text-secondary); }
+.fig-chip .ico { width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+
+/* Two cards joined by a dotted run with the chip sitting on it. Vertical by
+   default; the split panels turn it horizontal at width. */
+.fig-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap);
+  flex-shrink: 0;
+}
+.fig-link-line {
+  flex: 1 1 auto;
+  width: 0;
+  min-height: calc(var(--u) * 16);
+  border-left: 1px dashed var(--stone-600);
+}
+
+/* A care team, drawn. No names and no faces, so no invented people. */
+.fig-avatars { display: flex; flex-shrink: 0; }
+.fig-avatar {
+  width: calc(var(--u) * 26);
+  height: calc(var(--u) * 26);
+  border: calc(var(--u) * 2) solid var(--white);
+  border-radius: 50%;
+  background: var(--stone-500);
+}
+.fig-avatar + .fig-avatar { margin-left: calc(var(--u) * -9); }
+.fig-avatar:nth-child(2) { background: var(--stone-600); }
+.fig-avatar:nth-child(3) { background: var(--stone-700); }
+
+/* A reading, drawn. --h on each bar is the only inline value in the kit, and it
+   is a data-driven height, which is the one legitimate use of inline style. */
+.fig-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(var(--u) * 4);
+  margin-left: auto;
+  height: calc(var(--u) * 26);
+}
+.fig-bar {
+  width: calc(var(--u) * 6);
+  height: var(--h);
+  border-radius: calc(var(--u) * 3);
+  background: var(--stone-600);
+}
+.fig-bar.is-good { background: var(--green-500); }
+
+/* ---------------------------------------------------------------------------
+   F2. THE PRODUCT-INTERFACE PANELS
+   Interior only. Each fills the frame the page already gives it, which is
+   .panel-art inside .panel, so it paints no ground, holds no ratio and clips
+   nothing: .panel owns all three.
+
+   One composition, two arrangements. The nominal design box is 420x410 when
+   the frame is narrow and 1100x693 when it is wide, and --u is clamped by the
+   frame's real width AND its real height together, so the drawing always fits
+   and its type lands between 11 and 17px at every frame this page produces.
+   Nothing is ever hidden: below 900px the two cards stack with the connector
+   running down between them, above it they stand side by side with the
+   connector running across. No row is dropped at any width.
+   --------------------------------------------------------------------------- */
+
+.fig-panel {
+  position: absolute;
+  inset: 0;
+  /* Size containment, not inline-size: it is what makes cqh available, and the
+     height clamp is half of why these compositions never overflow. */
+  container: figpanel / size;
+}
+/* Anchor the drawing to the top of the frame when a .panel-card overlays its
+   foot, which is the reference's own arrangement. */
+.fig-panel.is-top .fig-panel-stage { justify-content: flex-start; }
+
+.fig-panel-stage,
+.disc-stage {
+  --t-title: calc(var(--u) * 17);
+  --t-label: calc(var(--u) * 14);
+  --t-mono:  calc(var(--u) * 12);
+  --pad: calc(var(--u) * 14);
+  --gap: calc(var(--u) * 10);
+  --r:   calc(var(--u) * 10);
+}
+
+.fig-panel-stage {
+  --u: min(calc(100cqw / 420), calc(100cqh / 470));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 12);
+  width: 100%;
+  height: 100%;
+  padding: calc(var(--u) * 20);
+}
+
+.fig-panel-a, .fig-panel-b, .fig-panel-single { width: 100%; }
+
+@container figpanel (min-width: 780px) {
+  .fig-panel-stage {
+    --u: min(calc(100cqw / 1100), calc(100cqh / 693));
+    --t-title: calc(var(--u) * 22);
+    --t-label: calc(var(--u) * 20);
+    --t-mono:  calc(var(--u) * 18);
+    --pad: calc(var(--u) * 26);
+    --gap: calc(var(--u) * 16);
+    --r:   calc(var(--u) * 16);
+    gap: calc(var(--u) * 20);
+    padding: calc(var(--u) * 40);
+  }
+
+  /* Side by side, joined across the middle. The dotted run is the link's own
+     ::after, so it spans the gap whatever the chip measures, and it is wider
+     than the link by the stage gap at each end so it touches both cards. The
+     two .fig-link-line stubs are the vertical case and stand down here. */
+  .fig-panel-split { flex-direction: row; align-items: center; }
+  .fig-panel-split .fig-link {
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: calc(var(--u) * 9);
+    min-width: calc(var(--u) * 150);
+  }
+  .fig-panel-split .fig-link::after {
+    content: '';
+    width: calc(100% + var(--u) * 40);
+    height: 1px;
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--stone-600) 0 calc(var(--u) * 4),
+      transparent calc(var(--u) * 4) calc(var(--u) * 9)
+    );
+  }
+  .fig-panel-split .fig-link-line { display: none; }
+  .fig-panel-a { width: 38%; }
+  .fig-panel-b { width: 34%; }
+  .fig-panel-single { width: 68%; }
+}
+
+/* ---------------------------------------------------------------------------
+   F3. THE DATA CARDS
+   340px wide, 12px radius, stone fill, mono figures, one row per fact. These
+   are positioned by the scroll-orbit figure, so they carry no margins and no
+   position of their own.
+   --------------------------------------------------------------------------- */
+
+.dcard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: min(34rem, 100%);
+  padding: 1.6rem;
+  border-radius: 1.2rem;
+  background: var(--surface-quaternary);
+}
+
+.dcard-head { display: flex; align-items: center; gap: 1.2rem; }
+
+.dcard-title {
+  font-size: 1.5rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.dcard-val {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.dcard-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border-radius: 0.8rem;
+  background: var(--white);
+}
+.dcard-row .ico { width: 1.6rem; height: 1.6rem; color: var(--text-secondary); }
+
+.dcard-label { font-size: 1.4rem; line-height: 1.3; color: var(--text-primary); }
+
+.dcard-meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.dcard-meta + .tick { margin-left: 0; }
+.dcard-row .tick { display: flex; margin-left: auto; }
+.dcard-row .dcard-meta ~ .tick { margin-left: 0; }
+.dcard-row .tick .ico { width: 1.6rem; height: 1.6rem; color: var(--text-success); }
+
+.dcard-avatars { display: flex; }
+.dcard-avatar {
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 2px solid var(--white);
+  border-radius: 50%;
+  background: var(--stone-500);
+}
+.dcard-avatar + .dcard-avatar { margin-left: -0.8rem; }
+.dcard-avatar:nth-child(2) { background: var(--stone-600); }
+.dcard-avatar:nth-child(3) { background: var(--stone-700); }
+
+.dcard-bars { display: flex; align-items: flex-end; gap: 0.4rem; height: 2.4rem; }
+.dcard-bar { width: 0.6rem; height: var(--h); border-radius: 0.3rem; background: var(--stone-600); }
+.dcard-bar.is-good { background: var(--green-500); }
+
+/* ---------------------------------------------------------------------------
+   F4. THE DISCIPLINE SQUARES
+   A diagram on a stone square. No border, no shadow on the square itself: the
+   illustration is the card. The discipline name and its sentence sit outside,
+   beneath, as they do on the reference.
+   --------------------------------------------------------------------------- */
+
+.disc {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: var(--r-shell);
+  background: var(--surface-quaternary);
+  container: v3disc / size;
+}
+@media (min-width: 1024px) { .disc { border-radius: 3.2rem; } }
+/* Inside the page's own .static-art, which already paints the ground and the
+   radius, the square carries neither. */
+.disc.is-bare { background: none; border-radius: 0; }
+
+.disc-stage {
+  --u: calc(100cqw / 440);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: calc(var(--u) * 10);
+  width: 100%;
+  height: 100%;
+  padding: calc(var(--u) * 30);
+}
+
+/* The stagger. Two cards on one axis would read as a list; offsetting them is
+   what makes the square read as a diagram. */
+.disc-top { width: 90%; align-self: flex-start; }
+.disc-bottom { width: 90%; align-self: flex-end; }
+.disc-stage .fig-link { align-items: center; }
+.disc-stage .fig-link-line { min-height: calc(var(--u) * 26); }
+
+/* ---------------------------------------------------------------------------
+   F5. REDUCED MOTION
+   Nothing in the kit animates, so there is nothing to disable. Left here as a
+   marker: if the orbit figure animates a data card, it belongs in the page's
+   own reduced-motion block, not in this one.
+   --------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------
+   27. THE OPTIONAL LINE BREAK
+   A display line is broken by hand where the measure allows it and left to
+   balance itself where it does not.
+   --------------------------------------------------------------------------- */
+
+.br-wide { display: none; }
+@media (min-width: 700px) { .br-wide { display: inline; } }
+
+
+/* ============================================================================
+   v3 — THE TWO WIDE FIGURES
+   Merge into src/styles/variants/v3.css directly after the figure kit (F4,
+   the discipline squares) as F5. Everything below is new; nothing in the kit
+   is redefined, and no token is touched.
+
+   Both figures reuse the kit's primitives (.fig-card, .fig-head, .fig-tile,
+   .fig-row, .fig-label, .fig-val, .fig-tick, .fig-chip, .fig-bars) inside the
+   kit's own .fig-panel container, so they scale by the same --u and land in
+   .panel-art exactly as the step panels do.
+
+   The one new arrangement is .is-tr: the drawing is anchored to the top of
+   the frame and to its right, and holds two thirds of the width at desktop,
+   so it reads behind and around the .panel-card in the bottom-left corner
+   and never collides with it. Its design box is 420x500, deliberately taller
+   than the composition: the drawing takes a little under half the frame's
+   height, which leaves the copy card at least 28px of clearance beneath it at
+   every frame this page produces, measured rather than assumed.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   F5.0 A CORRECTION TO F2, needed before either figure below is right
+
+   The merged .fig-panel uses inset: 0. .panel-art is a grid with
+   place-items: center, and a centred absolutely-positioned child sized only by
+   insets is shrink-to-fit, so the box never gets a definite height. With no
+   definite height there is no cqh, the height half of every --u clamp silently
+   stops working, and a tall composition overflows its frame (panel 03 does
+   this today at 1440). Replacing the block below fixes it. The two nominal
+   heights are raised at the same time: 410 was measured before the second card
+   was restored to the compact arrangement, and 520 is the real figure.
+   --------------------------------------------------------------------------- */
+
+.fig-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-self: stretch;
+  justify-self: stretch;
+  container: figpanel / size;
+}
+
+/* was: min(calc(100cqw / 420), calc(100cqh / 410)) */
+.fig-panel-stage { --u: min(calc(100cqw / 420), calc(100cqh / 520)); }
+
+/* was: calc(100cqw / 440), which leaves an 8px label in a 248px tile on a
+   phone. The square's cards are percentage-width, so the design box sets the
+   type scale rather than the layout, and the height clamp keeps a tall
+   diagram inside a short tile. */
+.disc-stage { --u: min(calc(100cqw / 300), calc(100cqh / 340)); }
+
+/* ---------------------------------------------------------------------------
+   F5.1 THE TOP-RIGHT ARRANGEMENT
+   --------------------------------------------------------------------------- */
+
+.fig-panel-stage.is-tr {
+  /* Its own scale, and its own multipliers, so the F2 container query at 900px
+     cannot enlarge this arrangement's type when the panel happens to be wide. */
+  --u: min(calc(100cqw / 420), calc(100cqh / 500));
+  --t-title: calc(var(--u) * 17);
+  --t-label: calc(var(--u) * 14);
+  --t-mono:  calc(var(--u) * 12);
+  --pad: calc(var(--u) * 14);
+  --gap: calc(var(--u) * 10);
+  --r:   calc(var(--u) * 10);
+
+  position: relative;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: calc(var(--u) * 12);
+  padding: calc(var(--u) * 24);
+}
+
+/* The column the drawing lives in. Full width on a phone, where the copy card
+   sits below rather than beside; two thirds and right-aligned once there is
+   room for the card to take the bottom-left corner. */
+.fig-tr-block {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: calc(var(--u) * 12);
+  width: 100%;
+}
+@container figpanel (min-width: 560px) {
+  .fig-tr-block { width: 66%; }
+}
+.fig-tr-block > .fig-card { width: 100%; }
+
+/* ---------------------------------------------------------------------------
+   F5.2 THE TREND CHART
+   One sparkline over three hairlines. Its height is set in --u rather than
+   left to follow its width, because a width-driven height would grow with the
+   frame while --u was being clamped by the frame's height, and the drawing
+   would walk down into the copy card. So the SVG is stretched
+   (preserveAspectRatio="none") with non-scaling strokes, which keeps the line
+   weights at the icon set's own, and the marker on the last reading is a CSS
+   circle rather than an SVG one, so the stretch cannot turn it into an ellipse.
+   --------------------------------------------------------------------------- */
+
+.fig-chart-wrap {
+  position: relative;
+  width: 100%;
+  height: calc(var(--u) * 58);
+}
+.fig-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.fig-chart-grid {
+  fill: none;
+  stroke: var(--stone-400);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.fig-chart-line {
+  fill: none;
+  stroke: var(--black-800);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+/* --x and --y are the marker's position on the plot: data, which is the one
+   thing an inline style is for. */
+.fig-chart-mark {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: calc(var(--u) * 7);
+  height: calc(var(--u) * 7);
+  margin: calc(var(--u) * -3.5) 0 0 calc(var(--u) * -3.5);
+  border-radius: 50%;
+  background: var(--green-700);
+  outline: calc(var(--u) * 3.5) solid var(--green-300);
+}
+
+/* ---------------------------------------------------------------------------
+   F5.3 THE COVERAGE FIELD
+   A field of small dots with a handful of larger ones standing in it: the
+   reference's own dotted-map idea, without pretending to be a map. It sits
+   behind the card, in the same top-right region, and is never the subject.
+   --------------------------------------------------------------------------- */
+
+.fig-field {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 0;
+  width: 76%;
+  height: 64%;
+  pointer-events: none;
+}
+.fig-field svg { width: 100%; height: 100%; display: block; }
+.fig-field-dot { fill: var(--stone-600); }
+.fig-field-pin { fill: var(--black-400); }
+
+/* ---------------------------------------------------------------------------
+   F5.4 A WRAPPING ROW OF QUIET CHIPS
+   For a list that is three nouns in the sentence and should stay three nouns.
+   --------------------------------------------------------------------------- */
+
+.fig-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 6);
+}
+
+/* The pair of small marks that carry "virtual and in person". */
+.fig-pair { display: flex; align-items: center; gap: calc(var(--u) * 6); flex-shrink: 0; }
+.fig-pair .ico { width: calc(var(--u) * 16); height: calc(var(--u) * 16); color: var(--text-secondary); }
