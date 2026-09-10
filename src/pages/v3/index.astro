@@ -294,10 +294,10 @@ const PANELS = [
     <!-- The inline capture, at the foot of the picture. It does not post from
          here: it carries the address down to the real form, which is the one
          place a submission happens. -->
-    <form class="hero-form" id="heroForm" novalidate>
+    <form class="hero-form" data-handoff novalidate>
       <label class="u-sr-only" for="heroEmail">Email address</label>
       <div class="field-glass">
-        <input id="heroEmail" type="email" placeholder="Your email address" autocomplete="email" />
+        <input id="heroEmail" data-handoff-email type="email" placeholder="Your email address" autocomplete="email" />
         <button class="btn btn-primary" type="submit">
           <span class="btn-label">Get access</span>
           <span class="btn-icon">
@@ -993,6 +993,19 @@ const PANELS = [
           Compound Health is enrolling through partner advisors, firms, and organizations, with
           limited first-wave capacity.
         </p>
+
+        <form class="cta-form" data-handoff novalidate>
+          <label class="u-sr-only" for="ctaEmail">Email address</label>
+          <div class="field-glass">
+            <input id="ctaEmail" data-handoff-email type="email" placeholder="Your email address" autocomplete="email" />
+            <button class="btn btn-primary" type="submit">
+              <span class="btn-label">Get access</span>
+              <span class="btn-icon">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </section>
@@ -1460,23 +1473,26 @@ const PANELS = [
         }, { threshold: 0.5 }).observe(el);
       })();
 
-      // --- the hero capture hands its address to the real form -----------------
+      // --- the two captures hand their address to the real form ----------------
+      // Neither posts. There is one submission on this page and it is the form
+      // at the foot; these carry the address down to it and put the reader in
+      // the first field they still have to fill.
       (function () {
-        const form = document.getElementById('heroForm') as HTMLFormElement | null;
-        if (!form) return;
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const from = document.getElementById('heroEmail') as HTMLInputElement | null;
-          const to = document.getElementById('wf-email') as HTMLInputElement | null;
-          if (from && to && from.value.trim()) to.value = from.value.trim();
-          const target = document.getElementById('joinwaitlist');
-          const lenis = (window as any).__lenis;
-          if (lenis && target) lenis.scrollTo(target, { offset: -80 });
-          else target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          window.setTimeout(() => {
-            const first = document.getElementById('wf-fname') as HTMLInputElement | null;
-            first?.focus({ preventScroll: true });
-          }, 700);
+        document.querySelectorAll<HTMLFormElement>('[data-handoff]').forEach(form => {
+          form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const from = form.querySelector<HTMLInputElement>('[data-handoff-email]');
+            const to = document.getElementById('wf-email') as HTMLInputElement | null;
+            if (from && to && from.value.trim()) to.value = from.value.trim();
+            const target = document.getElementById('joinwaitlist');
+            const lenis = (window as any).__lenis;
+            if (lenis && target) lenis.scrollTo(target, { offset: -80 });
+            else target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.setTimeout(() => {
+              const first = document.getElementById('wf-fname') as HTMLInputElement | null;
+              first?.focus({ preventScroll: true });
+            }, 700);
+          });
         });
       })();
     })();

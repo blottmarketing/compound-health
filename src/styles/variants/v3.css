@@ -1551,6 +1551,9 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .cta-inner h2 { margin-bottom: 1.6rem; max-width: 20ch; }
 @media (min-width: 1024px) { .cta-inner h2 { margin-bottom: 2.4rem; } }
 .cta-inner p { max-width: 56rem; color: var(--white-a-700); }
+/* The hero's capsule again, on the card that closes the page. */
+.cta-form { margin-top: 3.2rem; display: flex; justify-content: center; width: 100%; }
+@media (max-width: 640px) { .cta-form { margin-top: 2.4rem; } .cta-form .field-glass { width: 100%; } }
 
 /* ---------------------------------------------------------------------------
    21. THE DELIVERED LIST
