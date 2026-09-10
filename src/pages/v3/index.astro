@@ -1395,7 +1395,13 @@ const PANELS = [
           tl.fromTo(h1, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7 }, 0)
             .to({}, { duration: 1.5 })
             .to(h1, { opacity: 0, y: -40, duration: 0.6 })
-            .fromTo(h2, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6 }, '>')
+            // Five hundredths of overlap: enough that the two lines cross at
+            // about 0.04 each, which is under the threshold at which this
+            // near-black type is legible on this cream, and not so much that
+            // they are both readable on the way past. Strict sequencing left
+            // a window with neither line on screen, and that window varied
+            // with the viewport, which is worse than either.
+            .fromTo(h2, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6 }, '>-0.05')
             .to({}, { duration: 1.5 });
         }
       })();
