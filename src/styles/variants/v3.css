@@ -1279,7 +1279,9 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   transform: scale(var(--counter, 1));
   transform-origin: center;
 }
-.orb-card { width: 34rem; }
+/* fit-content so the four data cards, which are now four widths, each sit
+   centred on their own point of the ellipse. */
+.orb-card { width: fit-content; max-width: 34rem; }
 
 /* ---------------------------------------------------------------------------
    15. THE WIDE PANELS
@@ -2079,20 +2081,23 @@ select.wf-input { appearance: none; cursor: pointer; }
    .panel-art inside .panel, so it paints no ground, holds no ratio and clips
    nothing: .panel owns all three.
 
-   One composition, two arrangements. The nominal design box is 420x410 when
-   the frame is narrow and 1100x693 when it is wide, and --u is clamped by the
-   frame's real width AND its real height together, so the drawing always fits
-   and its type lands between 11 and 17px at every frame this page produces.
-   Nothing is ever hidden: below 900px the two cards stack with the connector
-   running down between them, above it they stand side by side with the
-   connector running across. No row is dropped at any width.
+   One composition, two arrangements. The nominal design box is 420x490 when
+   the frame is narrow and 1000x560 when it is wide, and --u is clamped by the
+   frame's real width AND its real height together, so the drawing always fits.
+   Below 780px the cards stack with the connector running down between them;
+   above it, panel 01's two cards stand side by side. No row is dropped at any
+   width, and below 420px the connector keeps its chip and drops its two dotted
+   stubs, which are the only things in the kit that are decoration.
    --------------------------------------------------------------------------- */
 
 .fig-panel {
   position: absolute;
-  inset: 0;
-  /* Size containment, not inline-size: it is what makes cqh available, and the
-     height clamp is half of why these compositions never overflow. */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-self: stretch;
+  justify-self: stretch;
   container: figpanel / size;
 }
 /* Anchor the drawing to the top of the frame when a .panel-card overlays its
@@ -2111,6 +2116,11 @@ select.wf-input { appearance: none; cursor: pointer; }
 
 .fig-panel-stage {
   --u: min(calc(100cqw / 420), calc(100cqh / 490));
+  /* ITEM 12. The mono strings here are short and sit beside the labels, so they
+     take a multiplier close to the label's for the whole stacked arrangement
+     rather than only under 420px. That removes the 12.4px-to-9.8px step at the
+     old band edge: there is no longer a band. */
+  --t-mono: calc(var(--u) * 13.6);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2123,26 +2133,75 @@ select.wf-input { appearance: none; cursor: pointer; }
 
 @container figpanel (max-width: 420px) {
   .fig-panel-stage { --u: min(calc(100cqw / 420), calc(100cqh / 440)); }
-  /* The mono strings are short, so on the smallest frame they take the label's
-     multiplier rather than their own and stay above ten pixels. */
-  .fig-panel-stage { --t-mono: calc(var(--u) * 13.6); }
   .fig-panel-stage .fig-link-line { display: none; }
 }
 
 .fig-panel-a, .fig-panel-b, .fig-panel-single { width: 100%; }
 
+/* Two columns inside one card: panel 03's arrangement. Stacked until the frame
+   can hold them side by side. */
+.fig-cols {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  width: 100%;
+}
+.fig-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  flex: 1 1 0;
+  min-width: 0;
+}
+/* The quiet mono line that names a column. Not an eyebrow: no caps, no
+   letterspacing, no box. */
+.fig-sub {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono);
+  line-height: 1.2;
+  color: var(--text-secondary);
+}
+@container figpanel (min-width: 560px) {
+  .fig-cols { flex-direction: row; }
+  /* Side by side, the two columns run to different lengths, so the chip goes
+     under the shorter one rather than under the middle of the card. It fills
+     the hole the uneven columns leave instead of sitting over it. */
+  .fig-cols ~ .fig-link { align-items: flex-start; }
+}
+
 @container figpanel (min-width: 780px) {
   .fig-panel-stage {
-    --u: min(calc(100cqw / 1100), calc(100cqh / 693));
-    --t-title: calc(var(--u) * 22);
-    --t-label: calc(var(--u) * 20);
-    --t-mono:  calc(var(--u) * 18);
+    --u: min(calc(100cqw / 1000), calc(100cqh / 560));
+    --t-title: calc(var(--u) * 20);
+    --t-label: calc(var(--u) * 18);
+    --t-mono:  calc(var(--u) * 16);
+    --pad: calc(var(--u) * 38);
+    --gap: calc(var(--u) * 24);
+    --r:   calc(var(--u) * 16);
+    gap: calc(var(--u) * 26);
+    padding: calc(var(--u) * 38);
+  }
+  /* The rows carry the extra air, which is what fills the frame without
+     enlarging a single letter. */
+  .fig-panel-stage .fig-row.is-inset {
+    padding: calc(var(--u) * 18) calc(var(--u) * 20);
+  }
+
+  /* Panels 02 and 03 hold five and six rows against panel 01's three, so they
+     keep tighter internals at the same --u. Same type size, denser card. */
+  .fig-panel-stage.is-dense {
     --pad: calc(var(--u) * 26);
     --gap: calc(var(--u) * 16);
-    --r:   calc(var(--u) * 16);
-    gap: calc(var(--u) * 20);
-    padding: calc(var(--u) * 40);
   }
+  .fig-panel-stage.is-dense .fig-row.is-inset {
+    padding: calc(var(--u) * 11) calc(var(--u) * 16);
+  }
+
+  /* Panel 01 holds three rows in one card and two in the other, side by side,
+     so it is the shortest composition on the deck and needs the most air to
+     reach the same fill as 02 and 03. */
+  .fig-panel-split .fig-card { --pad: calc(var(--u) * 44); }
+  .fig-panel-split .fig-row.is-inset { padding: calc(var(--u) * 24) calc(var(--u) * 20); }
 
   /* Side by side, joined across the middle. The dotted run is the link's own
      ::after, so it spans the gap whatever the chip measures, and it is wider
@@ -2169,14 +2228,14 @@ select.wf-input { appearance: none; cursor: pointer; }
   .fig-panel-split .fig-chip { white-space: normal; text-align: center; }
   .fig-panel-a { width: 36%; }
   .fig-panel-b { width: 32%; }
-  .fig-panel-single { width: 68%; }
+  .fig-panel-single { width: 100%; }
 }
 
 /* ---------------------------------------------------------------------------
    F3. THE DATA CARDS
-   340px wide, 12px radius, stone fill, mono figures, one row per fact. These
-   are positioned by the scroll-orbit figure, so they carry no margins and no
-   position of their own.
+   Stone fill, 12px radius, mono figures, a green tick where something is done.
+   These are positioned by the scroll-orbit figure, so they carry no margins
+   and no position of their own. Four widths, none over 340px.
    --------------------------------------------------------------------------- */
 
 .dcard {
@@ -2188,6 +2247,9 @@ select.wf-input { appearance: none; cursor: pointer; }
   border-radius: 1.2rem;
   background: var(--surface-quaternary);
 }
+.dcard.is-tall  { width: min(20rem, 100%); }
+.dcard.is-short { width: min(24rem, 100%); }
+.dcard.is-wide  { width: min(34rem, 100%); }
 
 .dcard-head { display: flex; align-items: center; gap: 1.2rem; }
 
@@ -2229,12 +2291,16 @@ select.wf-input { appearance: none; cursor: pointer; }
   color: var(--text-secondary);
   white-space: nowrap;
 }
-.dcard-meta + .tick { margin-left: 0; }
 .dcard-row .tick { display: flex; margin-left: auto; }
 .dcard-row .dcard-meta ~ .tick { margin-left: 0; }
-.dcard-row .tick .ico { width: 1.6rem; height: 1.6rem; color: var(--text-success); }
+.dcard-row .tick .ico,
+.dcard-head .tick .ico { width: 1.6rem; height: 1.6rem; color: var(--text-success); }
+.dcard-head .tick { display: flex; }
 
+/* The team, drawn. No names and no faces, so no invented people. In a head it
+   pushes to the end of the line, which is the .is-wide card's whole figure. */
 .dcard-avatars { display: flex; }
+.dcard-head .dcard-avatars { margin-left: auto; }
 .dcard-avatar {
   width: 2.4rem;
   height: 2.4rem;
@@ -2246,15 +2312,44 @@ select.wf-input { appearance: none; cursor: pointer; }
 .dcard-avatar:nth-child(2) { background: var(--stone-600); }
 .dcard-avatar:nth-child(3) { background: var(--stone-700); }
 
+/* A reading, drawn. --h on each bar is the only inline value in the kit, and
+   it is a data-driven height, which is the one legitimate use of inline style. */
 .dcard-bars { display: flex; align-items: flex-end; gap: 0.4rem; height: 2.4rem; }
 .dcard-bar { width: 0.6rem; height: var(--h); border-radius: 0.3rem; background: var(--stone-600); }
 .dcard-bar.is-good { background: var(--green-500); }
+
+/* The tall card's plot: the same bars, given a card of their own and room to
+   be read as the subject rather than as an ornament at the end of a row. */
+.dcard-plot {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  height: 9.6rem;
+  padding: 1.2rem;
+  border-radius: 0.8rem;
+  background: var(--white);
+}
+.dcard-plot .dcard-bar { width: 1rem; border-radius: 0.5rem; }
+
+/* The large mono reading that closes the tall card. */
+.dcard-figure {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 2.8rem;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
+}
+.dcard-figure .dcard-meta { margin-left: auto; }
 
 /* ---------------------------------------------------------------------------
    F4. THE DISCIPLINE SQUARES
    A diagram on a stone square. No border, no shadow on the square itself: the
    illustration is the card. The discipline name and its sentence sit outside,
-   beneath, as they do on the reference.
+   beneath, which is what .static-card already does.
    --------------------------------------------------------------------------- */
 
 .disc {
@@ -2272,6 +2367,11 @@ select.wf-input { appearance: none; cursor: pointer; }
 .disc.is-bare { background: none; border-radius: 0; }
 
 .disc-stage {
+  /* Nominal 300x340. The cards inside are percentage-width, so the design box
+     sets the type scale rather than the layout, and the height half of the
+     clamp is what keeps a tall diagram inside a short tile. Below about 300px
+     a square is drawn but no longer comfortably read, so give one at least
+     that much width. */
   --u: min(calc(100cqw / 300), calc(100cqh / 340));
   position: absolute;
   inset: 0;
@@ -2285,12 +2385,41 @@ select.wf-input { appearance: none; cursor: pointer; }
   padding: calc(var(--u) * 30);
 }
 
-/* The stagger. Two cards on one axis would read as a list; offsetting them is
-   what makes the square read as a diagram. */
-.disc-top { width: 90%; align-self: flex-start; }
-.disc-bottom { width: 90%; align-self: flex-end; }
+/* ITEM 7. One height for every card in the set, whatever its label's line
+   count, so the connector between them and the chip on it land at the same
+   place in all three squares. */
+.disc-stage .fig-card {
+  min-height: calc(var(--u) * 62);
+  justify-content: center;
+}
+/* The top card takes a fixed height rather than a floor, because square 1's
+   avatars are taller than square 2's icon and would otherwise push its card
+   down and its chip out of line with the others. */
+.disc-top { height: calc(var(--u) * 62); }
+.disc-stage .fig-link-line { min-height: calc(var(--u) * 24); }
 .disc-stage .fig-link { align-items: center; }
-.disc-stage .fig-link-line { min-height: calc(var(--u) * 26); }
+
+/* ITEM 5. A floor on the chip, so the short ones read as a bar rather than as
+   a dot beside the long one. */
+.disc-stage .fig-chip {
+  min-width: calc(var(--u) * 160);
+  justify-content: center;
+}
+
+/* ITEM 6, the stagger. Two cards on one axis read as a list; offsetting them
+   is what makes a square read as a diagram. .is-flip mirrors it so the second
+   square is not the first square again. */
+.disc-top    { width: 90%; align-self: flex-start; }
+.disc-bottom { width: 90%; align-self: flex-end; }
+.disc-stage.is-flip .disc-top    { align-self: flex-end; }
+.disc-stage.is-flip .disc-bottom { align-self: flex-start; }
+
+/* ITEM 6, the third rhythm. Three elements joined by two plain runs and no
+   chip: a layer of three therapies rather than two states and a link. */
+.disc-stage.is-trio .fig-card { width: 84%; }
+.disc-stage.is-trio .fig-card:nth-child(1) { align-self: flex-start; }
+.disc-stage.is-trio .fig-card:nth-child(3) { align-self: center; }
+.disc-stage.is-trio .fig-card:nth-child(5) { align-self: flex-end; }
 
 /* ---------------------------------------------------------------------------
    F5. REDUCED MOTION
@@ -2458,13 +2587,36 @@ select.wf-input { appearance: none; cursor: pointer; }
   top: 0;
   right: 0;
   z-index: 0;
-  width: 76%;
-  height: 64%;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 .fig-field svg { width: 100%; height: 100%; display: block; }
 .fig-field-dot { fill: var(--stone-600); }
 .fig-field-pin { fill: var(--black-400); }
+
+/* The dashboard's own field: the grid a plot is drawn on. It is not an
+   ornament borrowed to fill a corner, it is the thing the chart above it sits
+   on, and it costs the composition no height at all, which is why the labels
+   keep the size they have. */
+.fig-plot-field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      var(--white-a-400) 0 1px,
+      transparent 1px calc(var(--u) * 44)
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--white-a-400) 0 1px,
+      transparent 1px calc(var(--u) * 44)
+    );
+}
+
 
 /* ---------------------------------------------------------------------------
    F5.4 A WRAPPING ROW OF QUIET CHIPS

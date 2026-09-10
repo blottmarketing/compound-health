@@ -116,7 +116,7 @@ const PANELS = [
   </div>
 </div>`,
   `<div class="fig-panel" data-panel="02">
-  <div class="fig-panel-stage">
+  <div class="fig-panel-stage is-dense">
 
     <div class="fig-card fig-panel-single">
       <div class="fig-head">
@@ -124,7 +124,7 @@ const PANELS = [
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
         </span>
         <span class="fig-title">Deep diagnostic intake</span>
-        <span class="fig-val">5/5</span>
+        <span class="fig-val">4/5</span>
       </div>
 
       <div class="fig-row is-inset">
@@ -158,8 +158,7 @@ const PANELS = [
       <div class="fig-row is-inset">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
         <span class="fig-label">Metabolic</span>
-        <span class="fig-val">2026-03-18</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        <span class="fig-dot"></span>
       </div>
     </div>
 
@@ -170,60 +169,60 @@ const PANELS = [
   </div>
 </div>`,
   `<div class="fig-panel" data-panel="03">
-  <div class="fig-panel-stage fig-panel-split">
+  <div class="fig-panel-stage">
 
-    <div class="fig-card fig-panel-a">
+    <div class="fig-card fig-panel-single">
       <div class="fig-head">
         <span class="fig-tile">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
         </span>
-        <span class="fig-title">Your clinical team</span>
-      </div>
-
-      <div class="fig-row is-inset">
-        <span class="fig-avatars">
-          <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
-        </span>
-        <span class="fig-label">chosen for this program</span>
-      </div>
-
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg>
-        <span class="fig-label">a dedicated health concierge</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-    </div>
-
-    <div class="fig-link">
-      <span class="fig-link-line"></span>
-      <span class="fig-chip">actively manage</span>
-      <span class="fig-link-line"></span>
-    </div>
-
-    <div class="fig-card fig-panel-b">
-      <div class="fig-head">
         <span class="fig-title">Personalized longevity plan</span>
+        <span class="fig-val">2026-04-09</span>
       </div>
 
-      <div class="fig-row is-inset">
-        <span class="fig-label">your data</span>
-        <span class="fig-bars">
-          <span class="fig-bar" style="--h:38%"></span>
-          <span class="fig-bar" style="--h:64%"></span>
-          <span class="fig-bar is-good" style="--h:92%"></span>
-          <span class="fig-bar" style="--h:52%"></span>
-          <span class="fig-bar" style="--h:74%"></span>
-        </span>
+      <div class="fig-cols">
+
+        <div class="fig-col">
+          <span class="fig-sub">Your clinical team</span>
+          <div class="fig-row is-inset">
+            <span class="fig-avatars">
+              <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
+            </span>
+            <span class="fig-label">chosen for this program</span>
+          </div>
+          <div class="fig-row is-inset">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg>
+            <span class="fig-label">a dedicated health concierge</span>
+            <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+          </div>
+        </div>
+
+        <div class="fig-col">
+          <span class="fig-sub">a protocol tailored to</span>
+          <div class="fig-row is-inset">
+            <span class="fig-label">your data</span>
+            <span class="fig-bars">
+              <span class="fig-bar" style="--h:38%"></span>
+              <span class="fig-bar" style="--h:64%"></span>
+              <span class="fig-bar is-good" style="--h:92%"></span>
+              <span class="fig-bar" style="--h:52%"></span>
+              <span class="fig-bar" style="--h:74%"></span>
+            </span>
+          </div>
+          <div class="fig-row is-inset">
+            <span class="fig-label">goals</span>
+            <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+          </div>
+          <div class="fig-row is-inset">
+            <span class="fig-label">lifestyle</span>
+            <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+          </div>
+        </div>
+
       </div>
 
-      <div class="fig-row is-inset">
-        <span class="fig-label">goals</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-
-      <div class="fig-row is-inset">
-        <span class="fig-label">lifestyle</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      <div class="fig-link">
+        <span class="fig-chip">actively manage</span>
       </div>
     </div>
 
@@ -395,40 +394,41 @@ const PANELS = [
       </div>
       <div class="orb" data-orb="1"><div class="orb-card" aria-hidden="true">
           <div class="dcard">
-            <div class="dcard-head">
-              <span class="ico-tile">
-                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
-              </span>
-              <span class="dcard-title">Healthspan score</span>
-              <span class="dcard-val">72</span>
-            </div>
-            <div class="dcard-row">
-              <span class="dcard-label">owned by the client</span>
-              <span class="tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-            </div>
-          </div>
+  <div class="dcard-head">
+    <span class="ico-tile">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
+    </span>
+    <span class="dcard-title">Healthspan score</span>
+    <span class="dcard-val">72</span>
+  </div>
+  <div class="dcard-row">
+    <span class="dcard-label">owned by the client</span>
+    <span class="tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+  </div>
+</div>
         </div></div>
       <div class="orb" data-orb="2"><div class="orb-card" aria-hidden="true">
-          <div class="dcard">
-            <div class="dcard-head">
-              <span class="ico-tile">
-                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6.5 5 13L17 12h4"/></svg>
-              </span>
-              <span class="dcard-title">Full biomarker tracking</span>
-              <span class="dcard-val">148</span>
-            </div>
-            <div class="dcard-row">
-              <span class="dcard-bars">
-                <span class="dcard-bar" style="--h:42%"></span>
-                <span class="dcard-bar" style="--h:66%"></span>
-                <span class="dcard-bar is-good" style="--h:100%"></span>
-                <span class="dcard-bar" style="--h:58%"></span>
-                <span class="dcard-bar" style="--h:78%"></span>
-                <span class="dcard-bar" style="--h:50%"></span>
-              </span>
-              <span class="dcard-meta">2026-04-09</span>
-            </div>
-          </div>
+          <div class="dcard is-tall">
+  <div class="dcard-head">
+    <span class="ico-tile">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6.5 5 13L17 12h4"/></svg>
+    </span>
+    <span class="dcard-title">Full biomarker tracking</span>
+  </div>
+  <div class="dcard-plot">
+    <span class="dcard-bar" style="--h:34%"></span>
+    <span class="dcard-bar" style="--h:52%"></span>
+    <span class="dcard-bar" style="--h:44%"></span>
+    <span class="dcard-bar" style="--h:70%"></span>
+    <span class="dcard-bar is-good" style="--h:100%"></span>
+    <span class="dcard-bar" style="--h:62%"></span>
+    <span class="dcard-bar" style="--h:78%"></span>
+  </div>
+  <div class="dcard-figure">
+    148
+    <span class="dcard-meta">2026-04-09</span>
+  </div>
+</div>
         </div></div>
       <div class="orb" data-orb="3">
         <div class="orb-photo">
@@ -445,36 +445,29 @@ const PANELS = [
         </div>
       </div>
       <div class="orb" data-orb="4"><div class="orb-card" aria-hidden="true">
-          <div class="dcard">
-            <div class="dcard-head">
-              <span class="ico-tile">
-                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
-              </span>
-              <span class="dcard-title">Personalized protocols</span>
-              <span class="dcard-val">12</span>
-            </div>
-            <div class="dcard-row">
-              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.8"/><path d="M12 7v5.3l3.4 2"/></svg>
-              <span class="dcard-meta">2026-04-09</span>
-              <span class="tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-            </div>
-          </div>
+          <div class="dcard is-short">
+  <div class="dcard-head">
+    <span class="ico-tile">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
+    </span>
+    <span class="dcard-title">Personalized protocols</span>
+    <span class="dcard-val">12</span>
+  </div>
+</div>
         </div></div>
       <div class="orb" data-orb="5"><div class="orb-card" aria-hidden="true">
-          <div class="dcard">
-            <div class="dcard-head">
-              <span class="ico-tile">
-                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
-              </span>
-              <span class="dcard-title">Health concierge</span>
-            </div>
-            <div class="dcard-row">
-              <span class="dcard-avatars">
-                <span class="dcard-avatar"></span><span class="dcard-avatar"></span><span class="dcard-avatar"></span>
-              </span>
-              <span class="tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-            </div>
-          </div>
+          <div class="dcard is-wide">
+  <div class="dcard-head">
+    <span class="ico-tile">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
+    </span>
+    <span class="dcard-title">Health concierge</span>
+    <span class="dcard-avatars">
+      <span class="dcard-avatar"></span><span class="dcard-avatar"></span><span class="dcard-avatar"></span>
+    </span>
+    <span class="tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+  </div>
+</div>
         </div></div>
     </div>
   </section>
@@ -484,47 +477,50 @@ const PANELS = [
       <article class="panel is-sky">
         <div class="panel-art" aria-hidden="true">
           <div class="fig-panel" data-fig="dashboard">
-            <div class="fig-panel-stage is-tr">
-              <div class="fig-tr-block">
+  <div class="fig-panel-stage is-tr">
 
-                <div class="fig-card">
-                  <div class="fig-head">
-                    <span class="fig-tile">
-                      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5h16"/><path d="M7.2 20.5v-6.8"/><path d="M12 20.5V6.5"/><path d="M16.8 20.5v-9.8"/></svg>
-                    </span>
-                    <span class="fig-title">Track trends</span>
-                    <span class="fig-val">2026-04-09</span>
-                  </div>
+    <div class="fig-plot-field"></div>
 
-                  <div class="fig-chart-wrap">
-                    <svg class="fig-chart" viewBox="0 0 300 52" preserveAspectRatio="none" aria-hidden="true">
-                      <path class="fig-chart-grid" d="M0 10h300M0 27h300M0 44h300"/>
-                      <path class="fig-chart-line" d="M4 41 34 38 64 43 94 31 124 34 154 24 184 27 214 17 244 20 274 11"/>
-                    </svg>
-                    <span class="fig-chart-mark" style="--x:91.3%; --y:21.2%"></span>
-                  </div>
+    <div class="fig-tr-block">
 
-                  <div class="fig-row is-inset">
-                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 19.3 5.9v5.4c0 4.4-3 8.2-7.3 9.9-4.3-1.7-7.3-5.5-7.3-9.9V5.9z"/></svg>
-                    <span class="fig-label">understand risks</span>
-                    <span class="fig-bars">
-                      <span class="fig-bar" style="--h:44%"></span>
-                      <span class="fig-bar" style="--h:70%"></span>
-                      <span class="fig-bar is-good" style="--h:96%"></span>
-                      <span class="fig-bar" style="--h:56%"></span>
-                    </span>
-                  </div>
+      <div class="fig-card">
+        <div class="fig-head">
+          <span class="fig-tile">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5h16"/><path d="M7.2 20.5v-6.8"/><path d="M12 20.5V6.5"/><path d="M16.8 20.5v-9.8"/></svg>
+          </span>
+          <span class="fig-title">Track trends</span>
+          <span class="fig-val">2026-04-09</span>
+        </div>
 
-                  <div class="fig-row is-inset">
-                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8.5 7H17v8.5"/></svg>
-                    <span class="fig-label">act on what the data reveals</span>
-                    <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-                  </div>
-                </div>
+        <div class="fig-chart-wrap">
+          <svg class="fig-chart" viewBox="0 0 300 52" preserveAspectRatio="none" aria-hidden="true">
+            <path class="fig-chart-grid" d="M0 10h300M0 27h300M0 44h300"/>
+            <path class="fig-chart-line" d="M0 41 32 38 65 43 97 31 130 34 162 24 195 27 227 17 260 20 292 11"/>
+          </svg>
+          <span class="fig-chart-mark" style="--x:97.3%; --y:21.2%"></span>
+        </div>
 
-              </div>
-            </div>
-          </div>
+        <div class="fig-row is-inset">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 19.3 5.9v5.4c0 4.4-3 8.2-7.3 9.9-4.3-1.7-7.3-5.5-7.3-9.9V5.9z"/></svg>
+          <span class="fig-label">understand risks</span>
+          <span class="fig-bars">
+            <span class="fig-bar" style="--h:44%"></span>
+            <span class="fig-bar" style="--h:70%"></span>
+            <span class="fig-bar is-good" style="--h:96%"></span>
+            <span class="fig-bar" style="--h:56%"></span>
+          </span>
+        </div>
+
+        <div class="fig-row is-inset">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8.5 7H17v8.5"/></svg>
+          <span class="fig-label">act on what the data reveals</span>
+          <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
         </div>
         <div class="panel-card">
           <h3 class="t-h4">A dashboard for your body</h3>
@@ -607,7 +603,7 @@ const PANELS = [
 
     <div class="fcards">
       <article class="fcard">
-        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6.5 5 13L17 12h4"/></svg></div>
+        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5h16"/><path d="M7.2 20.5v-6.8"/><path d="M12 20.5V6.5"/><path d="M16.8 20.5v-9.8"/></svg></div>
         <h3 class="t-body-lg">Full biomarker tracking</h3>
         <p class="t-body-sm t-muted">
           Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
@@ -620,7 +616,7 @@ const PANELS = [
         <p class="t-body-sm t-muted">Calibrated to your biology, not a template.</p>
       </article>
       <article class="fcard">
-        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg></div>
+        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg></div>
         <h3 class="t-body-lg">Health concierge</h3>
         <p class="t-body-sm t-muted">
           A dedicated coordinator who handles specialist referrals, appointment logistics, second
@@ -649,31 +645,33 @@ const PANELS = [
       <article class="static-card">
         <div class="static-art" aria-hidden="true">
           <div class="disc is-bare" data-disc="clinical-care">
-            <div class="disc-stage">
-              <div class="fig-card disc-top">
-                <div class="fig-row">
-                  <span class="fig-avatars">
-                    <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
-                  </span>
-                  <span class="fig-label">physician-led teams</span>
-                </div>
-              </div>
+  <div class="disc-stage">
 
-              <div class="fig-link">
-                <span class="fig-link-line"></span>
-                <span class="fig-chip">continuous care between visits</span>
-                <span class="fig-link-line"></span>
-              </div>
+    <div class="fig-card disc-top">
+      <div class="fig-row">
+        <span class="fig-avatars">
+          <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
+        </span>
+        <span class="fig-label">physician-led teams</span>
+      </div>
+    </div>
 
-              <div class="fig-card disc-bottom">
-                <div class="fig-row">
-                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
-                  <span class="fig-label">published outcomes</span>
-                  <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="fig-link">
+      <span class="fig-link-line"></span>
+      <span class="fig-chip">continuous care between visits</span>
+      <span class="fig-link-line"></span>
+    </div>
+
+    <div class="fig-card disc-bottom">
+      <div class="fig-row">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
+        <span class="fig-label">published outcomes</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
+
+  </div>
+</div>
         </div>
         <h3 class="t-body-lg">Clinical care</h3>
         <p class="t-body-sm">
@@ -683,30 +681,32 @@ const PANELS = [
       <article class="static-card">
         <div class="static-art" aria-hidden="true">
           <div class="disc is-bare" data-disc="diagnostics-and-screening">
-            <div class="disc-stage">
-              <div class="fig-card disc-top">
-                <div class="fig-row">
-                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
-                  <span class="fig-label">baseline testing</span>
-                  <span class="fig-val">2026-03-02</span>
-                </div>
-              </div>
+  <div class="disc-stage is-flip">
 
-              <div class="fig-link">
-                <span class="fig-link-line"></span>
-                <span class="fig-chip">imaging</span>
-                <span class="fig-link-line"></span>
-              </div>
+    <div class="fig-card disc-top">
+      <div class="fig-row">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
+        <span class="fig-label">baseline testing</span>
+        <span class="fig-val">2026-03-02</span>
+      </div>
+    </div>
 
-              <div class="fig-card disc-bottom">
-                <div class="fig-row">
-                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 19.3 5.9v5.4c0 4.4-3 8.2-7.3 9.9-4.3-1.7-7.3-5.5-7.3-9.9V5.9z"/><path d="m8.9 11.8 2.2 2.2 4-4.4"/></svg>
-                  <span class="fig-label">multi-cancer early detection</span>
-                  <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="fig-link">
+      <span class="fig-link-line"></span>
+      <span class="fig-chip">imaging</span>
+      <span class="fig-link-line"></span>
+    </div>
+
+    <div class="fig-card disc-bottom">
+      <div class="fig-row">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 19.3 5.9v5.4c0 4.4-3 8.2-7.3 9.9-4.3-1.7-7.3-5.5-7.3-9.9V5.9z"/><path d="m8.9 11.8 2.2 2.2 4-4.4"/></svg>
+        <span class="fig-label">multi-cancer early detection</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
+
+  </div>
+</div>
         </div>
         <h3 class="t-body-lg">Diagnostics and screening</h3>
         <p class="t-body-sm">
@@ -717,30 +717,38 @@ const PANELS = [
       <article class="static-card">
         <div class="static-art" aria-hidden="true">
           <div class="disc is-bare" data-disc="advanced-therapies">
-            <div class="disc-stage">
-              <div class="fig-card disc-top">
-                <div class="fig-row">
-                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
-                  <span class="fig-label">hormones</span>
-                  <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-                </div>
-              </div>
+  <div class="disc-stage is-trio">
 
-              <div class="fig-link">
-                <span class="fig-link-line"></span>
-                <span class="fig-chip">peptides</span>
-                <span class="fig-link-line"></span>
-              </div>
+    <div class="fig-card">
+      <div class="fig-row">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z"/><path d="m8.5 8.5 7 7"/></svg>
+        <span class="fig-label">hormones</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
 
-              <div class="fig-card disc-bottom">
-                <div class="fig-row">
-                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
-                  <span class="fig-label">regenerative therapies</span>
-                  <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="fig-link"><span class="fig-link-line"></span></div>
+
+    <div class="fig-card">
+      <div class="fig-row">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8s6.2 6.1 6.2 10.4a6.2 6.2 0 0 1-12.4 0C5.8 8.9 12 2.8 12 2.8z"/></svg>
+        <span class="fig-label">peptides</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
+
+    <div class="fig-link"><span class="fig-link-line"></span></div>
+
+    <div class="fig-card">
+      <div class="fig-row">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
+        <span class="fig-label">regenerative therapies</span>
+        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+      </div>
+    </div>
+
+  </div>
+</div>
         </div>
         <h3 class="t-body-lg">Advanced therapies</h3>
         <p class="t-body-sm">
