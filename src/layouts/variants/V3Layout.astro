@@ -302,9 +302,12 @@ const NAV_LINKS = [
           else if (y <= 360) setCollapsed(false);
 
           const navBottom = nav!.getBoundingClientRect().bottom;
+          // A few pixels of lookahead, so the handover is early rather than a
+          // frame late at speed.
+          const edge = navBottom + 12;
           const onDark = darkZones.some(z => {
             const r = z.getBoundingClientRect();
-            return r.top < navBottom && r.bottom > navBottom;
+            return r.top < edge && r.bottom > edge;
           });
           nav!.classList.toggle('is-dark', onDark);
         }

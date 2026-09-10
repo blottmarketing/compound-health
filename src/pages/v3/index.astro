@@ -1521,9 +1521,18 @@ const PANELS = [
         btn.id = `${sel.id || 'wf-dd-' + n}-btn`;
         btn.setAttribute('aria-haspopup', 'listbox');
         btn.setAttribute('aria-expanded', 'false');
-        if (label) { btn.setAttribute('aria-label', label.textContent?.trim() || ''); label.htmlFor = btn.id; }
         const text = document.createElement('span');
+        text.id = `${btn.id}-value`;
         btn.appendChild(text);
+        // The name is the label plus the current value, not the label alone:
+        // aria-label would replace the button's contents and the chosen tier
+        // would be nowhere in the accessibility tree, which also breaks
+        // WCAG 2.5.3, since the visible word must be in the name.
+        if (label) {
+          label.id = label.id || `${btn.id}-label`;
+          label.htmlFor = btn.id;
+          btn.setAttribute('aria-labelledby', `${label.id} ${text.id}`);
+        }
         btn.insertAdjacentHTML('beforeend', CHEV);
 
         const list = document.createElement('ul');
