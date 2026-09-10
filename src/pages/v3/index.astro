@@ -1254,7 +1254,7 @@ const PANELS = [
               .to(copies[i - 1], { opacity: 0, duration: 0.35 }, at)
               .to(panels[i], { yPercent: 0, opacity: 1, duration: 1 }, at)
               .to(panels[i], { scale: 1, duration: 0.25 }, at)
-              .to(copies[i], { opacity: 1, duration: 0.4 }, at + 0.55);
+              .to(copies[i], { opacity: 1, duration: 0.4 }, at + 0.4);
           }
           tl.to({}, { duration: HOLD - 0.3 });
 
@@ -1392,10 +1392,10 @@ const PANELS = [
         if (h1 && h2) {
           // The first line arrives, is held, hands over, and the second gets a
           // comparable stretch to itself rather than only the last fifth.
-          tl.fromTo(h1, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.7 }, 0)
+          tl.fromTo(h1, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7 }, 0)
             .to({}, { duration: 1.5 })
-            .to(h1, { autoAlpha: 0, y: -40, duration: 0.6 })
-            .fromTo(h2, { autoAlpha: 0, y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6 }, '>-0.15')
+            .to(h1, { opacity: 0, y: -40, duration: 0.6 })
+            .fromTo(h2, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6 }, '>')
             .to({}, { duration: 1.5 });
         }
       })();
