@@ -289,8 +289,11 @@ const NAV_LINKS = [
           });
         }
 
-        // --- dark over the hero ---------------------------------------------
-        const darkZone = document.querySelector<HTMLElement>('[data-nav-dark]');
+        // --- dark over any dark ground ----------------------------------------
+        // Two of them: the hero photograph and the closing card. The bar
+        // inverts for as long as it is over either one, which is the whole
+        // reason those two frames are the only dark things on the page.
+        const darkZones = Array.from(document.querySelectorAll<HTMLElement>('[data-nav-dark]'));
         let ticking = false;
         function update() {
           ticking = false;
@@ -298,10 +301,12 @@ const NAV_LINKS = [
           if (y >= 400) setCollapsed(true);
           else if (y <= 360) setCollapsed(false);
 
-          if (darkZone) {
-            const r = darkZone.getBoundingClientRect();
-            nav!.classList.toggle('is-dark', r.bottom > 72);
-          }
+          const navBottom = nav!.getBoundingClientRect().bottom;
+          const onDark = darkZones.some(z => {
+            const r = z.getBoundingClientRect();
+            return r.top < navBottom && r.bottom > navBottom;
+          });
+          nav!.classList.toggle('is-dark', onDark);
         }
         window.addEventListener('scroll', () => {
           if (!ticking) { ticking = true; requestAnimationFrame(update); }

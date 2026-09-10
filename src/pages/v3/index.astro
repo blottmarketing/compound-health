@@ -262,7 +262,7 @@ const PANELS = [
     </div>
 
     <div class="hero-inner">
-      <h1 class="t-display t-balance">Beyond wealth:<br class="br-wide" />the years to <em>enjoy it</em></h1>
+      <h1 class="t-display t-balance">Beyond wealth: <br class="br-wide" />the years to <em>enjoy&nbsp;it</em></h1>
 
       <p class="hero-sub t-body">
         A private longevity membership, introduced through the people who already advise you, your
@@ -339,7 +339,7 @@ const PANELS = [
     <div class="car-stage" data-car-stage>
       {STEPS.map((step, i) => (
         <article class:list={['car-panel', { 'is-right': step.side === 'right' }]} data-car-odd={i}>
-          <div class="car-media">
+          <div class="car-media" aria-hidden="true">
             <Fragment set:html={PANELS[i]} />
           </div>
           <div class="car-copy">
@@ -393,7 +393,7 @@ const PANELS = [
           )}
         </div>
       </div>
-      <div class="orb" data-orb="1"><div class="orb-card">
+      <div class="orb" data-orb="1"><div class="orb-card" aria-hidden="true">
           <div class="dcard">
             <div class="dcard-head">
               <span class="ico-tile">
@@ -408,7 +408,7 @@ const PANELS = [
             </div>
           </div>
         </div></div>
-      <div class="orb" data-orb="2"><div class="orb-card">
+      <div class="orb" data-orb="2"><div class="orb-card" aria-hidden="true">
           <div class="dcard">
             <div class="dcard-head">
               <span class="ico-tile">
@@ -444,7 +444,7 @@ const PANELS = [
           )}
         </div>
       </div>
-      <div class="orb" data-orb="4"><div class="orb-card">
+      <div class="orb" data-orb="4"><div class="orb-card" aria-hidden="true">
           <div class="dcard">
             <div class="dcard-head">
               <span class="ico-tile">
@@ -460,7 +460,7 @@ const PANELS = [
             </div>
           </div>
         </div></div>
-      <div class="orb" data-orb="5"><div class="orb-card">
+      <div class="orb" data-orb="5"><div class="orb-card" aria-hidden="true">
           <div class="dcard">
             <div class="dcard-head">
               <span class="ico-tile">
@@ -645,7 +645,7 @@ const PANELS = [
       </p>
     </div>
 
-    <div class="statics-row">
+    <div class="statics-row" role="group" aria-label="The three disciplines" tabindex="0">
       <article class="static-card">
         <div class="static-art" aria-hidden="true">
           <div class="disc is-bare" data-disc="clinical-care">
@@ -969,7 +969,7 @@ const PANELS = [
        the footer can begin.
        =================================================================== -->
   <section class="cta-band" aria-labelledby="accessHead">
-    <div class="cta-card">
+    <div class="cta-card" data-nav-dark>
       {CLOSING_ART ? (
         <img class="cta-img" src={CLOSING_ART} alt="" width="2752" height="1448" loading="lazy" decoding="async" />
       ) : (
@@ -1186,38 +1186,54 @@ const PANELS = [
         const stage = document.querySelector<HTMLElement>('[data-car-stage]');
         const panels = Array.from(document.querySelectorAll<HTMLElement>('.car-panel'));
         if (!section || !stage || panels.length < 2) return;
-        const wide = window.matchMedia('(min-width: 1024px)');
-        if (!canScrub || !wide.matches) { section.classList.add('is-static'); return; }
+        if (!canScrub) { section.classList.add('is-static'); return; }
 
-        // The first card is on top and the queued ones sit under it, which is why
-        // the reference writes this deck backwards in the DOM. Only the rounded
-        // edge of the next card shows below the one in front.
-        panels.forEach((p, i) => { p.style.zIndex = String(panels.length - i); });
-        // Queued cards wait below, small and dim; the front card is whole.
-        g.set(panels.slice(1), { yPercent: 10, scale: 0.95, opacity: 0.3 });
         const copies = panels.map(p => p.querySelector<HTMLElement>('.car-copy'));
-        g.set(copies.slice(1), { opacity: 0 });
+        const mm = g.matchMedia();
 
-        const tl = g.timeline({
-          defaults: { ease: 'none' },
-          scrollTrigger: {
-            trigger: section,
-            start: 'center center',
-            end: () => `+=${2.4 * window.innerHeight}`,
-            pin: stage,
-            scrub: 0.3,
-            invalidateOnRefresh: true,
-          },
+        mm.add('(max-width: 1279px)', () => {
+          section.classList.add('is-static');
         });
 
-        for (let i = 1; i < panels.length; i++) {
-          const at = 0.25 + (i - 1) * 1.3;
-          tl.to(panels[i - 1], { y: () => -window.innerHeight, duration: 1 }, at)
-            .to(copies[i - 1], { opacity: 0, duration: 0.3 }, at)
-            .to(panels[i], { yPercent: 0, scale: 1, opacity: 1, duration: 1 }, at)
-            .to(copies[i], { opacity: 1, duration: 0.4 }, at + 0.5);
-        }
-        tl.to({}, { duration: 0.4 });
+        mm.add('(min-width: 1280px)', () => {
+          section.classList.remove('is-static');
+          // The first card is on top and the queued ones sit under it, which is
+          // why the reference writes this deck backwards in the DOM. Only the
+          // rounded edge of the next card shows below the one in front.
+          panels.forEach((p, i) => { p.style.zIndex = String(panels.length - i); });
+          g.set(panels.slice(1), { yPercent: 10, scale: 0.95, opacity: 0.3 });
+          g.set(copies.slice(1), { opacity: 0 });
+
+          const tl = g.timeline({
+            defaults: { ease: 'none' },
+            scrollTrigger: {
+              trigger: section,
+              start: 'center center',
+              end: () => `+=${2.4 * window.innerHeight}`,
+              pin: stage,
+              scrub: 0.3,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          for (let i = 1; i < panels.length; i++) {
+            const at = 0.25 + (i - 1) * 1.3;
+            tl.to(panels[i - 1], { y: () => -window.innerHeight, duration: 1 }, at)
+              .to(copies[i - 1], { opacity: 0, duration: 0.3 }, at)
+              .to(panels[i], { yPercent: 0, scale: 1, opacity: 1, duration: 1 }, at)
+              .to(copies[i], { opacity: 1, duration: 0.4 }, at + 0.5);
+          }
+          tl.to({}, { duration: 0.4 });
+
+          // Crossing the breakpoint has to leave nothing behind: the timeline
+          // and its pin go with it, and the inline state comes off.
+          return () => {
+            section.classList.add('is-static');
+            g.set(panels, { clearProps: 'all' });
+            g.set(copies, { clearProps: 'all' });
+            panels.forEach(p => { p.style.zIndex = ''; });
+          };
+        });
       })();
 
       // --- the orbit ------------------------------------------------------------
@@ -1373,6 +1389,22 @@ const PANELS = [
         if (!root) return;
         const items = Array.from(root.querySelectorAll<HTMLElement>('.acc-item'));
 
+        // Without script every row stays open, which is why the panel's
+        // resting height is auto in the stylesheet. Script closes them on
+        // load and takes ownership of the wiring at the same time.
+        items.forEach((item, i) => {
+          const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
+          const panel = item.querySelector<HTMLElement>('.acc-panel');
+          if (!btn || !panel) return;
+          btn.id = `acc-btn-${i}`;
+          panel.id = `acc-panel-${i}`;
+          btn.setAttribute('aria-controls', panel.id);
+          btn.setAttribute('aria-expanded', 'false');
+          panel.setAttribute('role', 'region');
+          panel.setAttribute('aria-labelledby', btn.id);
+          panel.style.height = '0px';
+        });
+
         function close(item: HTMLElement) {
           const panel = item.querySelector<HTMLElement>('.acc-panel');
           const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
@@ -1489,6 +1521,7 @@ const PANELS = [
           const li = document.createElement('li');
           li.className = 'wf-dd-opt';
           li.setAttribute('role', 'option');
+          li.id = `${btn.id}-opt-${opts.indexOf(o)}`;
           li.dataset.value = o.value;
           li.innerHTML = `<span>${o.textContent}</span>${TICK}`;
           li.addEventListener('click', () => { choose(o.value); close(); btn.focus(); });
@@ -1527,6 +1560,9 @@ const PANELS = [
         }
         function paint() {
           items.forEach((li, i) => li.classList.toggle('is-focus', i === focus));
+          // Without this the arrow keys move a highlight nobody can hear.
+          if (focus >= 0) btn.setAttribute('aria-activedescendant', items[focus].id);
+          else btn.removeAttribute('aria-activedescendant');
         }
 
         btn.addEventListener('click', () => (list.classList.contains('is-open') ? close() : open()));

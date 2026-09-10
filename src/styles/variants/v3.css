@@ -387,7 +387,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   display: block;
   margin-bottom: 2rem;
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   letter-spacing: -0.01em;
   color: var(--text-secondary);
 }
@@ -432,6 +432,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   border: 2px solid transparent;
   border-radius: var(--r-chrome);
   z-index: 1;
+  white-space: nowrap;
   transition: background-color 0.15s var(--ease-default),
               color 0.15s var(--ease-default);
 }
@@ -1201,7 +1202,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .car-n {
   display: block;
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   letter-spacing: -0.01em;
   color: var(--text-secondary);
   margin-bottom: 1.2rem;
@@ -1375,10 +1376,10 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 }
 @media (min-width: 1280px) { .static-art { margin-bottom: 3.2rem; } }
 .static-card h3 { margin-bottom: 0.4rem; }
-.static-card p { color: var(--text-secondary); padding-right: 1.6rem; }
+.static-card p { color: var(--text-secondary); padding-right: 1.6rem; max-width: 42rem; }
 
 .statics-note {
-  max-width: 60rem;
+  max-width: 56rem;
   margin: 4.8rem auto 0;
   text-align: center;
   color: var(--text-secondary);
@@ -1454,8 +1455,10 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .acc-item.is-open .acc-chev { background: var(--stone-300); }
 .acc-chev .ico { transition: transform 0.2s var(--ease-out); }
 .acc-item.is-open .acc-chev .ico { transform: rotate(180deg); }
+/* Open at rest, so a reader without script gets the whole answer; the script
+   closes each row on load and owns the height from then on. */
 .acc-panel {
-  height: 0;
+  height: auto;
   overflow: clip;
   transition: height 0.2s var(--ease-out);
 }
@@ -1497,7 +1500,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .tier.is-feature .tick { color: var(--green-500); }
 .tier.is-feature .tag { background: var(--white-a-200); color: var(--white); }
 
-.tiers-note { margin-top: 2.4rem; color: var(--text-secondary); max-width: 78rem; }
+.tiers-note { margin-top: 2.4rem; color: var(--text-secondary); max-width: 62rem; }
 
 /* ---------------------------------------------------------------------------
    20. THE CLOSING CARD
@@ -1566,7 +1569,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .deliver li { display: flex; gap: 1.6rem; align-items: baseline; }
 .deliver-n {
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: var(--text-secondary);
   flex-shrink: 0;
   letter-spacing: -0.01em;
@@ -1590,7 +1593,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 @media (min-width: 1024px) {
   .access-grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: 6.4rem; }
 }
-.access-lede { color: var(--text-secondary); margin-top: 1.6rem; max-width: 48rem; }
+.access-lede { color: var(--text-secondary); margin-top: 1.6rem; max-width: 44rem; }
 
 .waitlist-card {
   padding: 2.4rem;
@@ -1724,7 +1727,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   font-size: 1.3rem;
 }
 .wf-error.visible { display: flex; }
-.wf-note { margin-top: 1.6rem; color: var(--text-secondary); }
+.wf-note { margin-top: 1.6rem; max-width: 46rem; color: var(--text-secondary); }
 .wf-note a { text-decoration: underline; text-underline-offset: 2px; }
 
 .waitlist-success { display: none; text-align: center; padding: 2.4rem 0; }
@@ -1832,7 +1835,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 .fcard-art { margin-bottom: 2rem; color: var(--text-primary); }
 .fcard-art .ico { width: 2.8rem; height: 2.8rem; stroke-width: 1.25; }
 .fcard h3 { margin-bottom: 0.8rem; }
-.fcard p { padding-right: 1.6rem; }
+.fcard p { padding-right: 1.6rem; max-width: 42rem; }
 
 /* The partner column and the card beside it. */
 .partners-grid { display: grid; gap: 2.4rem; align-items: start; }
@@ -2006,7 +2009,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   padding: calc(var(--u) * 5) calc(var(--u) * 9);
   border-radius: calc(var(--u) * 6);
   background: var(--blue-100);
-  color: var(--text-brand);
+  color: var(--blue-900);
   font-family: var(--font-mono);
   font-size: var(--t-mono);
   line-height: 1.3;
@@ -2099,7 +2102,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 }
 
 .fig-panel-stage {
-  --u: min(calc(100cqw / 420), calc(100cqh / 470));
+  --u: min(calc(100cqw / 420), calc(100cqh / 490));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2108,6 +2111,14 @@ select.wf-input { appearance: none; cursor: pointer; }
   width: 100%;
   height: 100%;
   padding: calc(var(--u) * 20);
+}
+
+@container figpanel (max-width: 420px) {
+  .fig-panel-stage { --u: min(calc(100cqw / 420), calc(100cqh / 440)); }
+  /* The mono strings are short, so on the smallest frame they take the label's
+     multiplier rather than their own and stay above ten pixels. */
+  .fig-panel-stage { --t-mono: calc(var(--u) * 13.6); }
+  .fig-panel-stage .fig-link-line { display: none; }
 }
 
 .fig-panel-a, .fig-panel-b, .fig-panel-single { width: 100%; }
@@ -2147,8 +2158,9 @@ select.wf-input { appearance: none; cursor: pointer; }
     );
   }
   .fig-panel-split .fig-link-line { display: none; }
-  .fig-panel-a { width: 38%; }
-  .fig-panel-b { width: 34%; }
+  .fig-panel-split .fig-chip { white-space: normal; text-align: center; }
+  .fig-panel-a { width: 36%; }
+  .fig-panel-b { width: 32%; }
   .fig-panel-single { width: 68%; }
 }
 
@@ -2252,7 +2264,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 .disc.is-bare { background: none; border-radius: 0; }
 
 .disc-stage {
-  --u: calc(100cqw / 440);
+  --u: min(calc(100cqw / 300), calc(100cqh / 340));
   position: absolute;
   inset: 0;
   display: flex;
@@ -2286,6 +2298,9 @@ select.wf-input { appearance: none; cursor: pointer; }
    balance itself where it does not.
    --------------------------------------------------------------------------- */
 
+/* Hidden, the break leaves the space beside it behind, which is why the
+   markup carries a real space before it. Shown, that space collapses at the
+   end of the line and costs nothing. */
 .br-wide { display: none; }
 @media (min-width: 700px) { .br-wide { display: inline; } }
 
@@ -2333,15 +2348,6 @@ select.wf-input { appearance: none; cursor: pointer; }
   justify-self: stretch;
   container: figpanel / size;
 }
-
-/* was: min(calc(100cqw / 420), calc(100cqh / 410)) */
-.fig-panel-stage { --u: min(calc(100cqw / 420), calc(100cqh / 520)); }
-
-/* was: calc(100cqw / 440), which leaves an 8px label in a 248px tile on a
-   phone. The square's cards are percentage-width, so the design box sets the
-   type scale rather than the layout, and the height clamp keeps a tall
-   diagram inside a short tile. */
-.disc-stage { --u: min(calc(100cqw / 300), calc(100cqh / 340)); }
 
 /* ---------------------------------------------------------------------------
    F5.1 THE TOP-RIGHT ARRANGEMENT
@@ -2466,3 +2472,13 @@ select.wf-input { appearance: none; cursor: pointer; }
 /* The pair of small marks that carry "virtual and in person". */
 .fig-pair { display: flex; align-items: center; gap: calc(var(--u) * 6); flex-shrink: 0; }
 .fig-pair .ico { width: calc(var(--u) * 16); height: calc(var(--u) * 16); color: var(--text-secondary); }
+
+@media (min-width: 1280px) {
+  .sec-label, .car-n, .deliver-n, .footer-col-title { font-size: 1.4rem; }
+}
+
+.statics-row:focus-visible {
+  outline: 2px solid var(--stroke-focus);
+  outline-offset: 4px;
+  border-radius: var(--r-shell);
+}
