@@ -1288,7 +1288,11 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 }
 /* fit-content so the four data cards, which are now four widths, each sit
    centred on their own point of the ellipse. */
-.orb-card { width: fit-content; max-width: 34rem; }
+/* max-content, not fit-content: the cards below carry fixed widths, so the
+   slot measures exactly the card inside it and centres it on its own point
+   of the ellipse. fit-content made a percentage-width child resolve against
+   the slot and collapse. */
+.orb-card { width: max-content; }
 
 /* ---------------------------------------------------------------------------
    15. THE WIDE PANELS
@@ -2088,7 +2092,7 @@ select.wf-input { appearance: none; cursor: pointer; }
    .panel-art inside .panel, so it paints no ground, holds no ratio and clips
    nothing: .panel owns all three.
 
-   One composition, two arrangements. The nominal design box is 420x490 when
+   One composition, two arrangements. The nominal design box is 420x505 when
    the frame is narrow and 1000x560 when it is wide, and --u is clamped by the
    frame's real width AND its real height together, so the drawing always fits.
    Below 780px the cards stack with the connector running down between them;
@@ -2122,7 +2126,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 }
 
 .fig-panel-stage {
-  --u: min(calc(100cqw / 420), calc(100cqh / 490));
+  --u: min(calc(100cqw / 420), calc(100cqh / 505));
   /* ITEM 12. The mono strings here are short and sit beside the labels, so they
      take a multiplier close to the label's for the whole stacked arrangement
      rather than only under 420px. That removes the 12.4px-to-9.8px step at the
@@ -2138,8 +2142,12 @@ select.wf-input { appearance: none; cursor: pointer; }
   padding: calc(var(--u) * 20);
 }
 
+/* The two stacked nominals are set so the composition stays inside the stage's
+   own padding, not merely inside the frame. At 490 and 440 it cleared the frame
+   but ate 3 to 6px of the padding at the tallest frames, which is the drawing
+   creeping towards an edge it was given room to stay away from. */
 @container figpanel (max-width: 420px) {
-  .fig-panel-stage { --u: min(calc(100cqw / 420), calc(100cqh / 440)); }
+  .fig-panel-stage { --u: min(calc(100cqw / 420), calc(100cqh / 455)); }
   .fig-panel-stage .fig-link-line { display: none; }
 }
 
@@ -2206,9 +2214,20 @@ select.wf-input { appearance: none; cursor: pointer; }
 
   /* Panel 01 holds three rows in one card and two in the other, side by side,
      so it is the shortest composition on the deck and needs the most air to
-     reach the same fill as 02 and 03. */
-  .fig-panel-split .fig-card { --pad: calc(var(--u) * 44); }
-  .fig-panel-split .fig-row.is-inset { padding: calc(var(--u) * 24) calc(var(--u) * 20); }
+     reach the same fill as 02 and 03.
+
+     The air is vertical only. When it was applied on both axes the row's inner
+     width fell to 173px against 223px of content, and the date and the tick
+     walked out of the grey fill onto the white card, at every frame in this
+     band. Fill is bought in the block direction; the inline direction is where
+     the content actually lives. */
+  .fig-panel-split .fig-card {
+    padding: calc(var(--u) * 44) calc(var(--u) * 28);
+  }
+  .fig-panel-split .fig-row.is-inset {
+    padding: calc(var(--u) * 24) calc(var(--u) * 16);
+    gap: calc(var(--u) * 14);
+  }
 
   /* Side by side, joined across the middle. The dotted run is the link's own
      ::after, so it spans the gap whatever the chip measures, and it is wider
@@ -2233,8 +2252,8 @@ select.wf-input { appearance: none; cursor: pointer; }
   }
   .fig-panel-split .fig-link-line { display: none; }
   .fig-panel-split .fig-chip { white-space: normal; text-align: center; }
-  .fig-panel-a { width: 36%; }
-  .fig-panel-b { width: 32%; }
+  .fig-panel-a { width: 38%; }
+  .fig-panel-b { width: 36%; }
   .fig-panel-single { width: 100%; }
 }
 
@@ -2249,14 +2268,18 @@ select.wf-input { appearance: none; cursor: pointer; }
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  width: min(34rem, 100%);
+  /* A fixed width, not min(34rem, 100%). The percentage resolved against a
+     shrink-to-fit .orb-card and collapsed this card to 229px, which is also
+     what pushed "owned by the client" out of its own head row. */
+  width: 34rem;
+  max-width: 100%;
   padding: 1.6rem;
   border-radius: 1.2rem;
   background: var(--surface-quaternary);
 }
-.dcard.is-tall  { width: min(20rem, 100%); }
-.dcard.is-short { width: min(24rem, 100%); }
-.dcard.is-wide  { width: min(34rem, 100%); }
+.dcard.is-tall  { width: 20rem; }
+.dcard.is-short { width: 24rem; }
+.dcard.is-wide  { width: 34rem; }
 
 .dcard-head { display: flex; align-items: center; gap: 1.2rem; }
 
@@ -2351,6 +2374,48 @@ select.wf-input { appearance: none; cursor: pointer; }
   color: var(--text-primary);
 }
 .dcard-figure .dcard-meta { margin-left: auto; }
+
+
+/* ---------------------------------------------------------------------------
+   F3b. THE DATA CARDS ON A PHONE
+   The orbit scales these to 0.46 below 560px. Rather than draw a smaller card,
+   draw a simpler and much larger one: the head, one figure, and type set to
+   land at a readable size after the scaling rather than before it.
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 560px) {
+  .dcard,
+  .dcard.is-tall,
+  .dcard.is-short,
+  .dcard.is-wide {
+    width: 34rem;
+    gap: 2rem;
+    padding: 2.4rem;
+    border-radius: 2rem;
+  }
+  /* Everything that is a line of detail rather than the card's subject. */
+  .dcard-row,
+  .dcard .dcard-meta { display: none; }
+
+  /* At this type size the concierge head is a tile, a title, three avatars and
+     a tick in 292px of inner width, which does not fit on one line. It wraps
+     rather than losing its figure: the avatars are that card's whole subject. */
+  .dcard-head { gap: 1.6rem; flex-wrap: wrap; }
+  .dcard-head .dcard-title { flex: 1 1 auto; min-width: 0; }
+  .dcard-title { font-size: 2.6rem; line-height: 1.1; }
+  .dcard-val { font-size: 3rem; }
+  .dcard-figure { font-size: 3.6rem; }
+  .dcard .ico-tile { width: 5.2rem; height: 5.2rem; border-radius: 1.2rem; }
+  .dcard .ico-tile .ico { width: 2.8rem; height: 2.8rem; }
+  .dcard-avatar { width: 3.6rem; height: 3.6rem; border-width: 3px; }
+  .dcard-avatar + .dcard-avatar { margin-left: -1.2rem; }
+  .dcard-head .tick .ico { width: 2.6rem; height: 2.6rem; }
+
+  /* The tall card keeps its plot: a drawing survives scaling, a row of 7px
+     type does not. */
+  .dcard-plot { height: 12rem; padding: 1.6rem; gap: 0.9rem; }
+  .dcard-plot .dcard-bar { width: 1.6rem; border-radius: 0.8rem; }
+}
 
 /* ---------------------------------------------------------------------------
    F4. THE DISCIPLINE SQUARES
