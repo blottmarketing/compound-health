@@ -19,9 +19,12 @@ import V3Layout from '../../layouts/variants/V3Layout.astro';
  * The three process steps are drawn rather than photographed, so the brief's
  * step-01/02/03 prompts are unused unless that decision is reversed.
  */
-const HERO_ART: string | null = null;                       // 2880x1620, 16:9
-const QUAD_ART: (string | null)[] = [null, null];           // 1000x1100, 10:11
-const CLOSING_ART: string | null = null;                    // 2752x1448, 1.9:1
+const HERO_ART: string | null = '/images/v3/hero-cover.webp';        // 1671x940, 16:9
+const QUAD_ART: (string | null)[] = [
+  '/images/v3/quad-photo-a.webp',                                    // 1193x1312, 10:11
+  '/images/v3/quad-photo-b.webp',
+];
+const CLOSING_ART: string | null = '/images/v3/closing-frame.webp';  // 1414x744, 1.9:1
 
 /** The hero ticker: one promise at a time, each one a phrase from the page. */
 const TICKER = [
@@ -248,7 +251,7 @@ const PANELS = [
   <section class="hero" id="hero" data-nav-dark aria-label="Compound Health">
     <div class="hero-media" data-hero-media>
       {HERO_ART ? (
-        <img src={HERO_ART} alt="" width="2880" height="1620" fetchpriority="high" decoding="async" />
+        <img src={HERO_ART} alt="" width="1671" height="940" fetchpriority="high" decoding="async" />
       ) : (
         <div class="ph is-dark">
           <span class="ph-label">
@@ -381,7 +384,7 @@ const PANELS = [
       <div class="orb" data-orb="0">
         <div class="orb-photo">
           {QUAD_ART[0] ? (
-            <img src={QUAD_ART[0]} alt="" width="1000" height="1100" loading="lazy" decoding="async" />
+            <img src={QUAD_ART[0]} alt="" width="1193" height="1312" loading="lazy" decoding="async" />
           ) : (
             <div class="ph">
               <span class="ph-label">
@@ -433,7 +436,7 @@ const PANELS = [
       <div class="orb" data-orb="3">
         <div class="orb-photo">
           {QUAD_ART[1] ? (
-            <img src={QUAD_ART[1]} alt="" width="1000" height="1100" loading="lazy" decoding="async" />
+            <img src={QUAD_ART[1]} alt="" width="1193" height="1312" loading="lazy" decoding="async" />
           ) : (
             <div class="ph">
               <span class="ph-label">
@@ -979,7 +982,7 @@ const PANELS = [
   <section class="cta-band" aria-labelledby="accessHead">
     <div class="cta-card" data-nav-dark>
       {CLOSING_ART ? (
-        <img class="cta-img" src={CLOSING_ART} alt="" width="2752" height="1448" loading="lazy" decoding="async" />
+        <img class="cta-img" src={CLOSING_ART} alt="" width="1414" height="744" loading="lazy" decoding="async" />
       ) : (
         <div class="ph is-dark">
           <span class="ph-label">

@@ -8,9 +8,25 @@ away and there is almost nothing left. So the images are not decoration in v3, t
 Every photo slot ships as a styled placeholder until a render exists. The renders are generated
 outside the repo, in ChatGPT, from the prompts below, then dropped into `public/images/v3/`.
 
-**Status, 2026-09-10.** Brief written, no renders yet. Four slots are wired and rendering their
-placeholders: `hero-cover`, `quad-photo-a`, `quad-photo-b`, `closing-frame`. The three `step-*`
-slots are not used by the build, because those three frames are drawn rather than photographed.
+**Status, 2026-09-11. All four renders are in.** `hero-cover`, `quad-photo-a`, `quad-photo-b`
+and `closing-frame` are in `public/images/v3/` and wired. The three `step-*` slots are not used
+by the build, because those three frames are drawn rather than photographed.
+
+Two of the four were graded after delivery, because white type sits on them and the brief's rule
+is that the darkness lives in the file and never in a CSS scrim. Both treatments are a highlight
+rolloff in linear light: shadows and midtones untouched, everything above a knee compressed
+toward a ceiling, hue preserved. Neither is a gradient laid over the picture.
+
+| File | Delivered | Shipped | Treatment |
+|---|---|---|---|
+| `hero-cover` | 1672x940 | 1671x940 | highlights compressed to a 0.20 ceiling. The window and linen curtain occupy the right third and the centred headline ran onto them: 10% of the headline band was under 3:1 and 16% of the standfirst band under 4.5:1. After grading, both are clean, and the frame reads closer to the first light the brief asked for. |
+| `quad-photo-a` | 1199x1312 | 1193x1312 | crop to 10:11 only. No type sits on it. |
+| `quad-photo-b` | 1199x1312 | 1193x1312 | crop to 10:11 only. No type sits on it. |
+| `closing-frame` | 1723x913 | 1414x744 | top 18% cropped away and highlights compressed to a 0.26 ceiling. The white mark lands where the sky was, and against the delivered frame it was invisible: 52% of the mark's band under 3:1. Cropping the sky band and grading brings it to 4%, most of which is the sliver of the mark's box that sits above the card. |
+
+If either graded file is ever regenerated, ask for it darker in the prompt rather than repeating
+the grade: the brief already says so, and a render that arrives at the right exposure keeps more
+of its own tonality than one pulled down afterwards.
 
 ## The register
 
