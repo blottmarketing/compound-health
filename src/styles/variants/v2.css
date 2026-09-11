@@ -67,7 +67,6 @@
   /* Type. */
   --font-display: 'Source Serif 4', Georgia, 'Times New Roman', serif;
   --font-body:    'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-  --font-logo:    'Lato', var(--font-body);
 
   --h-huge:   5rem;      --lh-huge:   5.375rem;
   --h-large:  3.625rem;  --lh-large:  4rem;
@@ -365,17 +364,21 @@ button { font: inherit; color: inherit; }
 .main-nav:not(.is-scrolled):not(.is-on-light) .nav-logo { color: var(--ink); }
 .main-nav:not(.is-scrolled):not(.is-on-light) .nav-logo .logo-mark { color: var(--burnt); }
 
-.nav-logo { display: inline-flex; align-items: center; gap: 0.5rem; color: inherit; }
-.logo-mark { width: 26px; height: 26px; flex-shrink: 0; color: var(--orange); }
+/* The lockup is one drawing (V2Logo.astro), so the mark, the wordmark and the space
+   between them hold the proportions they were drawn at and only the height is set here.
+   Each group still takes its own colour, which is what lets the bar invert. */
+.nav-logo { display: inline-flex; align-items: center; color: inherit; }
+.logo-lockup { display: block; height: 22px; width: auto; flex-shrink: 0; }
+.logo-mark-only { display: none; height: 24px; width: auto; flex-shrink: 0; }
+.logo-mark { fill: currentColor; color: var(--orange); }
+.logo-word { fill: currentColor; }
 .main-nav.is-on-light .logo-mark { color: var(--burnt); }
-.logo-word { font-family: var(--font-logo); font-weight: 700; font-size: 1.125rem; letter-spacing: -0.01em; white-space: nowrap; }
-.logo-word-light { font-weight: 400; }
 
 .nav-links { display: flex; align-items: center; margin-left: auto; }
 .nav-links a { padding: 0.5rem 1.25rem; font-size: var(--body-md); font-weight: 500; transition: transform 0.3s; }
 .nav-links a:hover { transform: scale(0.95); }
 .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
-.nav-cta { display: inline-flex; align-items: center; height: 2.5rem; padding-inline: 1.5rem; border-radius: var(--pill); background-image: var(--grad-btn); color: var(--ink); font-weight: 600; font-size: 1rem; transition: scale 0.15s; }
+.nav-cta { display: inline-flex; align-items: center; flex-shrink: 0; height: 2.5rem; padding-inline: 1.5rem; border-radius: var(--pill); background-image: var(--grad-btn); color: var(--ink); font-weight: 600; font-size: 1rem; white-space: nowrap; transition: scale 0.15s; }
 .nav-cta:hover { scale: 0.95; }
 
 .hamburger { display: none; width: 2.5rem; height: 2.5rem; padding: 0; border: none; background: transparent; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; color: inherit; }
@@ -417,7 +420,8 @@ button { font: inherit; color: inherit; }
 }
 @media (max-width: 479px) {
   .main-nav { padding: 0.25rem 0.75rem; }
-  .logo-word { font-size: 1rem; }
+  .logo-lockup { display: none; }
+  .logo-mark-only { display: block; }
   .nav-cta { height: 2.25rem; padding-inline: 1.125rem; font-size: 0.9375rem; }
 }
 
@@ -830,7 +834,8 @@ button { font: inherit; color: inherit; }
 .site-footer { position: relative; z-index: 0; background: var(--ink); color: var(--cream); padding: calc(var(--radius-l) + 4rem) 0 2.5rem; margin-top: calc(-1 * var(--radius-l)); }
 .footer-inner { max-width: var(--container); margin-inline: auto; padding-inline: var(--pad-x); }
 .footer-cols { display: grid; grid-template-columns: 1.6fr 1fr 1fr; gap: 3rem; padding-bottom: 4rem; border-bottom: 1px solid var(--hair-inv); }
-.footer-logo { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--cream); text-decoration: none; }
+.footer-logo { display: inline-flex; align-items: center; color: var(--cream); text-decoration: none; }
+.footer-logo .logo-lockup { height: 24px; }
 .footer-logo .logo-mark { color: var(--orange); }
 .footer-tagline { margin-top: 1.25rem; max-width: 22rem; color: var(--muted-inv); font-size: var(--body-sm); line-height: var(--lh-body-sm); }
 .footer-col { display: flex; flex-direction: column; gap: 0.75rem; }
