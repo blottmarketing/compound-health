@@ -1240,10 +1240,11 @@ const PANELS = [
               onUpdate: (self: any) => {
                 const t = self.progress * TOTAL;
                 let front = 0;
-                // +0.85, not the midpoint: the plate is in place and its
-                // caption is up by then, so the screen performs for someone
-                // who is looking at it rather than at the card it replaced.
-                for (let i = 1; i < panels.length; i++) if (t >= HOLD + (i - 1) * STEP + 0.85) front = i;
+                // Back to the midpoint now the screens loop: a cycle starts
+                // and ends on the built state, so a plate can be alive while
+                // it is still sliding in and will be showing a complete
+                // screen the whole way.
+                for (let i = 1; i < panels.length; i++) if (t >= HOLD + (i - 1) * STEP + 0.4) front = i;
                 live(front);
               },
               onLeaveBack: () => live(0),
