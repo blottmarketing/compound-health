@@ -1183,13 +1183,34 @@ const PANELS = [
         const stage = document.querySelector<HTMLElement>('[data-car-stage]');
         const panels = Array.from(document.querySelectorAll<HTMLElement>('.car-panel'));
         if (!section || !stage || panels.length < 2) return;
-        if (!canScrub) { section.classList.add('is-static'); return; }
+        const live = (i: number) => {
+          panels.forEach((p, k) => p.classList.toggle('is-live', k === i));
+        };
+
+        if (!canScrub) {
+          section.classList.add('is-static');
+          // Stacked, each panel runs while it is the one on screen.
+          if ('IntersectionObserver' in window) {
+            const io = new IntersectionObserver(entries => {
+              entries.forEach(e => (e.target as HTMLElement).classList.toggle('is-live', e.isIntersecting));
+            }, { threshold: 0.4 });
+            panels.forEach(p => io.observe(p));
+          } else {
+            panels.forEach(p => p.classList.add('is-live'));
+          }
+          return;
+        }
 
         const copies = panels.map(p => p.querySelector<HTMLElement>('.car-copy'));
         const mm = g.matchMedia();
 
         mm.add('(max-width: 1279px)', () => {
           section.classList.add('is-static');
+          const io = new IntersectionObserver(entries => {
+            entries.forEach(e => (e.target as HTMLElement).classList.toggle('is-live', e.isIntersecting));
+          }, { threshold: 0.4 });
+          panels.forEach(p => io.observe(p));
+          return () => { io.disconnect(); panels.forEach(p => p.classList.remove('is-live')); };
         });
 
         mm.add('(min-width: 1280px)', () => {
@@ -1210,6 +1231,14 @@ const PANELS = [
               pin: stage,
               scrub: 0.3,
               invalidateOnRefresh: true,
+              // Whichever panel holds the front is the one that runs.
+              onUpdate: (self: any) => {
+                const t = self.progress * TOTAL;
+                let front = 0;
+                for (let i = 1; i < panels.length; i++) if (t >= HOLD + (i - 1) * STEP + 0.5) front = i;
+                live(front);
+              },
+              onLeaveBack: () => live(0),
             },
           });
 
@@ -1220,6 +1249,7 @@ const PANELS = [
           // two transitions take about a quarter each.
           const HOLD = 0.9;
           const STEP = 1.9;
+          const TOTAL = HOLD + (panels.length - 1) * STEP + 1 + (HOLD - 0.3);
           for (let i = 1; i < panels.length; i++) {
             const at = HOLD + (i - 1) * STEP;
             // The scale finishes early and on its own tween. Opacity runs 0.3
@@ -1233,6 +1263,7 @@ const PANELS = [
               .to(copies[i], { opacity: 1, duration: 0.4 }, at + 0.4);
           }
           tl.to({}, { duration: HOLD - 0.3 });
+          live(0);
 
           // Crossing the breakpoint has to leave nothing behind: the timeline
           // and its pin go with it, and the inline state comes off.
@@ -1240,7 +1271,7 @@ const PANELS = [
             section.classList.add('is-static');
             g.set(panels, { clearProps: 'all' });
             g.set(copies, { clearProps: 'all' });
-            panels.forEach(p => { p.style.zIndex = ''; });
+            panels.forEach(p => { p.style.zIndex = ''; p.classList.remove('is-live'); });
           };
         });
       })();
