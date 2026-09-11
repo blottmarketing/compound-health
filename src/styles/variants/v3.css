@@ -147,6 +147,15 @@
   --dur-medium: 0.6s;
   --dur-slow:   1s;
   --ease-out:       cubic-bezier(0, 0, 0.2, 1);
+  /* The motion scale for every interactive response in this variation. One
+     curve, two durations: a tint for colour, opacity and fill, a move for
+     position, size and transform. --ease-out-quint is the same curve GSAP
+     calls power4.out, so the stylesheet and the scripts move together.
+     The deliberate outliers are the reference's own: the hero window at 1s,
+     the ticker at 0.68s, the mark drawing itself at 1.6s, and the scrubbed
+     timelines, which have no duration of their own at all. */
+  --t-tint: 0.18s;
+  --t-move: 0.32s;
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-default:   cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -433,8 +442,8 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   border-radius: var(--r-chrome);
   z-index: 1;
   white-space: nowrap;
-  transition: background-color 0.15s var(--ease-default),
-              color 0.15s var(--ease-default);
+  transition: background-color var(--t-tint) var(--ease-out-quint),
+              color var(--t-tint) var(--ease-out-quint);
 }
 .btn-icon {
   display: flex;
@@ -445,7 +454,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   height: 4rem;
   border-radius: var(--r-chrome);
   z-index: 0;
-  transition: margin 0.15s var(--ease-default);
+  transition: margin var(--t-move) var(--ease-out-quint);
 }
 .btn-icon svg { width: 2rem; height: 2rem; }
 
@@ -509,7 +518,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 2px;
-  transition: text-decoration-color var(--dur-fast) var(--ease-default);
+  transition: text-decoration-color var(--t-tint) var(--ease-out-quint);
 }
 .link:hover { text-decoration-color: currentColor; }
 .link:focus-visible { outline: none; }
@@ -713,7 +722,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   line-height: 1;
   color: var(--text-primary);
   white-space: nowrap;
-  transition: color var(--dur-fast) var(--ease-default);
+  transition: color var(--t-tint) var(--ease-out-quint);
 }
 .nav-item.is-cta { font-weight: 500; }
 
@@ -738,18 +747,18 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .nav-logo {
   display: flex;
   align-items: center;
-  gap: 0.9rem;
   height: 4.4rem;
   padding-inline: 1.4rem;
   border-radius: var(--r-chrome);
   position: relative;
   color: var(--text-primary);
-  transition: color var(--dur-fast) var(--ease-default);
+  transition: color var(--t-tint) var(--ease-out-quint);
 }
 .nav.is-dark .nav-logo { color: var(--white); }
 .nav-logo .logo-mark { width: 2.1rem; height: 2.1rem; flex-shrink: 0; }
 .nav-logo .logo-word {
   display: none;
+  margin-left: 0.9rem;
   overflow: hidden;
   white-space: nowrap;
   will-change: width, opacity;
@@ -809,9 +818,9 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   -webkit-backdrop-filter: blur(13px);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--dur-fast) var(--ease-out),
-              transform var(--dur-fast) var(--ease-out),
-              visibility var(--dur-fast);
+  transition: opacity var(--t-tint) var(--ease-out-quint),
+              transform var(--t-move) var(--ease-out-quint),
+              visibility var(--t-move);
 }
 .nav-drop.is-open {
   opacity: 1;
@@ -826,7 +835,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   border-radius: var(--r-chrome);
   font-size: 1.6rem;
   color: var(--text-primary);
-  transition: background-color var(--dur-fast) var(--ease-default);
+  transition: background-color var(--t-tint) var(--ease-out-quint);
 }
 .nav-drop a:hover { background: var(--white); }
 .nav-drop .ico { width: 1.6rem; height: 1.6rem; opacity: 0.4; }
@@ -948,7 +957,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   font-family: var(--font-body);
   font-size: 1.5rem;
   color: var(--white);
-  transition: width var(--dur-fast) var(--ease-out);
+  transition: width var(--t-move) var(--ease-out-quint);
 }
 .field-glass input::placeholder { color: var(--white-a-600); }
 .field-glass input:focus { outline: none; }
@@ -966,7 +975,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, 0.45);
   text-underline-offset: 3px;
-  transition: text-decoration-color 0.15s var(--ease-default);
+  transition: text-decoration-color var(--t-tint) var(--ease-out-quint);
 }
 .hero-note a:hover { text-decoration-color: currentColor; }
 
@@ -1196,7 +1205,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .car-copy {
   width: 100%;
   max-width: 44rem;
-  transition: opacity 0.3s var(--ease-out);
+  transition: opacity var(--t-tint) var(--ease-out-quint);
 }
 @media (min-width: 1280px) {
   .car-copy {
@@ -1475,18 +1484,18 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   flex-shrink: 0;
   border-radius: 999px;
   background: transparent;
-  transition: background-color 0.2s var(--ease-out);
+  transition: background-color var(--t-tint) var(--ease-out-quint);
 }
 .acc-btn:hover .acc-chev,
 .acc-item.is-open .acc-chev { background: var(--stone-300); }
-.acc-chev .ico { transition: transform 0.2s var(--ease-out); }
+.acc-chev .ico { transition: transform var(--t-move) var(--ease-out-quint); }
 .acc-item.is-open .acc-chev .ico { transform: rotate(180deg); }
 /* Open at rest, so a reader without script gets the whole answer; the script
    closes each row on load and owns the height from then on. */
 .acc-panel {
   height: auto;
   overflow: clip;
-  transition: height 0.2s var(--ease-out);
+  transition: height var(--t-move) var(--ease-out-quint);
 }
 .acc-panel-inner {
   padding: 0 1.6rem 2rem;
@@ -1649,9 +1658,8 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   color: var(--text-secondary);
   font-size: 1.4rem;
   cursor: pointer;
-  transition: background-color var(--dur-fast) var(--ease-default),
-              color var(--dur-fast) var(--ease-default),
-              border-color var(--dur-fast) var(--ease-default);
+  transition: background-color var(--t-tint) var(--ease-out-quint),
+              color var(--t-tint) var(--ease-out-quint);
 }
 .wf-segment:hover { background: var(--stone-400); color: var(--text-primary); }
 .wf-segment.is-active { background: var(--black-800); color: var(--white); }
@@ -1678,8 +1686,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   font-family: var(--font-body);
   font-size: 1.5rem;
   color: var(--text-primary);
-  transition: border-color var(--dur-fast) var(--ease-default),
-              background-color var(--dur-fast) var(--ease-default);
+  transition: background-color var(--t-tint) var(--ease-out-quint);
 }
 .wf-input::placeholder { color: var(--stone-800); }
 .wf-input:hover { background: var(--stone-400); }
@@ -1714,7 +1721,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 .wf-dd-btn.is-empty { color: var(--stone-800); }
 .wf-dd-btn:hover { background: var(--stone-400); }
 .wf-dd-btn:focus-visible { outline: none; box-shadow: var(--ring-focus); }
-.wf-dd-chev { width: 1.2rem; height: 0.8rem; flex-shrink: 0; transition: transform var(--dur-fast) var(--ease-out); }
+.wf-dd-chev { width: 1.2rem; height: 0.8rem; flex-shrink: 0; transition: transform var(--t-move) var(--ease-out-quint); }
 .wf-dd-btn[aria-expanded='true'] .wf-dd-chev { transform: rotate(180deg); }
 .wf-dd-list {
   position: absolute;

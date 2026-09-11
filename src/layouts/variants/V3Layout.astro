@@ -274,18 +274,37 @@ const NAV_LINKS = [
         // collapse changes the width of the bar under it, so the pill has to
         // be told on every frame of that tween or it sits at a stale width,
         // which is what left a white slab around the lone mark.
+        // One curve and two durations, matching the stylesheet's --nav-move
+        // and --nav-tint. power4.out is the same curve as the CSS
+        // cubic-bezier(.22,1,.36,1), so nothing in the bar moves on a
+        // different ease from anything else.
+        const MOVE = 0.32, TINT = 0.18, EASE = 'power4.out';
         let tracking: HTMLElement | null = null;
+
         function moveTo(el: HTMLElement | null, instant = false) {
           if (!g || !pill) return;
           tracking = el;
-          if (!el) { g.to(pill, { width: 0, opacity: 0, duration: 0.3, ease: 'expo.out' }); return; }
+          // Leaving: the indicator fades where it stands. Animating its width
+          // to zero made it collapse onto its own left edge, which is the one
+          // direction it should never move in.
+          if (!el) { g.to(pill, { opacity: 0, duration: TINT, ease: EASE }); return; }
+          const hidden = Number(g.getProperty(pill, 'opacity')) < 0.05;
+          if (hidden || instant) {
+            // Arriving from nothing: take the size and the place at once and
+            // fade up. Growing from zero width at the far left made it sweep
+            // across the bar before it had anything to say.
+            g.set(pill, { width: el.offsetWidth, x: el.offsetLeft, y: el.offsetTop });
+            if (!instant) g.to(pill, { opacity: 1, duration: TINT, ease: EASE });
+            else g.set(pill, { opacity: 1 });
+            return;
+          }
           g.to(pill, {
             width: el.offsetWidth,
             x: el.offsetLeft,
             y: el.offsetTop,
             opacity: 1,
-            duration: instant ? 0 : 0.3,
-            ease: 'expo.out',
+            duration: MOVE,
+            ease: EASE,
             overwrite: 'auto',
           });
         }
@@ -317,11 +336,11 @@ const NAV_LINKS = [
           // letters arrive into the space that has already been made.
           g.killTweensOf(word);
           const tl = g.timeline({
-            defaults: { ease: 'power3.inOut' },
+            defaults: { ease: EASE },
             // The bar changes width under the indicator for the whole move.
             onUpdate: () => { if (tracking) moveTo(tracking, true); },
             onComplete: () => {
-              if (!next) { word.style.width = ''; word.style.opacity = ''; }
+              if (!next) { word.style.width = ''; word.style.opacity = ''; word.style.marginLeft = ''; }
               if (tracking) moveTo(tracking, true);
             },
           });
@@ -330,11 +349,11 @@ const NAV_LINKS = [
           // between the mark and the first link for half a second, and that
           // pocket is what read as broken rather than the collapse itself.
           if (next) {
-            tl.to(word, { opacity: 0, duration: 0.14 }, 0)
-              .to(word, { width: 0, duration: 0.3 }, 0);
+            tl.to(word, { opacity: 0, duration: TINT - 0.04 }, 0)
+              .to(word, { width: 0, marginLeft: 0, duration: MOVE }, 0);
           } else {
-            tl.to(word, { width: natural, duration: 0.3 }, 0)
-              .to(word, { opacity: 1, duration: 0.18 }, 0.18);
+            tl.to(word, { width: natural, marginLeft: 9, duration: MOVE }, 0)
+              .to(word, { opacity: 1, duration: TINT }, MOVE - TINT);
           }
         }
 
