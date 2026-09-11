@@ -6,39 +6,42 @@
    arc draws itself as you scroll, a sunrise gradient that carries the page
    from dark to cream, and from there a stack of sections with rounded feet
    that lie one over the next. Serif display type, a warm sans for reading,
-   gradient pills for every primary action. Copy is the client's and is not
-   changed here; every label inside a figure is lifted from copy already in
-   that section.
+   gradient pills for every primary action. The palette is the brand green:
+   Dawn's structure, Sage's colour, and since 2026-09-11 the only palette in
+   the file. Copy is the client's and is not changed here; every label inside
+   a figure is lifted from copy already in that section.
    ===================================================================== */
 
 /* ---------- Tokens ---------- */
 :root {
-  /* Palette, Dawn's warm scale. */
-  --cream:   #FBF3EB;   /* page ground once the sun is up */
-  --sand:    #F8E7D5;   /* the second light surface */
-  --peach:   #FACE9F;   /* icon discs, soft fills */
-  --orange:  #FF9C31;   /* the brand orange */
-  --amber:   #FFBE4A;
-  --gold:    #FFDF62;
-  --yellow:  #FBC81C;
-  --burnt:   #C36500;   /* display type on the dark ground */
-  --cocoa:   #5B3205;
-  --ink:     #321C04;   /* text, and the dark ground */
-  --ember:   #ED6516;
-  --sky:     #2E76AD;
-  --sky-deep:#17527E;
-  --sky-light:#63B7F7;
+  /* Palette, the brand green on Dawn's structure. Forest for the dark ground,
+     moss and lime for the light. This is the Sage theme, kept as the only one
+     on 2026-09-11; Dawn's warm scale and Dusk went with the switcher. */
+  --cream:   #F3F5EE;   /* page ground once the sun is up */
+  --sand:    #E7EBDD;   /* the second light surface */
+  --peach:   #CFDDB8;   /* icon discs, soft fills */
+  --orange:  #7DAE4E;   /* the brand green */
+  --amber:   #A9C95B;
+  --gold:    #D8DE7A;
+  --yellow:  #C6D24C;
+  --burnt:   #6E9E3E;   /* display type on the dark ground */
+  --cocoa:   #2F4A1E;
+  --ink:     #12200F;   /* text, and the dark ground */
+  --ember:   #4E7F2A;
+  --sky:     #2E5C43;
+  --sky-deep:#1E3A2A;
+  --sky-light:#7FB58F;
 
   /* The same colours as rgb triplets, for translucent uses. */
-  --ink-rgb:   50, 28, 4;
-  --cream-rgb: 251, 243, 235;
-  --glow-rgb:  255, 156, 49;   /* halos, focus rings, the pill glow */
-  --tint-rgb:  23, 82, 126;    /* the wash over the top of the hero photo */
+  --ink-rgb:   18, 32, 15;
+  --cream-rgb: 243, 245, 238;
+  --glow-rgb:  125, 174, 78;   /* halos, focus rings, the pill glow */
+  --tint-rgb:  30, 58, 42;     /* the wash over the top of the hero photo */
 
   /* Stops for the surfaces that are not made of the palette above. */
-  --brown-1: #501D08;  --brown-2: #7D2B0B;          /* the brown ground */
-  --deep-1:  #170802;  --deep-2:  #501D08;
-  --sun-1:   #4A2A06;  --sun-2:   #8A4A0A;  --sun-3: #FCD87C;   /* the sunrise between ink and cream */
+  --brown-1: #1F3A1A;  --brown-2: #2F5A28;          /* the deep green ground */
+  --deep-1:  #0B150A;  --deep-2:  #1F3A1A;
+  --sun-1:   #24401A;  --sun-2:   #4E7F2A;  --sun-3: #E3E9C0;   /* the sunrise between ink and cream */
 
   --text:        var(--ink);
   --text-inverse:var(--cream);
@@ -58,7 +61,6 @@
   --grad-sunrise: linear-gradient(180deg, var(--ink) 0%, var(--sun-1) 22%, var(--sun-2) 42%, var(--orange) 62%, var(--yellow) 78%, var(--sun-3) 88%, var(--cream) 100%);
   --grad-pill:    linear-gradient(94deg, var(--peach), var(--yellow) 51%, var(--peach));
   --grad-text:    linear-gradient(90deg, var(--orange), var(--yellow));
-  --grad-text-soft: linear-gradient(90deg, rgba(250, 206, 159, 0.3), #FFC689);
   --grad-sky:     linear-gradient(180deg, var(--sky-deep) 0%, var(--sky) 55%, var(--sky-light) 100%);
   --grad-arc:     linear-gradient(90deg, var(--sand), var(--yellow) 50%, var(--orange));
 
@@ -118,62 +120,6 @@
   }
 }
 
-/* ---------- Themes ----------
-   Three complete palettes over the same structure. Dawn is the default above;
-   Sage and Dusk override the colour tokens only, never a size or a layout. The
-   switcher writes data-theme onto <html> and remembers the choice. */
-
-/* Sage: the brand green as Dawn's warmth. Forest for the dark ground, moss and
-   lime for the light, leaf-to-lime for every gradient. */
-html[data-theme="sage"] {
-  --cream:   #F3F5EE;
-  --sand:    #E7EBDD;
-  --peach:   #CFDDB8;
-  --orange:  #7DAE4E;
-  --amber:   #A9C95B;
-  --gold:    #D8DE7A;
-  --yellow:  #C6D24C;
-  --burnt:   #6E9E3E;
-  --cocoa:   #2F4A1E;
-  --ink:     #12200F;
-  --ember:   #4E7F2A;
-  --sky:     #2E5C43;
-  --sky-deep:#1E3A2A;
-  --sky-light:#7FB58F;
-  --ink-rgb:   18, 32, 15;
-  --cream-rgb: 243, 245, 238;
-  --glow-rgb:  125, 174, 78;
-  --tint-rgb:  30, 58, 42;
-  --brown-1: #1F3A1A;  --brown-2: #2F5A28;
-  --deep-1:  #0B150A;  --deep-2:  #1F3A1A;
-  --sun-1:   #24401A;  --sun-2:   #4E7F2A;  --sun-3: #E3E9C0;
-}
-
-/* Dusk: midnight and lavender, with rose and champagne for the light. */
-html[data-theme="dusk"] {
-  --cream:   #F4F1F7;
-  --sand:    #E9E3EF;
-  --peach:   #DCCBE9;
-  --orange:  #E07A8B;
-  --amber:   #EE9E8F;
-  --gold:    #F6C9A0;
-  --yellow:  #F2B36B;
-  --burnt:   #D26B8A;
-  --cocoa:   #4A2A5A;
-  --ink:     #141428;
-  --ember:   #B84A6E;
-  --sky:     #3B4A9C;
-  --sky-deep:#1E2A5A;
-  --sky-light:#8FA3E8;
-  --ink-rgb:   20, 20, 40;
-  --cream-rgb: 244, 241, 247;
-  --glow-rgb:  224, 122, 139;
-  --tint-rgb:  30, 42, 90;
-  --brown-1: #2A1E4A;  --brown-2: #4A2A6E;
-  --deep-1:  #0E0E1E;  --deep-2:  #2A1E4A;
-  --sun-1:   #2A1E4A;  --sun-2:   #6E3A6E;  --sun-3: #F6C9A0;
-}
-
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -213,12 +159,6 @@ button { font: inherit; color: inherit; }
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: var(--orange);
-}
-.text-grad-soft {
-  background-image: var(--grad-text-soft);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 /* Eyebrow: small caps, letterspaced, no box. The chip is what v1 calls .s-chip. */
@@ -550,6 +490,26 @@ button { font: inherit; color: inherit; }
 .ring-track { fill: none; stroke: var(--burnt); stroke-width: 2; stroke-dasharray: 0.5 16; stroke-linecap: round; }
 .ring-draw { fill: none; stroke: url(#ringGrad); stroke-width: 5; stroke-linecap: round; transform: rotate(-180deg); transform-origin: 50% 50%; }
 .ring-glow { position: absolute; inset: 22%; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(var(--glow-rgb), 0.2), rgba(var(--glow-rgb), 0) 68%); opacity: 0; }
+
+/* The handover to the sunrise. The sunrise's top edge is opaque ink and it sweeps up
+   over the pinned stage, so whatever is still drawn on the stage meets a hard line:
+   the arc and the standfirst were being cut in half by it. This strip rides with that
+   edge, immediately above it, taking the stage down to the same ink before the edge
+   arrives, so the join is a dissolve at any scroll position and with the scrubs off.
+   Its 60vh offset is the sunrise's own margin-top; move one and move the other. It
+   needs a z-index over .scroller-copy's 2, and it is still under .sunrise, which wins
+   on document order at the same z-index. */
+.scroller::after {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: 60vh;
+  height: 26vh;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(var(--ink-rgb), 0), rgb(var(--ink-rgb)));
+}
 /* The SVG gradients in the page take their stops from the palette, so a theme can change them. */
 #ringGrad stop:nth-child(1) { stop-color: var(--sand); }
 #ringGrad stop:nth-child(2) { stop-color: var(--yellow); }

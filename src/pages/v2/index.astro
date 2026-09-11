@@ -661,14 +661,17 @@ import V2Layout from '../../layouts/variants/V2Layout.astro';
 
       if (scroller && ringDraw) {
         // The arc draws over the first two thirds of the scroller, the glow rises
-        // with it, and the copy lets go in the last third as the sunrise takes over.
+        // with it, and the stage lets go in the last third as the sunrise takes over:
+        // copy and ring both, so nothing is left for the sunrise's edge to cut. The
+        // dissolve itself is .scroller::after in v2.css, which works with the scrubs off.
         const tl = g.timeline({
           scrollTrigger: { trigger: scroller, start: 'top top', end: 'bottom bottom', scrub: 0.6 },
         });
         tl.fromTo(ringDraw, { strokeDashoffset: ringLen }, { strokeDashoffset: ringLen * 0.08, ease: 'none', duration: 0.66 }, 0)
           .fromTo(glow, { opacity: 0 }, { opacity: 1, ease: 'none', duration: 0.5 }, 0.1)
           .fromTo(copy, { opacity: 0, y: 40 }, { opacity: 1, y: 0, ease: 'none', duration: 0.18 }, 0)
-          .to(copy, { opacity: 0, y: -30, ease: 'none', duration: 0.2 }, 0.78)
+          .to(copy, { opacity: 0, y: -30, ease: 'none', duration: 0.18 }, 0.72)
+          .to('.ring', { opacity: 0, ease: 'none', duration: 0.2 }, 0.72)
           .to('.ring', { rotate: 28, ease: 'none', duration: 1 }, 0);
       }
 
