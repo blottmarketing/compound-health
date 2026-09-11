@@ -1755,7 +1755,7 @@ const PANELS = [
       });
     }
 
-    function selectRole(role: string) {
+    function selectRole(role: string, focus = false) {
       const target =
         segments.find(s => s.dataset.role === role) ??
         (role === 'partner' ? segments.find(s => s.dataset.audience === 'partner') : undefined);
@@ -1764,13 +1764,29 @@ const PANELS = [
         const isActive = s === target;
         s.classList.toggle('is-active', isActive);
         s.setAttribute('aria-checked', String(isActive));
+        // Roving tabindex: a radiogroup is one stop in the tab order and the
+        // arrows move inside it.
+        s.tabIndex = isActive ? 0 : -1;
       });
+      if (focus) target.focus();
       applyAudience(target.dataset.audience ?? 'client');
       clearError();
     }
 
-    segments.forEach(segment => {
+    segments.forEach((segment, i) => {
+      segment.tabIndex = segment.classList.contains('is-active') ? 0 : -1;
       segment.addEventListener('click', () => selectRole(segment.dataset.role ?? 'client'));
+      segment.addEventListener('keydown', e => {
+        const last = segments.length - 1;
+        let next = -1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = i === last ? 0 : i + 1;
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = i === 0 ? last : i - 1;
+        else if (e.key === 'Home') next = 0;
+        else if (e.key === 'End') next = last;
+        if (next < 0) return;
+        e.preventDefault();
+        selectRole(segments[next].dataset.role ?? 'client', true);
+      });
     });
 
     document.addEventListener('click', event => {

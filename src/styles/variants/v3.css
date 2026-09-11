@@ -692,6 +692,20 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 
 /* The shell is drawn as an oversized sibling so the items sit inside it with
    an even 4px of glass all round. */
+/* The one place the bar gives way. See the layout for why. */
+.nav {
+  transition: transform var(--t-move) var(--ease-out-quint),
+              opacity var(--t-tint) var(--ease-out-quint);
+}
+.nav.is-away {
+  transform: translateY(-160%);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .nav.is-away { transform: translateX(-50%) translateY(-160%); }
+}
+
 .nav-shell {
   position: absolute;
   top: -4px;
@@ -925,6 +939,14 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 @media (min-width: 1280px) {
   .hero-media { transition-duration: var(--dur-slow); }
   .hero.is-zoomed .hero-media { clip-path: inset(32px 32px 32px 32px round 64px); }
+}
+/* The two pinned stages fall back to plain stacks when the reader asks for
+   less motion; the hero is the third set piece and the largest movement on
+   the page, and it was still running. It does not close at all now, which is
+   what the preference asks for: the picture stays as it arrived. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-media { transition: none; }
+  .hero.is-zoomed .hero-media { clip-path: inset(0px 0px 0px 0px round 0px); }
 }
 .hero-media .ph,
 .hero-media img { width: 100%; height: 100%; object-fit: cover; }
@@ -2793,7 +2815,10 @@ select.wf-input { appearance: none; cursor: pointer; }
 .nudge-close .ico { width: 1.6rem; height: 1.6rem; }
 
 @media (max-width: 700px) {
-  .nudge { right: var(--gutter); padding-left: 1.4rem; }
+  /* 6.4rem, not the gutter, because the review switcher sits centred at the
+     foot on this width. Take it back to var(--gutter) when the switcher comes
+     off src/pages/index.astro before shipping. */
+  .nudge { right: var(--gutter); bottom: 6.4rem; padding-left: 1.4rem; }
   .nudge-link { font-size: 1.3rem; }
 }
 @media (prefers-reduced-motion: reduce) {
