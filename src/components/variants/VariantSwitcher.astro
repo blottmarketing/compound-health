@@ -1,7 +1,8 @@
 ---
 /**
  * Variation switcher. A small fixed pill at the foot of the live page and every variation, so
- * each candidate design is one click apart.
+ * each candidate design is one click apart. It sits bottom right: v3's own .nudge takes the
+ * bottom left, and nothing else on any variation is fixed down there.
  *
  * Deliberately self-contained: its own scoped styles, no design tokens, no classes from
  * any variant stylesheet. It has to look and behave identically on top of every
@@ -40,12 +41,11 @@ const { current } = Astro.props;
     position: fixed;
     z-index: 9999;
     bottom: 18px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 18px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 6px 8px 6px 16px;
+    gap: 8px;
+    padding: 4px 5px 4px 12px;
     border-radius: 999px;
     background: rgba(22, 24, 22, 0.86);
     backdrop-filter: blur(14px) saturate(140%);
@@ -55,7 +55,7 @@ const { current } = Astro.props;
   }
 
   .vs-label {
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     letter-spacing: 0.09em;
     text-transform: uppercase;
@@ -71,9 +71,9 @@ const { current } = Astro.props;
 
   .vs-link {
     display: block;
-    padding: 5px 12px;
+    padding: 4px 10px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.01em;
     line-height: 1.4;
@@ -96,9 +96,9 @@ const { current } = Astro.props;
   .vs-link.is-planned.is-current { color: #161816; }
 
   @media (max-width: 560px) {
-    .vs { bottom: 12px; gap: 4px; padding: 6px; }
+    .vs { bottom: 12px; right: 12px; gap: 4px; padding: 4px; }
     .vs-label { display: none; }
-    .vs-link { padding: 5px 10px; font-size: 11px; }
+    .vs-link { padding: 4px 9px; font-size: 11px; }
   }
 
   @media print {
