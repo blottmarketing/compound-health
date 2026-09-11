@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /overview-deck-june/
 Disallow: /v1/
-Disallow: /v1-1/
 Disallow: /v2/
 Disallow: /v3/
 

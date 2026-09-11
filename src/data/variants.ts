@@ -41,13 +41,6 @@ export const VARIANTS: Variant[] = [
     status: 'ready',
   },
   {
-    id: 'v1-1',
-    label: 'v1.1',
-    path: '/v1-1',
-    note: 'An iteration on v1. Forked from it on 2026-09-07 and changing from there.',
-    status: 'ready',
-  },
-  {
     id: 'v2',
     label: 'v2',
     path: '/v2',
