@@ -270,16 +270,23 @@ const NAV_LINKS = [
         const hasTouch = window.matchMedia('(hover: none)').matches;
 
         // --- the indicator -------------------------------------------------
-        function moveTo(el: HTMLElement | null) {
+        // `tracking` is what the pill is currently under. The wordmark's
+        // collapse changes the width of the bar under it, so the pill has to
+        // be told on every frame of that tween or it sits at a stale width,
+        // which is what left a white slab around the lone mark.
+        let tracking: HTMLElement | null = null;
+        function moveTo(el: HTMLElement | null, instant = false) {
           if (!g || !pill) return;
+          tracking = el;
           if (!el) { g.to(pill, { width: 0, opacity: 0, duration: 0.3, ease: 'expo.out' }); return; }
           g.to(pill, {
             width: el.offsetWidth,
             x: el.offsetLeft,
             y: el.offsetTop,
             opacity: 1,
-            duration: 0.3,
+            duration: instant ? 0 : 0.3,
             ease: 'expo.out',
+            overwrite: 'auto',
           });
         }
         if (!hasTouch) {
@@ -303,13 +310,32 @@ const NAV_LINKS = [
         function setCollapsed(next: boolean) {
           if (next === collapsed || !word) return;
           collapsed = next;
-          if (!g) { word.style.width = next ? '0px' : ''; return; }
-          g.to(word, {
-            width: next ? 0 : natural,
-            duration: 0.6,
-            ease: 'power4.out',
-            onComplete: () => { if (!next) word.style.width = ''; },
+          if (!g) { word.style.width = next ? '0px' : ''; word.style.opacity = next ? '0' : ''; return; }
+          // The wordmark goes rather than being sliced: the letters give up
+          // their opacity in the first third of the move and the gap closes
+          // over the whole of it. On the way back the width leads and the
+          // letters arrive into the space that has already been made.
+          g.killTweensOf(word);
+          const tl = g.timeline({
+            defaults: { ease: 'power3.inOut' },
+            // The bar changes width under the indicator for the whole move.
+            onUpdate: () => { if (tracking) moveTo(tracking, true); },
+            onComplete: () => {
+              if (!next) { word.style.width = ''; word.style.opacity = ''; }
+              if (tracking) moveTo(tracking, true);
+            },
           });
+          // The letters go first and the space closes right behind them. When
+          // the width lagged the fade, the bar stood with an empty pocket
+          // between the mark and the first link for half a second, and that
+          // pocket is what read as broken rather than the collapse itself.
+          if (next) {
+            tl.to(word, { opacity: 0, duration: 0.14 }, 0)
+              .to(word, { width: 0, duration: 0.3 }, 0);
+          } else {
+            tl.to(word, { width: natural, duration: 0.3 }, 0)
+              .to(word, { opacity: 1, duration: 0.18 }, 0.18);
+          }
         }
 
         // --- dark over any dark ground ----------------------------------------
