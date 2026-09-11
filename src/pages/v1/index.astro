@@ -1,70 +1,92 @@
 ---
-// Design variation v1. The live home page is src/pages/index.astro; this one is a
-// candidate redesign on its own stylesheet (src/styles/variants/v1.css) and is noindex.
-// Copy is the client's: it matches the live page and is not to be rewritten here.
+/**
+ * Design variation v1, the client's final version.
+ *
+ * Source: client_resources/compound-health-v1-new.html, delivered 11 September 2026 as one
+ * flattened page and revised the same day. This file is that page's sections; the nav, the
+ * menu and the footer are in V1Layout.astro and the design system is in
+ * src/styles/variants/v1.css.
+ *
+ * Copy is the client's: it matches the live page and is not to be rewritten here.
+ */
 import V1Layout from '../../layouts/variants/V1Layout.astro';
 ---
 
 <V1Layout
   variant="v1"
-  base="/v1"
   title="Compound Health | A private longevity membership, introduced through your advisor, firm or organization"
   description="A private longevity membership introduced through wealth advisors, employers, and executive networks. Diagnostics, continuous tracking, and personalized protocols from curated clinical partners. Your health data stays yours."
 >
 
-  <!-- HERO -->
+<!-- HERO, after superpower.com: one dark photographic card inset from the
+       viewport, copy set left and centred vertically, the credibility items
+       along the foot of the card. Copy is unchanged. -->
   <section class="hero">
-    <div class="hero-media" aria-hidden="true">
-      <img
-        class="hero-img"
-        src="/images/hero-landscape.webp"
-        alt=""
-        width="1536"
-        height="1024"
-        fetchpriority="high"
-        decoding="async"
-      />
-    </div>
-    <div class="hero-inner">
-      <a href="#joinwaitlist" class="eyebrow"><span class="eyebrow-dot"></span>Founding member waitlist now open</a>
-      <h1>Beyond wealth:<br />the years to <em>enjoy it</em></h1>
-      <p class="hero-sub">
-        A private longevity membership, introduced through the people who already advise you, your
-        firm or your organization. Delivered by clinical partners chosen against one standard. Your
-        data stays yours.
-      </p>
-      <div class="hero-actions">
-        <div class="hero-btns">
-          <a href="#joinwaitlist" class="btn-solid">Get access</a>
-          <a href="#how" class="btn-outline">See how it works &#8594;</a>
+    <div class="hero-card">
+      <div class="hero-media" aria-hidden="true">
+        <img
+          class="hero-img"
+          src="/images/v1/hero.webp"
+          alt=""
+          width="1600"
+          height="800"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </div>
+      <div class="hero-inner">
+        <h1>Beyond wealth:<br />the years to <em>enjoy it</em></h1>
+        <p class="hero-sub">
+          A private longevity membership, introduced through the people who already advise you, your
+          firm or your organization. Delivered by clinical partners chosen against one standard. Your
+          data stays yours.
+        </p>
+        <div class="hero-actions">
+          <div class="hero-btns">
+            <a href="#joinwaitlist" class="btn-solid">Get access</a>
+            <a href="#how" class="btn-outline">See how it works &#8594;</a>
+          </div>
         </div>
-        <div class="hero-note">
-          <a href="#partners" class="link-quiet">
-            Introducing Compound Health to your clients, employees or members?
-          </a>
+      </div>
+
+      <!-- CREDIBILITY BAR, now the foot of the hero card. On phones the track
+           scrolls: the items are listed twice so the loop is seamless, and
+           the second set is hidden from assistive technology. -->
+      <div class="credbar">
+        <span class="cred-label">Where we are</span>
+        <div class="cred-track">
+        <div class="cred-item">
+          <span class="cred-num">400</span>
+          <span class="cred-text">UHNW clients in the advisory book we delivered our first session to</span>
+        </div>
+        <div class="cred-divider" aria-hidden="true"></div>
+        <div class="cred-item">
+          <span class="cred-num">May 2026</span>
+          <span class="cred-text">First educational session with a global private bank advisory team</span>
+        </div>
+        <div class="cred-divider" aria-hidden="true"></div>
+        <div class="cred-item">
+          <span class="cred-num">1</span>
+          <span class="cred-text">Healthspan score, owned by the client</span>
+        </div>
+        <div class="cred-item" aria-hidden="true">
+          <span class="cred-num">400</span>
+          <span class="cred-text">UHNW clients in the advisory book we delivered our first session to</span>
+        </div>
+        <div class="cred-divider" aria-hidden="true"></div>
+        <div class="cred-item" aria-hidden="true">
+          <span class="cred-num">May 2026</span>
+          <span class="cred-text">First educational session with a global private bank advisory team</span>
+        </div>
+        <div class="cred-divider" aria-hidden="true"></div>
+        <div class="cred-item" aria-hidden="true">
+          <span class="cred-num">1</span>
+          <span class="cred-text">Healthspan score, owned by the client</span>
+        </div>
         </div>
       </div>
     </div>
   </section>
-
-  <!-- CREDIBILITY BAR -->
-  <div class="credbar">
-    <span class="cred-label">Where we are</span>
-    <div class="cred-item">
-      <span class="cred-num">400</span>
-      <span class="cred-text">UHNW clients in the advisory book we delivered our first session to</span>
-    </div>
-    <div class="cred-divider"></div>
-    <div class="cred-item">
-      <span class="cred-num">May 2026</span>
-      <span class="cred-text">First educational session with a global private bank advisory team</span>
-    </div>
-    <div class="cred-divider"></div>
-    <div class="cred-item">
-      <span class="cred-num">1</span>
-      <span class="cred-text">Healthspan score, owned by the client</span>
-    </div>
-  </div>
 
   <div class="rule"></div>
 
@@ -135,71 +157,92 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
         </div>
       </div>
 
-      <div class="bento reveal">
-        <div class="bento-cell is-surface tone-green">
-          <div>
-            <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 4v16h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 14l3-4 3 3 4-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg></span>
-            <h3 class="bento-title">A dashboard for your body</h3>
-            <p>
-              The same rigor your advisor applies to your portfolio, applied to your biology.
-              Track trends, understand risks, and act on what the data reveals.
-            </p>
+      <!-- Feature cards, after superpower.com: a visual panel in the brand
+           tones with a small product card on it, then the title and a large
+           muted description. The product cards are illustrative mock-ups. -->
+      <div class="feat-grid reveal">
+        <article class="feat-card">
+          <div class="feat-visual tone-moss" aria-hidden="true">
+            <div class="fm-card">
+              <div class="fm-row fm-between"><span class="fm-title">Healthspan score</span><span class="fm-big"><span data-count="78">0</span><small>/100</small></span></div>
+              <div class="fm-track"><span class="fm-seg is-moss" style="width:64%"></span><span class="fm-seg is-bronze" style="width:22%"></span><span class="fm-seg is-rust" style="width:8%"></span></div>
+              <div class="fm-row fm-legend"><span><b>76</b> Optimal</span><span><b>22</b> In range</span><span><b>4</b> Out of range</span></div>
+            </div>
+            <div class="fm-card">
+              <div class="fm-row fm-between"><span class="fm-title">Biological age</span><span class="fm-muted">2.5 years younger</span></div>
+              <div class="fm-track fm-thin"><span class="fm-seg is-moss" style="width:36%; margin-left:24%"></span><span class="fm-marker" style="left:60%"></span></div>
+            </div>
           </div>
-        </div>
-
-        <div class="bento-cell is-half tone-orange">
-          <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M5 3v5a4 4 0 0 0 8 0V3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M3.5 3h2M11 3h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M9 16v1a4 4 0 0 0 8 0v-1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="18" cy="13.5" r="2" stroke="currentColor" stroke-width="1.5"/>
-              </svg></span>
-          <h3 class="bento-title">Curated clinical delivery</h3>
-          <p>
-            Physician-led care nationwide, virtual and in person, from partners selected for
-            outcomes, governance, and data ownership. Logistics handled.
-          </p>
-        </div>
-
-        <div class="bento-cell is-half tone-pink">
-          <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M7 3c0 4 10 5 10 9s-10 5-10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M17 3c0 4-10 5-10 9s10 5 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M8.5 6.5h7M7 12h10M8.5 17.5h7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg></span>
-          <h3 class="bento-title">Full biomarker tracking</h3>
-          <p>
-            Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
-            continuous wearable integration, all synthesized into a single health intelligence layer.
-          </p>
-        </div>
-
-        <div class="bento-cell is-half tone-orange">
-          <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <rect x="2.8" y="8.2" width="18.4" height="7.6" rx="3.8" transform="rotate(-45 12 12)" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M9.3 9.3l5.4 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg></span>
-          <h3 class="bento-title">Personalized protocols</h3>
-          <p>
-            Calibrated to your biology, not a template.
-          </p>
-        </div>
-
-        <div class="bento-cell is-half tone-pink">
-          <span class="bento-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M4 17h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M5 17a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 7V5M10.5 5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg></span>
-          <h3 class="bento-title">Health concierge</h3>
-          <p>
-            A dedicated coordinator who handles specialist referrals, appointment logistics, second
-            opinions, and anything else between you and better health.
-          </p>
-        </div>
+          <div class="feat-copy">
+            <h3 class="feat-name">A dashboard for your body</h3>
+            <p class="feat-desc">The same rigor your advisor applies to your portfolio, applied to your biology. Track trends, understand risks, and act on what the data reveals.</p>
+          </div>
+        </article>
+        <article class="feat-card">
+          <div class="feat-visual tone-sand" aria-hidden="true">
+            <div class="fm-card">
+              <div class="fm-row fm-between"><span class="fm-title">Your care team</span><span class="fm-chip is-moss">Selected</span></div>
+              <ul class="fm-list">
+                <li><span class="fm-dot is-moss"></span><span>Preventive cardiology</span><span class="fm-muted">Virtual</span></li>
+                <li><span class="fm-dot is-moss"></span><span>Longevity physician</span><span class="fm-muted">In person</span></li>
+                <li><span class="fm-dot is-bronze"></span><span>Sports medicine</span><span class="fm-muted">Referred</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="feat-copy">
+            <h3 class="feat-name">Curated clinical delivery</h3>
+            <p class="feat-desc">Physician-led care nationwide, virtual and in person, from partners selected for outcomes, governance, and data ownership. Logistics handled.</p>
+          </div>
+        </article>
+        <article class="feat-card">
+          <div class="feat-visual tone-rust" aria-hidden="true">
+            <div class="fm-card">
+              <div class="fm-row fm-between"><span class="fm-title">ApoB</span><span class="fm-chip is-moss">Optimal</span></div>
+              <svg class="fm-chart" viewBox="0 0 320 130" aria-hidden="true">
+                <rect class="fm-band" x="0" y="62" width="320" height="60" rx="4" fill="var(--tone-moss-tint)" stroke="var(--tone-moss-light)" stroke-dasharray="3 3" stroke-width="1"/>
+                <polyline class="fm-line fm-line-1" pathLength="1" points="16,96 76,90 136,64 196,28" fill="none" stroke="var(--tone-bronze)" stroke-width="2"/>
+                <polyline class="fm-line fm-line-2" pathLength="1" points="196,28 256,88 304,86" fill="none" stroke="var(--tone-moss)" stroke-width="2"/>
+                <g class="fm-pts" fill="var(--tone-moss)"><circle cx="16" cy="96" r="3.5"/><circle cx="76" cy="90" r="3.5"/><circle cx="256" cy="88" r="3.5"/><circle cx="304" cy="86" r="3.5"/></g>
+                <g class="fm-pts" fill="var(--tone-bronze)"><circle cx="136" cy="64" r="3.5"/></g>
+                <g class="fm-pts" fill="var(--tone-rust)"><circle cx="196" cy="28" r="3.5"/></g>
+              </svg>
+              <div class="fm-row fm-legend fm-axis"><span>Jan</span><span>May</span><span>Sep</span><span>Jan</span><span>May</span></div>
+            </div>
+          </div>
+          <div class="feat-copy">
+            <h3 class="feat-name">Full biomarker tracking</h3>
+            <p class="feat-desc">Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and continuous wearable integration, all synthesized into a single health intelligence layer.</p>
+          </div>
+        </article>
+        <article class="feat-card">
+          <div class="feat-visual tone-umber" aria-hidden="true">
+            <img class="feat-img" src="/images/v1/feature.webp" alt="" width="1000" height="667" loading="lazy" decoding="async" />
+            <div class="fm-card">
+              <div class="fm-row fm-between"><span class="fm-title">Your protocol</span><span class="fm-muted">Updated today</span></div>
+              <ul class="fm-list fm-plan">
+                <li><span class="fm-chip is-rust">Lifestyle</span><span>Zone 2, 3 &times; 45 min a week</span></li>
+                <li><span class="fm-chip is-rust">Nutrition</span><span>Protein to 1.6 g/kg</span></li>
+                <li><span class="fm-chip is-moss">Retest</span><span>Lipid panel in 12 weeks</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="feat-copy">
+            <h3 class="feat-name">Personalized protocols</h3>
+            <p class="feat-desc">Calibrated to your biology, not a template.</p>
+          </div>
+        </article>
+        <article class="feat-card is-wide">
+          <div class="feat-visual tone-blue" aria-hidden="true">
+            <div class="fm-thread">
+              <div class="fm-bubble is-me">Can you arrange the DEXA before I travel on the 22nd?</div>
+              <div class="fm-bubble is-team"><span class="fm-avatars"><i></i><i></i><i></i></span>Booked for Thursday at 9:40. The report will be in your dashboard the same day.</div>
+            </div>
+          </div>
+          <div class="feat-copy">
+            <h3 class="feat-name">Health concierge</h3>
+            <p class="feat-desc">A dedicated coordinator who handles specialist referrals, appointment logistics, second opinions, and anything else between you and better health.</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -389,13 +432,10 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
       </div>
 
       <p class="curated-note reveal">
-        Every partner is re-reviewed each year. If a better option emerges, the membership moves
-        with it.
+        Every partner is re-reviewed each year.<br />If a better option emerges, the membership moves with it.
       </p>
     </div>
   </section>
-
-  <div class="rule"></div>
 
   <!-- PARTNERS (formerly Case study) -->
   <section class="case" id="partners">
@@ -413,19 +453,24 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
 
       <!-- Proof block: the first partner engagement, kept as evidence. Three
            hairline cells, not three billboard numbers. -->
-      <div class="case-stats reveal">
-        <div class="case-stat">
-          <div class="case-num">400</div>
-          <div class="case-stat-label">UHNW clients in the advisory team's book, reached through a single educational session.</div>
+      <div class="case-band reveal">
+        <div class="case-media" aria-hidden="true">
+          <img class="case-media-img" src="/images/v1/partners.webp" alt="" width="800" height="1000" loading="lazy" decoding="async" />
         </div>
-        <div class="case-stat">
-          <div class="case-num"><em>First</em></div>
-          <div class="case-stat-label">Educational session of its kind delivered with a private bank advisory team.</div>
+        <div class="case-stats">
+          <div class="case-stat">
+            <div class="case-num">400</div>
+            <div class="case-stat-label">UHNW clients in the advisory team's book, reached through a single educational session.</div>
         </div>
-        <div class="case-stat">
-          <div class="case-num">May '26</div>
-          <div class="case-stat-label">From first conversation to delivered session in days, not quarters.</div>
+          <div class="case-stat">
+            <div class="case-num"><em>First</em></div>
+            <div class="case-stat-label">Educational session of its kind delivered with a private bank advisory team.</div>
         </div>
+          <div class="case-stat">
+            <div class="case-num">May '26</div>
+            <div class="case-stat-label">From first conversation to delivered session in days, not quarters.</div>
+        </div>
+      </div>
       </div>
 
       <!-- The agenda reads as a list, not as a card: the heading holds the left
@@ -479,6 +524,9 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
           <p>
             One program across generations, with each member owning their own data.
           </p>
+        </div>
+        <div class="audience-media" aria-hidden="true">
+          <img class="audience-media-img" src="/images/v1/audiences.webp" alt="" width="800" height="1000" loading="lazy" decoding="async" />
         </div>
       </div>
 
@@ -699,16 +747,16 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
       const AUTO_MS = 7000;
       const root = document.getElementById('disciplines');
       if (!root) return;
-      const list  = root.querySelector<HTMLElement>('.prod-list');
-      const rings = Array.from(root.querySelectorAll<SVGCircleElement>('.prod-ring-fill'));
-      const tabs  = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
-      const panes = Array.from(root.querySelectorAll<HTMLElement>('.prod-pane'));
+      const list  = root.querySelector('.prod-list');
+      const rings = Array.from(root.querySelectorAll('.prod-ring-fill'));
+      const tabs  = Array.from(root.querySelectorAll('[role="tab"]'));
+      const panes = Array.from(root.querySelectorAll('.prod-pane'));
       if (!list || !tabs.length) return;
 
       let current = 0;
       let auto = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      function select(index: number, focus = false) {
+      function select(index, focus = false) {
         current = index;
         tabs.forEach((tab, i) => {
           const on = i === index;
@@ -732,7 +780,7 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
 
       list.addEventListener('animationend', e => {
         if (!auto) return;
-        const el = e.target as Element;
+        const el = e.target;
         if (!el.classList || !el.classList.contains('prod-ring-fill')) return;
         select((current + 1) % tabs.length);
       });
@@ -743,7 +791,7 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
       // Only a keyboard focus pauses. A mouse click focuses the tab too, and
       // pausing on that left the rotation stuck until the pointer moved away.
       root.addEventListener('focusin', e => {
-        const el = e.target as HTMLElement;
+        const el = e.target;
         if (el.matches && el.matches(':focus-visible')) pause();
       });
       root.addEventListener('focusout', resume);
@@ -794,8 +842,8 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
       const CHEV = '<svg class="wf-dd-chev" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       const TICK = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-      document.querySelectorAll<HTMLSelectElement>('select.wf-select').forEach((sel, n) => {
-        const label = sel.id ? document.querySelector<HTMLLabelElement>(`label[for="${sel.id}"]`) : null;
+      document.querySelectorAll('select.wf-select').forEach((sel, n) => {
+        const label = sel.id ? document.querySelector(`label[for="${sel.id}"]`) : null;
         const wrap  = document.createElement('div');
         wrap.className = 'wf-dd';
         sel.parentNode?.insertBefore(wrap, sel);
@@ -844,12 +892,12 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
           btn.classList.toggle('is-empty', !selected);
           items.forEach((li) => li.setAttribute('aria-selected', String(li.dataset.value === cur && cur !== '')));
         }
-        function choose(value: string) {
+        function choose(value) {
           sel.value = value;
           sel.dispatchEvent(new Event('change', { bubbles: true }));
           render();
         }
-        function setFocus(i: number) {
+        function setFocus(i) {
           focus = Math.max(0, Math.min(items.length - 1, i));
           items.forEach((li, k) => li.classList.toggle('is-focus', k === focus));
           items[focus]?.scrollIntoView({ block: 'nearest' });
@@ -884,7 +932,7 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
           } else if (e.key === 'Escape' && isOpen()) { e.preventDefault(); close(); }
           else if (e.key === 'Tab' && isOpen()) { close(); }
         });
-        document.addEventListener('click', (e) => { if (isOpen() && !wrap.contains(e.target as Node)) close(); });
+        document.addEventListener('click', (e) => { if (isOpen() && !wrap.contains(e.target)) close(); });
         sel.addEventListener('change', render);
         render();
       });
@@ -898,19 +946,19 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
        reads what is in the markup. -->
   <script>
     (function () {
-      const num = document.querySelector<HTMLElement>('[data-count-to]');
+      const num = document.querySelector('[data-count-to]');
       if (!num) return;
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
       const target = Number(num.dataset.countTo);
-      const light  = num.closest('.cov')?.querySelector<SVGElement>('.cov-arc');
+      const light  = num.closest('.cov')?.querySelector('.cov-arc');
       const pane   = num.closest('.prod-pane');
       if (!target || !light || !pane) return;
 
       // The window the panels land in, as a fraction of one rotation.
       const START = 0.02;
       const END   = 0.30;
-      const ease  = (t: number) => 1 - Math.pow(1 - t, 3);
+      const ease  = (t) => 1 - Math.pow(1 - t, 3);
       let shown = -1;
 
       function tick() {
@@ -932,6 +980,9 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
 
   <!-- Waitlist form script -->
   <script>
+    // LIVE ENDPOINT. This is the client's real Google Apps Script, and anything
+    // submitted from a local build lands in the real sheet. Point it at your own
+    // while you work on the form, or leave the form alone.
     const WAITLIST_ENDPOINT =
       'https://script.google.com/macros/s/AKfycbw9x1Q9dVIDbTRRnsgajzbXHrL2Y3mz7SSWO2qHGtDeK9XsrxKhtBpItlPaY3oDn28/exec';
 
@@ -939,40 +990,40 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
     // submissions land somewhere other than the client waitlist. The tag values
     // are placeholders: the inbox / CRM tag for partners is still an open point
     // in the designer brief, and changing them here is a one-line edit.
-    const ROUTING_TAG: Record<string, string> = {
+    const ROUTING_TAG = {
       client:  'client-waitlist',
       partner: 'partner-pipeline',
     };
 
-    const waitlistForm    = document.getElementById('waitlistForm')    as HTMLDivElement | null;
-    const waitlistSuccess = document.getElementById('waitlistSuccess') as HTMLDivElement | null;
-    const wfSubmit        = document.getElementById('wfSubmit')        as HTMLButtonElement | null;
-    const wfError         = document.getElementById('wfError')         as HTMLDivElement | null;
-    const wfErrorMsg      = wfError?.querySelector('.wf-error-msg')    as HTMLSpanElement | null;
-    const wfLabel         = wfSubmit?.querySelector('.wf-submit-label') as HTMLSpanElement | null;
-    const wfRole          = document.getElementById('wfRole')          as HTMLDivElement | null;
-    const wsTitle         = document.getElementById('wsTitle')         as HTMLHeadingElement | null;
-    const wsBody          = document.getElementById('wsBody')          as HTMLParagraphElement | null;
-    const wsReset         = document.getElementById('wsReset')         as HTMLButtonElement | null;
+    const waitlistForm    = document.getElementById('waitlistForm');
+    const waitlistSuccess = document.getElementById('waitlistSuccess');
+    const wfSubmit        = document.getElementById('wfSubmit');
+    const wfError         = document.getElementById('wfError');
+    const wfErrorMsg      = wfError?.querySelector('.wf-error-msg');
+    const wfLabel         = wfSubmit?.querySelector('.wf-submit-label');
+    const wfRole          = document.getElementById('wfRole');
+    const wsTitle         = document.getElementById('wsTitle');
+    const wsBody          = document.getElementById('wsBody');
+    const wsReset         = document.getElementById('wsReset');
     const ORIGINAL_LABEL  = wfLabel?.textContent ?? 'Reserve my place';
 
     const segments = Array.from(
-      wfRole?.querySelectorAll<HTMLButtonElement>('.wf-segment') ?? []
+      wfRole?.querySelectorAll('.wf-segment') ?? []
     );
 
     /** 'client' or 'partner', from the currently selected segment. */
-    function currentAudience(): string {
+    function currentAudience() {
       const active = segments.find((s) => s.classList.contains('is-active'));
       return active?.dataset.audience ?? 'client';
     }
 
     /** The specific segment value, e.g. 'client', 'wealth-firm', 'employer', 'network'. */
-    function currentRole(): string {
+    function currentRole() {
       const active = segments.find((s) => s.classList.contains('is-active'));
       return active?.dataset.role ?? 'client';
     }
 
-    function showError(message: string) {
+    function showError(message) {
       if (!wfError) return;
       if (wfErrorMsg) wfErrorMsg.textContent = message;
       wfError.classList.add('visible');
@@ -986,16 +1037,16 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
      * Reveal the fields for one audience and hide the other's. Both paths carry
      * two conditional fields, so the card keeps the same height either way.
      */
-    function applyAudience(audience: string) {
+    function applyAudience(audience) {
       document
-        .querySelectorAll<HTMLElement>('[data-shown-to]')
+        .querySelectorAll('[data-shown-to]')
         .forEach((field) => {
           field.hidden = field.dataset.shownTo !== audience;
         });
     }
 
     /** Select a segment by role slug. 'partner' picks the first partner option. */
-    function selectRole(role: string) {
+    function selectRole(role) {
       const target =
         segments.find((s) => s.dataset.role === role) ??
         (role === 'partner'
@@ -1022,7 +1073,7 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
     // scrolls to the form, e.g. the Partners CTA. Delegated, so triggers added
     // to the page later are wired without touching this file.
     document.addEventListener('click', (event) => {
-      const trigger = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-wf-role]');
+      const trigger = (event.target)?.closest('[data-wf-role]');
       if (trigger) selectRole(trigger.dataset.wfRole ?? 'partner');
     });
 
@@ -1032,13 +1083,13 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
       wfSubmit.addEventListener('click', async () => {
         clearError();
 
-        const fnameInput   = document.getElementById('wf-fname')   as HTMLInputElement | null;
-        const lnameInput   = document.getElementById('wf-lname')   as HTMLInputElement | null;
-        const emailInput   = document.getElementById('wf-email')   as HTMLInputElement | null;
-        const tierInput    = document.getElementById('wf-tier')    as HTMLSelectElement | null;
-        const advisorInput = document.getElementById('wf-advisor') as HTMLInputElement | null;
-        const orgInput     = document.getElementById('wf-org')     as HTMLInputElement | null;
-        const reachInput   = document.getElementById('wf-reach')   as HTMLSelectElement | null;
+        const fnameInput   = document.getElementById('wf-fname');
+        const lnameInput   = document.getElementById('wf-lname');
+        const emailInput   = document.getElementById('wf-email');
+        const tierInput    = document.getElementById('wf-tier');
+        const advisorInput = document.getElementById('wf-advisor');
+        const orgInput     = document.getElementById('wf-org');
+        const reachInput   = document.getElementById('wf-reach');
 
         const audience  = currentAudience();
         const isPartner = audience === 'partner';
@@ -1134,11 +1185,11 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
     if (wsReset && waitlistForm && waitlistSuccess && wfSubmit) {
       wsReset.addEventListener('click', () => {
         ['wf-fname', 'wf-lname', 'wf-email', 'wf-advisor', 'wf-org'].forEach((id) => {
-          const el = document.getElementById(id) as HTMLInputElement | null;
+          const el = document.getElementById(id);
           if (el) el.value = '';
         });
         ['wf-tier', 'wf-reach'].forEach((id) => {
-          const el = document.getElementById(id) as HTMLSelectElement | null;
+          const el = document.getElementById(id);
           if (el) { el.value = ''; el.dispatchEvent(new Event('change')); }
         });
 
@@ -1153,4 +1204,74 @@ import V1Layout from '../../layouts/variants/V1Layout.astro';
     }
   </script>
 
+  <!-- Feature mock-ups play once when their card comes into view. The
+       observer adds .is-in, which the stylesheet keys its animations off,
+       and runs the score up to its figure over the same window. With
+       reduced motion the cards are marked in at once and the figure is set. -->
+  <script>
+    (function () {
+      const cards = Array.from(document.querySelectorAll('.feat-card'));
+      if (!cards.length) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function countUp(el) {
+        const target = Number(el.dataset.count);
+        if (!target) return;
+        if (reduce) { el.textContent = String(target); return; }
+        const start = performance.now() + 450;
+        const dur = 1100;
+        const ease = (t) => 1 - Math.pow(1 - t, 3);
+        function tick(now) {
+          const t = Math.max(0, Math.min(1, (now - start) / dur));
+          el.textContent = String(Math.round(ease(t) * target));
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      function enter(card) {
+        card.classList.add('is-in');
+        card.querySelectorAll('[data-count]').forEach(countUp);
+      }
+
+      if (reduce || !('IntersectionObserver' in window)) { cards.forEach(enter); return; }
+      const io = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          enter(entry.target);
+          obs.unobserve(entry.target);
+        });
+      }, { threshold: 0.35 });
+      cards.forEach(c => io.observe(c));
+    })();
+  </script>
+
+  <!-- Closing call to action: one photographic card, built like the hero so
+       the page opens and closes on the same shape. -->
+  <section class="closer">
+    <div class="closer-card">
+      <div class="closer-media" aria-hidden="true">
+        <img
+          class="closer-img"
+          src="/images/v1/closing.webp"
+          alt=""
+          width="1600"
+          height="1067"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="closer-inner">
+        <h2>The years to enjoy it<br />start now</h2>
+        <p class="closer-sub">
+          Founding member places and first-wave partner slots are limited, and both
+          are filling through the advisors, firms and organizations we work with.
+        </p>
+        <div class="closer-btns">
+          <a href="#joinwaitlist" class="btn-solid">Get access</a>
+          <a href="#partners" class="btn-outline">For advisors and firms &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </V1Layout>

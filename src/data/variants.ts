@@ -37,7 +37,9 @@ export const VARIANTS: Variant[] = [
     id: 'v1',
     label: 'v1',
     path: '/v1',
-    note: 'One warm ground, tinted bento cells, interactive product panels, the Duna idiom.',
+    note: "The client's final v1: superpower.com's type scale and zinc palette over the brand's "
+      + 'rust, umber, bronze and moss, Aeonik, a nav that collapses into a blurred pill, a photographic '
+      + 'hero card, and a fixed footer the closing card uncovers.',
     status: 'ready',
   },
   {

@@ -1,40 +1,36 @@
 ---
 /**
- * Layout for design variation v1 (and any iteration of it that shares its stylesheet).
+ * Layout for design variation v1.
  *
- * It is a copy of the production MainLayout with three differences: it loads
- * src/styles/variants/v1.css instead of global.css, every in-page link is prefixed with
- * `base` so navigation stays inside the variation, and it is noindex, always.
+ * It loads src/styles/variants/v1.css, carries the nav, the mobile menu and the footer,
+ * and is noindex, always. The live layout at src/layouts/MainLayout.astro is production's.
+ * Do not fold the two together: a variation has to be changeable without touching the
+ * live site.
  *
- * The live layout at src/layouts/MainLayout.astro is the production one. Do not fold the two
- * together: a variation has to be changeable without touching the live site.
+ * Source: client_resources/compound-health-v1-new.html, the client's final v1, delivered
+ * 11 September 2026 as one flattened page and revised the same day. The nav, the menu, the
+ * footer and the scripts below are that file's, with the lockup lifted into V1Logo.astro
+ * and the links that leave the page made root-relative rather than absolute.
+ *
+ * Every in-page link is a plain #anchor. The variation is one page, so a hash never leaves
+ * it and never reloads it; there is no `base` to prefix any more.
  */
 import '../../styles/variants/v1.css';
-import Logo from '../../components/variants/Logo.astro';
-import Footer from '../../components/variants/Footer.astro';
+import V1Logo from '../../components/variants/V1Logo.astro';
 import VariantSwitcher from '../../components/variants/VariantSwitcher.astro';
 
 interface Props {
   title: string;
   description?: string;
-  /** Home route of this variation, prefixed onto every in-page link. */
-  base?: string;
   /** Variant id, so the switcher can mark the current page. */
   variant?: string;
 }
 
 const SITE_NAME = 'Compound Health';
 const DEFAULT_DESCRIPTION =
-  'A private longevity membership introduced by your wealth advisor. Your health data stays yours, and you decide what, if anything, to share. Founding member waitlist now open.';
+  'A private longevity membership introduced through wealth advisors, employers, and executive networks. Diagnostics, continuous tracking, and personalized protocols from curated clinical partners. Your health data stays yours.';
 
-const {
-  title,
-  description = DEFAULT_DESCRIPTION,
-  base = '/v1',
-  variant = 'v1',
-} = Astro.props;
-
-const anchor = (hash: string) => `${base}#${hash}`;
+const { title, description = DEFAULT_DESCRIPTION, variant = 'v1' } = Astro.props;
 ---
 
 <!doctype html>
@@ -48,10 +44,9 @@ const anchor = (hash: string) => `${base}#${hash}`;
     <!-- Variations are internal review pages and never indexed. -->
     <meta name="robots" content="noindex, nofollow" />
 
-    <!-- Favicons. The variations carry the new mark; the live site keeps its own. -->
-    <link rel="icon" type="image/svg+xml" href="/favicon-v1.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon-black.svg" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="theme-color" content="#2D5016" />
+    <meta name="theme-color" content="#83392c" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
@@ -59,45 +54,61 @@ const anchor = (hash: string) => `${base}#${hash}`;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
 
-    <!-- Performance hints for fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap"
-      rel="stylesheet"
-    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
+    <!-- Intro: mark the document before first paint so the hero pieces start hidden and
+         GSAP can bring them in. Skipped with reduced motion; the script at the foot of
+         the body clears it if GSAP fails to load. -->
+    <script is:inline>
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('is-intro');
+      }
+    </script>
+    <!-- Lenis smooth scrolling (1.3.26). Its stylesheet turns off the native smooth
+         scroll-behavior so the two do not fight. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css" />
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" is:inline></script>
   </head>
-  <body>
 
+  <body id="top">
+    <!-- Nav, after superpower.com: links left, logo centred, secondary link,
+         CTA and a nine-dot menu button on the right. The button opens the
+         same overlay menu as before; the three hidden spans are what the
+         menu script animates. -->
     <nav class="main-nav">
-      <Logo base={base} />
-      <div class="nav-links">
-        <a href={anchor('how')}>How it works</a>
-        <a href={anchor('features')}>What you get</a>
-        <a href={anchor('partners')}>Partners</a>
-        <a href={anchor('membership')}>Membership</a>
+      <div class="nav-inner">
+        <div class="nav-links">
+          <a href="#how">How it works</a>
+          <a href="#features">What you get</a>
+          <a href="#partners">Partners</a>
+          <a href="#membership">Membership</a>
+        </div>
+        <V1Logo variant="nav" />
+        <div class="nav-actions">
+          <a href="/for-advisors" class="nav-text-link">For advisors</a>
+          <a href="#joinwaitlist" class="nav-cta">Get access</a>
+        </div>
       </div>
-      <div class="nav-actions">
-        <a href={anchor('joinwaitlist')} class="nav-cta">Get access</a>
-        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
-      </div>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <svg class="hamburger-dots" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <circle cx="4" cy="4" r="2.2"/><circle cx="12" cy="4" r="2.2"/><circle cx="20" cy="4" r="2.2"/>
+          <circle cx="4" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="20" cy="12" r="2.2"/>
+          <circle cx="4" cy="20" r="2.2"/><circle cx="12" cy="20" r="2.2"/><circle cx="20" cy="20" r="2.2"/>
+        </svg>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
     </nav>
-
     <!-- Mobile menu overlay -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <div class="mobile-menu-bg" id="menuBg"></div>
       <nav class="mobile-nav-links">
-        <a href={anchor('how')} class="mobile-nav-link" data-menu-link>How it <em>works</em></a>
-        <a href={anchor('features')} class="mobile-nav-link" data-menu-link>What you <em>get</em></a>
-        <a href={anchor('partners')} class="mobile-nav-link" data-menu-link>Partners</a>
-        <a href={anchor('membership')} class="mobile-nav-link" data-menu-link>Membership</a>
+        <a href="#how" class="mobile-nav-link" data-menu-link>How it <em>works</em></a>
+        <a href="#features" class="mobile-nav-link" data-menu-link>What you <em>get</em></a>
+        <a href="#partners" class="mobile-nav-link" data-menu-link>Partners</a>
+        <a href="#membership" class="mobile-nav-link" data-menu-link>Membership</a>
       </nav>
-      <a href={anchor('joinwaitlist')} class="mobile-nav-cta" id="menuCta" data-menu-link>
+      <a href="#joinwaitlist" class="mobile-nav-cta" id="menuCta" data-menu-link>
         Get access
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
           <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -108,28 +119,201 @@ const anchor = (hash: string) => `${base}#${hash}`;
         <div class="mobile-menu-dot"></div>
       </div>
     </div>
-
     <slot />
 
-    <Footer base={base} />
+    <!-- ==================================================================
+         THE FOOTER (was src/components/Footer.astro)
+         ================================================================== -->
+    <footer class="site-footer">
+      <div class="footer-media" aria-hidden="true"></div>
 
+      <div class="footer-inner">
+        <div class="footer-divider"></div>
+
+        <div class="footer-cols">
+          <div class="footer-brand">
+            <V1Logo variant="footer" />
+            <p class="footer-tagline">
+              A private longevity membership, introduced through the people who already advise you.
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">Site</div>
+            <a href="#how">How it works</a>
+            <a href="#features">What you get</a>
+            <a href="#membership">Membership</a>
+            <a href="/for-advisors">For advisors and firms</a>
+            <a href="#joinwaitlist">Get access</a>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">Contact</div>
+            <a href="mailto:hello@compoundhealth.io">hello@compoundhealth.io</a>
+            <a href="mailto:privacy@compoundhealth.io">privacy@compoundhealth.io</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <div class="footer-copy">&copy; 2026 Compound Health. All rights reserved.</div>
+          <nav class="footer-legal" aria-label="Legal">
+            <a href="/privacy-policy">Privacy Policy</a>
+            <a href="/website-terms">Website Terms</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
     <VariantSwitcher current={variant} />
 
+    <!-- Nav, scroll reveal and mobile menu (was the script in SiteLayout.astro) -->
     <script>
-      // Nav is transparent over the top of the page and gains its surface once scrolled.
+      // Footer reveal. The footer is fixed behind the page; the closing card
+      // scrolls over it and slides away to uncover it, so the footer is
+      // revealed rather than pushed up. The page reserves exactly the
+      // footer's height below the card, measured here and kept in
+      // --footer-h. No transform, so nothing to fight the browser over.
       (function () {
-        const nav = document.querySelector<HTMLElement>('.main-nav');
-        if (!nav) return;
-        const update = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
-        update();
-        window.addEventListener('scroll', update, { passive: true });
+        const footer = document.querySelector('.site-footer');
+        if (!footer) return;
+        const root = document.documentElement;
+        const measure = () => root.style.setProperty('--footer-h', footer.offsetHeight + 'px');
+        measure();
+        window.addEventListener('resize', measure, { passive: true });
+        if ('ResizeObserver' in window) new ResizeObserver(measure).observe(footer);
+        window.addEventListener('load', measure);
+      })();
+
+      // Intro. One GSAP timeline on first load: the hero photograph fades in,
+      // the bar drops in, then the headline, the lead, the buttons and the
+      // credibility row each blur in from nothing, in that order. The
+      // document carries .is-intro from the <head> so the pieces are hidden
+      // before first paint; it is removed when the timeline ends, or at once
+      // if GSAP is missing.
+      (function () {
+        const root = document.documentElement;
+        if (!root.classList.contains('is-intro')) return;
+        if (typeof gsap === 'undefined') { root.classList.remove('is-intro'); return; }
+
+        const nav   = document.querySelector('.main-nav');
+        const card  = document.querySelector('.hero-card');
+        const h1    = document.querySelector('.hero h1');
+        const sub   = document.querySelector('.hero-sub');
+        const btns  = Array.from(document.querySelectorAll('.hero-btns > *'));
+        const cred  = document.querySelector('.hero .credbar');
+        if (!card || !h1) { root.classList.remove('is-intro'); return; }
+
+        const blurIn = { opacity: 0, y: 18, filter: 'blur(14px)' };
+        const tl = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          onComplete: () => {
+            root.classList.remove('is-intro');
+            // Clear only what the intro itself animated. 'all' would also wipe
+            // the --nav-* custom properties the scroll tween writes on the bar,
+            // which left the bar looking un-styled if the page was scrolled
+            // while the intro was still running.
+            gsap.set([card, h1, sub, ...btns, cred].filter(Boolean), { clearProps: 'opacity,transform,filter' });
+            if (nav) gsap.set(nav, { clearProps: 'opacity,transform' });
+            // Let the bar re-read the scroll position it may have missed.
+            window.dispatchEvent(new Event('scroll'));
+          },
+        });
+
+        tl.fromTo(card, { opacity: 0 }, { opacity: 1, duration: 1.2, ease: 'power2.out' }, 0);
+        if (nav) tl.fromTo(nav, { opacity: 0, y: -28 }, { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out' }, 0.45);
+        tl.fromTo(h1, blurIn, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.1 }, 0.8);
+        if (sub) tl.fromTo(sub, blurIn, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.0 }, 1.15);
+        if (btns.length) tl.fromTo(btns, blurIn, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.9, stagger: 0.1 }, 1.45);
+        if (cred) tl.fromTo(cred, blurIn, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.0 }, 1.75);
+      })();
+
+      // Lenis smooth scrolling. It scrolls the real window, so the scroll
+      // listeners and observers below keep working. GSAP's ticker drives it so
+      // the nav tween and the scroll share one clock. Anchor links scroll
+      // smoothly too, stopping short of the fixed bar. Off with reduced motion.
+      (function () {
+        if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const lenis = new Lenis({
+          lerp: 0.1,
+          smoothWheel: true,
+          anchors: { offset: -96 },
+        });
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
+        gsap.ticker.lagSmoothing(0);
+        (window).lenis = lenis;
+      })();
+
+      // Nav, after superpower.com: a transparent bar at the top of the page that
+      // collapses into a blurred pill once scrolled. Every value that differs
+      // between the two states is a custom property on .main-nav (see the
+      // stylesheet), and GSAP tweens them as a set, so the bar reshapes,
+      // recolours and blurs in one movement. Both directions ease out, and a
+      // change of mind mid-tween simply retargets. A little hysteresis on the
+      // trigger stops it flickering around the threshold. Below 900px the bar
+      // stays at rest; with reduced motion the states are set, not tweened.
+      (function () {
+        const nav = document.querySelector('.main-nav');
+        const inner = nav?.querySelector('.nav-inner');
+        if (!nav || !inner || typeof gsap === 'undefined') return;
+
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const phone  = window.matchMedia('(max-width: 900px)');
+        const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+        // The pill's width is superpower.com's calc(49.37% + 429px) of the row,
+        // resolved to pixels so it can be tweened from the resting width.
+        const rowWidth  = () => nav.clientWidth - 2 * (phone.matches ? 1.25 * rem() : 4.5 * rem()) - (phone.matches ? 2.5 * rem() + 0.75 * rem() : 0);
+        // On phones the pill runs the full width of the row.
+        const pillWidth = () => phone.matches ? rowWidth() : Math.min(rowWidth(), rowWidth() * 0.493726 + 429.261);
+
+        const REST = {
+          '--nav-pad-y': 1.5 * rem() + 'px', '--nav-pill-a': 0, '--nav-blur': '0px',
+          '--nav-inner-pad': '0px', '--nav-inner-pad-l': '0px', '--nav-ink': '#18181b',
+          '--nav-cta-bg': '#000000', '--nav-cta-ink': '#ffffff', '--ham-size': '30px', '--ham-a': 0,
+        };
+        const PILL = () => ({
+          '--nav-pad-y': 1.25 * rem() + 'px', '--nav-pill-a': 0.3, '--nav-blur': 0.75 * rem() + 'px',
+          '--nav-inner-pad': 0.19 * rem() + 'px', '--nav-inner-pad-l': 1.5 * rem() + 'px', '--nav-ink': '#ffffff',
+          '--nav-cta-bg': '#f4f4f5', '--nav-cta-ink': '#18181b', '--ham-size': 2.5 * rem() + 'px', '--ham-a': 0.3,
+        });
+
+        let scrolled = false;
+        let ready = false;
+
+        function apply(toPill, instant = false) {
+          const d = instant || reduce.matches ? 0 : 0.7;
+          const vars = toPill ? PILL() : REST;
+          gsap.to(nav, { ...vars, duration: d, ease: 'expo.out', overwrite: 'auto' });
+          // max-width is tweened in pixels; at rest it is cleared so 'none' applies.
+          const start = toPill ? rowWidth() : parseFloat(getComputedStyle(inner).maxWidth) || rowWidth();
+          gsap.fromTo(nav,
+            { '--nav-inner-max': start + 'px' },
+            { '--nav-inner-max': (toPill ? pillWidth() : rowWidth()) + 'px', duration: d, ease: 'expo.out', overwrite: 'auto',
+              onComplete: () => { if (!toPill) nav.style.removeProperty('--nav-inner-max'); } });
+          nav.classList.toggle('is-scrolled', toPill);
+        }
+
+        function onScroll() {
+          const y = window.scrollY;
+          if (!scrolled && y > 40) { scrolled = true; apply(true, !ready); }
+          else if (scrolled && y < 12) { scrolled = false; apply(false, !ready); }
+          // If something else cleared the bar's inline properties (the intro
+          // used to), put the current state back without animating.
+          else if (scrolled && !nav.style.getPropertyValue('--nav-pill-a')) apply(true, true);
+        }
+
+        onScroll();
+        ready = true;
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', () => { if (scrolled) apply(true, true); }, { passive: true });
+        phone.addEventListener('change', () => { scrolled = false; apply(false, true); onScroll(); });
       })();
 
       // Scroll reveal. Anything marked .reveal rises and sharpens once, when it
       // first comes into view. No GSAP, no ScrollTrigger: one observer, and it
       // stops watching an element as soon as it has played.
       (function () {
-        const items = document.querySelectorAll<HTMLElement>('.reveal');
+        const items = document.querySelectorAll('.reveal');
         if (!items.length) return;
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (reduce || !('IntersectionObserver' in window)) {
@@ -139,7 +323,7 @@ const anchor = (hash: string) => `${base}#${hash}`;
         const io = new IntersectionObserver((entries, obs) => {
           entries.forEach(entry => {
             if (!entry.isIntersecting) return;
-            (entry.target as HTMLElement).classList.add('is-in');
+            (entry.target).classList.add('is-in');
             obs.unobserve(entry.target);
           });
         }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
@@ -147,45 +331,42 @@ const anchor = (hash: string) => `${base}#${hash}`;
       })();
 
       (function () {
-        const hamburger  = document.getElementById('hamburger') as HTMLButtonElement;
-        const mobileMenu = document.getElementById('mobileMenu') as HTMLDivElement;
-        const menuBg     = document.getElementById('menuBg') as HTMLDivElement;
-        const menuLinks  = document.querySelectorAll<HTMLElement>('.mobile-nav-link');
-        const menuCta    = document.getElementById('menuCta') as HTMLAnchorElement;
-        const menuFooter = document.getElementById('menuFooter') as HTMLDivElement;
-        const lines      = hamburger.querySelectorAll<HTMLElement>('.hamburger-line');
+        const hamburger  = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuBg     = document.getElementById('menuBg');
+        const menuLinks  = document.querySelectorAll('.mobile-nav-link');
+        const menuCta    = document.getElementById('menuCta');
+        const menuFooter = document.getElementById('menuFooter');
+        const lines      = hamburger.querySelectorAll('.hamburger-line');
         const body       = document.body;
 
         if (!hamburger || !mobileMenu) return;
 
         let isOpen = false;
-        let openTl: gsap.core.Timeline | null = null;
-        let closeTl: gsap.core.Timeline | null = null;
+        let openTl = null;
+        let closeTl = null;
 
         function buildOpenTimeline() {
           const tl = gsap.timeline({ paused: true });
           tl.set(mobileMenu, { visibility: 'visible' })
             .fromTo(menuBg,
-              { scaleX: 0, scaleY: 0, transformOrigin: 'top right', borderRadius: '0 0 0 60px' },
-              { scaleX: 1, scaleY: 1, duration: 0.55, ease: 'expo.out' }
+              { yPercent: -100 },
+              { yPercent: 0, duration: 0.6, ease: 'expo.out' }
             )
-            .to(lines[0], { y: 7,  rotation: 45,  duration: 0.3, ease: 'power2.inOut' }, 0.05)
-            .to(lines[1], { scaleX: 0, opacity: 0, duration: 0.2, ease: 'power2.in'  }, 0.05)
-            .to(lines[2], { y: -7, rotation: -45, duration: 0.3, ease: 'power2.inOut' }, 0.05)
             .fromTo(menuLinks,
-              { opacity: 0, y: 28 },
-              { opacity: 1, y: 0, duration: 0.45, stagger: 0.07, ease: 'power3.out' },
-              0.25
+              { opacity: 0, y: 16 },
+              { opacity: 1, y: 0, duration: 0.45, stagger: 0.06, ease: 'power3.out' },
+              0.22
             )
             .fromTo(menuCta,
-              { opacity: 0, y: 20 },
+              { opacity: 0, y: 14 },
               { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' },
-              0.5
+              0.42
             )
             .fromTo(menuFooter,
               { opacity: 0 },
               { opacity: 1, duration: 0.35, ease: 'power2.out' },
-              0.6
+              0.5
             );
           return tl;
         }
@@ -196,15 +377,12 @@ const anchor = (hash: string) => `${base}#${hash}`;
             onComplete: () => { mobileMenu.style.visibility = 'hidden'; }
           });
           tl.to([...menuLinks, menuCta, menuFooter],
-              { opacity: 0, y: -12, duration: 0.25, stagger: 0.04, ease: 'power2.in' }
+              { opacity: 0, duration: 0.2, ease: 'power2.in' }
             )
             .to(menuBg,
-              { scaleX: 0, scaleY: 0, transformOrigin: 'top right', duration: 0.45, ease: 'expo.in' },
-              0.1
-            )
-            .to(lines[0], { y: 0, rotation: 0, duration: 0.28, ease: 'power2.inOut' }, 0)
-            .to(lines[1], { scaleX: 1, opacity: 1, duration: 0.2, ease: 'power2.out' }, 0.1)
-            .to(lines[2], { y: 0, rotation: 0, duration: 0.28, ease: 'power2.inOut' }, 0);
+              { yPercent: -100, duration: 0.45, ease: 'power3.inOut' },
+              0.08
+            );
           return tl;
         }
 
@@ -215,6 +393,7 @@ const anchor = (hash: string) => `${base}#${hash}`;
           mobileMenu.classList.add('is-active');
           mobileMenu.setAttribute('aria-hidden', 'false');
           body.style.overflow = 'hidden';
+          (window).lenis?.stop();
           if (closeTl) closeTl.kill();
           openTl = buildOpenTimeline();
           openTl.play();
@@ -226,6 +405,7 @@ const anchor = (hash: string) => `${base}#${hash}`;
           hamburger.classList.remove('is-open');
           mobileMenu.setAttribute('aria-hidden', 'true');
           body.style.overflow = '';
+          (window).lenis?.start();
           if (openTl) openTl.kill();
           closeTl = buildCloseTimeline();
           closeTl.play().then(() => { mobileMenu.classList.remove('is-active'); });
@@ -242,6 +422,5 @@ const anchor = (hash: string) => `${base}#${hash}`;
         });
       })();
     </script>
-
   </body>
 </html>

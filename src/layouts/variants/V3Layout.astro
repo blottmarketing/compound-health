@@ -16,6 +16,7 @@
  */
 import '../../styles/variants/v3.css';
 import Logo from '../../components/variants/Logo.astro';
+import BrandLockup from '../../components/variants/BrandLockup.astro';
 import VariantSwitcher from '../../components/variants/VariantSwitcher.astro';
 
 interface Props {
@@ -71,15 +72,17 @@ const NAV_LINKS = [
     <meta property="og:description" content={description} />
 
     <!--
-      Newsreader stands in for ABC Marist, the reference's display serif: a variable
-      weight axis so the display can sit on 350 exactly rather than rounding up to 400,
-      a low x-height against a generous cap, and a true italic. DM Sans and DM Mono are
-      the reference's own faces. Lato carries the wordmark, as it does everywhere else.
+      Two faces only. Newsreader stands in for ABC Marist, the reference's display
+      serif: a variable weight axis so the display can sit on 350 exactly rather than
+      rounding up to 400, a low x-height against a generous cap, and a true italic. It
+      sets every heading. DM Sans sets everything else, the labels, figures, colophon
+      and wordmark included. No mono and no Lato on this variation (client's call,
+      2026-09-11).
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400&family=DM+Sans:opsz,wght@9..40,300..700&family=Lato:wght@400;700&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300..700&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap"
       rel="stylesheet"
     />
 
@@ -93,10 +96,10 @@ const NAV_LINKS = [
       <div class="nav-shell" aria-hidden="true"></div>
       <div class="nav-pill" id="navPill" aria-hidden="true"></div>
 
-      <Logo base={base} />
+      <Logo base={base} art="brand" parts="mark" />
 
       <div class="nav-links">
-        {NAV_LINKS.map(l => <a class="nav-item" href={anchor(l.hash)}>{l.label}</a>)}
+        {NAV_LINKS.map(l => <a class="nav-item" href={anchor(l.hash)} data-nav-link={l.hash}>{l.label}</a>)}
       </div>
 
       <a class="nav-item is-cta" href={anchor('joinwaitlist')}>Get access</a>
@@ -134,7 +137,7 @@ const NAV_LINKS = [
     <footer class="footer">
       <div class="footer-inner">
         <div class="footer-top">
-          <div>
+          <div class="footer-lead">
             <p class="t-h2 footer-statement">Beyond wealth:<br />the years to <em>enjoy it</em></p>
             <a class="btn btn-secondary" href={anchor('joinwaitlist')}>
               <span class="btn-label">Get access</span>
@@ -166,21 +169,16 @@ const NAV_LINKS = [
           </div>
         </div>
 
-        <!-- The colophon sits at the foot of the link zone: the mark, then the
-             machine voice. Mono appears exactly twice on this page, here and on
-             a figure, which is what keeps it reading as a signature. -->
+        <!-- The colophon sits at the foot of the link zone: one quiet line and
+             nothing else. The mark that stood beside it came off on 2026-09-11,
+             and the rights line and the tagline under it went the same day; from
+             1024 up the line starts on the same left edge as the link columns
+             above it, which is what the grid below is for. The flex column and
+             its gap stay: they cost nothing with one child, and the wrapper is
+             what the grid places. -->
         <div class="footer-bottom">
           <div class="footer-colophon">
-            <svg class="logo-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-              <path
-                d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"
-                stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"
-              />
-            </svg>
-            <div>
-              <div class="t-label">&copy; {year} Compound Health. All rights reserved.</div>
-              <div class="t-label">Introduced, not sold.</div>
-            </div>
+            <div class="t-label">&copy; {year} Compound Health</div>
           </div>
         </div>
       </div>
@@ -189,13 +187,11 @@ const NAV_LINKS = [
     <!-- The panel the footer stands on. Uncovered by the footer's own bottom margin
          scrolling past it; no script anywhere near it. -->
     <div class="footer-panel" aria-hidden="true">
-      <div class="footer-wordmark">Compound <em>Health</em></div>
-      <svg class="footer-disc" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-        <path
-          d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"
-          stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"
-        />
-      </svg>
+      <!-- The brand's own wordmark, drawn, not set: the bar carries the mark
+           alone and the foot of the page carries the letters alone (client's
+           call, 2026-09-11). It was the page's display serif with an italic
+           Health until then. -->
+      <div class="footer-wordmark"><BrandLockup part="word" /></div>
     </div>
 
     <VariantSwitcher current={variant} />
@@ -208,115 +204,72 @@ const NAV_LINKS = [
       // ---------------------------------------------------------------------
       (function () {
         const g = (window as any).gsap;
-        const ST = (window as any).ScrollTrigger;
-        const L = (window as any).Lenis;
-        if (g && ST) g.registerPlugin(ST);
-
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!L || !g || reduce) return;
-
-        document.documentElement.style.scrollBehavior = 'auto';
-        const lenis = new L({ lerp: 0.2 });
-        (window as any).__lenis = lenis;
-        if (ST) lenis.on('scroll', ST.update);
-        g.ticker.add((t: number) => lenis.raf(t * 1000));
-        g.ticker.lagSmoothing(0);
-
-        // Focus has to move the page, and with Lenis owning the scroll position
-        // it does not: the browser scrolls the element into view and Lenis puts
-        // the page straight back. A keyboard reader tabbing down this page was
-        // landing on controls thousands of pixels off screen.
-        document.addEventListener('focusin', (e) => {
-          const el = e.target as HTMLElement | null;
-          if (!el || typeof el.getBoundingClientRect !== 'function') return;
-          // A click that moves focus is already taking the reader somewhere.
-          if (el.matches(':focus-visible') === false) return;
-          // Anything inside a fixed subtree cannot be scrolled to: the bar sits
-          // at 16px whatever the page does, and a pinned stage is fixed while
-          // it is pinned. Asking Lenis to bring one into view walks the page
-          // away from the reader one tab at a time.
-          for (let n: HTMLElement | null = el; n && n !== document.body; n = n.parentElement) {
-            const pos = getComputedStyle(n).position;
-            if (pos === 'fixed' || pos === 'sticky') return;
-          }
-          const r = el.getBoundingClientRect();
-          const top = 96;
-          if (r.top >= top && r.bottom <= window.innerHeight - 24) return;
-          lenis.scrollTo(el, { offset: -top, duration: 0.4 });
-        });
-
-        // In-page anchors have to go through Lenis or they fight it.
-        document.addEventListener('click', (e) => {
-          const a = (e.target as HTMLElement | null)?.closest('a[href*="#"]') as HTMLAnchorElement | null;
-          if (!a) return;
-          const url = new URL(a.href, location.href);
-          if (url.pathname !== location.pathname || !url.hash) return;
-          const target = document.querySelector(url.hash);
-          if (!target) return;
-          e.preventDefault();
-          lenis.scrollTo(target as HTMLElement, { offset: -80 });
-          history.replaceState(null, '', url.hash);
-        });
-      })();
-
-      // ---------------------------------------------------------------------
-      // The nav. Three behaviours: the indicator chases the pointer, the
-      // wordmark collapses past 400px with a 40px hysteresis band, and the
-      // whole pill inverts while it is over the hero photograph.
-      // ---------------------------------------------------------------------
-      (function () {
-        const nav = document.getElementById('nav');
-        const pill = document.getElementById('navPill');
-        if (!nav || !pill) return;
-
-        const g = (window as any).gsap;
-        const items = Array.from(nav.querySelectorAll<HTMLElement>('.nav-item, .nav-logo'));
         const word = nav.querySelector<HTMLElement>('.logo-word');
-        const hasTouch = window.matchMedia('(hover: none)').matches;
-
-        // --- the indicator -------------------------------------------------
-        // `tracking` is what the pill is currently under. The wordmark's
-        // collapse changes the width of the bar under it, so the pill has to
-        // be told on every frame of that tween or it sits at a stale width,
-        // which is what left a white slab around the lone mark.
-        // One curve and two durations, matching the stylesheet's --nav-move
-        // and --nav-tint. power4.out is the same curve as the CSS
-        // cubic-bezier(.22,1,.36,1), so nothing in the bar moves on a
-        // different ease from anything else.
+        // From 1024 the lockup is the wordmark alone, so there is no mark for
+        // it to collapse onto and the collapse is a sub-1024 behaviour only.
+        const wide = window.matchMedia('(min-width: 1024px)');
+        // The same curve and durations the stylesheet uses, so the wordmark
+        // moves on the same ease as everything else in the bar. power4.out is
+        // cubic-bezier(.22,1,.36,1).
         const MOVE = 0.32, TINT = 0.18, EASE = 'power4.out';
-        let tracking: HTMLElement | null = null;
 
-        function moveTo(el: HTMLElement | null, instant = false) {
-          if (!g || !pill) return;
-          tracking = el;
-          // Leaving: the indicator fades where it stands. Animating its width
-          // to zero made it collapse onto its own left edge, which is the one
-          // direction it should never move in.
-          if (!el) { g.to(pill, { opacity: 0, duration: TINT, ease: EASE }); return; }
-          const hidden = Number(g.getProperty(pill, 'opacity')) < 0.05;
-          if (hidden || instant) {
-            // Arriving from nothing: take the size and the place at once and
-            // fade up. Growing from zero width at the far left made it sweep
-            // across the bar before it had anything to say.
-            g.set(pill, { width: el.offsetWidth, x: el.offsetLeft, y: el.offsetTop });
-            if (!instant) g.to(pill, { opacity: 1, duration: TINT, ease: EASE });
-            else g.set(pill, { opacity: 1 });
-            return;
+        // --- the pill ---------------------------------------------------------
+        const pill = document.getElementById('navPill');
+        const items = Array.from(
+          nav.querySelectorAll<HTMLElement>('.nav-item:not(.is-cta), .nav-logo')
+        );
+        const canHover = window.matchMedia('(hover: hover)').matches;
+        let hovered: HTMLElement | null = null;
+        let currentEl: HTMLElement | null = null;
+        let pillRaf = 0;
+
+        function paintPill() {
+          pillRaf = 0;
+          if (!pill) return;
+          const el = hovered ?? currentEl;
+          // Whatever the pill is under goes ink, on either ground: the pill is
+          // white, so a label left white would be white on white over the hero.
+          items.forEach(i => i.classList.toggle('is-lit', i === el));
+          if (!el) { pill.classList.remove('is-on'); return; }
+
+          const n = nav!.getBoundingClientRect();
+          const r = el.getBoundingClientRect();
+          // Arriving from nothing, it takes its place and its size in the same
+          // frame and fades up. Growing from zero width at the far left swept
+          // it across the bar before it had anything to say.
+          const cold = !pill.classList.contains('is-on');
+          if (cold) pill.classList.add('is-jump');
+          pill.style.setProperty('--pill-x', Math.round(r.left - n.left) + 'px');
+          pill.style.setProperty('--pill-y', Math.round(r.top - n.top) + 'px');
+          pill.style.setProperty('--pill-w', Math.round(r.width) + 'px');
+          pill.style.setProperty('--pill-h', Math.round(r.height) + 'px');
+          if (cold) {
+            void pill.offsetWidth;
+            pill.classList.remove('is-jump');
+            pill.classList.add('is-on');
           }
-          g.to(pill, {
-            width: el.offsetWidth,
-            x: el.offsetLeft,
-            y: el.offsetTop,
-            opacity: 1,
-            duration: MOVE,
-            ease: EASE,
-            overwrite: 'auto',
+        }
+        function schedulePill() {
+          if (!pillRaf) pillRaf = requestAnimationFrame(paintPill);
+        }
+
+        if (canHover) {
+          nav.addEventListener('pointerover', e => {
+            const el = (e.target as HTMLElement | null)?.closest<HTMLElement>(
+              '.nav-item:not(.is-cta), .nav-logo'
+            );
+            const next = el && nav!.contains(el) ? el : null;
+            if (next !== hovered) { hovered = next; schedulePill(); }
+          });
+          nav.addEventListener('pointerleave', () => {
+            if (hovered) { hovered = null; schedulePill(); }
           });
         }
-        if (!hasTouch) {
-          items.forEach(el => el.addEventListener('mouseenter', () => moveTo(el)));
-          nav.addEventListener('mouseleave', () => moveTo(null));
-        }
+        // The bar changes width under the pill for the whole of the wordmark's
+        // collapse. This is the one thing the old indicator needed told by hand
+        // on every frame of that tween.
+        if ('ResizeObserver' in window) new ResizeObserver(schedulePill).observe(nav);
+        window.addEventListener('resize', schedulePill, { passive: true });
 
         // --- the wordmark collapse ------------------------------------------
         let collapsed = false;
@@ -329,7 +282,7 @@ const NAV_LINKS = [
           if (had) word.style.width = '0px';
         }
         measure();
-        window.addEventListener('resize', () => { measure(); }, { passive: true });
+        window.addEventListener('resize', () => { measure(); update(); }, { passive: true });
 
         function setCollapsed(next: boolean) {
           if (next === collapsed || !word) return;
@@ -342,11 +295,8 @@ const NAV_LINKS = [
           g.killTweensOf(word);
           const tl = g.timeline({
             defaults: { ease: EASE },
-            // The bar changes width under the indicator for the whole move.
-            onUpdate: () => { if (tracking) moveTo(tracking, true); },
             onComplete: () => {
               if (!next) { word.style.width = ''; word.style.opacity = ''; word.style.marginLeft = ''; }
-              if (tracking) moveTo(tracking, true);
             },
           });
           // The letters go first and the space closes right behind them. When
@@ -367,12 +317,16 @@ const NAV_LINKS = [
         // inverts for as long as it is over either one, which is the whole
         // reason those two frames are the only dark things on the page.
         const darkZones = Array.from(document.querySelectorAll<HTMLElement>('[data-nav-dark]'));
-        const footer = document.querySelector<HTMLElement>('.footer');
+        const navLinks = Array.from(nav.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'));
+        const sections = navLinks
+          .map(a => ({ hash: a.dataset.navLink!, el: document.getElementById(a.dataset.navLink!) }))
+          .filter((s): s is { hash: string; el: HTMLElement } => !!s.el);
         let ticking = false;
         function update() {
           ticking = false;
           const y = window.scrollY;
-          if (y >= 400) setCollapsed(true);
+          if (wide.matches) setCollapsed(false);
+          else if (y >= 400) setCollapsed(true);
           else if (y <= 360) setCollapsed(false);
 
           const navBottom = nav!.getBoundingClientRect().bottom;
@@ -385,17 +339,35 @@ const NAV_LINKS = [
           });
           nav!.classList.toggle('is-dark', onDark);
 
-          // The bar retires over the footer. It is fixed and it never hides
-          // anywhere else, but at the end of the page the footer is taller
-          // than the room left for it, so its first row sits under the bar at
-          // every viewport where the two meet. Padding cannot fix that: it
-          // grows the footer by as much as it lowers the content. The footer
-          // repeats every link the bar holds, so the bar has nothing to do
-          // there, and it comes straight back on the way up.
-          if (footer) {
-            const f = footer.getBoundingClientRect();
-            nav!.classList.toggle('is-away', f.top < navBottom + 16 && !nav!.classList.contains('is-menu-open'));
+          // --- the link for the section being read ---------------------------
+          // The bar's four links point at four sections. The one in front is
+          // the last section whose top has passed under the bar; above the
+          // first one nothing is marked, which is the truthful state on the
+          // hero. It rides on the same rAF as everything else here, so it
+          // costs one loop over four elements per frame of scrolling.
+          if (sections.length) {
+            let current: string | null = null;
+            for (const sec of sections) {
+              if (sec.el.getBoundingClientRect().top <= edge + 80) current = sec.hash;
+            }
+            let currentLink: HTMLElement | null = null;
+            navLinks.forEach(a => {
+              const on = a.dataset.navLink === current;
+              a.classList.toggle('is-current', on);
+              if (on) { a.setAttribute('aria-current', 'true'); currentLink = a; }
+              else a.removeAttribute('aria-current');
+            });
+            if (currentLink !== currentEl) { currentEl = currentLink; schedulePill(); }
           }
+
+          // Nothing here retires the bar any more. It was tried twice, once as
+          // a fade-out where it stood and once as a park above the footer, and
+          // both were the same answer to the same measurable problem: at the
+          // end of the page the footer's first row passes under a fixed bar at
+          // every width. The problem is now solved in the footer's own
+          // geometry instead (see the stylesheet), so the bar is simply fixed
+          // from the first pixel to the last, which is what the reference does
+          // and what this rule always said.
         }
         window.addEventListener('scroll', () => {
           if (!ticking) { ticking = true; requestAnimationFrame(update); }

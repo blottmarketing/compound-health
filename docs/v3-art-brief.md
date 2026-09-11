@@ -103,8 +103,7 @@ later, the three prompts below are simply unused.
 gradient", "mist" or "haze" into a prompt. Generators turn all five into fog, and it has been
 rejected twice. Where an image meets the page ground it stops on a hard edge, rounded at the corners
 by CSS. If an edge in a delivered render does not sit right against the ground, fix it in the image
-file, the way the v1.1 footer render was fixed (see `docs/v1-1-art-brief.md`). Never put a CSS fade,
-scrim or blur over an image to hide a bad edge.
+file itself. Never put a CSS fade, scrim or blur over an image to hide a bad edge.
 
 Because every edge is hard, the page ground colour never has to appear inside a render. The ground
 for v3 is the orchestrator's to set; nothing in this brief depends on it.
@@ -267,6 +266,39 @@ For `-b` and `-c`, run the same prompt with the movement diagonal instead of ver
 subject: `-b` is wet clipped grass at dawn (deep green, blue-grey, silver), `-c` is still water under
 a pale sky (slate, bone, one thread of gold). Three frames, one hour, three colour weights.
 
+### 8. `partners-band` — built, then dropped
+
+Built on 2026-09-11 for a version of the partners section that stood on a photograph, and deleted
+the same day when that section became a reading passage with no image in it (see CLAUDE.md, v3 rule
+12b). Nothing references it now. It is kept here because the recipe is the useful part and the band
+is twenty minutes of work if a later layout wants one.
+
+**It was not a generated render.** It was cut from `quad-photo-a`, which is already the right
+register and already dark:
+
+```
+crop (0, 260, 1193, 820)        the soft middle: no subject, all texture
+resize -> 2386 x 1120           LANCZOS
+highlight rolloff, linear light knee at sRGB 0.26, asymptotic to sRGB 0.60
+cwebp -q 80
+```
+
+That rolloff is the same treatment the hero and the closing frame got, and for the same reason: the
+specular dew was reading as white points under white type. Shadows are untouched. Measured after:
+median luminance 0.199, p99 0.328, p99.9 0.441, max 0.546, against white type. No scrim, and none is
+ever to be added.
+
+**Prompt, if a dedicated render is wanted.** Same register, same hour, same rules as every other
+slot. Landscape, at least 2400px wide, read as a band of roughly 4:1 after cropping:
+
+> Tended ground at first light, photographed low and wide with a long lens. Dew on cut grass, most
+> of the frame thrown out of focus, no horizon, no subject, no sky. Cool green shadow with one
+> quiet warm edge. Nothing in the centre: three lines of type stand across the middle of the frame.
+> Dark enough that white type reads anywhere on it. Photographic, unstyled, no props, no people.
+
+To use it again, drop the file at `public/images/v3/partners-band.webp` and add a `PARTNERS_ART`
+constant at the top of `src/pages/v3/index.astro` alongside the other four, nullable like them.
+
 ## How to drop them in
 
 1. Save each as WebP into `public/images/v3/`, named exactly by its id. Convert whatever the
@@ -283,7 +315,7 @@ const QUAD_ART: (string | null)[] = [
 const CLOSING_ART: string | null = '/images/v3/closing-frame.webp';
 ```
 
-Those three constants are already in the page, all set to `null`. There is no `STEP_ART`: the
+Those three constants are already in the page. There is no `STEP_ART`: the
 three process steps are drawn interface panels, not photographs, so slots 2, 3 and 4 below are
 unused as the page stands. Their prompts are kept in case that decision is reversed.
 
@@ -292,8 +324,8 @@ unused as the page stands. Their prompts are kept in case that decision is rever
    frame on a narrow viewport. Fix that by changing `object-position` on that one slot, or by
    recropping the file. Do not fix it by changing the layout.
 4. If a delivered render is close but the subject lands on the wrong side, mirror it in CSS
-   (`transform: scaleX(-1)`), the way the v1.1 hero is mirrored. That is cheaper than a regeneration
-   and nothing in these frames reads as handed.
+   (`transform: scaleX(-1)`). That is cheaper than a regeneration and nothing in these frames reads
+   as handed.
 
 Every image meets the page ground on a hard rounded edge. Do not add a CSS fade, scrim, blur or
 gradient overlay to any of them. If the hero comes back too bright for white type, regenerate it
