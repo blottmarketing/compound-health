@@ -8,8 +8,8 @@
    The system, in one paragraph: one warm cream ground (#F9F8F5), warm-black text
    (#1A1613), a pale blue that appears only as sky and as focus, and white as the
    surface of everything raised. Display type is a light serif at weight 350 set
-   tight and large; reading type is DM Sans; every label, figure and colophon is
-   DM Mono. Elevation is carried by radius, fill and blur, never by shadow: the
+   tight and large; everything else, down to the labels, figures and colophon,
+   is DM Sans. Elevation is carried by radius, fill and blur, never by shadow: the
    whole page ships four shadows and three of them are focus rings. Radii are big
    and grow with the viewport (24 → 56 → 64px on media, 12/16px on chrome).
 
@@ -102,8 +102,6 @@
   /* --- type --------------------------------------------------------------- */
   --font-heading: 'Newsreader', 'Times New Roman', Times, serif;
   --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-word: 'Lato', var(--font-body);
   /* the display weight. 350 is ABC Marist Book; Newsreader is variable, so we
      can sit on it exactly rather than rounding up to 400. */
   --weight-display: 350;
@@ -134,13 +132,34 @@
   --gutter: 1.6rem;
   --page-max: 205.6rem;
 
-  /* --- radius. media grows with the viewport; chrome does not ------------- */
-  --r-chrome-sm: 0.8rem;
-  --r-chrome:    1.2rem;   /* buttons */
-  --r-shell:     1.6rem;   /* the nav shell, cards, accordion rows */
-  --r-tile:      1.2rem;   /* infographic tiles */
-  --r-media:     2.4rem;   /* media, at every width below 1024 */
-  --r-panel:     1.6rem;
+  /* The deck's plate. 71.4rem, by the client's instruction of 2026-09-11, and
+     no longer measured off the nav: it had been tracking the bar's glass shell
+     and fell to 58.6rem when the bar was reduced to the mark alone, which took
+     the plate down with it and, at 586px, under the container query that
+     selects the figure's wide composition. The plate is now its own number.
+     It holds its 1100:693 ratio, so the height follows from the width and
+     nothing in the drawing is scaled by hand. */
+  --car-w: 71.4rem;
+  --car-h: calc(var(--car-w) * 693 / 1100);
+
+  /* --- radius. One ladder, five steps, and only the last one grows --------
+     Five values for the whole variation, each owning one kind of thing, so a
+     new element is never a new number. The ladder is tight on purpose: with
+     no shadows and no hairlines in the layout, radius is the only thing
+     carrying elevation, and a crisp step reads as a considered edge where a
+     soft one reads as a default. Nothing here is authored anywhere but this
+     block; a raw radius below is a bug, with four stated exceptions:
+     999px on a stem or a chevron, 50% on a disc, 1px on the burger's bars,
+     and 0 on a thing that has deliberately given up its box.
+     Only --r-2xl is responsive, because only the page's own edges and its
+     full-width fields grow with the viewport. A sixth step below --r-sm was
+     written and then removed: nothing on the page needed it, and an unused
+     token is how the old six-token set rotted in the first place. */
+  --r-sm:  0.6rem;   /* tags, icon tiles, inset rows inside a figure */
+  --r-md:  0.8rem;   /* buttons, inputs, nav items, chips, focus rings */
+  --r-lg:  1.2rem;   /* every card and every shell */
+  --r-xl:  1.6rem;   /* photographs and drawn squares inside the layout */
+  --r-2xl: 1.6rem;   /* full-width fields and the page's own edges */
 
   /* --- motion. the reference's own constants ------------------------------ */
   --dur-fast:   0.3s;
@@ -151,9 +170,10 @@
      curve, two durations: a tint for colour, opacity and fill, a move for
      position, size and transform. --ease-out-quint is the same curve GSAP
      calls power4.out, so the stylesheet and the scripts move together.
-     The deliberate outliers are the reference's own: the hero window at 1s,
-     the ticker at 0.68s, the mark drawing itself at 1.6s, and the scrubbed
-     timelines, which have no duration of their own at all. */
+     The deliberate outliers are the reference's own: the ticker at 0.68s, the
+     mark drawing itself at 1.6s, and the scrubbed timelines, which have no
+     duration of their own at all. The hero window was on this list at 1s and
+     is not any more: it is scrubbed, so it has no duration either. */
   --t-tint: 0.18s;
   --t-move: 0.32s;
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -172,7 +192,7 @@
     --module-sm: 3.2rem; --module-md: 5.6rem; --module-lg: 4rem;
     --module-xl: 5.6rem; --module-xxl: 14.4rem;
     --gutter: 2.4rem;
-    --r-media: 5.6rem;
+    --r-2xl: 3.2rem;
   }
 }
 
@@ -183,7 +203,6 @@
     --module-sm: 4.8rem; --module-md: 6.4rem; --module-lg: 8rem;
     --module-xl: 9.6rem; --module-xxl: 16rem; --module-xxxl: 24rem;
     --gutter: 3.2rem;
-    --r-media: 6.4rem;
   }
 }
 
@@ -210,6 +229,13 @@ html {
   font-size: 62.5%;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  /* No elastic bounce at the ends of the page. The deck and the orbit are
+     pinned stages: a rubber band at either end drags a pinned composition with
+     it and lets go of it, which reads as the layout coming loose. The block
+     axis only, deliberately: the shorthand would also take the horizontal
+     overscroll, and with it the two-finger swipe back, which nobody asked to
+     lose. */
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -247,7 +273,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 :focus-visible {
   outline: 2px solid var(--stroke-focus);
   outline-offset: 2px;
-  border-radius: var(--r-chrome-sm);
+  border-radius: var(--r-md);
 }
 
 .u-sr-only {
@@ -263,7 +289,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 /* ---------------------------------------------------------------------------
    3. TYPE SCALE
    Display is the serif at 350, line-height under 1.1, tracked in.
-   Reading is DM Sans. Labels and figures are DM Mono.
+   Everything that is not a heading is DM Sans, labels and figures included.
    --------------------------------------------------------------------------- */
 
 .t-display {                                   /* the H1, and the counting figure */
@@ -317,14 +343,14 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   line-height: 1.8rem;
   letter-spacing: 0.005em;
 }
-.t-label {                                     /* mono, the colophon size */
-  font-family: var(--font-mono);
+.t-label {                                     /* the colophon size */
+  font-family: var(--font-body);
   font-size: 1.3rem;
   line-height: 1.6rem;
   letter-spacing: -0.01em;
 }
 .t-label-sm {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.5rem;
   letter-spacing: -0.01em;
@@ -390,12 +416,12 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 /* The head of a plain section: one serif line, optionally a standfirst under it. */
 /* The one departure from the reference, and a deliberate one: it puts nothing
    above a heading, and the client's copy names every section. The label is set
-   in the mono voice at 12px with no box and no caps, which is the quietest
-   thing this system can do with a word that has to be there. */
+   at 13px in the reading face, with no box, no caps and no letterspacing, which
+   is the quietest thing this system can do with a word that has to be there. */
 .sec-label {
   display: block;
   margin-bottom: 2rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1.3rem;
   letter-spacing: -0.01em;
   color: var(--text-secondary);
@@ -439,7 +465,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   height: 4rem;
   padding-inline: 1.4rem;
   border: 2px solid transparent;
-  border-radius: var(--r-chrome);
+  border-radius: var(--r-md);
   z-index: 1;
   white-space: nowrap;
   transition: background-color var(--t-tint) var(--ease-out-quint),
@@ -452,7 +478,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   flex-shrink: 0;
   width: 3.6rem;
   height: 4rem;
-  border-radius: var(--r-chrome);
+  border-radius: var(--r-md);
   z-index: 0;
   transition: margin var(--t-move) var(--ease-out-quint);
 }
@@ -506,6 +532,14 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .btn-primary[disabled] .btn-icon { background: var(--white-a-600); color: var(--text-secondary); }
 .btn-secondary[disabled] .btn-label,
 .btn-secondary[disabled] .btn-icon { background: #e5e5e5; color: var(--text-secondary); }
+/* A working button is a label and nothing else. Two things went wrong while
+   the form was submitting: a disabled button still matches :hover, so the icon
+   slid out from behind the label and stood there as a second box; and the
+   disabled fill is translucent, so even parked behind the label the arrow read
+   through it. The icon is frozen where it is and not painted at all. */
+.btn[disabled] .btn-icon { visibility: hidden; }
+.btn[disabled]:hover .btn-icon,
+.btn[disabled]:focus-visible .btn-icon { margin-left: -3.6rem; }
 
 @media (min-width: 1024px) {
   .btn-label, .btn-icon { height: 4.2rem; }
@@ -529,7 +563,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   width: calc(100% + 8px);
   height: calc(100% + 4px);
   border: 2px solid var(--stroke-focus);
-  border-radius: var(--r-chrome-sm);
+  border-radius: var(--r-md);
   box-shadow: var(--ring-focus);
 }
 
@@ -537,18 +571,18 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
    6. SMALL ATOMS
    --------------------------------------------------------------------------- */
 
-/* The mono chip. Nudged up a quarter of a rem, as the reference's is. */
+/* The chip. Nudged up a quarter of a rem, as the reference's is. */
 .tag {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   translate: 0 -0.25rem;
   background: var(--surface-primary);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1.3rem;
   line-height: 1.6rem;
   letter-spacing: -0.01em;
-  border-radius: 0.4rem;
+  border-radius: var(--r-sm);
   padding: 0.4rem 0.6rem;
 }
 .tag.is-quiet { background: var(--stone-300); color: var(--text-secondary); }
@@ -574,7 +608,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   place-items: center;
   width: 3.6rem;
   height: 3.6rem;
-  border-radius: 0.8rem;
+  border-radius: var(--r-sm);
   background: var(--black-800);
   color: var(--green-500);
   flex-shrink: 0;
@@ -592,7 +626,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
    7. PHOTOGRAPHY PLACEHOLDERS
    Every photograph in this variation is a placeholder until a render lands.
    A placeholder is not a grey box: it holds the exact frame, ratio and radius
-   of the shot it stands in for, and names it in mono, so the page can be
+   of the shot it stands in for, and names it in the reading face, so the page can be
    reviewed at full size and the art can be dropped in without touching layout.
    Prompts for each slot live in docs/v3-art-brief.md.
    --------------------------------------------------------------------------- */
@@ -626,7 +660,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   max-width: 34rem;
   padding: 1.6rem;
   text-align: left;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.6;
   letter-spacing: -0.01em;
@@ -692,19 +726,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 
 /* The shell is drawn as an oversized sibling so the items sit inside it with
    an even 4px of glass all round. */
-/* The one place the bar gives way. See the layout for why. */
-.nav {
-  transition: transform var(--t-move) var(--ease-out-quint),
-              opacity var(--t-tint) var(--ease-out-quint);
-}
-.nav.is-away {
-  transform: translateY(-160%);
-  opacity: 0;
-  pointer-events: none;
-}
-@media (min-width: 1024px) {
-  .nav.is-away { transform: translateX(-50%) translateY(-160%); }
-}
+
 
 .nav-shell {
   position: absolute;
@@ -712,7 +734,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   left: -4px;
   width: calc(100% + 8px);
   height: 5.2rem;
-  border-radius: var(--r-shell);
+  border-radius: var(--r-lg);
   border: 1px solid var(--white-a-100);
   background: var(--stone-a-400);
   backdrop-filter: blur(13px);
@@ -720,19 +742,31 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   pointer-events: none;
 }
 
-/* The white indicator. Positioned and sized from JS; hidden until it has a
-   target, so it never flashes at the origin. */
+/* The white pill. One element for the whole bar: it sits on the link whose
+   section is being read and slides to whatever the pointer is over. Its place
+   and size are four custom properties written by the layout on the frame they
+   are needed; the movement is this transition and nothing else, so there is no
+   tween that can fall out of step with a bar that is changing width. */
 .nav-pill {
   position: absolute;
   top: 0;
   left: 0;
-  height: 4.4rem;
-  width: 0;
-  border-radius: var(--r-chrome);
+  width: var(--pill-w, 0);
+  height: var(--pill-h, 4.4rem);
+  transform: translate(var(--pill-x, 0), var(--pill-y, 0));
+  border-radius: var(--r-md);
   background: var(--white);
-  pointer-events: none;
   opacity: 0;
+  pointer-events: none;
+  transition: transform var(--t-move) var(--ease-out-quint),
+              width var(--t-move) var(--ease-out-quint),
+              opacity var(--t-tint) var(--ease-out-quint);
 }
+.nav-pill.is-on { opacity: 1; }
+/* One frame, on the way in from nothing: it takes its place without travelling
+   to it. */
+.nav-pill.is-jump { transition: none; }
+@media (prefers-reduced-motion: reduce) { .nav-pill { transition: none; } }
 
 .nav-item {
   position: relative;
@@ -741,26 +775,66 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   gap: 0.8rem;
   height: 4.4rem;
   padding-inline: 1.4rem;
-  border-radius: var(--r-chrome);
+  border-radius: var(--r-md);
   font-family: var(--font-body);
   font-size: 1.4rem;
   line-height: 1;
   color: var(--text-primary);
   white-space: nowrap;
-  transition: color var(--t-tint) var(--ease-out-quint);
+  background: transparent;
+  transition: background-color var(--t-tint) var(--ease-out-quint),
+              color var(--t-tint) var(--ease-out-quint);
 }
-.nav-item.is-cta { font-weight: 500; }
-
 /* Over the hero the whole pill is on a dark photograph, so the type inverts.
-   The sentinel that flips this is [data-nav-dark] on the hero. */
-.nav.is-dark .nav-item { color: var(--white); }
+   The sentinel that flips this is [data-nav-dark] on the hero. The action is
+   excluded: it carries a fill of its own and sets both of its colours below. */
+.nav.is-dark .nav-item:not(.is-cta) { color: var(--white); }
 
-/* The indicator is white, so whatever it slides under has to be ink, on both
-   grounds. Without this the hovered label was white on white over the hero. */
-.nav-item:hover,
-.nav.is-dark .nav-item:hover,
-.nav-logo:hover,
-.nav.is-dark .nav-logo:hover { color: var(--text-primary); }
+/* The fill belongs to the pill, so an item only changes colour, and only the
+   one the pill is actually under: `is-lit` is written by the layout for the
+   pill's own target, which is the hovered link or, with the pointer away, the
+   link for the section being read. Doing it from :hover and .is-current
+   instead would leave the current link ink while the pill was somewhere else,
+   and ink on a photograph is a label that has gone. */
+.nav-item:not(.is-cta).is-lit,
+.nav.is-dark .nav-item:not(.is-cta).is-lit,
+.nav-logo.is-lit,
+.nav.is-dark .nav-logo.is-lit { color: var(--text-primary); }
+
+/* The one action in the bar, and the only filled thing in it (2026-09-11).
+   It is a nav item rather than a .btn: the button atom is 40px tall with an
+   icon pill that slides out from behind its label, and neither of those
+   belongs in a 36px bar. So it borrows the button's two fills and nothing
+   else, which is why the pair below is the .btn-secondary and .btn-primary
+   pair exactly.
+   The fill inverts with the ground, not with hover: near-black on the cream
+   page, white on the hero photograph. A near-black pill on that photograph
+   had almost nothing separating it from the picture. */
+.nav-item.is-cta {
+  margin-left: 0.6rem;
+  font-weight: 500;
+  background: var(--surface-tertiary);
+  color: var(--text-invert);
+  transition: background-color var(--t-tint) var(--ease-out-quint),
+              color var(--t-tint) var(--ease-out-quint);
+}
+.nav.is-dark .nav-item.is-cta {
+  background: var(--surface-primary);
+  color: var(--text-primary);
+}
+/* Hover lifts the fill rather than trading it. It used to go to
+   --surface-quaternary on the cream ground, which is the bar's own glass to
+   within a shade: the action vanished under the pointer, which is the one
+   element on this page that must never do that. Both grounds now keep their
+   fill and step it. */
+.nav-item.is-cta:hover {
+  background: var(--black-700);
+  color: var(--text-invert);
+}
+.nav.is-dark .nav-item.is-cta:hover {
+  background: var(--stone-300);
+  color: var(--text-primary);
+}
 
 .nav-item:focus-visible {
   outline: none;
@@ -774,28 +848,23 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   align-items: center;
   height: 4.4rem;
   padding-inline: 1.4rem;
-  border-radius: var(--r-chrome);
+  border-radius: var(--r-md);
   position: relative;
   color: var(--text-primary);
-  transition: color var(--t-tint) var(--ease-out-quint);
+  border-radius: var(--r-md);
+  background: transparent;
+  transition: background-color var(--t-tint) var(--ease-out-quint),
+              color var(--t-tint) var(--ease-out-quint);
 }
 .nav.is-dark .nav-logo { color: var(--white); }
-.nav-logo .logo-mark { width: 2.1rem; height: 2.1rem; flex-shrink: 0; }
-.nav-logo .logo-word {
-  display: none;
-  margin-left: 0.9rem;
-  overflow: hidden;
-  white-space: nowrap;
-  will-change: width, opacity;
-  font-family: var(--font-word);
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-.nav-logo .logo-word-light { font-weight: 400; }
 
-@media (min-width: 760px) { .nav-logo .logo-word { display: block; } }
+/* The bar carries the mark and nothing else, at every width (client's call,
+   2026-09-11); the letters are at the foot of the page instead. With no
+   wordmark beside it the mark holds no proportion to anything, so it takes the
+   size the row can carry rather than the 16px it stood at inside the lockup.
+   The viewBox is tight to the ink, so this is the drawing's own size and not a
+   box with air in it. */
+.nav-logo .logo-mark { width: 2.4rem; height: 2.2rem; flex-shrink: 0; }
 
 /* The four section links are hidden below 1024px, where the pill would not fit;
    the menu item takes over. There is no full-screen drawer in this system: the
@@ -805,8 +874,20 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 @media (min-width: 1024px) {
   .nav-links { display: flex; }
   .nav-item.is-cta { display: flex; }
-  .nav-shell { height: 5.6rem; top: -6px; left: -6px; width: calc(100% + 12px); }
   .nav-burger { display: none !important; }
+
+  /* The desktop bar is shorter than the one below it (2026-09-11, client's
+     call). The height was never padding on a box: every row in the bar is a
+     fixed-height flex item and the glass is an oversized sibling behind them,
+     so the height comes down in two places at once or the pill stops sitting
+     evenly around its contents. 36px rows inside 5px of glass is 46px of bar
+     where it was 56px. The indicator has to be told too: it is positioned
+     from JS but sized from here, and a 44px indicator behind a 36px row is a
+     white lip above and below every label. */
+  .nav-item,
+  .nav-logo { height: 3.6rem; }
+  .nav-shell { height: 4.6rem; top: -5px; left: -5px; width: calc(100% + 10px); }
+
 }
 
 .nav-burger {
@@ -819,7 +900,7 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   height: 4.4rem;
   border: 0;
   background: none;
-  border-radius: var(--r-chrome);
+  border-radius: var(--r-md);
   color: var(--text-primary);
   cursor: pointer;
   transition: color var(--t-tint) var(--ease-out-quint);
@@ -907,12 +988,44 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 
 /* ---------------------------------------------------------------------------
    9. THE HERO
-   A full-height photograph that, once the reader moves, pulls its own corners
-   in and rounds them: clip-path inset(0) to inset(32px round 64px). The image
-   never scales and never crops. The window shrinks.
+   A full-height photograph that pulls its own corners in and rounds them as
+   the reader scrolls: inset(0) to inset(32px round 64px). The image never
+   scales and never crops. The window shrinks.
+
+   It used to be a class flipped at scrollY 100 driving a 1s transition, which
+   is what the reference itself does and is the one place in this variation
+   where scroll was a trigger rather than a mechanism. Three things were wrong
+   with it and all three came from the same cause. It ran on its own clock, so
+   a flick sent the hero off screen while the window was still closing. It
+   reversed from wherever it had reached, so a trackpad nudge either side of
+   the threshold made it stutter back and forth. And the copy above it moved
+   on a second clock, 0.6s and a different curve against the window's 1s, so
+   the pair slipped apart every time.
+
+   --hero-close runs 0 to 1 and is written by the scrub instead, so the window
+   follows the reader's hand in both directions and there is no threshold to
+   sit on. It is registered, so it is a real number the engine interpolates
+   rather than a string it reparses every frame, and it inherits, so the copy
+   reads the same value and the two can never travel apart. Left at 0 it is
+   the open state, which is also what reduced motion gets: the script returns
+   before it can write anything.
    --------------------------------------------------------------------------- */
 
+@property --hero-close {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
 .hero {
+  /* 0 open, 1 closed. Written by the scrub, read by the media and the copy. */
+  --hero-close: 0;
+  /* Its own pair, on the ladder but not on --r-2xl's breakpoint: the closed
+     frame's inset and its radius have to step together, and they step at 1280
+     where --r-2xl steps at 1024. So the values are the ladder's, the moment is
+     the hero's. */
+  --hero-inset: 1.6rem;
+  --hero-radius: var(--r-xl);
   position: relative;
   display: flex;
   align-items: center;
@@ -926,28 +1039,30 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   position: absolute;
   inset: 0;
   z-index: 0;
-  /* Every value is written out in both states, all four insets and the
-     radius. inset(0) carries no radius at all, and a browser asked to tween a
-     shape that has one against a shape that does not will sometimes give up
-     and jump instead. */
-  clip-path: inset(0px 0px 0px 0px round 0px);
-  transition: clip-path var(--dur-slow) var(--ease-out-quint);
+  /* One shape, recomputed from --hero-close. All four insets and the radius
+     are written out, as they always were: inset(0) carries no radius at all,
+     and the old transition between a shape that has one and a shape that does
+     not is where a browser would give up and jump. There is no pair to
+     reconcile now, so there is nothing left to skip. */
+  clip-path: inset(
+    calc(var(--hero-close) * var(--hero-inset))
+    calc(var(--hero-close) * var(--hero-inset))
+    calc(var(--hero-close) * var(--hero-inset))
+    calc(var(--hero-close) * var(--hero-inset))
+    round calc(var(--hero-close) * var(--hero-radius))
+  );
   will-change: clip-path;
   contain: layout paint;
 }
-.hero.is-zoomed .hero-media { clip-path: inset(16px 16px 16px 16px round 24px); }
 @media (min-width: 1280px) {
-  .hero-media { transition-duration: var(--dur-slow); }
-  .hero.is-zoomed .hero-media { clip-path: inset(32px 32px 32px 32px round 64px); }
+  .hero { --hero-inset: 3.2rem; --hero-radius: var(--r-2xl); }
 }
 /* The two pinned stages fall back to plain stacks when the reader asks for
    less motion; the hero is the third set piece and the largest movement on
-   the page, and it was still running. It does not close at all now, which is
-   what the preference asks for: the picture stays as it arrived. */
-@media (prefers-reduced-motion: reduce) {
-  .hero-media { transition: none; }
-  .hero.is-zoomed .hero-media { clip-path: inset(0px 0px 0px 0px round 0px); }
-}
+   the page. It does not close at all now, which is what the preference asks
+   for: the picture stays as it arrived. No rule is needed for that any more.
+   The scrub is the only thing that writes --hero-close and it never starts,
+   so the declared 0 above is what the page keeps. */
 .hero-media .ph,
 .hero-media img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -959,9 +1074,10 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   padding-inline: var(--gutter);
   text-align: center;
   color: var(--white);
-  transition: transform var(--dur-medium) var(--ease-out);
+  /* The same value the window reads, so the copy and the window are one
+     movement rather than two that happen to start together. */
+  transform: translateY(calc(var(--hero-close) * -2.4rem));
 }
-.hero.is-zoomed .hero-inner { transform: translateY(-2.4rem); }
 
 .hero h1 { margin-bottom: 3.2rem; }
 .hero-sub {
@@ -970,34 +1086,6 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   color: var(--white);
 }
 
-
-.field-glass {
-  display: flex;
-  align-items: center;
-  height: 5.6rem;
-  border-radius: var(--r-shell);
-  background: var(--stone-a-200);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 0.7rem 0.7rem 0.7rem 1.8rem;
-  gap: 0.8rem;
-}
-.field-glass input {
-  width: 27.5rem;
-  border: 0;
-  background: none;
-  font-family: var(--font-body);
-  font-size: 1.5rem;
-  color: var(--white);
-  transition: width var(--t-move) var(--ease-out-quint);
-}
-.field-glass input::placeholder { color: var(--white-a-600); }
-.field-glass input:focus { outline: none; }
-.field-glass:focus-within input { width: 36rem; }
-@media (max-width: 560px) {
-  .field-glass input, .field-glass:focus-within input { width: 100%; }
-  .field-glass { width: 100%; }
-}
 
 
 /* ---------------------------------------------------------------------------
@@ -1012,23 +1100,36 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   z-index: 1;
   width: 100%;
   background: var(--bg-secondary);
-  border-bottom-left-radius: 3.2rem;
-  border-bottom-right-radius: 3.2rem;
+  border-bottom-left-radius: var(--r-2xl);
+  border-bottom-right-radius: var(--r-2xl);
   padding: 3.2rem var(--gutter) 2.4rem;
   margin-bottom: 30vw;
 }
+/* The floor is what leaves the bar its room. At the end of the page the last
+   screen shows the footer's own height plus the panel gap under it, so the
+   first row lands at `padding-top - height - margin-bottom + viewport`: the
+   taller the footer, the further its first row sits under a fixed bar, and
+   padding cannot buy it back because padding is part of that height. 38rem is
+   the content's own height, so the block keeps a floor without standing taller
+   than it needs to, and the statement clears the bar at every width down to a
+   short laptop. Do not put the 51.7rem back without re-measuring the bottom of
+   the page at 1280x800. */
 @media (min-width: 1024px) {
-  .footer { border-bottom-left-radius: 5.6rem; border-bottom-right-radius: 5.6rem; margin-bottom: 29vw; min-height: 51.7rem; }
+  .footer { margin-bottom: 29vw; min-height: 38rem; }
 }
 @media (min-width: 1280px) {
-  .footer { border-bottom-left-radius: 6.4rem; border-bottom-right-radius: 6.4rem; padding-top: 8rem; }
+  .footer { padding-top: 8rem; }
 }
 
 .footer-inner {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 6.4rem;
+  /* Below 1024 the footer is a single stacked column and its own height is what
+     decides whether its first row clears the bar at the end of the page; there
+     is no floor to take the room out of. These four gaps are where it comes
+     from, and the block reads better tight than it did loose. */
+  gap: 4rem;
   height: 100%;
   max-width: 212rem;
   margin-inline: auto;
@@ -1036,9 +1137,11 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 .footer-top {
   display: flex;
   flex-direction: column;
-  gap: 3.2rem;
+  gap: 2.4rem;
 }
 @media (min-width: 1024px) {
+  .footer-top { gap: 3.2rem; }
+  .footer-inner { gap: 6.4rem; }
   .footer-top { flex-direction: row; justify-content: space-between; align-items: flex-start; }
 }
 .footer-statement { max-width: 52rem; margin-bottom: 1.6rem; }
@@ -1047,10 +1150,12 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 .footer-cols {
   display: flex;
   flex-wrap: wrap;
-  gap: 4.8rem;
+  gap: 3.2rem;
 }
+@media (min-width: 1024px) { .footer-cols { gap: 4.8rem; } }
 @media (min-width: 1280px) { .footer-cols { gap: 10rem; } }
-.footer-col { display: flex; flex-direction: column; gap: 1.2rem; min-width: 14rem; }
+.footer-col { display: flex; flex-direction: column; gap: 1rem; min-width: 14rem; }
+@media (min-width: 1024px) { .footer-col { gap: 1.2rem; } }
 .footer-col-title { font-size: 1.5rem; color: var(--text-secondary); margin-bottom: 0.4rem; }
 .footer-col a { color: var(--text-primary); }
 
@@ -1061,10 +1166,33 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   justify-content: flex-start;
   align-items: flex-end;
 }
-@media (min-width: 1024px) { .footer-bottom { justify-content: flex-end; } }
-.footer-colophon { display: flex; align-items: flex-end; gap: 1.6rem; color: var(--text-secondary); }
-.footer-colophon .logo-mark { width: 4rem; height: 4rem; color: var(--text-primary); flex-shrink: 0; }
-.footer-colophon div { display: flex; flex-direction: column; gap: 0.2rem; }
+.footer-colophon {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  color: var(--text-secondary);
+}
+
+/* From 1024 the footer is one grid rather than two stacked rows, so the
+   colophon can start on the same left edge as the link columns above it. The
+   two wrappers hand their children to that grid with display: contents; sizing
+   the colophon or nudging it by hand would only hold until the columns changed
+   width, since the link block is measured from its own content. Row one holds
+   the statement and the columns, row two the colophon, and align-content keeps
+   the two rows at the top and the foot of the footer's min-height. */
+@media (min-width: 1024px) {
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-content: space-between;
+    gap: 6.4rem 4.8rem;
+  }
+  .footer-top,
+  .footer-bottom { display: contents; }
+  .footer-lead { grid-column: 1; grid-row: 1; }
+  .footer-cols { grid-column: 2; grid-row: 1; }
+  .footer-colophon { grid-column: 2; grid-row: 2; }
+}
 
 /* The panel. Fixed to the bottom of the viewport, uncovered as the footer's own
    bottom margin scrolls past it. */
@@ -1080,36 +1208,23 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   pointer-events: none;
 }
 @media (min-width: 1280px) { .footer-panel { height: 90rem; } }
+/* The brand's own letters, drawn, where the page's display serif used to set
+   the two words (client's call, 2026-09-11). It is one picture now, so it has
+   no font size, no letterspacing and no italic to give: the width is the only
+   size it takes and the height follows from the viewBox, which is tight to the
+   ink. 96% of the panel leaves the same sliver of ground at each end that the
+   type did. */
 .footer-wordmark {
   position: absolute;
   left: 50%;
   bottom: 1rem;
   transform: translateX(-50%);
   width: 96%;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 0.16em;
-  font-family: var(--font-heading);
-  font-weight: var(--weight-display);
-  font-size: 13vw;
-  line-height: 0.78;
-  letter-spacing: -0.035em;
   color: var(--white);
-  white-space: nowrap;
 }
-.footer-wordmark em { font-style: italic; }
+.footer-wordmark svg { display: block; width: 100%; height: auto; }
 /* The mark repeated in white at the wordmark's shoulder, which is the one piece
    of graphic bravado in the whole design and only lands because nothing else is. */
-.footer-disc {
-  position: absolute;
-  right: 4%;
-  bottom: 19%;
-  width: 6.2rem;
-  height: 6.2rem;
-  color: var(--white);
-}
-
 /* ---------------------------------------------------------------------------
    11. REVEAL
    One transition, played once, on anything that carries .reveal. Everything
@@ -1143,21 +1258,6 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 @media (min-width: 1024px) { .intro { padding-top: 15rem; margin-bottom: 6rem; } }
 @media (min-width: 1280px) { .intro { padding-top: 27rem; } }
 
-.intro-mark {
-  width: 8.4rem;
-  height: 8.4rem;
-  margin-bottom: 3.2rem;
-  color: var(--text-primary);
-}
-@media (min-width: 1024px) { .intro-mark { width: 11rem; height: 11rem; } }
-.intro-mark path {
-  stroke-dasharray: var(--len, 0);
-  stroke-dashoffset: var(--len, 0);
-}
-.intro-mark.is-drawn path {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1.6s var(--ease-out-quint);
-}
 .intro h2 { max-width: 18ch; }
 .intro-sub { max-width: 58rem; margin: 2.4rem auto 0; color: var(--text-secondary); }
 
@@ -1185,8 +1285,11 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   padding-inline: var(--gutter);
 }
 @media (min-width: 1024px) { .car-stage { height: 75svh; max-height: 70rem; } }
-@media (min-width: 1280px) { .car-stage { height: 34vw; max-height: 46rem; } }
-@media (min-width: 1440px) { .car-stage { height: 37vw; max-height: 60rem; } }
+/* From 1280 the deck is pinned and the plate is the fixed size above, so the
+   stage is that height exactly and stops growing with the viewport. A stage
+   sized off vw left the plate swimming in air once the plate stopped
+   following it. */
+@media (min-width: 1280px) { .car-stage { height: var(--car-h); max-height: none; } }
 
 .car-panel {
   position: absolute;
@@ -1207,20 +1310,66 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   .car-panel.is-right { flex-direction: row-reverse; }
 }
 
+/* The plate. The reference puts a photograph here and floats its card on it;
+   this variation has no photograph for the deck, so the ground is a gradient
+   in the one colour the system already allows outside a photograph, the pale
+   blue it calls sky, settling into the stone the page is made of. It is the
+   plate that carries the colour, never the card.
+
+   One recipe, three settings. The three plates are dealt one over the other
+   and their edges show at the same time, so an identical gradient on all three
+   reads as one plate printed three times. Each slide moves the same three
+   values and nothing else: where the sky pools, which way the stone runs, and
+   which stone it runs through. They stay one family; a different hue on any of
+   them would be a fourth colour in a system that allows exactly one outside a
+   photograph.
+
+   The foot is not one of the three. Every run ends on --stone-400, because the
+   last band of a plate is the only part of it that shows while it waits behind
+   another, and it has to read against a ground of #f9f8f5. Ending 02 on the
+   lightest stone put its whole visible sliver 3 values off the ground, which is
+   nothing: the queued plate simply was not there. --stone-400 is 23 off, which
+   is a quiet edge rather than a line. The difference between the slides lives
+   above that band. */
 .car-media {
   position: relative;
   width: 100%;
   aspect-ratio: 362 / 346;
-  border-radius: var(--r-media);
+  border-radius: var(--r-2xl);
   overflow: hidden;
-  background: var(--stone-300);
+  --plate-pool: 80% 65% at 88% 96%;
+  --plate-run: 152deg;
+  --plate-stone: var(--stone-300);
+  background:
+    radial-gradient(var(--plate-pool), var(--blue-200) 0%, transparent 62%),
+    linear-gradient(var(--plate-run), var(--blue-100) 0%, var(--plate-stone) 58%, var(--stone-400) 100%);
   flex-shrink: 0;
+  /* The deck stacks and promotes these, so each one is its own layer. */
+  will-change: transform;
+}
+/* 02: the sky pools in the opposite corner, the run reverses, and the stone it
+   passes through is the lighter one. */
+.car-panel[data-car-odd="1"] .car-media {
+  --plate-pool: 68% 58% at 14% 8%;
+  --plate-run: 176deg;
+  --plate-stone: var(--stone-200);
+}
+/* 03: the pool drops to the near corner and widens, and the run crosses the
+   other way. */
+.car-panel[data-car-odd="2"] .car-media {
+  --plate-pool: 86% 72% at 10% 94%;
+  --plate-run: 122deg;
+  --plate-stone: var(--stone-300);
 }
 @media (min-width: 1024px) {
   .car-media { width: auto; height: 100%; aspect-ratio: 975 / 614; }
 }
+/* The plate is the width of the nav and takes its height from its ratio, so
+   the drawing inside scales by --u and the composition is unchanged, only
+   smaller. Width-driven, not height-driven: a height of 100% against a stage
+   that grew with the viewport is what made the plate outgrow the bar. */
 @media (min-width: 1280px) {
-  .car-media { aspect-ratio: 1100 / 693; }
+  .car-media { width: var(--car-w); height: auto; aspect-ratio: 1100 / 693; }
 }
 
 .car-copy {
@@ -1228,27 +1377,68 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   max-width: 44rem;
   transition: opacity var(--t-tint) var(--ease-out-quint);
 }
+
+/* From 1280 the caption is not a column beside the plate any more but a cloud
+   on it (client's call, 2026-09-11). Three corrections the same day, each
+   worth keeping:
+
+   It is a white card, not glass. A frosted panel and then an edgeless blurred
+   field were both tried and neither was wanted: what the client asked for is a
+   plain white card with a generous radius sitting on the pale ground, the
+   serif heading and the grey standfirst on it and nothing else. No shadow,
+   which the system does not have anyway.
+
+   It never crosses the working component. The card in the slide is centred and
+   stays centred, so the room beside it is 135px of plate; a caption needs more
+   than twice that, and the answer is to hang the cloud off the plate's edge
+   rather than to squeeze it on. 22rem of overhang is what puts its far edge
+   25px clear of the component at every width from 1280 up, the card in the
+   slide being a constant 443px there. Change --car-w or the card's 620 and
+   this number has to be recomputed.
+
+   It is anchored to the plate's own edge, `calc(50% - var(--car-w) / 2)` being
+   where that edge is, not to the viewport.
+
+   Below 1280 there is no cloud: the deck is not pinned, the plate is the width
+   of the screen, and the caption stays under it as it was. */
 @media (min-width: 1280px) {
   .car-copy {
     position: absolute;
+    z-index: 4;
     top: 50%;
-    transform: translateY(-50%);
-    left: 2.4rem;
-    /* The reference's own 257px at 1280, where the plate leaves nothing else,
-       growing with the viewport rather than staying cramped at every width. */
-    width: clamp(25.7rem, 17vw, 30rem);
+    /* The far edge sits 2.4rem clear of the working card and stays there when
+       the plate changes size. The card is --u * 620 wide against a --u of
+       --car-w / 1000, so it is 0.62 of the plate and its left edge is 0.19 of
+       the plate in from that edge: the clearance is a fraction of --car-w
+       rather than a number measured once. It was a fixed 22rem, right for a
+       714px plate, and it put the cloud on top of the card the day the nav
+       lost its wordmark and --car-w fell to 58.6rem. */
+    left: calc(50% - var(--car-w) / 2 + 0.19 * var(--car-w) - 2.4rem - 33rem);
+    width: 33rem;
     max-width: none;
+    padding: 3.2rem 3.4rem 3.6rem;
+    border-radius: 2.4rem;
+    background: var(--white);
+    /* Centred on the plate. The arrival writes `transform`, so the centring
+       uses the independent `translate` property instead of a translateY in
+       the same one: the two compose, and a fixed negative margin cannot
+       centre three clouds of three different heights. */
+    translate: 0 -50%;
   }
-  .car-panel.is-right .car-copy { left: auto; right: 2.4rem; }
-  /* The caption is measured from the page edge, not from the section gutter,
-     so the panel gives its inset up at this width. */
+  .car-panel.is-right .car-copy {
+    left: auto;
+    right: calc(50% - var(--car-w) / 2 + 0.19 * var(--car-w) - 2.4rem - 33rem);
+  }
+  /* The cloud is measured from the plate, not from the section gutter, so the
+     panel gives its inset up at this width. */
   .car-panel { inset: 0; }
 }
+
 .car-copy h3 { margin-bottom: 1.2rem; }
 .car-copy p { color: var(--text-secondary); }
 .car-n {
   display: block;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1.3rem;
   letter-spacing: -0.01em;
   color: var(--text-secondary);
@@ -1315,7 +1505,7 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 .orb-photo {
   width: 23.6rem;
   height: 26.1rem;
-  border-radius: 1.6rem;
+  border-radius: var(--r-xl);
   overflow: hidden;
 }
 .orb-photo .ph-label { font-size: 1rem; padding: 1rem; }
@@ -1324,6 +1514,10 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   transform: scale(var(--counter, 1));
   transform-origin: center;
 }
+/* The same fill the hero and the placeholders use. Without it the file's own
+   10:11 lands 1.5px short of the frame's 236 by 261 and the ground shows in a
+   hairline along the bottom edge. */
+.orb-photo img { width: 100%; height: 100%; object-fit: cover; }
 /* fit-content so the four data cards, which are now four widths, each sit
    centred on their own point of the ellipse. */
 /* max-content, not fit-content: the cards below carry fixed widths, so the
@@ -1351,7 +1545,7 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   align-items: flex-end;
   min-height: 42rem;
   padding: 2.4rem;
-  border-radius: var(--r-media);
+  border-radius: var(--r-2xl);
   overflow: hidden;
   background: var(--stone-300);
 }
@@ -1371,7 +1565,7 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   width: 100%;
   max-width: 44rem;
   padding: 2.4rem;
-  border-radius: var(--r-shell);
+  border-radius: var(--r-lg);
   background: var(--surface-primary);
   color: var(--text-primary);
 }
@@ -1421,14 +1615,34 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 @media (min-width: 1024px) {
   .static-card { width: 32%; max-width: none; flex-grow: 1; }
 }
+/* The square a discipline card floats on. It carries the deck's plate ground
+   (2026-09-11), because it now carries the deck's card: a card taking 40% of
+   its square is the proportion the client asked for on the slides, and on a
+   flat stone square that reads as a void where on the plate's gradient it
+   reads as a plate. Same recipe as .car-media, turned a little so the three
+   squares are not one image repeated. */
 .static-art {
-  aspect-ratio: 442 / 440;
+  /* 4:3, not square (client's call, 2026-09-11): the card is a third of the
+     ground's height, and on a square that left more air above and below it
+     than the card itself measured. */
+  aspect-ratio: 4 / 3;
   width: 100%;
   margin-bottom: 1.6rem;
-  border-radius: 2.4rem;
+  border-radius: var(--r-xl);
   overflow: hidden;
-  /* The only second ground on the page, and it is a card rather than a band. */
-  background: var(--stone-300);
+  background:
+    radial-gradient(78% 62% at 86% 94%, var(--blue-200) 0%, transparent 62%),
+    linear-gradient(164deg, var(--blue-100) 0%, var(--stone-300) 58%, var(--stone-200) 100%);
+}
+.statics-row > :nth-child(2) .static-art {
+  background:
+    radial-gradient(74% 60% at 12% 90%, var(--blue-200) 0%, transparent 60%),
+    linear-gradient(196deg, var(--blue-100) 0%, var(--stone-300) 56%, var(--stone-200) 100%);
+}
+.statics-row > :nth-child(3) .static-art {
+  background:
+    radial-gradient(80% 64% at 88% 10%, var(--blue-200) 0%, transparent 62%),
+    linear-gradient(142deg, var(--blue-100) 0%, var(--stone-300) 60%, var(--stone-200) 100%);
 }
 @media (min-width: 1280px) { .static-art { margin-bottom: 3.2rem; } }
 .static-card h3 { margin-bottom: 0.4rem; }
@@ -1442,89 +1656,130 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 }
 
 /* ---------------------------------------------------------------------------
-   17. STATS
-   Three facts in mono, on hairlines, no boxes.
+   17. THE PARTNERS PASSAGE
+   The one reading passage on the page, and the only section that is neither a
+   grid nor a set piece. It follows superpower.com/manifesto, which the client
+   brought as the reference for this section on 2026-09-11: one narrow column
+   held left, an argument that runs top to bottom, three facts in a row divided
+   by hairlines, and a short line introducing each list instead of a heading
+   standing over it. Everything sits on one edge, the section head included,
+   which is the one place on this page where a head is not centred.
+
+   Two deliberate departures from the rest of the system, both the reference's
+   own and both scoped to this section: the column is held to a reading measure
+   rather than to the section width, and it uses hairlines, of which there are
+   none anywhere else in v3.
+
+   Three earlier attempts are worth not repeating. An accordion of seven closed
+   bars beside a short card left the right half of the section empty. Four white
+   cards and a three-up balanced it but read as four rows of the same weight. A
+   dark photo band over two numbered columns gave it an anchor, but the lists
+   still read as a directory. This works because it is written to be read in one
+   pass rather than scanned in cells.
    --------------------------------------------------------------------------- */
 
-.stats {
-  display: grid;
-  gap: 4rem;
-}
-@media (min-width: 768px) { .stats { grid-template-columns: repeat(3, 1fr); gap: 4.8rem; } }
-.stat-fig {
-  font-family: var(--font-heading);
-  font-weight: var(--weight-display);
-  font-size: clamp(4rem, 6vw, 6.4rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.2rem;
-  font-variant-numeric: tabular-nums;
-}
-.stat p { color: var(--text-secondary); max-width: 32rem; }
-
-/* ---------------------------------------------------------------------------
-   18. THE ACCORDION
-   White rows on the cream ground, 16px radius, one open at a time. The chevron
-   sits in a holder that fills in on hover and stays filled while open.
-   --------------------------------------------------------------------------- */
-
-/* Two pixels of ground between rows, so the column reads as one white slab
-   notched at the edges where the corner radii meet. That notch is the detail. */
-.acc { display: flex; flex-direction: column; gap: 2px; width: 100%; }
-.acc-item {
-  position: relative;
-  z-index: 0;
-  border-radius: var(--r-shell);
-  background: var(--surface-primary);
-  border: 2px solid transparent;
-}
-.acc-item:focus-within { z-index: 1; }
-.acc-btn {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 3.2rem;
-  width: 100%;
-  padding: 1.6rem;
-  border: 0;
-  background: none;
-  border-radius: var(--r-shell);
-  cursor: pointer;
+.mani {
+  max-width: 84rem;
+  margin-inline: auto;
   text-align: left;
 }
-@media (min-width: 1024px) { .acc-btn { padding: 2.4rem; } }
-.acc-btn:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 2px var(--stroke-focus), var(--ring-focus);
+/* The opening line is smaller here than a section head is anywhere else on the
+   page. A passage is read, not announced, and at the page's h2 size the
+   client's own line break fell apart inside a reading measure. */
+.mani h2 {
+  font-size: clamp(3.2rem, 7vw, 3.6rem);
+  line-height: 1.1;
 }
-.acc-chev {
+@media (min-width: 768px)  { .mani h2 { font-size: clamp(3.6rem, 3.4vw, 4.4rem); } }
+@media (min-width: 1280px) { .mani h2 { font-size: 4.8rem; } }
+.mani .sec-label { margin-bottom: 2rem; }
+
+/* The reading voice: ink rather than the muted grey, and a size above the rest
+   of the passage, so the argument opens in the reader's own register. */
+.mani-lede {
+  margin-top: 3.2rem;
+  max-width: 62rem;
+  font-size: 1.7rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+@media (min-width: 1024px) { .mani-lede { font-size: 2rem; line-height: 1.55; } }
+
+/* The three facts, divided by hairlines: vertical from 768 up, horizontal
+   below it. Stacked on air alone they read as three headings in the middle of
+   the passage rather than as one set of three, which is what a phone was
+   showing. */
+.figs {
   display: grid;
-  place-items: center;
-  width: 3.4rem;
-  height: 3.4rem;
-  flex-shrink: 0;
-  border-radius: 999px;
-  background: transparent;
-  transition: background-color var(--t-tint) var(--ease-out-quint);
+  gap: 2rem;
+  margin-top: var(--module-lg);
 }
-.acc-btn:hover .acc-chev,
-.acc-item.is-open .acc-chev { background: var(--stone-300); }
-.acc-chev .ico { transition: transform var(--t-move) var(--ease-out-quint); }
-.acc-item.is-open .acc-chev .ico { transform: rotate(180deg); }
-/* Open at rest, so a reader without script gets the whole answer; the script
-   closes each row on load and owns the height from then on. */
-.acc-panel {
-  height: auto;
-  overflow: clip;
-  transition: height var(--t-move) var(--ease-out-quint);
+.figs-cell + .figs-cell {
+  border-top: 1px solid var(--black-a-100);
+  padding-top: 2rem;
 }
-.acc-panel-inner {
-  padding: 0 1.6rem 2rem;
-  max-width: 72rem;
+@media (min-width: 768px) {
+  .figs { grid-template-columns: repeat(3, 1fr); gap: 0; }
+  .figs-cell + .figs-cell { border-top: 0; padding-top: 0; }
+  .figs-cell { padding-inline: 3.2rem; border-left: 1px solid var(--black-a-100); }
+  .figs-cell:first-child { padding-left: 0; border-left: 0; }
+}
+.figs-n {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  /* On a phone this used to be within a hair of the passage's own opening
+     line, so a fact read as a new section. */
+  font-size: clamp(3.2rem, 9vw, 5.6rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.6rem;
+  font-variant-numeric: tabular-nums;
+}
+.figs-cell p { max-width: 30rem; }
+
+/* The line that introduces a list. Not a heading: the reading face at reading
+   size, in the muted ink, sitting close above what it introduces. The gap that
+   opens a new group has to be clearly larger than the gap between two rows of
+   the same list, or the passage reads as one undifferentiated column, which is
+   what a phone was showing. */
+.mani-line {
+  margin-top: 6.4rem;
+  margin-bottom: 2.4rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
   color: var(--text-secondary);
 }
-@media (min-width: 1024px) { .acc-panel-inner { padding: 0 2.4rem 2.4rem; } }
-@media (prefers-reduced-motion: reduce) { .acc-panel { transition: none; } }
+@media (min-width: 1024px) { .mani-line { margin-top: var(--module-lg); font-size: 1.6rem; } }
+
+.mani-list { display: flex; flex-direction: column; gap: 2rem; }
+@media (min-width: 768px) { .mani-list { gap: 2.4rem; } }
+@media (min-width: 1280px) { .mani-list { gap: 3.2rem; } }
+
+.mani-row { display: grid; gap: 0.4rem; }
+/* Below 768 the term sits over its sentence, so the rows need a line between
+   them to be rows at all. From 768 the two columns do that work themselves. */
+.mani-row + .mani-row {
+  border-top: 1px solid var(--black-a-100);
+  padding-top: 2rem;
+}
+@media (min-width: 768px) {
+  .mani-row { grid-template-columns: minmax(0, 24rem) minmax(0, 1fr); gap: 3.2rem; align-items: baseline; }
+  .mani-row + .mani-row { border-top: 0; padding-top: 0; }
+}
+.mani-row dd { margin: 0; }
+
+.mani-num { display: flex; flex-direction: column; gap: 1.6rem; list-style: none; }
+.mani-num li { display: flex; gap: 1.6rem; align-items: baseline; }
+.mani-n {
+  flex-shrink: 0;
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.mani-act { margin-top: var(--module-lg); }
 
 /* ---------------------------------------------------------------------------
    19. MEMBERSHIP TIERS
@@ -1539,7 +1794,7 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   display: flex;
   flex-direction: column;
   padding: 2.4rem;
-  border-radius: var(--r-shell);
+  border-radius: var(--r-lg);
   background: var(--surface-primary);
   height: 100%;
 }
@@ -1556,7 +1811,13 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 .tier.is-feature .tick { color: var(--green-500); }
 .tier.is-feature .tag { background: var(--white-a-200); color: var(--white); }
 
-.tiers-note { margin-top: 2.4rem; color: var(--text-secondary); max-width: 62rem; }
+/* Centred under the three cards, as the section head above them is. */
+.tiers-note {
+  margin: 2.4rem auto 0;
+  max-width: 62rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
 
 /* ---------------------------------------------------------------------------
    20. THE CLOSING CARD
@@ -1576,17 +1837,27 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 @media (min-width: 1024px) { .cta-band { padding: 2.4rem; } }
 @media (min-width: 1280px) { .cta-band { padding: 3.2rem; } }
 
+/* The card carries the form now, so its height is a floor rather than a fixed
+   figure: the photograph is a cover fill and grows with whatever stands on it,
+   and a step that runs tall is never clipped. The floors are the heights the
+   card had when it held one line and a capsule. */
 .cta-card {
   position: relative;
+  /* The card centres its own contents. The inner block asked for height: 100%
+     against a parent that carries a min-height and no height, which resolves
+     to auto: the copy sat at the top of the card with the whole difference,
+     229px of it at 1280 and above, left as dead picture underneath. */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   max-width: 205.6rem;
-  aspect-ratio: 362 / 463;
-  max-height: 46.5rem;
-  border-radius: var(--r-media);
+  min-height: 46.5rem;
+  border-radius: var(--r-2xl);
   overflow: hidden;
 }
-@media (min-width: 1024px) { .cta-card { aspect-ratio: auto; height: 56rem; max-height: 70rem; } }
-@media (min-width: 1280px) { .cta-card { aspect-ratio: 1664 / 876; height: auto; max-height: 87.6rem; } }
+@media (min-width: 1024px) { .cta-card { min-height: 64rem; } }
+@media (min-width: 1280px) { .cta-card { min-height: 80rem; } }
 .cta-card .ph,
 .cta-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .cta-inner {
@@ -1595,95 +1866,176 @@ html.is-locked, html.is-locked body { overflow: hidden; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 3.2rem var(--gutter);
+  width: 100%;
+  padding: 6.4rem var(--gutter);
   text-align: center;
   color: var(--white);
 }
-.cta-mark { width: 6.4rem; height: 6.4rem; margin-bottom: 2.4rem; }
-@media (min-width: 1024px) { .cta-mark { width: 10rem; height: 10rem; margin-bottom: 3.2rem; } }
-@media (min-width: 1280px) { .cta-mark { width: 12rem; height: 12rem; } }
+@media (min-width: 1024px) { .cta-inner { padding-block: 8rem; } }
 .cta-inner h2 { margin-bottom: 1.6rem; max-width: 20ch; }
 @media (min-width: 1024px) { .cta-inner h2 { margin-bottom: 2.4rem; } }
 .cta-inner p { max-width: 56rem; color: var(--white-a-700); }
-/* The hero's capsule again, on the card that closes the page. */
-.cta-form { margin-top: 3.2rem; display: flex; justify-content: center; width: 100%; }
-@media (max-width: 640px) { .cta-form { margin-top: 2.4rem; } .cta-form .field-glass { width: 100%; } }
+.cta-inner .sf { margin-top: 3.2rem; }
+@media (max-width: 640px) { .cta-inner .sf { margin-top: 2.4rem; } }
 
 /* ---------------------------------------------------------------------------
-   21. THE DELIVERED LIST
-   One white card holding what a partner session covered. Rows on hairlines,
-   a mono index, no bullets.
+   22. THE WAITLIST FORM, ON THE CLOSING CARD
+   One question at a time, on a glass panel standing on the photograph. The
+   class names, the ids and the audience routing come from the live form's
+   script and are not to be renamed: the same fields, the same endpoint. What
+   is this variation's is the surface (glass on a picture rather than a white
+   card on the ground) and the sequencing.
+
+   Two rules hold this together. Every colour here is an alpha of white or of
+   stone over the photograph, never a fixed grey, so the panel works over any
+   frame that ever lands in that slot. And the step machine is additive: the
+   steps are in flow and all five are readable with no JavaScript, and the
+   controller adds .is-stepped to the window to take ownership.
    --------------------------------------------------------------------------- */
 
-.deliver {
-  padding: 2.4rem;
-  border-radius: var(--r-shell);
-  background: var(--surface-primary);
+.sf {
+  width: 100%;
+  max-width: 60rem;
+  margin-inline: auto;
+  text-align: left;
 }
-@media (min-width: 1280px) { .deliver { padding: 3.2rem; } }
-.deliver-title { margin-bottom: 1.6rem; }
-.deliver ul { display: flex; flex-direction: column; gap: 1.6rem; }
-.deliver li { display: flex; gap: 1.6rem; align-items: baseline; }
-.deliver-n {
-  font-family: var(--font-mono);
-  font-size: 1.3rem;
-  color: var(--text-secondary);
+
+.sf-panel {
+  padding: 2rem;
+  border-radius: var(--r-lg);
+  background: var(--stone-a-200);
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+}
+@media (min-width: 1024px) { .sf-panel { padding: 2.4rem; } }
+
+/* The counter and the bar. The bar is the only thing on this card that moves
+   of its own accord, and it moves because the reader advanced a step. */
+.sf-progress {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  margin-bottom: 2rem;
+}
+.sf-count {
   flex-shrink: 0;
-  letter-spacing: -0.01em;
-}
-
-/* ---------------------------------------------------------------------------
-   22. THE WAITLIST FORM
-   The class names come from the live form's script and are not to be renamed:
-   the same ids, the same audience routing, the same endpoint. Only the surface
-   is this variation's.
-   --------------------------------------------------------------------------- */
-
-.access {
-  padding-block: var(--module-xl);
-}
-.access-grid {
-  display: grid;
-  gap: 3.2rem;
-  align-items: start;
-}
-@media (min-width: 1024px) {
-  .access-grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: 6.4rem; }
-}
-.access-lede { color: var(--text-secondary); margin-top: 1.6rem; max-width: 44rem; }
-
-.waitlist-card {
-  padding: 2.4rem;
-  border-radius: var(--r-shell);
-  background: var(--surface-primary);
-}
-@media (min-width: 1280px) { .waitlist-card { padding: 3.2rem; } }
-
-.wf-role { margin-bottom: 2.4rem; }
-.wf-role-label {
-  display: block;
-  font-family: var(--font-mono);
   font-size: 1.3rem;
-  letter-spacing: -0.01em;
-  color: var(--text-secondary);
+  line-height: 1.6rem;
+  color: var(--white-a-700);
+}
+.sf-track {
+  position: relative;
+  flex: 1;
+  height: 0.2rem;
+  border-radius: 0.1rem;
+  background: var(--white-a-200);
+  overflow: hidden;
+}
+.sf-bar {
+  display: block;
+  width: 20%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--white);
+  transition: width var(--t-move) var(--ease-out-quint);
+}
+
+/* Without script every step is in flow, one under the other. The controller
+   sets the window's height itself, so the height is a transition and the
+   steps are stacked in the same place. */
+.sf-window { position: relative; }
+.sf-window.is-stepped {
+  transition: height var(--t-move) var(--ease-out-quint);
+  overflow: visible;
+}
+.sf-window.is-stepped .sf-step {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.8rem);
+  transition: opacity var(--t-tint) var(--ease-out-quint),
+              transform var(--t-move) var(--ease-out-quint),
+              visibility 0s linear var(--t-move);
+}
+.sf-window.is-stepped .sf-step.is-active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity var(--t-tint) var(--ease-out-quint),
+              transform var(--t-move) var(--ease-out-quint);
+}
+/* One rhythm inside a step, whatever the step holds. The fields carry their
+   own bottom margin everywhere else, and a step where the visible field is
+   followed by a hidden one (four and five each hold a client field and a
+   partner field) kept that margin and stood 16px taller than its neighbours.
+   A flex gap skips a display:none child, so every step now measures the same. */
+.sf-step { display: flex; flex-direction: column; gap: 1.6rem; }
+.sf-step .wf-field,
+.sf-step .wf-row { margin-bottom: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-bar,
+  .sf-window.is-stepped,
+  .sf-window.is-stepped .sf-step { transition: none; }
+  .sf-window.is-stepped .sf-step { transform: none; }
+}
+
+/* The row of actions, left to right in the order they are used: the action
+   first, on the same edge as every label and every field, then Back and Skip
+   as the quiet ways out. Nothing on this panel is pushed to the far side. */
+.sf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.6rem 2.4rem;
+  margin-top: 2rem;
+}
+/* .btn sets its own display, which outranks the user agent's [hidden] rule, so
+   a hidden button would otherwise still stand in the row. */
+.sf-actions [hidden] { display: none; }
+.sf-quiet {
+  border: 0;
+  background: none;
+  padding: 0.6rem 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  color: var(--white-a-700);
+  transition: color var(--t-tint) var(--ease-out-quint);
+}
+.sf-quiet:hover { color: var(--white); }
+.sf-quiet:focus-visible { outline: none; box-shadow: var(--ring-focus); border-radius: var(--r-md); }
+
+/* --- the fields, as they read on glass ----------------------------------- */
+
+.wf-role-label,
+.wf-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  color: var(--white-a-700);
   margin-bottom: 1.2rem;
 }
+.wf-label { margin-bottom: 0.8rem; }
+
 .wf-segments { display: flex; flex-wrap: wrap; gap: 0.8rem; }
 .wf-segment {
   padding: 0.9rem 1.4rem;
   border: 0;
-  border-radius: var(--r-chrome);
-  background: var(--surface-quaternary);
-  color: var(--text-secondary);
+  border-radius: var(--r-md);
+  background: var(--white-a-100);
+  color: var(--white-a-700);
+  font-family: var(--font-body);
   font-size: 1.4rem;
   cursor: pointer;
   transition: background-color var(--t-tint) var(--ease-out-quint),
               color var(--t-tint) var(--ease-out-quint);
 }
-.wf-segment:hover { background: var(--stone-400); color: var(--text-primary); }
-.wf-segment.is-active { background: var(--black-800); color: var(--white); }
+.wf-segment:hover { background: var(--white-a-200); color: var(--white); }
+.wf-segment.is-active { background: var(--white); color: var(--text-primary); }
 .wf-segment:focus-visible { outline: none; box-shadow: var(--ring-focus); }
 
 .wf-row { display: grid; gap: 1.6rem; }
@@ -1691,35 +2043,31 @@ html.is-locked, html.is-locked body { overflow: hidden; }
 .wf-field { margin-bottom: 1.6rem; }
 .wf-row .wf-field { margin-bottom: 0; }
 .wf-row { margin-bottom: 1.6rem; }
-.wf-label {
-  display: block;
-  font-size: 1.3rem;
-  color: var(--text-secondary);
-  margin-bottom: 0.8rem;
-}
+
 .wf-input {
   width: 100%;
   height: 5.2rem;
   padding: 0 1.6rem;
   border: 0;
-  border-radius: var(--r-chrome);
-  background: var(--surface-quaternary);
+  border-radius: var(--r-md);
+  background: var(--white-a-100);
   font-family: var(--font-body);
   font-size: 1.5rem;
-  color: var(--text-primary);
+  color: var(--white);
   transition: background-color var(--t-tint) var(--ease-out-quint);
 }
-.wf-input::placeholder { color: var(--stone-800); }
-.wf-input:hover { background: var(--stone-400); }
+.wf-input::placeholder { color: var(--white-a-400); }
+.wf-input:hover { background: var(--white-a-200); }
 .wf-input:focus {
   outline: none;
-  background: var(--stone-200);
+  background: var(--white-a-200);
   box-shadow: var(--ring-focus);
 }
 select.wf-input { appearance: none; cursor: pointer; }
 
 /* The custom listbox that stands in front of the native select. The select is
-   still the value the submit script reads. */
+   still the value the submit script reads. The list itself is solid white: a
+   menu that has to be read word by word does not sit on a photograph. */
 .wf-dd { position: relative; }
 .wf-dd select.wf-select { position: absolute; opacity: 0; pointer-events: none; width: 100%; height: 100%; }
 .wf-dd-btn {
@@ -1731,16 +2079,16 @@ select.wf-input { appearance: none; cursor: pointer; }
   height: 5.2rem;
   padding: 0 1.6rem;
   border: 0;
-  border-radius: var(--r-chrome);
-  background: var(--surface-quaternary);
+  border-radius: var(--r-md);
+  background: var(--white-a-100);
   font-family: var(--font-body);
   font-size: 1.5rem;
-  color: var(--text-primary);
+  color: var(--white);
   cursor: pointer;
   text-align: left;
 }
-.wf-dd-btn.is-empty { color: var(--stone-800); }
-.wf-dd-btn:hover { background: var(--stone-400); }
+.wf-dd-btn.is-empty { color: var(--white-a-400); }
+.wf-dd-btn:hover { background: var(--white-a-200); }
 .wf-dd-btn:focus-visible { outline: none; box-shadow: var(--ring-focus); }
 .wf-dd-chev { width: 1.2rem; height: 0.8rem; flex-shrink: 0; transition: transform var(--t-move) var(--ease-out-quint); }
 .wf-dd-btn[aria-expanded='true'] .wf-dd-chev { transform: rotate(180deg); }
@@ -1751,8 +2099,9 @@ select.wf-input { appearance: none; cursor: pointer; }
   z-index: 20;
   width: 100%;
   padding: 0.6rem;
-  border-radius: var(--r-shell);
+  border-radius: var(--r-lg);
   background: var(--white);
+  color: var(--text-primary);
   box-shadow: var(--shadow-card);
   display: none;
 }
@@ -1763,7 +2112,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   justify-content: space-between;
   gap: 1.2rem;
   padding: 1.1rem 1.2rem;
-  border-radius: var(--r-chrome);
+  border-radius: var(--r-md);
   font-size: 1.5rem;
   cursor: pointer;
 }
@@ -1771,27 +2120,30 @@ select.wf-input { appearance: none; cursor: pointer; }
 .wf-dd-opt[aria-selected='true'] svg { opacity: 1; color: var(--green-700); }
 .wf-dd-opt:hover, .wf-dd-opt.is-focus { background: var(--surface-secondary); }
 
-.wf-submit { margin-top: 0.8rem; }
 .wf-error {
   display: none;
   align-items: center;
   gap: 1rem;
   margin-top: 1.6rem;
   padding: 1.2rem 1.4rem;
-  border-radius: var(--r-chrome);
+  border-radius: var(--r-md);
   background: #ffdbe0;
   color: #8a3a1a;
   font-size: 1.3rem;
 }
 .wf-error.visible { display: flex; }
-.wf-note { margin-top: 1.6rem; max-width: 46rem; color: var(--text-secondary); }
-.wf-note a { text-decoration: underline; text-underline-offset: 2px; }
+.wf-note {
+  margin-top: 1.6rem;
+  color: var(--white-a-600);
+}
+.wf-note a { color: var(--white); text-decoration: underline; text-underline-offset: 2px; }
 
-.waitlist-success { display: none; text-align: center; padding: 2.4rem 0; }
+/* The panel the form is replaced by. Same glass, same width, centred copy. */
+.waitlist-success { display: none; text-align: center; padding-block: 4rem; }
 .waitlist-success.visible { display: block; }
-.ws-icon { display: grid; place-items: center; margin: 0 auto 2rem; color: var(--green-700); }
-.waitlist-success h3 { margin-bottom: 1.2rem; }
-.waitlist-success p { color: var(--text-secondary); max-width: 46rem; margin-inline: auto; }
+.ws-icon { display: grid; place-items: center; margin: 0 auto 2rem; color: var(--white); }
+.waitlist-success h3 { margin-bottom: 1.2rem; color: var(--white); }
+.waitlist-success p { color: var(--white-a-700); max-width: 46rem; margin-inline: auto; }
 .ws-reset {
   margin-top: 2.4rem;
   border: 0;
@@ -1799,7 +2151,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   cursor: pointer;
   font-family: var(--font-body);
   font-size: 1.4rem;
-  color: var(--text-primary);
+  color: var(--white);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -1852,6 +2204,12 @@ select.wf-input { appearance: none; cursor: pointer; }
   opacity: 1 !important;
 }
 .car.is-static .car-media { width: 100%; height: auto; }
+/* Once the bar is a pill the stacked plates answer to it too, so the deck is
+   one size from 1024 up whether it is pinned or stacked. Below 1024 the bar is
+   the container and there is nothing to match. */
+@media (min-width: 1024px) {
+  .car.is-static .car-media { max-width: var(--car-w); }
+}
 
 /* The orbit becomes its centred line with the six objects laid out under it. */
 .orbit.is-static { min-height: 0; padding-block: 10rem; }
@@ -1874,7 +2232,6 @@ select.wf-input { appearance: none; cursor: pointer; }
 }
 .orbit.is-static [data-orbit-h1] { opacity: 1 !important; visibility: visible !important; }
 .orbit.is-static .orb { position: static; transform: none !important; }
-.orbit.is-static .trail { display: none; }
 
 /* ---------------------------------------------------------------------------
    25. THE THREE PLAIN FEATURES
@@ -1883,31 +2240,19 @@ select.wf-input { appearance: none; cursor: pointer; }
    there is no drawing there is no card either.
    --------------------------------------------------------------------------- */
 
-.fcards {
-  display: grid;
-  gap: 4.8rem;
+/* What the membership includes, under the two panels. A list rather than the
+   row of three it used to be: the three sentences are thirty words, six and
+   twenty-two, and a three-up turns the short one into a hole. It borrows the
+   partners passage's term-and-sentence rows (.mani-list), so this is one
+   molecule used twice rather than two that look alike.
+
+   The measure is the term column and the sentence column plus the gap between
+   them. Left-aligned to the section rather than centred, because the panels
+   above start at that edge and the list is their continuation. */
+.incl {
   margin-top: 9.6rem;
+  max-width: 89.2rem;
 }
-@media (min-width: 1024px) { .fcards { grid-template-columns: repeat(3, 1fr); gap: 2.4rem; } }
-.fcard-art { margin-bottom: 2rem; color: var(--text-primary); }
-.fcard-art .ico { width: 2.8rem; height: 2.8rem; stroke-width: 1.25; }
-.fcard h3 { margin-bottom: 0.8rem; }
-.fcard p { padding-right: 1.6rem; max-width: 42rem; }
-
-/* The partner column and the card beside it. */
-.partners-grid { display: grid; gap: 2.4rem; align-items: start; }
-@media (min-width: 1024px) { .partners-grid { grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 4rem; } }
-
-/* The mark trail. A canvas laid over the orbit, stamping the mark along the
-   pointer's path so it blooms and wilts. Pointer devices only, and never under
-   reduced motion. */
-.trail {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-
 
 /* ---------------------------------------------------------------------------
    26. UNDRAWN FIGURE SLOTS
@@ -1918,22 +2263,14 @@ select.wf-input { appearance: none; cursor: pointer; }
 
 [data-fig]:empty::after {
   content: attr(data-fig);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1rem;
   letter-spacing: -0.01em;
   color: var(--text-secondary);
 }
 .orb-card:empty,
-.fcard-art:empty {
-  display: grid;
-  place-items: center;
-  min-height: 12rem;
-  border-radius: var(--r-tile);
-  background: var(--stone-300);
-}
 .static-art:empty,
 .panel-art:empty { display: grid; place-items: center; }
-.fcard-art:empty { margin-bottom: 2rem; }
 
 
 /* ============================================================================
@@ -1992,7 +2329,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   flex-shrink: 0;
   width: calc(var(--u) * 36);
   height: calc(var(--u) * 36);
-  border-radius: calc(var(--u) * 8);
+  border-radius: calc(var(--u) * 6);  /* --r-sm at nominal, as .ico-tile */
   background: var(--black-800);
   color: var(--green-500);
 }
@@ -2013,7 +2350,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 }
 .fig-row.is-inset {
   padding: calc(var(--u) * 10) calc(var(--u) * 12);
-  border-radius: calc(var(--u) * 8);
+  border-radius: calc(var(--u) * 6);  /* --r-sm at nominal, as .dcard-row */
   background: var(--stone-200);
 }
 .fig-row .ico {
@@ -2028,12 +2365,12 @@ select.wf-input { appearance: none; cursor: pointer; }
   color: var(--text-primary);
 }
 
-/* Mono, tabular, and always pushed to the end of its row. Every value carried
+/* Tabular, and always pushed to the end of its row. Every value carried
    here is illustrative: a date, a count, a reading. */
 .fig-val {
   margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: var(--t-mono);
+  font-family: var(--font-body);
+  font-size: var(--t-fig);
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
   color: var(--text-secondary);
@@ -2046,6 +2383,352 @@ select.wf-input { appearance: none; cursor: pointer; }
 .fig-val + .fig-tick { margin-left: 0; }
 .fig-tick:first-child + .fig-label { margin-left: 0; }
 .fig-head .fig-tick:last-child { margin-left: auto; }
+
+/* The state marker on a task row: waiting, running, done. All three marks
+   occupy one grid cell and the class picks one, so a state change is an
+   opacity and never a reflow, and the row's width never moves under it. It
+   sits where the trailing tick used to, at the head of the row, which is the
+   reference's own arrangement: marker, icon, label, status. */
+.fig-mark {
+  display: grid;
+  flex-shrink: 0;
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 16);
+}
+.fig-mark > * {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity var(--t-tint) var(--ease-out-quint);
+}
+.fig-mark.is-wait .fig-mark-ring,
+.fig-mark.is-run .fig-mark-spin,
+.fig-mark.is-done .fig-mark-done { opacity: 1; }
+
+.fig-mark-ring {
+  width: 100%;
+  height: 100%;
+  border: calc(var(--u) * 1.5) dashed var(--stone-700);
+  border-radius: 50%;
+}
+.fig-mark-spin {
+  width: 100%;
+  height: 100%;
+  color: var(--green-700);
+}
+.fig-mark-spin line {
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+/* Eight spokes turned in eight steps. The opacity ramp is what is actually
+   moving: the spokes are 45deg apart, so a step lands each one on its
+   neighbour's place and only the ramp travels. */
+.fig-mark.is-run .fig-mark-spin { animation: fig-spin 0.72s steps(8) infinite; }
+@keyframes fig-spin { to { transform: rotate(360deg); } }
+
+/* Done is the one filled mark in the kit. It arrives at 0.6 and settles, which
+   is the only thing in a figure that moves by scale. */
+.fig-mark-done {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--text-success);
+  color: var(--white);
+  transform: scale(0.6);
+  transition: opacity var(--t-tint) var(--ease-out-quint),
+              transform var(--t-move) var(--ease-out-quint);
+}
+.fig-mark.is-done .fig-mark-done { transform: scale(1); }
+.fig-mark-done svg {
+  width: calc(var(--u) * 10);
+  height: calc(var(--u) * 10);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- the working card -------------------------------------------------
+   The reference floats a small card on its plate rather than filling it, and
+   that proportion is most of why theirs reads as a product and ours read as a
+   diagram: 54% of the plate's width, a head and three rows. Ours is sized the
+   same way, in --u against the same 1000-wide nominal, so it holds that
+   proportion at every frame the plate is given. */
+.fig-work {
+  /* 62% of the plate rather than the reference's 54%: their task names are
+     three or four words and ours are clauses the client wrote, and at 560 the
+     longest of them ("through a relationship you already have") lost its last
+     two words to the ellipsis. A card that truncates the copy is worse than a
+     card eight points wider. */
+  width: min(100%, calc(var(--u) * 620));
+  gap: calc(var(--u) * 16);
+  /* The panel cards grow to fill their stage, which is right when the card is
+     the composition and wrong when it is an object floating on a plate. This
+     one is sized by its own content: a head and three rows. */
+  flex: 0 0 auto;
+}
+
+/* The window the queue runs in: three rows high, and it clips. The fourth row
+   sits just under the fold, which is what arrives when the finished row at the
+   top leaves. Every measure is in --u, so the window and the roll's step can
+   never disagree with the row's own height. */
+/* Shared wherever a task row appears, so a row is the same object in each. */
+.fig-panel-stage,
+.disc-stage {
+  --row-h: calc(var(--u) * 42);
+  --row-gap: calc(var(--u) * 8);
+  --row-step: calc(var(--row-h) + var(--row-gap));
+}
+.fig-queue {
+  overflow: hidden;
+  height: calc(var(--row-h) * 3 + var(--row-gap) * 2);
+}
+.fig-queue-roll {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+  will-change: transform;
+}
+/* The roll moves by exactly one row and is then put back with the transition
+   off, the first row having gone to the end. A ticker, not a scroll. */
+.fig-queue-roll.is-rolling {
+  transition: transform var(--t-move) var(--ease-out-quint);
+  transform: translateY(calc(var(--row-step) * -1));
+}
+
+/* A row: the marker on the card's own ground, then the strip. The reference
+   puts its marker outside the strip and that is what makes the state read as
+   the machine's rather than the row's. */
+.fig-task {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+  height: var(--row-h);
+  flex-shrink: 0;
+  transition: opacity var(--t-tint) var(--ease-out-quint);
+}
+.fig-task-pill {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  padding-inline: calc(var(--u) * 14);
+  border-radius: calc(var(--u) * 8);
+  background: var(--stone-200);
+  transition: background-color var(--t-move) var(--ease-out-quint);
+}
+.fig-task-pill .ico {
+  width: calc(var(--u) * 16);
+  height: calc(var(--u) * 16);
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+.fig-task .fig-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* A row settles green at the moment it completes, and carries it until it
+   leaves, which is the reference's own arrangement: the wash is how you know
+   which row is about to go. */
+.fig-task.is-flash .fig-task-pill { background: var(--green-300); }
+/* The row on its way out. It leaves with the roll, so it only has to fade. */
+.fig-task.is-out { opacity: 0; }
+
+/* ---- 01. the introduction arrives ------------------------------------------
+   A route, not a list. 01 and 02 both being a head over a stack of
+   [marker][pill] rows is what made them read as the same card however
+   differently they moved; a different machine has to be a different shape
+   standing still. Two nodes, the wire between them, and the two conditions
+   under it. Nothing here is a row. */
+.fig-arrive {
+  flex: 0 0 auto;
+  width: min(100%, calc(var(--u) * 620));
+  gap: calc(var(--u) * 18);
+}
+.fig-note-head {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 12);
+  flex: 0 0 auto;
+}
+.fig-note-head .fig-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* The time on a notification: the one thing on the card that is not a state. */
+.fig-note-when { flex-shrink: 0; margin-left: auto; }
+
+.fig-route {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+}
+.fig-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--u) * 8);
+  flex: 0 0 auto;
+  width: calc(var(--u) * 150);
+  text-align: center;
+}
+.fig-node .fig-sub { line-height: 1.25; }
+.fig-node-mark {
+  display: grid;
+  place-items: center;
+  width: calc(var(--u) * 34);
+  height: calc(var(--u) * 34);
+  border-radius: 50%;
+  background: var(--stone-200);
+}
+.fig-node-mark .fig-mark {
+  width: calc(var(--u) * 20);
+  height: calc(var(--u) * 20);
+}
+
+/* The wire. The dashed run is the road; the green line drawing along it is the
+   introduction travelling. It is a scaleX from the left, so the movement is a
+   transform and the dashes underneath never repaint. */
+.fig-wire {
+  position: relative;
+  flex: 1 1 auto;
+  height: calc(var(--u) * 2);
+  min-width: calc(var(--u) * 40);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--stone-600) 0 calc(var(--u) * 4),
+    transparent calc(var(--u) * 4) calc(var(--u) * 9)
+  );
+}
+.fig-wire-draw {
+  position: absolute;
+  inset: 0;
+  background: var(--text-success);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.95s var(--ease-out-quint);
+}
+.fig-arrive.is-sent .fig-wire-draw { transform: scaleX(1); }
+
+/* The two conditions the sentence puts on the introduction. Chips, not rows:
+   they sit side by side and they carry no status column. */
+.fig-flags {
+  display: flex;
+  gap: calc(var(--u) * 8);
+}
+.fig-flag {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 8);
+  flex: 1 1 0;
+  min-width: 0;
+  height: calc(var(--u) * 36);
+  padding-inline: calc(var(--u) * 12);
+  border-radius: calc(var(--u) * 8);
+  background: var(--stone-200);
+  transition: background-color var(--t-move) var(--ease-out-quint);
+}
+.fig-flag .fig-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fig-flag.is-on { background: var(--green-300); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fig-wire-draw { transition: none; }
+}
+
+/* ---- 03. the plan is assembled ---------------------------------------------
+   Not a list. A head that names the team, three parts that light one at a
+   time, and a live line under them. Nothing rolls and nothing arrives; what
+   moves is which part is lit, which is a third shape again. */
+.fig-plan {
+  flex: 0 0 auto;
+  width: min(100%, calc(var(--u) * 620));
+  gap: calc(var(--u) * 14);
+}
+.fig-plan-head {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 12);
+}
+.fig-plan-titles {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 2);
+  min-width: 0;
+}
+.fig-plan-titles .fig-title,
+.fig-plan-titles .fig-sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fig-plan .fig-avatars { margin-left: auto; }
+
+.fig-parts {
+  display: flex;
+  gap: calc(var(--u) * 8);
+}
+.fig-part {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 8);
+  flex: 1 1 0;
+  min-width: 0;
+  height: var(--row-h);
+  padding-inline: calc(var(--u) * 12);
+  border-radius: calc(var(--u) * 8);
+  background: var(--stone-200);
+  transition: background-color var(--t-move) var(--ease-out-quint);
+}
+.fig-part .fig-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fig-part.is-on { background: var(--green-300); }
+.fig-part-tick { display: flex; flex-shrink: 0; }
+
+/* The live line. The dot is the only thing on the page that pulses, and it
+   does it because this step is the one the copy says is continuous. */
+.fig-live {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+  height: var(--row-h);
+  padding-inline: calc(var(--u) * 14);
+  border-radius: calc(var(--u) * 8);
+  background: var(--stone-200);
+}
+.fig-live .fig-val { margin-left: auto; }
+.fig-pulse {
+  flex-shrink: 0;
+  width: calc(var(--u) * 8);
+  height: calc(var(--u) * 8);
+  border-radius: 50%;
+  background: var(--text-success);
+}
+.fig-live.is-live .fig-pulse { animation: fig-pulse 1.6s var(--ease-out-quint) infinite; }
+@keyframes fig-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.8); }
+  45% { opacity: 1; transform: scale(1); }
+}
+/* Matched to .fig-live.is-live, not to .fig-live: a media query adds no
+   specificity, so the shorter selector lost and the dot kept pulsing under the
+   preference. The resting state is the live one, so this rule has to be able
+   to reach it. */
+@media (prefers-reduced-motion: reduce) {
+  .fig-live.is-live .fig-pulse { animation: none; opacity: 1; }
+}
 
 /* Not done yet: a dashed ring, which is the reference's own pending mark. */
 .fig-dot {
@@ -2067,8 +2750,8 @@ select.wf-input { appearance: none; cursor: pointer; }
   border-radius: calc(var(--u) * 6);
   background: var(--blue-100);
   color: var(--blue-900);
-  font-family: var(--font-mono);
-  font-size: var(--t-mono);
+  font-family: var(--font-body);
+  font-size: var(--t-fig);
   line-height: 1.3;
   white-space: nowrap;
 }
@@ -2117,7 +2800,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 .fig-bar {
   width: calc(var(--u) * 6);
   height: var(--h);
-  border-radius: calc(var(--u) * 3);
+  border-radius: 999px;
   background: var(--stone-600);
 }
 .fig-bar.is-good { background: var(--green-500); }
@@ -2131,8 +2814,9 @@ select.wf-input { appearance: none; cursor: pointer; }
    One composition, two arrangements. The nominal design box is 420x505 when
    the frame is narrow and 1000x560 when it is wide, and --u is clamped by the
    frame's real width AND its real height together, so the drawing always fits.
-   Below 780px the cards stack with the connector running down between them;
-   above it, panel 01's two cards stand side by side. No row is dropped at any
+   The cards stack with the connector running down between them until the frame
+   is wide, which is 780px or 700px on a frame at least 1.3 times as wide as it
+   is tall; above that, panel 01's two cards stand side by side. No row is dropped at any
    width, and below 420px the connector keeps its chip and drops its two dotted
    stubs, which are the only things in the kit that are decoration.
    --------------------------------------------------------------------------- */
@@ -2155,19 +2839,19 @@ select.wf-input { appearance: none; cursor: pointer; }
 .disc-stage {
   --t-title: calc(var(--u) * 17);
   --t-label: calc(var(--u) * 14);
-  --t-mono:  calc(var(--u) * 12);
+  --t-fig:  calc(var(--u) * 12);
   --pad: calc(var(--u) * 14);
   --gap: calc(var(--u) * 10);
-  --r:   calc(var(--u) * 10);
+  --r:   calc(var(--u) * 12);  /* --r-lg at nominal */
 }
 
 .fig-panel-stage {
   --u: min(calc(100cqw / 420), calc(100cqh / 505));
-  /* ITEM 12. The mono strings here are short and sit beside the labels, so they
+  /* ITEM 12. The figure strings here are short and sit beside the labels, so they
      take a multiplier close to the label's for the whole stacked arrangement
      rather than only under 420px. That removes the 12.4px-to-9.8px step at the
      old band edge: there is no longer a band. */
-  --t-mono: calc(var(--u) * 13.6);
+  --t-fig: calc(var(--u) * 13.6);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2204,11 +2888,11 @@ select.wf-input { appearance: none; cursor: pointer; }
   flex: 1 1 0;
   min-width: 0;
 }
-/* The quiet mono line that names a column. Not an eyebrow: no caps, no
+/* The quiet line that names a column. Not an eyebrow: no caps, no
    letterspacing, no box. */
 .fig-sub {
-  font-family: var(--font-mono);
-  font-size: var(--t-mono);
+  font-family: var(--font-body);
+  font-size: var(--t-fig);
   line-height: 1.2;
   color: var(--text-secondary);
 }
@@ -2220,21 +2904,35 @@ select.wf-input { appearance: none; cursor: pointer; }
   .fig-cols ~ .fig-link { align-items: flex-start; }
 }
 
-@container figpanel (min-width: 780px) {
+/* 780, or 700 on a frame that is also wide for its height. The deck's plate is
+   now the width of the nav bar, 714 by 450, which is the wide composition at
+   three quarters of its old scale and not the stacked one; but the same 736px
+   of width on the near-square plate the deck uses below 1024 is the stacked
+   composition still, and letting width alone decide left its two cards
+   stretched down a frame half again as tall as they are. Hence the ratio in
+   the condition. The .is-tr pair is unaffected either way: it declares its own
+   --u and every multiplier, and its row padding is held at 780 below. */
+/* 560, not 700, on the ratio-gated arm. The deck's plate is the width of the
+   nav bar by design, and when the bar lost its wordmark --car-w went from
+   71.4rem to 58.6rem: the plate fell to 586x369, dropped under the old
+   threshold, and the figure inside it reverted to the stacked type scale,
+   8.3px labels where the wide composition sets 12.9px. The ratio guard is what
+   keeps this safe, so a frame that is narrow for its height still stacks. */
+@container figpanel ((min-width: 780px) or ((min-width: 560px) and (aspect-ratio >= 1.3))) {
   .fig-panel-stage {
     --u: min(calc(100cqw / 1000), calc(100cqh / 560));
     --t-title: calc(var(--u) * 20);
     --t-label: calc(var(--u) * 18);
-    --t-mono:  calc(var(--u) * 16);
+    --t-fig:  calc(var(--u) * 16);
     --pad: calc(var(--u) * 38);
     --gap: calc(var(--u) * 24);
-    --r:   calc(var(--u) * 16);
+    --r:   calc(var(--u) * 12);  /* --r-lg at nominal */
     gap: calc(var(--u) * 26);
     padding: calc(var(--u) * 38);
   }
   /* The rows carry the extra air, which is what fills the frame without
      enlarging a single letter. */
-  .fig-panel-stage .fig-row.is-inset {
+  .fig-panel-stage:not(.is-tr) .fig-row.is-inset {
     padding: calc(var(--u) * 18) calc(var(--u) * 20);
   }
 
@@ -2295,7 +2993,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 
 /* ---------------------------------------------------------------------------
    F3. THE DATA CARDS
-   Stone fill, 12px radius, mono figures, a green tick where something is done.
+   Stone fill, 12px radius, tabular figures, a green tick where something is done.
    These are positioned by the scroll-orbit figure, so they carry no margins
    and no position of their own. Four widths, none over 340px.
    --------------------------------------------------------------------------- */
@@ -2310,7 +3008,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   width: 34rem;
   max-width: 100%;
   padding: 1.6rem;
-  border-radius: 1.2rem;
+  border-radius: var(--r-lg);
   background: var(--surface-quaternary);
 }
 .dcard.is-tall  { width: 20rem; }
@@ -2328,7 +3026,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 
 .dcard-val {
   margin-left: auto;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1.5rem;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
@@ -2341,7 +3039,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.2rem;
-  border-radius: 0.8rem;
+  border-radius: var(--r-sm);
   background: var(--white);
 }
 .dcard-row .ico { width: 1.6rem; height: 1.6rem; color: var(--text-secondary); }
@@ -2350,7 +3048,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 
 .dcard-meta {
   margin-left: auto;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 1.2rem;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
@@ -2381,7 +3079,7 @@ select.wf-input { appearance: none; cursor: pointer; }
 /* A reading, drawn. --h on each bar is the only inline value in the kit, and
    it is a data-driven height, which is the one legitimate use of inline style. */
 .dcard-bars { display: flex; align-items: flex-end; gap: 0.4rem; height: 2.4rem; }
-.dcard-bar { width: 0.6rem; height: var(--h); border-radius: 0.3rem; background: var(--stone-600); }
+.dcard-bar { width: 0.6rem; height: var(--h); border-radius: 999px; background: var(--stone-600); }
 .dcard-bar.is-good { background: var(--green-500); }
 
 /* The tall card's plot: the same bars, given a card of their own and room to
@@ -2392,17 +3090,17 @@ select.wf-input { appearance: none; cursor: pointer; }
   gap: 0.6rem;
   height: 9.6rem;
   padding: 1.2rem;
-  border-radius: 0.8rem;
+  border-radius: var(--r-sm);
   background: var(--white);
 }
-.dcard-plot .dcard-bar { width: 1rem; border-radius: 0.5rem; }
+.dcard-plot .dcard-bar { width: 1rem; }
 
-/* The large mono reading that closes the tall card. */
+/* The large reading that closes the tall card. */
 .dcard-figure {
   display: flex;
   align-items: baseline;
   gap: 0.8rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 2.8rem;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -2427,7 +3125,6 @@ select.wf-input { appearance: none; cursor: pointer; }
     width: 34rem;
     gap: 2rem;
     padding: 2.4rem;
-    border-radius: 2rem;
   }
   /* Everything that is a line of detail rather than the card's subject. */
   .dcard-row,
@@ -2441,7 +3138,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   .dcard-title { font-size: 2.6rem; line-height: 1.1; }
   .dcard-val { font-size: 3rem; }
   .dcard-figure { font-size: 3.6rem; }
-  .dcard .ico-tile { width: 5.2rem; height: 5.2rem; border-radius: 1.2rem; }
+  .dcard .ico-tile { width: 5.2rem; height: 5.2rem; }
   .dcard .ico-tile .ico { width: 2.8rem; height: 2.8rem; }
   .dcard-avatar { width: 3.6rem; height: 3.6rem; border-width: 3px; }
   .dcard-avatar + .dcard-avatar { margin-left: -1.2rem; }
@@ -2450,7 +3147,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   /* The tall card keeps its plot: a drawing survives scaling, a row of 7px
      type does not. */
   .dcard-plot { height: 12rem; padding: 1.6rem; gap: 0.9rem; }
-  .dcard-plot .dcard-bar { width: 1.6rem; border-radius: 0.8rem; }
+  .dcard-plot .dcard-bar { width: 1.6rem; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -2465,22 +3162,29 @@ select.wf-input { appearance: none; cursor: pointer; }
   width: 100%;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: var(--r-shell);
+  border-radius: var(--r-xl);
   background: var(--surface-quaternary);
   container: v3disc / size;
 }
-@media (min-width: 1024px) { .disc { border-radius: 3.2rem; } }
 /* Inside the page's own .static-art, which already paints the ground and the
    radius, the square carries neither. */
-.disc.is-bare { background: none; border-radius: 0; }
+/* Inside .static-art the square is not square: it fills whatever ratio the
+   art is given, and paints neither ground nor radius. */
+.disc.is-bare { background: none; border-radius: 0; aspect-ratio: auto; height: 100%; }
 
 .disc-stage {
-  /* Nominal 300x340. The cards inside are percentage-width, so the design box
-     sets the type scale rather than the layout, and the height half of the
-     clamp is what keeps a tall diagram inside a short tile. Below about 300px
-     a square is drawn but no longer comfortably read, so give one at least
-     that much width. */
-  --u: min(calc(100cqw / 300), calc(100cqh / 340));
+  /* Nominal 620x465, and the deck's own multipliers below it. The one number
+     that matters is --u: the deck's plate is 714x450 against a 1000x560 box,
+     so it resolves to 0.714, and a 443x332 square against 620x465 resolves to
+     the same. At 470 it was 0.94, which is every label and every tile a third
+     larger than the same component on the deck, and that is most of why these
+     read as a crude blow-up of it rather than as it. */
+  --u: min(calc(100cqw / 620), calc(100cqh / 465));
+  --t-title: calc(var(--u) * 20);
+  --t-label: calc(var(--u) * 18);
+  --t-fig:   calc(var(--u) * 16);
+  --pad: calc(var(--u) * 30);
+  --gap: calc(var(--u) * 20);
   position: absolute;
   inset: 0;
   display: flex;
@@ -2493,41 +3197,106 @@ select.wf-input { appearance: none; cursor: pointer; }
   padding: calc(var(--u) * 30);
 }
 
-/* ITEM 7. One height for every card in the set, whatever its label's line
-   count, so the connector between them and the chip on it land at the same
-   place in all three squares. */
-.disc-stage .fig-card {
-  min-height: calc(var(--u) * 62);
+/* THE DISCIPLINE SCREENS
+   Static (client's decision, 2026-09-11, after three attempts at animating
+   them): no driver, no state, no loop. High fidelity instead, which here means
+   what it means on the reference's own cards: a header strip, a body of rows
+   that are not all the same row, a reading at the end of each, a nested row
+   under the one that has something under it, and a quiet footnote. The card,
+   the pill, the mark and the type are the deck's; the internals are these. */
+.disc-stage {
+  --row-h: calc(var(--u) * 42);
+  --row-gap: calc(var(--u) * 8);
   justify-content: center;
+  padding: calc(var(--u) * 24);
 }
-/* The top card takes a fixed height rather than a floor, because square 1's
-   avatars are taller than square 2's icon and would otherwise push its card
-   down and its chip out of line with the others. */
-.disc-top { height: calc(var(--u) * 62); }
-.disc-stage .fig-link-line { min-height: calc(var(--u) * 24); }
-.disc-stage .fig-link { align-items: center; }
+.disc-card {
+  width: 100%;
+  gap: calc(var(--u) * 16);
+}
+.disc-card .fig-label { line-height: 1.3; }
 
-/* ITEM 5. A floor on the chip, so the short ones read as a bar rather than as
-   a dot beside the long one. */
-.disc-stage .fig-chip {
-  min-width: calc(var(--u) * 160);
-  justify-content: center;
+/* The header strip: the subject on the left, its standing on the right. */
+.disc-bar {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 10);
+}
+.disc-bar .fig-tile {
+  width: calc(var(--u) * 28);
+  height: calc(var(--u) * 28);
+}
+.disc-bar .fig-tile .ico { width: calc(var(--u) * 15); height: calc(var(--u) * 15); }
+.disc-subject {
+  font-size: var(--t-title);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.disc-bar .fig-val { margin-left: auto; flex-shrink: 0; }
+.disc-bar .fig-avatars { flex-shrink: 0; }
+.disc-bar .fig-avatar { width: calc(var(--u) * 24); height: calc(var(--u) * 24); }
+
+.disc-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
 }
 
-/* ITEM 6, the stagger. Two cards on one axis read as a list; offsetting them
-   is what makes a square read as a diagram. .is-flip mirrors it so the second
-   square is not the first square again. */
-.disc-top    { width: 90%; align-self: flex-start; }
-.disc-bottom { width: 90%; align-self: flex-end; }
-.disc-stage.is-flip .disc-top    { align-self: flex-end; }
-.disc-stage.is-flip .disc-bottom { align-self: flex-start; }
+/* A row. Most carry an icon, a label and a reading; one in each screen is a
+   block, which is what stops three rows reading as a list. */
+.disc-row {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 9);
+  min-height: var(--row-h);
+  padding: calc(var(--u) * 7) calc(var(--u) * 11);
+  border-radius: calc(var(--u) * 8);
+  background: var(--stone-200);
+}
+.disc-row > .ico {
+  width: calc(var(--u) * 15);
+  height: calc(var(--u) * 15);
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+.disc-row .fig-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.disc-row .fig-val { margin-left: auto; flex-shrink: 0; }
+.disc-row .fig-tick .ico { width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+/* A row without a value still ends at its end: the tick takes the slack the
+   value would have taken, rather than sitting against the label with the rest
+   of the row empty behind it. */
+.disc-row > .fig-tick:last-child { margin-left: auto; }
+.disc-row .fig-dot {
+  margin-left: 0;
+  width: calc(var(--u) * 13);
+  height: calc(var(--u) * 13);
+}
+/* The one row that did not pass. Muted, and its mark is the dashed ring. */
+.disc-row.is-off .fig-label,
+.disc-row.is-off .fig-val { color: var(--text-secondary); }
 
-/* ITEM 6, the third rhythm. Three elements joined by two plain runs and no
-   chip: a layer of three therapies rather than two states and a link. */
-.disc-stage.is-trio .fig-card { width: 84%; }
-.disc-stage.is-trio .fig-card:nth-child(1) { align-self: flex-start; }
-.disc-stage.is-trio .fig-card:nth-child(3) { align-self: center; }
-.disc-stage.is-trio .fig-card:nth-child(5) { align-self: flex-end; }
+
+/* The footnote. Quiet, and the only place the second condition is stated. */
+.disc-note {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 8);
+}
+.disc-note .ico {
+  width: calc(var(--u) * 13);
+  height: calc(var(--u) * 13);
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+/* The footnote is one thing: its mark and its words sit together. .fig-val
+   pushes itself to the end of a row by default, which split the two to
+   opposite edges of the card. */
+.disc-note .fig-val { margin-left: 0; }
 
 /* ---------------------------------------------------------------------------
    F5. REDUCED MOTION
@@ -2604,10 +3373,10 @@ select.wf-input { appearance: none; cursor: pointer; }
   --u: min(calc(100cqw / 420), calc(100cqh / 500));
   --t-title: calc(var(--u) * 17);
   --t-label: calc(var(--u) * 14);
-  --t-mono:  calc(var(--u) * 12);
+  --t-fig:  calc(var(--u) * 12);
   --pad: calc(var(--u) * 14);
   --gap: calc(var(--u) * 10);
-  --r:   calc(var(--u) * 10);
+  --r:   calc(var(--u) * 12);  /* --r-lg at nominal */
 
   position: relative;
   flex-direction: column;
@@ -2742,13 +3511,13 @@ select.wf-input { appearance: none; cursor: pointer; }
 .fig-pair .ico { width: calc(var(--u) * 16); height: calc(var(--u) * 16); color: var(--text-secondary); }
 
 @media (min-width: 1280px) {
-  .sec-label, .car-n, .deliver-n, .footer-col-title { font-size: 1.4rem; }
+  .sec-label, .car-n, .mani-n, .footer-col-title { font-size: 1.4rem; }
 }
 
 .statics-row:focus-visible {
   outline: 2px solid var(--stroke-focus);
   outline-offset: 4px;
-  border-radius: var(--r-shell);
+  border-radius: var(--r-lg);
 }
 
 @media (min-width: 1280px) {
@@ -2773,7 +3542,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   gap: 0.4rem;
   max-width: calc(100vw - var(--gutter) * 2);
   padding: 0.6rem 0.6rem 0.6rem 1.8rem;
-  border-radius: var(--r-shell);
+  border-radius: var(--r-lg);
   border: 1px solid var(--white-a-100);
   background: var(--stone-a-600);
   backdrop-filter: blur(13px);
@@ -2805,7 +3574,7 @@ select.wf-input { appearance: none; cursor: pointer; }
   flex-shrink: 0;
   border: 0;
   background: none;
-  border-radius: var(--r-chrome);
+  border-radius: var(--r-md);
   color: var(--text-secondary);
   cursor: pointer;
   transition: background-color var(--t-tint) var(--ease-out-quint),
@@ -2826,78 +3595,45 @@ select.wf-input { appearance: none; cursor: pointer; }
 }
 
 
-/* === F2b/F6 figure fill and motion === */
+/* === F2b. FILL, RETIRED === */
 /* ---------------------------------------------------------------------------
-   F2b. FILL. The three panels floated in their plates with a dead band above
-   and below: 67%, 72% and 74% of the frame height against 92% of its width.
-   The fix is content and block-axis distribution, never scale: --u is
-   untouched, so no label grows relative to the body copy beside it.
+   F2b used to make each composition claim its plate's block axis, because the
+   three panels floated in their frames with a dead band above and below: 67%,
+   72% and 74% of the frame height against 92% of its width. It grew the cards
+   to fill, distributed the slack between the rows, and spread panel 03's two
+   columns.
 
-   Two moves. The composition claims the stage's block axis instead of being
-   centred in it, and the inset rows share whatever is left over. A row that
-   grows keeps its content vertically centred, so the drawing reads as an
-   interface with generous rows rather than a small drawing in a large plate.
+   The client reversed that on 2026-09-11, pointing at the reference: the card
+   there is a small object floating on a large plate, about 54% of its width
+   and a third of its height, and filling the frame is most of why ours read as
+   diagrams and theirs reads as a product. The compositions those rules were
+   written for are gone too; all three panels are now one `.fig-work` card, and
+   every selector below referred to `.fig-cols`, `.fig-col` and the inset rows
+   that made up the old ones.
+
+   So the rules are gone rather than scoped around, and what is left is the two
+   that still have something to act on. The dead band is now the design.
    --------------------------------------------------------------------------- */
 
-/* Both arrangements, not only the wide one. Below 780px the composition
-   stacks, and it floated in the plate there too (panel 03 filled 56% of a
-   700x441 frame). The same two moves fix both, so they are unconditional. */
-
-/* The composition claims the stage's block axis. */
-/* Grow to fill, never shrink below the content. Shrinking is what put
-   panel 01's last row 5 to 11px through the bottom of its card at 691, 728
-   and 358: space-between cannot compress below the card's own gap, so a card
-   squeezed under its natural height overflows instead of tightening. */
-.fig-panel-stage > .fig-card { flex: 1 0 auto; }
+/* A card floating on a plate is sized by its own content, which `.fig-work`
+   declares. Anything else on a stage still fills it. */
 .fig-panel-stage > .fig-link { flex: 0 0 auto; }
-.fig-panel-stage.fig-panel-split { align-items: stretch; }
-.fig-panel-stage.fig-panel-split > .fig-link { align-self: center; }
-
-/* Inside a card the head and the quiet sub keep their size; the rows take the
-   slack, and a grown row keeps its content centred, so what grows is the fill
-   and never the type. */
-.fig-panel-stage .fig-card > .fig-head,
-.fig-panel-stage .fig-card > .fig-sub,
-.fig-panel-stage .fig-card > .fig-link { flex: 0 0 auto; }
-/* The rows keep their own height and the slack goes into the spaces between
-   them. Growing the rows instead was tried and is wrong twice over: a row
-   three times the height of its line stops reading as a row, and a cap low
-   enough to prevent that clips the two-line label in panel 01 by 2px at
-   1440, 1024 and 900. The card gap stays the minimum; space-between adds to
-   it. Nothing can ever be shorter than its own content this way. */
-.fig-panel-stage .fig-card > .fig-row.is-inset,
-.fig-panel-stage .fig-col > .fig-row.is-inset { flex: 0 0 auto; }
-.fig-panel-stage .fig-card { justify-content: space-between; }
-/* Panel 03's two columns hold two rows and three, so the card's slack lands
-   here. Spreading the rows was tried and reads as three isolated strips
-   rather than a list; stacking them at the top leaves a hole under the short
-   column. Centred, each column is a tight list, the two are centred on each
-   other, and the card's own space-between keeps the head at the top and the
-   chip at the foot, which is where a product screen puts them. */
-.fig-panel-stage .fig-cols { align-items: stretch; }
-
-/* Only once the two columns are side by side, which is the same 560px the
-   kit uses to turn .fig-cols into a row. Stacked, a column is just a list and
-   these three rules push its last row 5 to 11px out through the bottom of the
-   card — which was there before this revision and was being hidden by the
-   card's overflow: hidden while a panel was live. */
-@container figpanel (min-width: 560px) {
-  .fig-panel-stage .fig-cols > .fig-col { justify-content: flex-start; }
-  /* The sub stays at the top of its column so the two line up with each
-     other, and the rows below it are centred in what is left by a pair of
-     auto margins. Centring the whole column instead drops the short column's
-     sub below the tall one's, which reads as a mistake. */
-  .fig-panel-stage .fig-cols > .fig-col > .fig-row.is-inset:first-of-type { margin-top: auto; }
-  .fig-panel-stage .fig-cols > .fig-col > .fig-row.is-inset:last-child { margin-bottom: auto; }
-}
-.fig-panel-stage .fig-card > .fig-cols { flex: 1 1 auto; min-height: 0; }
 .fig-panel-stage .fig-row.is-inset { align-items: center; }
 
 /* The two stacked nominals carry two more lines than they were measured with
    (the quiet subs added below), so the design box grows with them. Without
    this the natural composition is taller than the clamp allows and the cards
    push out through the top and bottom of the frame at 691, 728 and 358px. */
-@container figpanel (max-width: 779px) {
+/* The .is-tr pair keeps the band it was measured in. Everything else about
+   this arrangement is already its own (it declares --u and every multiplier),
+   so the row's air is the only thing that was reading off the number above. */
+@container figpanel (min-width: 780px) {
+  .fig-panel-stage.is-tr .fig-row.is-inset {
+    padding: calc(var(--u) * 18) calc(var(--u) * 20);
+  }
+}
+
+@container figpanel ((max-width: 559px) or ((max-width: 779px) and (aspect-ratio < 1.3))) {
   /* 560 was measured before panel 01 gained its third row in card B. 620 is
      what the stacked composition actually needs to sit inside the stage's
      own padding rather than merely inside the frame. */
@@ -2910,241 +3646,31 @@ select.wf-input { appearance: none; cursor: pointer; }
 
 
 /* ---------------------------------------------------------------------------
-   F6. THE PANELS AT WORK, ON A LOOP
+   F6. THE PANELS AT WORK
 
-   `.car-panel.is-live` is on the front panel and on no other, so only the
-   screen being read is running and the two queued behind it are still and
-   complete.
+   This was 240 lines of hand-computed keyframe percentages in which every
+   tick, date and bar faded out and faded back in on one shared 7s loop. It
+   animated, but nothing in it was doing anything: an element disappearing and
+   returning is not a unit of work, and the client's note, that the panels were
+   not detailed enough and should animate like the reference, was about exactly
+   that.
 
-   ONE CYCLE, 7s, shared by all three:
+   The reference ships these panels as prerendered video, so there is no DOM
+   technique to copy; what there is to copy is the behaviour, and it is a queue
+   of work. A row waits, runs, and completes, the status beside it says which,
+   and the card counts what is finished. That is a state machine, not a
+   timeline, so it is driven from the page rather than from here: this block
+   holds only the two things a state needs that CSS owns. Everything else is in
+   F1 with the marker.
 
-     0     .. 4.20s   hold     the work is done and shown
-     4.20  .. 5.10s   clear    the work is undone
-     5.10  .. 6.90s   build    and done again
-     6.90  .. 7.00s   hold
-
-   WHAT CYCLES IS THE WORK, NOT THE SCREEN. The cards, the rows, the labels
-   and the two pending rings never move and are never hidden: they are the
-   product, and a product that empties itself every seven seconds reads as a
-   failed load rather than as a task running again. What comes and goes is
-   only what the sequence produces — a tick, the date a row was completed on,
-   a bar height, the count, the chip that sums it up. Freeze the cycle
-   anywhere and the screen is a product mid-task.
-
-   0% and 100% are both the finished state, so the loop has no seam, and a
-   panel made live at any moment shows a complete screen on its first frame.
-   Nothing here needs the panel to be still when the class arrives.
-
-   Undoing is not the build reversed. The chip withdraws first, before the
-   evidence it summarises. Each row then releases its tick and blanks its
-   date 80ms later, top to bottom, which is the same direction the build
-   runs. The counter steps back down through its own four steps.
-
-   Individual moves are --t-move on --ease-out-quint; the cycle percentages
-   are what is local here.
+   The resting state is authored complete, every mark .is-done, so a panel that
+   is not running looks finished rather than blank. Reduced motion never starts
+   the driver, so that is also what the preference gets.
    --------------------------------------------------------------------------- */
 
-@media (prefers-reduced-motion: no-preference) {
-
-  /* ---- the tracks --------------------------------------------------
-     Only what the sequence produces has a track. The cards, the rows, the
-     labels and the two pending rings have none: they are the product, they
-     are there at every frame of every cycle, and nothing about them moves.
-
-     What comes and goes is the work: a tick, the date it was done on, a bar
-     height, the count, the chip that sums it up. So a frozen frame is always
-     a screen mid-task and never a card waiting for content.
-     -------------------------------------------------------------------- */
-  @keyframes fig-t0 {
-    0%,61.714% { opacity: 1; transform: none; }
-    66.286%,74.714% { opacity: 0; transform: scale(0.4); }
-    79.286%,100% { opacity: 1; transform: none; }
-  }
-  @keyframes fig-t1 {
-    0%,62.5% { opacity: 1; transform: none; }
-    67.071%,76.857% { opacity: 0; transform: scale(0.4); }
-    81.429%,100% { opacity: 1; transform: none; }
-  }
-  @keyframes fig-t2 {
-    0%,63.286% { opacity: 1; transform: none; }
-    67.857%,79% { opacity: 0; transform: scale(0.4); }
-    83.571%,100% { opacity: 1; transform: none; }
-  }
-  @keyframes fig-t3 {
-    0%,64.071% { opacity: 1; transform: none; }
-    68.643%,81.143% { opacity: 0; transform: scale(0.4); }
-    85.714%,100% { opacity: 1; transform: none; }
-  }
-  @keyframes fig-t4 {
-    0%,64.857% { opacity: 1; transform: none; }
-    69.429%,83.286% { opacity: 0; transform: scale(0.4); }
-    87.857%,100% { opacity: 1; transform: none; }
-  }
-  @keyframes fig-t5 {
-    0%,65.643% { opacity: 1; transform: none; }
-    70.214%,85.429% { opacity: 0; transform: scale(0.4); }
-    90%,100% { opacity: 1; transform: none; }
-  }
-  @keyframes fig-t6 {
-    0%,66.429% { opacity: 1; transform: none; }
-    71%,87.571% { opacity: 0; transform: scale(0.4); }
-    92.143%,100% { opacity: 1; transform: none; }
-  }
-  @keyframes fig-t7 {
-    0%,67.214% { opacity: 1; transform: none; }
-    71.786%,89.714% { opacity: 0; transform: scale(0.4); }
-    94.286%,100% { opacity: 1; transform: none; }
-  }
-  @keyframes fig-v0 {
-    0%,62.857% { opacity: 1; }
-    67.429%,72.857% { opacity: 0; }
-    77.429%,100% { opacity: 1; }
-  }
-  @keyframes fig-v1 {
-    0%,63.643% { opacity: 1; }
-    68.214%,75% { opacity: 0; }
-    79.571%,100% { opacity: 1; }
-  }
-  @keyframes fig-v2 {
-    0%,64.429% { opacity: 1; }
-    69%,77.143% { opacity: 0; }
-    81.714%,100% { opacity: 1; }
-  }
-  @keyframes fig-v3 {
-    0%,65.214% { opacity: 1; }
-    69.786%,79.286% { opacity: 0; }
-    83.857%,100% { opacity: 1; }
-  }
-  @keyframes fig-v4 {
-    0%,66% { opacity: 1; }
-    70.571%,81.429% { opacity: 0; }
-    86%,100% { opacity: 1; }
-  }
-  @keyframes fig-v5 {
-    0%,66.786% { opacity: 1; }
-    71.357%,83.571% { opacity: 0; }
-    88.143%,100% { opacity: 1; }
-  }
-  @keyframes fig-v6 {
-    0%,67.571% { opacity: 1; }
-    72.143%,85.714% { opacity: 0; }
-    90.286%,100% { opacity: 1; }
-  }
-  @keyframes fig-v7 {
-    0%,68.357% { opacity: 1; }
-    72.929%,87.857% { opacity: 0; }
-    92.429%,100% { opacity: 1; }
-  }
-  @keyframes fig-b0 {
-    0%,62% { transform: scaleY(1); }
-    66.571%,84.571% { transform: scaleY(0); }
-    89.143%,100% { transform: scaleY(1); }
-  }
-  @keyframes fig-b1 {
-    0%,62.571% { transform: scaleY(1); }
-    67.143%,85.786% { transform: scaleY(0); }
-    90.357%,100% { transform: scaleY(1); }
-  }
-  @keyframes fig-b2 {
-    0%,63.143% { transform: scaleY(1); }
-    67.714%,87% { transform: scaleY(0); }
-    91.571%,100% { transform: scaleY(1); }
-  }
-  @keyframes fig-b3 {
-    0%,63.714% { transform: scaleY(1); }
-    68.286%,88.214% { transform: scaleY(0); }
-    92.786%,100% { transform: scaleY(1); }
-  }
-  @keyframes fig-b4 {
-    0%,64.286% { transform: scaleY(1); }
-    68.857%,89.429% { transform: scaleY(0); }
-    94%,100% { transform: scaleY(1); }
-  }
-  @keyframes fig-chip {
-    0%,60% { opacity: 1; }
-    64.571%,92.143% { opacity: 0; }
-    96.714%,100% { opacity: 1; }
-  }
-  @keyframes fig-count {
-    0%,62.857% { transform: translateY(calc(var(--fig-line) * -4)); animation-timing-function: steps(4, end); }
-    74.857%,76.429% { transform: translateY(0); animation-timing-function: steps(4, end); }
-    89.286%,100% { transform: translateY(calc(var(--fig-line) * -4)); }
-  }
-  @keyframes fig-turn { from { transform: rotate(0deg); } to { transform: rotate(1440deg); } }
-
-  /* ---- what runs ----------------------------------------------------
-     One duration, one easing, one iteration rule; animation-name is the
-     only thing that varies. The delay is stated rather than inherited: the
-     phase of every element lives in its own track, so a stray delay left by
-     an earlier revision of this block would shift one element out of the
-     shared cycle and open the seam. */
-  .car-panel.is-live .fig-panel .fig-tick,
-  .car-panel.is-live .fig-panel .fig-avatar,
-  .car-panel.is-live .fig-panel .fig-val,
-  .car-panel.is-live .fig-panel .fig-bar,
-  .car-panel.is-live .fig-panel .fig-chip,
-  .car-panel.is-live .fig-panel .fig-count-strip,
-  .car-panel.is-live .fig-panel .fig-dot {
-    animation-duration: 7s;
-    animation-timing-function: var(--ease-out-quint);
-    animation-iteration-count: infinite;
-    animation-fill-mode: both;
-    animation-delay: 0s;
-  }
-  .car-panel.is-live .fig-panel .fig-bar { transform-origin: bottom; }
-  .car-panel.is-live .fig-panel .fig-count-strip,
-  .car-panel.is-live .fig-panel .fig-dot { animation-timing-function: linear; }
-
-  /* Nothing travels far enough to leave a card now, so the card does not
-     need to clip and does not get an overflow it would not otherwise have. */
-
-  /* --- 01. an introduction arriving from a firm ------------------------
-     The advisor's route confirms, the chip states the condition, and the
-     second card takes its own confirmation last. The firm and organization
-     rows keep their dashed rings the whole way through: two of the three
-     routes stay open, and the sentence says so. */
-  .car-panel.is-live [data-panel="01"] .fig-panel-a .fig-tick { animation-name: fig-t0; }
-  .car-panel.is-live [data-panel="01"] .fig-panel-a .fig-val { animation-name: fig-v0; }
-  .car-panel.is-live [data-panel="01"] .fig-panel-b .fig-head .fig-tick { animation-name: fig-t1; }
-  .car-panel.is-live [data-panel="01"] .fig-panel-b .fig-val { animation-name: fig-v1; }
-  .car-panel.is-live [data-panel="01"] .fig-panel-b .fig-row .fig-tick { animation-name: fig-t2; }
-  .car-panel.is-live [data-panel="01"] .fig-chip { animation-name: fig-chip; }
-
-  /* --- 02. the baseline being collected --------------------------------
-     Four assessments tick off with their dates and the counter steps with
-     them. The fifth has no tick and no date to lose: its ring turns four
-     whole times a cycle, which is a whole number, so the loop closes on it,
-     and it is still dashed at the hold. */
-  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(3) .fig-tick { animation-name: fig-t0; }
-  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(4) .fig-tick { animation-name: fig-t1; }
-  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(5) .fig-tick { animation-name: fig-t2; }
-  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(6) .fig-tick { animation-name: fig-t3; }
-  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(3) .fig-val { animation-name: fig-v0; }
-  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(4) .fig-val { animation-name: fig-v1; }
-  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(5) .fig-val { animation-name: fig-v2; }
-  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(6) .fig-val { animation-name: fig-v3; }
-  .car-panel.is-live [data-panel="02"] .fig-count-strip { animation-name: fig-count; }
-  .car-panel.is-live [data-panel="02"] .fig-dot { animation-name: fig-turn; }
-  .car-panel.is-live [data-panel="02"] .fig-chip { animation-name: fig-chip; }
-
-  /* --- 03. a protocol under active management --------------------------
-     The team assembles an avatar at a time and the reading draws itself up
-     bar by bar, while the two rows they belong to stay exactly where they
-     are. */
-  .car-panel.is-live [data-panel="03"] .fig-head .fig-val { animation-name: fig-v0; }
-  .car-panel.is-live [data-panel="03"] .fig-avatar:nth-child(1) { animation-name: fig-t0; }
-  .car-panel.is-live [data-panel="03"] .fig-avatar:nth-child(2) { animation-name: fig-t1; }
-  .car-panel.is-live [data-panel="03"] .fig-avatar:nth-child(3) { animation-name: fig-t2; }
-  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(1) .fig-tick { animation-name: fig-t3; }
-  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(1) { animation-name: fig-b0; }
-  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(2) { animation-name: fig-b1; }
-  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(3) { animation-name: fig-b2; }
-  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(4) { animation-name: fig-b3; }
-  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(5) { animation-name: fig-b4; }
-  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(2) .fig-row:nth-child(3) .fig-tick { animation-name: fig-t4; }
-  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(2) .fig-row:nth-child(4) .fig-tick { animation-name: fig-t5; }
-  .car-panel.is-live [data-panel="03"] .fig-chip { animation-name: fig-chip; }
-}
+/* Nothing else. The card's counter and its growing bars went with the
+   compositions they belonged to when the deck's figure became one small
+   working card; the two rules that drove them matched nothing afterwards. */
 
 /* ---------------------------------------------------------------------------
    F6b. THE STEPPING COUNTER
@@ -3158,11 +3684,11 @@ select.wf-input { appearance: none; cursor: pointer; }
 .fig-count {
   display: block;
   overflow: hidden;
-  height: calc(var(--t-mono) * 1.2);
+  height: calc(var(--t-fig) * 1.2);
   flex: 0 0 auto;
 }
 .fig-count-strip {
-  --fig-line: calc(var(--t-mono) * 1.2);
+  --fig-line: calc(var(--t-fig) * 1.2);
   display: block;
   /* Four lines up, in lines. A percentage here is a percentage of the strip,
      which is five lines tall, so -400% would be twenty lines and the value
@@ -3171,6 +3697,6 @@ select.wf-input { appearance: none; cursor: pointer; }
 }
 .fig-count-strip > span {
   display: block;
-  height: calc(var(--t-mono) * 1.2);
+  height: calc(var(--t-fig) * 1.2);
   line-height: 1.2;
 }

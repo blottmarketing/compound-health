@@ -4,8 +4,8 @@
 //
 // It follows lassie.ai: the floating glass nav pill, a full-height photograph whose
 // window pulls its own corners in on scroll, a pinned carousel of panels rising over
-// one another, six tiles parked on a scroll-scrubbed ellipse around a counting figure,
-// square drawn illustrations, an accordion, and a footer standing on a fixed panel.
+// one another, six tiles parked on a scroll-scrubbed ellipse around one line of copy,
+// square drawn illustrations, and a footer standing on a fixed panel.
 //
 // Copy is the client's: it matches the live page and is not rewritten here. Every label
 // inside a figure is a phrase from copy already on this page. Photographs are
@@ -51,182 +51,294 @@ const STEPS = [
   },
 ];
 
-/** The three drawn interface panels, one per step. Raw markup so the loop
-    above stays readable; the drawings themselves are in the stylesheet. */
-const PANELS = [
-  `<div class="fig-panel" data-panel="01">
-  <div class="fig-panel-stage fig-panel-split">
+/** The state marker a task row carries, and the spinner inside it.
 
-    <div class="fig-card fig-panel-a">
-      <span class="fig-sub">Join through</span>
-      <div class="fig-head">
-        <span class="fig-tile">
-          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.2 20.8V5.4A2.4 2.4 0 0 1 6.6 3h6.6a2.4 2.4 0 0 1 2.4 2.4v15.4"/><path d="M15.6 10.2h2.4a2.4 2.4 0 0 1 2.4 2.4v8.2"/><path d="M3 20.8h18"/><path d="M8.2 7.4h3.4"/><path d="M8.2 11.4h3.4"/><path d="M8.2 15.4h3.4"/></svg>
-        </span>
-        <span class="fig-title">your advisor, firm or organization</span>
-      </div>
+    Three marks sit in one grid cell and the class on the wrapper picks one, so
+    a state change is an opacity and never a reflow. The spokes are drawn
+    rather than cut out of a conic gradient with two composited mask layers:
+    this kit draws its figures, and eight lines on an opacity ramp, turned in
+    eight steps, is the same spinner with nothing to support. The ramp is what
+    is actually moving, since the spokes are 45deg apart and would land back on
+    themselves every step. */
+const SPOKES = Array.from({ length: 8 }, (_, i) =>
+  `<line x1="12" y1="2.8" x2="12" y2="6.8" transform="rotate(${i * 45} 12 12)" opacity="${(0.28 + i * 0.103).toFixed(2)}"/>`
+).join('');
 
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg>
-        <span class="fig-label">Advisor</span>
-        <span class="fig-val">2026-04-09</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
+const mark = (state: string) =>
+  `<span class="fig-mark is-${state}" data-mark><span class="fig-mark-ring"></span><svg class="fig-mark-spin" viewBox="0 0 24 24" aria-hidden="true">${SPOKES}</svg><span class="fig-mark-done"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span></span>`;
 
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.2 20.8V5.4A2.4 2.4 0 0 1 6.6 3h6.6a2.4 2.4 0 0 1 2.4 2.4v15.4"/><path d="M15.6 10.2h2.4a2.4 2.4 0 0 1 2.4 2.4v8.2"/><path d="M3 20.8h18"/><path d="M8.2 7.4h3.4"/><path d="M8.2 11.4h3.4"/><path d="M8.2 15.4h3.4"/></svg>
-        <span class="fig-label">Firm</span>
-        <span class="fig-dot"></span>
-      </div>
+const ICONS: Record<string, string> = {
+  bank: '<path d="M4.2 20.8V5.4A2.4 2.4 0 0 1 6.6 3h6.6a2.4 2.4 0 0 1 2.4 2.4v15.4"/><path d="M15.6 10.2h2.4a2.4 2.4 0 0 1 2.4 2.4v8.2"/><path d="M3 20.8h18"/><path d="M8.2 7.4h3.4"/><path d="M8.2 11.4h3.4"/><path d="M8.2 15.4h3.4"/>',
+  user: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/>',
+  org:  '<path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/>',
+  vial: '<path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/>',
+  grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/>',
+  file: '<path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/>',
+  wave: '<path d="M3 12h4l2.5-6.5 5 13L17 12h4"/>',
+  leaf: '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/>',
+  cal:  '<rect x="3.2" y="4.8" width="17.6" height="16" rx="2.2"/><path d="M3.2 9.6h17.6"/><path d="M8 2.8v4"/><path d="M16 2.8v4"/>',
+  shield: '<path d="M12 2.8 19.3 5.9v5.4c0 4.4-3 8.2-7.3 9.9-4.3-1.7-7.3-5.5-7.3-9.9V5.9z"/><path d="m8.9 11.8 2.2 2.2 4-4.4"/>',
+  pill: '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z"/><path d="m8.5 8.5 7 7"/>',
+  drop: '<path d="M12 2.8s6.2 6.1 6.2 10.4a6.2 6.2 0 0 1-12.4 0C5.8 8.9 12 2.8 12 2.8z"/>',
+};
+const ico = (k: string) => `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]}</svg>`;
 
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
-        <span class="fig-label">Organization</span>
-        <span class="fig-dot"></span>
-      </div>
-    </div>
+/** The three panels are three different machines, which is the whole of the
+    lesson from the reference: its own three are a rolling task queue, a
+    notification that grows into a progress card and then into a counting
+    total, and a chat that types a question and writes an answer back. Three
+    copies of one card is what ours were, and it is what the client saw.
 
-    <div class="fig-link">
-      <span class="fig-link-line"></span>
-      <span class="fig-chip">No separate onboarding</span>
-      <span class="fig-link-line"></span>
-    </div>
+    They share the kit, never the shape: the same card, tile, marker, pill,
+    label and value throughout, so the three read as one product doing three
+    different things rather than as three designs.
 
-    <div class="fig-card fig-panel-b">
-      <div class="fig-head">
-        <span class="fig-title">Access Compound Health</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-      <div class="fig-row is-inset">
-        <span class="fig-label">through a relationship you already have</span>
-      </div>
-      <div class="fig-row is-inset">
-        <span class="fig-label">as a benefit</span>
-        <span class="fig-val">2026-04-09</span>
-      </div>
-      <div class="fig-row is-inset">
-        <span class="fig-label">No cold starts</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-    </div>
+      01  an introduction arrives      a notification that grows into a card
+      02  the baseline is collected    the rolling queue
+      03  the plan is assembled        parts that light up under a live head
 
-  </div>
-</div>`,
-  `<div class="fig-panel" data-panel="02">
-  <div class="fig-panel-stage is-dense">
+    Every word is lifted verbatim from that step's own copy. The machine words
+    are the only new vocabulary: "Up next", "Pending", "In progress", "just
+    now", and the two status verbs on 03. */
 
-    <div class="fig-card fig-panel-single">
-      <div class="fig-head">
-        <span class="fig-tile">
-          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
-        </span>
-        <span class="fig-title">Deep diagnostic intake</span>
-        <span class="fig-val fig-count"><span class="fig-count-strip"><span>0/5</span><span>1/5</span><span>2/5</span><span>3/5</span><span>4/5</span></span></span>
-      </div>
-      <span class="fig-sub">A full-picture biological audit by elite clinicians</span>
-
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
-        <span class="fig-label">Advanced bloodwork</span>
-        <span class="fig-val">2026-03-02</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
-        <span class="fig-label">Imaging</span>
-        <span class="fig-val">2026-03-04</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
-        <span class="fig-label">Genetic risk</span>
-        <span class="fig-val">2026-03-11</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l2.5-6.5 5 13L17 12h4"/></svg>
-        <span class="fig-label">Cognitive</span>
-        <span class="fig-val">2026-03-18</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-
-      <div class="fig-row is-inset">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
-        <span class="fig-label">Metabolic</span>
-        <span class="fig-dot"></span>
-      </div>
-    </div>
-
-    <div class="fig-link">
-      <span class="fig-chip">A comprehensive baseline</span>
-    </div>
-
-  </div>
-</div>`,
-  `<div class="fig-panel" data-panel="03">
+/* ---- 01. an introduction arrives ------------------------------------------
+   Not a list. A route: the party you already deal with at one end, Compound
+   Health at the other, and the introduction travelling between them. 01 and 02
+   were still reading as the same object because they had the same anatomy, a
+   head over a stack of [marker][pill] rows, and only their motion differed. A
+   different machine has to be a different shape standing still, which is what
+   the reference's own three are. */
+const PANEL_01 = `<div class="fig-panel" data-panel="01">
   <div class="fig-panel-stage">
+    <div class="fig-card fig-arrive is-sent" data-arrive>
+      <div class="fig-note-head">
+        <span class="fig-tile">${ico('bank')}</span>
+        <span class="fig-title">Join through your advisor</span>
+        <span class="fig-val fig-note-when">just now</span>
+      </div>
 
-    <div class="fig-card fig-panel-single">
-      <div class="fig-head">
-        <span class="fig-tile">
-          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15.4 20.5v-1.8a3.7 3.7 0 0 0-3.7-3.7H6.2a3.7 3.7 0 0 0-3.7 3.7v1.8"/><circle cx="9" cy="7.6" r="3.6"/><path d="M21.5 20.5v-1.8a3.7 3.7 0 0 0-2.8-3.6"/><path d="M15.8 4.2a3.7 3.7 0 0 1 0 7.1"/></svg>
+      <div class="fig-route">
+        <span class="fig-node">
+          <span class="fig-avatars">
+            <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
+          </span>
+          <span class="fig-sub">firm or organization</span>
         </span>
-        <span class="fig-title">Personalized longevity plan</span>
-        <span class="fig-val">2026-04-09</span>
+
+        <span class="fig-wire"><span class="fig-wire-draw" data-wire></span></span>
+
+        <span class="fig-node">
+          <span class="fig-node-mark">${mark('done')}</span>
+          <span class="fig-sub">Access Compound Health</span>
+        </span>
       </div>
 
-      <div class="fig-cols">
-
-        <div class="fig-col">
-          <span class="fig-sub">Your clinical team</span>
-          <div class="fig-row is-inset">
-            <span class="fig-avatars">
-              <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
-            </span>
-            <span class="fig-label">chosen for this program</span>
-          </div>
-          <div class="fig-row is-inset">
-            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg>
-            <span class="fig-label">a dedicated health concierge</span>
-            <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-          </div>
-        </div>
-
-        <div class="fig-col">
-          <span class="fig-sub">a protocol tailored to</span>
-          <div class="fig-row is-inset">
-            <span class="fig-label">your data</span>
-            <span class="fig-bars">
-              <span class="fig-bar" style="--h:38%"></span>
-              <span class="fig-bar" style="--h:64%"></span>
-              <span class="fig-bar is-good" style="--h:92%"></span>
-              <span class="fig-bar" style="--h:52%"></span>
-              <span class="fig-bar" style="--h:74%"></span>
-            </span>
-          </div>
-          <div class="fig-row is-inset">
-            <span class="fig-label">goals</span>
-            <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-          </div>
-          <div class="fig-row is-inset">
-            <span class="fig-label">lifestyle</span>
-            <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="fig-link">
-        <span class="fig-chip">build and actively manage</span>
+      <div class="fig-flags">
+        <span class="fig-flag is-on" data-flag>${mark('done')}<span class="fig-label">No cold starts</span></span>
+        <span class="fig-flag is-on" data-flag>${mark('done')}<span class="fig-label">No separate onboarding</span></span>
       </div>
     </div>
-
   </div>
-</div>`,
+</div>`;
+
+/* ---- 02. the baseline is collected ---------------------------------------- */
+const QUEUE = [
+  { icon: 'vial', label: 'Advanced bloodwork', done: '2026-03-02' },
+  { icon: 'grid', label: 'Imaging', done: '2026-03-04' },
+  { icon: 'file', label: 'Genetic risk', done: '2026-03-11' },
+  { icon: 'wave', label: 'Cognitive', done: '2026-03-18' },
+  { icon: 'leaf', label: 'Metabolic', done: '2026-03-24' },
 ];
+const SLOTS = ['done', 'wait', 'wait'];
+const SLOT_TEXT = ['', 'Up next', 'Pending'];
+
+const PANEL_02 = `<div class="fig-panel" data-panel="02">
+  <div class="fig-panel-stage">
+    <div class="fig-card fig-work">
+      <div class="fig-head">
+        <span class="fig-tile">${ico('vial')}</span>
+        <span class="fig-title">Deep diagnostic intake</span>
+      </div>
+      <div class="fig-queue">
+        <div class="fig-queue-roll" data-roll>
+          ${QUEUE.map((it, i) => `<div class="fig-task" data-task data-done="${it.done}">
+            ${mark(SLOTS[i] || 'wait')}
+            <div class="fig-task-pill">
+              ${ico(it.icon)}
+              <span class="fig-label">${it.label}</span>
+              <span class="fig-val" data-status>${i === 0 ? it.done : (SLOT_TEXT[i] || 'Pending')}</span>
+            </div>
+          </div>`).join('\n          ')}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>`;
+
+/* ---- 03. the plan is assembled -------------------------------------------- */
+const PARTS = ['your data', 'goals', 'lifestyle'];
+
+const PANEL_03 = `<div class="fig-panel" data-panel="03">
+  <div class="fig-panel-stage">
+    <div class="fig-card fig-plan" data-plan>
+      <div class="fig-plan-head">
+        <span class="fig-tile">${ico('org')}</span>
+        <div class="fig-plan-titles">
+          <span class="fig-title">Personalized longevity plan</span>
+          <span class="fig-sub">Your clinical team, chosen for this program</span>
+        </div>
+        <span class="fig-avatars">
+          <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
+        </span>
+      </div>
+
+      <span class="fig-sub">a protocol tailored to</span>
+      <div class="fig-parts">
+        ${PARTS.map((t, i) => `<span class="fig-part is-on" data-part="${i}">
+          <span class="fig-part-tick">${mark('done')}</span>
+          <span class="fig-label">${t}</span>
+        </span>`).join('\n        ')}
+      </div>
+
+      <div class="fig-live is-live" data-live>
+        <span class="fig-pulse"></span>
+        <span class="fig-label">build and actively manage</span>
+        <span class="fig-val" data-live-status
+              data-off="a dedicated health concierge"
+              data-on="Actively managed">Actively managed</span>
+      </div>
+    </div>
+  </div>
+</div>`;
+
+const PANELS = [PANEL_01, PANEL_02, PANEL_03];
+
+/** The three discipline squares, in the deck's card language but not in one
+    shape. The first pass gave all three the same tile head over the same three
+    [marker][pill] rows and they read as one card printed three times, which is
+    the same mistake the deck's panels made and the same lesson: the family is
+    carried by the card, the pill, the mark and the type, and the composition
+    has to differ or nothing does.
+
+    No head on any of them, either. The discipline's name is the h3 directly
+    under the square, and repeating it inside was both duplication and a third
+    identical element.
+
+      clinical care     a team: three faces, the label under them, two chips
+      diagnostics       a panel of three instruments, icon over label
+      advanced          a condition, and the three therapies under it
+
+    Every word is lifted verbatim from that discipline's own sentence. */
+const tick = `<span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>`;
+
+/** The three discipline screens. Static, by the client's decision of
+    2026-09-11, and rebuilt the same day after a version that was called what
+    it was: things thrown together. The fault was not the finish, it was the
+    meaning. A marketing sentence has nouns and it has qualifying clauses, and
+    the first build treated both as rows: "chosen for accuracy and usefulness"
+    sat in a row with "3 of 3" and a three-band scale beside it, "continuous
+    care between visits" had twelve weeks drawn under it with gaps in them,
+    which says the opposite of continuous, the team carried the value "Named",
+    and "imaging" was nested under "multi-cancer early detection", where it
+    does not belong. None of those readings meant anything.
+
+    The rule this now follows: the clause is the header, the nouns are the
+    rows, and a row carries a value only where there is an honest one. No
+    drawn reading that is not a reading of something. What makes the three
+    differ is what they are, a team, a set of results, and a decision, and not
+    decoration added to keep them apart. */
+const DISC_BODY: Record<string, string> = {
+  'clinical-care': `<div class="fig-card disc-card">
+      <div class="disc-bar">
+        <span class="fig-avatars">
+          <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
+        </span>
+        <span class="fig-label disc-subject">physician-led teams</span>
+        <span class="fig-val">Standard met</span>
+      </div>
+
+      <div class="disc-body">
+        <div class="disc-row">
+          ${ico('file')}
+          <span class="fig-label">published outcomes</span>
+          <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        </div>
+        <div class="disc-row">
+          ${ico('user')}
+          <span class="fig-label">continuous care between visits</span>
+          <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        </div>
+      </div>
+    </div>`,
+
+  'diagnostics-and-screening': `<div class="fig-card disc-card">
+      <div class="disc-bar">
+        <span class="fig-tile">${ico('shield')}</span>
+        <span class="fig-label disc-subject">chosen for accuracy and usefulness</span>
+      </div>
+
+      <div class="disc-body">
+        <div class="disc-row">
+          ${ico('vial')}
+          <span class="fig-label">baseline testing</span>
+          <span class="fig-val">2026-03-02</span>
+          <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        </div>
+        <div class="disc-row">
+          ${ico('shield')}
+          <span class="fig-label">multi-cancer early detection</span>
+          <span class="fig-val">Clear</span>
+          <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        </div>
+        <div class="disc-row">
+          ${ico('grid')}
+          <span class="fig-label">imaging</span>
+          <span class="fig-val">2026-03-04</span>
+          <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        </div>
+      </div>
+    </div>`,
+
+  'advanced-therapies': `<div class="fig-card disc-card">
+      <div class="disc-bar">
+        <span class="fig-tile">${ico('wave')}</span>
+        <span class="fig-label disc-subject">only when your data indicates them</span>
+      </div>
+
+      <div class="disc-body">
+        <div class="disc-row">
+          ${ico('pill')}
+          <span class="fig-label">hormones</span>
+          <span class="fig-val">Indicated</span>
+          <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        </div>
+        <div class="disc-row">
+          ${ico('drop')}
+          <span class="fig-label">peptides</span>
+          <span class="fig-val">Indicated</span>
+          <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
+        </div>
+        <div class="disc-row is-off">
+          ${ico('leaf')}
+          <span class="fig-label">regenerative therapies</span>
+          <span class="fig-val">Not indicated</span>
+          <span class="fig-dot"></span>
+        </div>
+      </div>
+
+      <div class="disc-note">
+        ${ico('shield')}
+        <span class="fig-val">only through vetted sourcing</span>
+      </div>
+    </div>`,
+};
+
+const DISC = Object.fromEntries(Object.entries(DISC_BODY).map(([id, body]) =>
+  [id, `<div class="disc is-bare" data-disc="${id}">
+  <div class="disc-stage">
+    ${body}
+  </div>
+</div>`]));
 ---
 
 <V3Layout
@@ -289,14 +401,6 @@ const PANELS = [
        Lottie flower in this slot; ours is the Compound Health mark.
        =================================================================== -->
   <section class="intro wrap" aria-labelledby="processHead">
-    <svg class="intro-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true" data-draw>
-      <path
-        d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"
-        stroke="currentColor"
-        stroke-width="5.88"
-        stroke-linejoin="round"
-      />
-    </svg>
     <h2 class="t-h2 t-balance" id="processHead">A new model for<br />human <em>performance</em></h2>
     <p class="intro-sub t-body">
       We built the infrastructure that connects the people who advise you to world-class
@@ -338,7 +442,6 @@ const PANELS = [
     <div class="orbit-stage" data-orbit-stage>
 
       <div class="orbit-copy">
-        <span class="sec-label" data-orbit-tag>What you get</span>
         <div class="orbit-line">
           <h2 class="t-h2 t-balance" id="featuresHead" data-orbit-h1>
             Everything your health<br />has been <em>missing</em>
@@ -349,8 +452,6 @@ const PANELS = [
           </p>
         </div>
       </div>
-
-      <canvas class="trail" data-trail aria-hidden="true"></canvas>
 
       <!-- The six. Their transforms are written by script from the scroll
            position, which is the one legitimate inline style in this file. -->
@@ -577,28 +678,33 @@ const PANELS = [
       </article>
     </div>
 
-    <div class="fcards">
-      <article class="fcard">
-        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20.5h16"/><path d="M7.2 20.5v-6.8"/><path d="M12 20.5V6.5"/><path d="M16.8 20.5v-9.8"/></svg></div>
-        <h3 class="t-body-lg">Full biomarker tracking</h3>
-        <p class="t-body-sm t-muted">
-          Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
-          continuous wearable integration, all synthesized into a single health intelligence layer.
-        </p>
-      </article>
-      <article class="fcard">
-        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg></div>
-        <h3 class="t-body-lg">Personalized protocols</h3>
-        <p class="t-body-sm t-muted">Calibrated to your biology, not a template.</p>
-      </article>
-      <article class="fcard">
-        <div class="fcard-art" aria-hidden="true"><svg class="ico ico-lg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M5.9 18.5a7.2 7.2 0 0 1 12.2 0"/></svg></div>
-        <h3 class="t-body-lg">Health concierge</h3>
-        <p class="t-body-sm t-muted">
-          A dedicated coordinator who handles specialist referrals, appointment logistics, second
-          opinions, and anything else between you and better health.
-        </p>
-      </article>
+    <!-- The three the membership includes. A list, not a row of three: the
+         client's sentences run thirty words, six and twenty-two, and in a
+         three-up the shortest one reads as unfinished rather than as short.
+         Rows carry unequal lengths without anyone noticing. It is the same
+         term-and-sentence molecule the partners passage uses, which already
+         does this on this page. -->
+    <div class="incl">
+      <dl class="mani-list">
+        <div class="mani-row">
+          <dt class="t-h5">Full biomarker tracking</dt>
+          <dd class="t-body-sm t-muted">
+            Multiple comprehensive panels per year, DEXA, full performance battery, CGM cycles, and
+            continuous wearable integration, all synthesized into a single health intelligence layer.
+          </dd>
+        </div>
+        <div class="mani-row">
+          <dt class="t-h5">Personalized protocols</dt>
+          <dd class="t-body-sm t-muted">Calibrated to your biology, not a template.</dd>
+        </div>
+        <div class="mani-row">
+          <dt class="t-h5">Health concierge</dt>
+          <dd class="t-body-sm t-muted">
+            A dedicated coordinator who handles specialist referrals, appointment logistics, second
+            opinions, and anything else between you and better health.
+          </dd>
+        </div>
+      </dl>
     </div>
   </section>
 
@@ -620,71 +726,18 @@ const PANELS = [
     <div class="statics-row" role="group" aria-label="The three disciplines" tabindex="0">
       <article class="static-card">
         <div class="static-art" aria-hidden="true">
-          <div class="disc is-bare" data-disc="clinical-care">
-  <div class="disc-stage">
-
-    <div class="fig-card disc-top">
-      <div class="fig-row">
-        <span class="fig-avatars">
-          <span class="fig-avatar"></span><span class="fig-avatar"></span><span class="fig-avatar"></span>
-        </span>
-        <span class="fig-label">physician-led teams</span>
-      </div>
-    </div>
-
-    <div class="fig-link">
-      <span class="fig-link-line"></span>
-      <span class="fig-chip">continuous care between visits</span>
-      <span class="fig-link-line"></span>
-    </div>
-
-    <div class="fig-card disc-bottom">
-      <div class="fig-row">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2.8H7.5A2.5 2.5 0 0 0 5 5.3v13.4a2.5 2.5 0 0 0 2.5 2.5h9a2.5 2.5 0 0 0 2.5-2.5V7.8z"/><path d="M14 2.8v5h5"/><path d="M8.8 13.2h6.4"/><path d="M8.8 17h4"/></svg>
-        <span class="fig-label">published outcomes</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-    </div>
-
-  </div>
-</div>
+          <Fragment set:html={DISC['clinical-care']} />
         </div>
-        <h3 class="t-body-lg">Clinical care</h3>
+        <h3 class="t-h5">Clinical care</h3>
         <p class="t-body-sm">
           Physician-led teams with published outcomes and continuous care between visits.
         </p>
       </article>
       <article class="static-card">
         <div class="static-art" aria-hidden="true">
-          <div class="disc is-bare" data-disc="diagnostics-and-screening">
-  <div class="disc-stage is-flip">
-
-    <div class="fig-card disc-top">
-      <div class="fig-row">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
-        <span class="fig-label">baseline testing</span>
-        <span class="fig-val">2026-03-02</span>
-      </div>
-    </div>
-
-    <div class="fig-link">
-      <span class="fig-link-line"></span>
-      <span class="fig-chip">imaging</span>
-      <span class="fig-link-line"></span>
-    </div>
-
-    <div class="fig-card disc-bottom">
-      <div class="fig-row">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8 19.3 5.9v5.4c0 4.4-3 8.2-7.3 9.9-4.3-1.7-7.3-5.5-7.3-9.9V5.9z"/><path d="m8.9 11.8 2.2 2.2 4-4.4"/></svg>
-        <span class="fig-label">multi-cancer early detection</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-    </div>
-
-  </div>
-</div>
+          <Fragment set:html={DISC['diagnostics-and-screening']} />
         </div>
-        <h3 class="t-body-lg">Diagnostics and screening</h3>
+        <h3 class="t-h5">Diagnostics and screening</h3>
         <p class="t-body-sm">
           Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and
           usefulness.
@@ -692,41 +745,9 @@ const PANELS = [
       </article>
       <article class="static-card">
         <div class="static-art" aria-hidden="true">
-          <div class="disc is-bare" data-disc="advanced-therapies">
-  <div class="disc-stage is-trio">
-
-    <div class="fig-card">
-      <div class="fig-row">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z"/><path d="m8.5 8.5 7 7"/></svg>
-        <span class="fig-label">hormones</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-    </div>
-
-    <div class="fig-link"><span class="fig-link-line"></span></div>
-
-    <div class="fig-card">
-      <div class="fig-row">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8s6.2 6.1 6.2 10.4a6.2 6.2 0 0 1-12.4 0C5.8 8.9 12 2.8 12 2.8z"/></svg>
-        <span class="fig-label">peptides</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-    </div>
-
-    <div class="fig-link"><span class="fig-link-line"></span></div>
-
-    <div class="fig-card">
-      <div class="fig-row">
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/><path d="M3.3 13h6.2l.5-1 2 4.5 2-7 1.5 3.5h5.3"/></svg>
-        <span class="fig-label">regenerative therapies</span>
-        <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
-      </div>
-    </div>
-
-  </div>
-</div>
+          <Fragment set:html={DISC['advanced-therapies']} />
         </div>
-        <h3 class="t-body-lg">Advanced therapies</h3>
+        <h3 class="t-h5">Advanced therapies</h3>
         <p class="t-body-sm">
           Hormones, peptides, and regenerative therapies, only when your data indicates them,
           only through vetted sourcing.
@@ -742,123 +763,98 @@ const PANELS = [
 
   <!-- ===================================================================
        PARTNERS
-       The stats, then the seven rows: who a program is for, and the three
-       lines that say what it is and is not. One open at a time.
+       The one reading passage on the page, in the manifesto idiom of
+       superpower.com/manifesto (client's reference, 2026-09-11): a single
+       narrow column left on its own spine, an argument that runs top to
+       bottom, the three facts in a row divided by hairlines, and a short
+       line introducing each list rather than a heading shouting over it.
+       Nothing in this section is a card, a grid or a photograph.
        =================================================================== -->
   <section class="sec wrap sec-pad" id="partners" aria-labelledby="partnersHead">
-    <div class="sec-head">
+    <div class="mani">
       <span class="sec-label">Partners</span>
-      <h2 class="t-h2 t-balance" id="partnersHead">
+      <h2 class="t-h2" id="partnersHead">
         A credible way to bring longevity<br />to the people you <em>serve</em>
       </h2>
-      <p class="t-body">
+
+      <p class="mani-lede t-body">
         Compound Health is introduced, not sold. Whether you advise clients, employ a
         workforce or lead a network, you make the introduction and we run the program.
       </p>
-    </div>
 
-    <div class="stats u-mt-lg">
-      <div class="stat">
-        <div class="stat-fig"><span data-count="400">0</span></div>
-        <p class="t-body-sm">UHNW clients in the advisory team's book, reached through a single educational session.</p>
+      <div class="figs">
+        <div class="figs-cell">
+          <span class="figs-n">400</span>
+          <p class="t-body-sm t-muted">UHNW clients in the advisory team's book, reached through a single educational session.</p>
+        </div>
+        <div class="figs-cell">
+          <span class="figs-n">First</span>
+          <p class="t-body-sm t-muted">Educational session of its kind delivered with a private bank advisory team.</p>
+        </div>
+        <div class="figs-cell">
+          <span class="figs-n">May &rsquo;26</span>
+          <p class="t-body-sm t-muted">From first conversation to delivered session in days, not quarters.</p>
+        </div>
       </div>
-      <div class="stat">
-        <div class="stat-fig">First</div>
-        <p class="t-body-sm">Educational session of its kind delivered with a private bank advisory team.</p>
-      </div>
-      <div class="stat">
-        <div class="stat-fig">May &rsquo;26</div>
-        <p class="t-body-sm">From first conversation to delivered session in days, not quarters.</p>
-      </div>
-    </div>
 
-    <div class="partners-grid u-mt-lg">
-      <div class="acc" data-acc>
-        <div class="acc-item">
-          <button class="acc-btn" type="button" aria-expanded="false">
-            <span class="t-body-lg">Wealth firms</span>
-            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
-          </button>
-          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
-            RIAs, family offices, and private bank teams. A client session first, then membership
-            your clients join through you.
-          </div></div>
+      <p class="mani-line">Who this is for:</p>
+      <dl class="mani-list">
+        <div class="mani-row">
+          <dt class="t-h5">Wealth firms</dt>
+          <dd class="t-body-sm t-muted">
+            RIAs, family offices, and private bank teams.
+          </dd>
         </div>
-        <div class="acc-item">
-          <button class="acc-btn" type="button" aria-expanded="false">
-            <span class="t-body-lg">Employers</span>
-            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
-          </button>
-          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
-            Self-insured employers and leadership teams. Clinical outcomes on health spend, from
-            the C-suite to the wider organization.
-          </div></div>
+        <div class="mani-row">
+          <dt class="t-h5">Employers</dt>
+          <dd class="t-body-sm t-muted">
+            Self-insured employers and leadership teams.
+          </dd>
         </div>
-        <div class="acc-item">
-          <button class="acc-btn" type="button" aria-expanded="false">
-            <span class="t-body-lg">Executive and peer networks</span>
-            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
-          </button>
-          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
-            CEO groups, professional networks, sports and entertainment organizations. A shared
-            baseline for your members and results you can publish.
-          </div></div>
+        <div class="mani-row">
+          <dt class="t-h5">Executive and peer networks</dt>
+          <dd class="t-body-sm t-muted">
+            CEO groups, professional networks, sports and entertainment organizations.
+          </dd>
         </div>
-        <div class="acc-item">
-          <button class="acc-btn" type="button" aria-expanded="false">
-            <span class="t-body-lg">Family offices and households</span>
-            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
-          </button>
-          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
-            One program across generations, with each member owning their own data.
-          </div></div>
+        <div class="mani-row">
+          <dt class="t-h5">Family offices and households</dt>
+          <dd class="t-body-sm t-muted">
+            One program across generations.
+          </dd>
         </div>
-        <div class="acc-item">
-          <button class="acc-btn" type="button" aria-expanded="false">
-            <span class="t-body-lg">Structured for you</span>
-            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
-          </button>
-          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+      </dl>
+
+      <p class="mani-line">On what terms:</p>
+      <dl class="mani-list">
+        <div class="mani-row">
+          <dt class="t-h5">Structured for you</dt>
+          <dd class="t-body-sm t-muted">
             Tiers and terms are set with each partner, so the program fits the people it serves.
-          </div></div>
+          </dd>
         </div>
-        <div class="acc-item">
-          <button class="acc-btn" type="button" aria-expanded="false">
-            <span class="t-body-lg">Nothing crosses the line</span>
-            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
-          </button>
-          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+        <div class="mani-row">
+          <dt class="t-h5">Nothing crosses the line</dt>
+          <dd class="t-body-sm t-muted">
             Health data belongs to the individual. You see engagement, never medical information.
-          </div></div>
+          </dd>
         </div>
-        <div class="acc-item">
-          <button class="acc-btn" type="button" aria-expanded="false">
-            <span class="t-body-lg">Introduced, not sold</span>
-            <span class="acc-chev"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
-          </button>
-          <div class="acc-panel"><div class="acc-panel-inner t-body-sm">
+        <div class="mani-row">
+          <dt class="t-h5">Introduced, not sold</dt>
+          <dd class="t-body-sm t-muted">
             Your people join through you. You are never the intermediary for care or data.
-          </div></div>
+          </dd>
         </div>
-      </div>
+      </dl>
 
-      <aside class="deliver">
-        <h3 class="t-h5 deliver-title">What we delivered</h3>
-        <ul>
-          <li><span class="deliver-n">01</span><span class="t-body-sm">The health data worth paying attention to, and what to ignore</span></li>
-          <li><span class="deliver-n">02</span><span class="t-body-sm">The tests and metrics that matter in each decade of life</span></li>
-          <li><span class="deliver-n">03</span><span class="t-body-sm">High-impact habits for busy professionals and entrepreneurs</span></li>
-          <li><span class="deliver-n">04</span><span class="t-body-sm">How to support aging parents alongside your own health</span></li>
-        </ul>
-        <div class="u-mt-md">
-          <a class="btn btn-secondary" href="#joinwaitlist" data-wf-role="partner">
-            <span class="btn-label">Talk to us about a program</span>
-            <span class="btn-icon">
-              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-            </span>
-          </a>
-        </div>
-      </aside>
+      <div class="mani-act">
+        <a class="btn btn-secondary" href="#joinwaitlist" data-wf-role="partner">
+          <span class="btn-label">Talk to us about a program</span>
+          <span class="btn-icon">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -948,11 +944,12 @@ const PANELS = [
 
   <!-- ===================================================================
        THE CLOSING CARD
-       One photograph the width of the page, deeply rounded, the mark and one
-       line centred on it. The band behind it carries the ground into white so
+       One photograph the width of the page, deeply rounded, with the line
+       centred on it. The mark that used to stand above the line came off on
+       2026-09-11, the client's call. The band behind it carries the ground into white so
        the footer can begin.
        =================================================================== -->
-  <section class="cta-band" aria-labelledby="accessHead">
+  <section class="cta-band" id="joinwaitlist" aria-labelledby="accessHead">
     <div class="cta-card" data-nav-dark>
       {CLOSING_ART ? (
         <img class="cta-img" src={CLOSING_ART} alt="" width="1414" height="744" loading="lazy" decoding="async" />
@@ -966,140 +963,140 @@ const PANELS = [
         </div>
       )}
       <div class="cta-inner">
-        <svg class="cta-mark" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-          <path
-            d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"
-            stroke="currentColor" stroke-width="5.88" stroke-linejoin="round"
-          />
-        </svg>
         <h2 class="t-h2 t-balance" id="accessHead">The years to <em>enjoy it</em><br />start now</h2>
         <p class="t-body">
           Compound Health is enrolling through partner advisors, firms, and organizations, with
           limited first-wave capacity.
         </p>
 
-        <form class="cta-form" data-handoff novalidate>
-          <label class="u-sr-only" for="ctaEmail">Email address</label>
-          <div class="field-glass">
-            <input id="ctaEmail" data-handoff-email type="email" placeholder="Your email address" autocomplete="email" />
-            <button class="btn btn-primary" type="submit">
-              <span class="btn-label">Get access</span>
-              <span class="btn-icon">
-                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              </span>
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================
-       ACCESS
-       The form. Its class names, ids, audience routing and endpoint are the
-       live form's and are not renamed here; only the surface is this
-       variation's.
-       =================================================================== -->
-  <section class="access wrap" id="joinwaitlist" aria-labelledby="formHead">
-    <div class="access-grid">
-      <div>
-        <span class="sec-label">Access</span>
-        <h2 class="t-h3" id="formHead">Get access</h2>
-        <p class="access-lede t-body">
-          Founding member places and first-wave partner slots are limited. Leave your details
-          and we will be in touch.
-        </p>
-      </div>
-
-      <div class="waitlist-card">
-        <div id="waitlistForm">
-          <div class="wf-role" id="wfRole" role="radiogroup" aria-label="I am">
-            <span class="wf-role-label">I am</span>
-            <div class="wf-segments">
-              <button class="wf-segment is-active" type="button" role="radio" aria-checked="true"
-                      data-role="client" data-audience="client">A client</button>
-              <button class="wf-segment" type="button" role="radio" aria-checked="false"
-                      data-role="wealth-firm" data-audience="partner">A wealth firm</button>
-              <button class="wf-segment" type="button" role="radio" aria-checked="false"
-                      data-role="employer" data-audience="partner">An employer</button>
-              <button class="wf-segment" type="button" role="radio" aria-checked="false"
-                      data-role="network" data-audience="partner">A network or organization</button>
+        <!-- The one submission on the page, and the only thing on this card
+             that takes input. Five steps, one question at a time. The ids, the
+             audience routing and the endpoint are the live form's and are not
+             renamed here; only the surface and the sequencing are this
+             variation's. Without script every step is in flow and the form is
+             the long one it used to be: the controller closes them on load. -->
+        <div class="sf">
+          <div class="sf-panel" id="waitlistForm">
+            <div class="sf-progress">
+              <span class="sf-count" id="sfCount" aria-live="polite">Step 1 of 5</span>
+              <span class="sf-track" aria-hidden="true"><span class="sf-bar" id="sfBar"></span></span>
             </div>
-          </div>
 
-          <div class="wf-row">
-            <div class="wf-field">
-              <label class="wf-label" for="wf-fname">First name</label>
-              <input class="wf-input" type="text" id="wf-fname" placeholder="James" autocomplete="given-name" />
+            <div class="sf-window" id="sfWindow">
+              <div class="sf-step" data-step="1">
+                <div class="wf-role" id="wfRole" role="radiogroup" aria-label="I am">
+                  <span class="wf-role-label">I am</span>
+                  <div class="wf-segments">
+                    <button class="wf-segment is-active" type="button" role="radio" aria-checked="true"
+                            data-role="client" data-audience="client">A client</button>
+                    <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                            data-role="wealth-firm" data-audience="partner">A wealth firm</button>
+                    <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                            data-role="employer" data-audience="partner">An employer</button>
+                    <button class="wf-segment" type="button" role="radio" aria-checked="false"
+                            data-role="network" data-audience="partner">A network or organization</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sf-step" data-step="2">
+                <div class="wf-row">
+                  <div class="wf-field">
+                    <label class="wf-label" for="wf-fname">First name</label>
+                    <input class="wf-input" type="text" id="wf-fname" placeholder="James" autocomplete="given-name" />
+                  </div>
+                  <div class="wf-field">
+                    <label class="wf-label" for="wf-lname">Last name</label>
+                    <input class="wf-input" type="text" id="wf-lname" placeholder="Pemberton" autocomplete="family-name" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="sf-step" data-step="3">
+                <div class="wf-field">
+                  <label class="wf-label" for="wf-email">Email address</label>
+                  <input class="wf-input" type="email" id="wf-email" placeholder="james@example.com" autocomplete="email" />
+                </div>
+              </div>
+
+              <div class="sf-step" data-step="4">
+                <div class="wf-field" data-shown-to="client">
+                  <label class="wf-label" for="wf-tier">Membership tier of interest</label>
+                  <select class="wf-input wf-select" id="wf-tier">
+                    <option value="" disabled selected>Select a tier</option>
+                    <option value="baseline">Baseline</option>
+                    <option value="optimize">Optimize</option>
+                    <option value="eternal">Eternal</option>
+                  </select>
+                </div>
+                <div class="wf-field" data-shown-to="partner" hidden>
+                  <label class="wf-label" for="wf-org">Organization name</label>
+                  <input class="wf-input" type="text" id="wf-org" placeholder="e.g. Pemberton Family Office" autocomplete="organization" />
+                </div>
+              </div>
+
+              <div class="sf-step" data-step="5">
+                <div class="wf-field" data-shown-to="client">
+                  <label class="wf-label" for="wf-advisor">Referring advisor or firm (optional)</label>
+                  <input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" />
+                </div>
+                <div class="wf-field" data-shown-to="partner" hidden>
+                  <label class="wf-label" for="wf-reach">People you would introduce (optional)</label>
+                  <select class="wf-input wf-select" id="wf-reach">
+                    <option value="" disabled selected>Select a range</option>
+                    <option value="under-100">Under 100</option>
+                    <option value="100-500">100 to 500</option>
+                    <option value="500-2000">500 to 2,000</option>
+                    <option value="over-2000">Over 2,000</option>
+                  </select>
+                </div>
+              </div>
             </div>
-            <div class="wf-field">
-              <label class="wf-label" for="wf-lname">Last name</label>
-              <input class="wf-input" type="text" id="wf-lname" placeholder="Pemberton" autocomplete="family-name" />
+
+            <div class="wf-error" id="wfError" aria-live="polite" role="alert">
+              <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>
+              <span class="wf-error-msg">Something went wrong. Please try again.</span>
             </div>
+
+            <!-- The action leads, because every other line on this panel starts
+                 at the same edge and a button pushed to the right would be the
+                 only thing not standing on it. The two quiet ways out follow. -->
+            <div class="sf-actions">
+              <button class="btn btn-primary sf-go" id="sfNext" type="button">
+                <span class="btn-label">Continue</span>
+                <span class="btn-icon">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+              </button>
+              <button class="btn btn-primary wf-submit" id="wfSubmit" type="button" hidden>
+                <span class="btn-label"><span class="wf-submit-label">Reserve my place</span></span>
+                <span class="btn-icon">
+                  <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </span>
+              </button>
+              <button class="sf-quiet" id="sfBack" type="button" hidden>Back</button>
+              <button class="sf-quiet" id="sfSkip" type="button" hidden>Skip</button>
+            </div>
+
+            <p class="wf-note t-body-sm">
+              Your data is handled in accordance with our <a href="/privacy-policy">Privacy Policy</a>.
+              We do not share your details with third parties.
+            </p>
           </div>
 
-          <div class="wf-field">
-            <label class="wf-label" for="wf-email">Email address</label>
-            <input class="wf-input" type="email" id="wf-email" placeholder="james@example.com" autocomplete="email" />
+          <div class="sf-panel waitlist-success" id="waitlistSuccess" role="status" aria-live="polite">
+            <div class="ws-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-7"/>
+              </svg>
+            </div>
+            <h3 class="t-h4" id="wsTitle">You're on the list</h3>
+            <p class="t-body-sm" id="wsBody">
+              Thank you. Your founding member request has been received.
+              Our team will be in touch as soon as your tier opens.
+            </p>
+            <button class="ws-reset" id="wsReset" type="button">Submit another response</button>
           </div>
-
-          <div class="wf-field" data-shown-to="client">
-            <label class="wf-label" for="wf-tier">Membership tier of interest</label>
-            <select class="wf-input wf-select" id="wf-tier">
-              <option value="" disabled selected>Select a tier</option>
-              <option value="baseline">Baseline</option>
-              <option value="optimize">Optimize</option>
-              <option value="eternal">Eternal</option>
-            </select>
-          </div>
-          <div class="wf-field" data-shown-to="client">
-            <label class="wf-label" for="wf-advisor">Referring advisor or firm (optional)</label>
-            <input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" />
-          </div>
-
-          <div class="wf-field" data-shown-to="partner" hidden>
-            <label class="wf-label" for="wf-org">Organization name</label>
-            <input class="wf-input" type="text" id="wf-org" placeholder="e.g. Pemberton Family Office" autocomplete="organization" />
-          </div>
-          <div class="wf-field" data-shown-to="partner" hidden>
-            <label class="wf-label" for="wf-reach">People you would introduce (optional)</label>
-            <select class="wf-input wf-select" id="wf-reach">
-              <option value="" disabled selected>Select a range</option>
-              <option value="under-100">Under 100</option>
-              <option value="100-500">100 to 500</option>
-              <option value="500-2000">500 to 2,000</option>
-              <option value="over-2000">Over 2,000</option>
-            </select>
-          </div>
-
-          <button class="btn btn-secondary wf-submit" id="wfSubmit" type="button">
-            <span class="btn-label"><span class="wf-submit-label">Reserve my place</span></span>
-            <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-          </button>
-
-          <div class="wf-error" id="wfError" aria-live="polite" role="alert">
-            <svg class="ico ico-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/></svg>
-            <span class="wf-error-msg">Something went wrong. Please try again.</span>
-          </div>
-
-          <p class="wf-note t-body-sm">
-            Your data is handled in accordance with our <a href="/privacy-policy">Privacy Policy</a>.
-            We do not share your details with third parties.
-          </p>
-        </div>
-
-        <div class="waitlist-success" id="waitlistSuccess" role="status" aria-live="polite">
-          <div class="ws-icon">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-7"/>
-            </svg>
-          </div>
-          <h3 class="t-h4" id="wsTitle">You're on the list</h3>
-          <p class="t-body-sm" id="wsBody">
-            Thank you. Your founding member request has been received.
-            Our team will be in touch as soon as your tier opens.
-          </p>
-          <button class="ws-reset" id="wsReset" type="button">Submit another response</button>
         </div>
       </div>
     </div>
@@ -1121,19 +1118,52 @@ const PANELS = [
 
       // --- the hero window -------------------------------------------------
       // clip-path from inset(0) to inset(32px round 64px). The picture never
-      // moves; the window pulls in around it.
+      // moves; the window pulls in around it. Scrubbed over the first 40% of
+      // the screen, so it closes under the reader's hand and is finished well
+      // before the hero leaves. It was a class flipped at scrollY 100 driving
+      // a 1s transition, which is the reference's own arrangement and the
+      // reason it stuttered: see the note above .hero in v3.css.
       (function () {
         const hero = document.getElementById('hero');
         if (!hero) return;
-        let ticking = false;
-        const update = () => {
-          ticking = false;
-          hero.classList.toggle('is-zoomed', window.scrollY > 100);
-        };
-        window.addEventListener('scroll', () => {
-          if (!ticking) { ticking = true; requestAnimationFrame(update); }
-        }, { passive: true });
-        update();
+        // Left alone it stays at the 0 declared in CSS, which is the open
+        // state and what reduced motion should see.
+        if (reduce) return;
+
+        const RUN = 0.4;   // of a screen height
+        const at = (p: number) => hero.style.setProperty('--hero-close', p.toFixed(4));
+
+        if (canScrub) {
+          // Through ScrollTrigger, like the other two set pieces, so the
+          // window is written in the same frame Lenis moves the page rather
+          // than a frame behind it off a native scroll event. 0.3 is the
+          // carousel's catch-up; the orbit's is 0.4.
+          const state = { p: 0 };
+          g.to(state, {
+            p: 1,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: hero,
+              start: 'top top',
+              end: () => `+=${Math.round(window.innerHeight * RUN)}`,
+              scrub: 0.3,
+              invalidateOnRefresh: true,
+            },
+            onUpdate: () => at(state.p),
+          });
+        } else {
+          // No GSAP: read the scroll straight, over the same distance.
+          let ticking = false;
+          const update = () => {
+            ticking = false;
+            const run = window.innerHeight * RUN;
+            at(Math.min(1, Math.max(0, window.scrollY / run)));
+          };
+          window.addEventListener('scroll', () => {
+            if (!ticking) { ticking = true; requestAnimationFrame(update); }
+          }, { passive: true });
+          update();
+        }
       })();
 
       // --- the partner pill --------------------------------------------------
@@ -1162,60 +1192,38 @@ const PANELS = [
         el.querySelector('.nudge-link')?.addEventListener('click', dismiss);
       })();
 
-      // --- the mark draws itself ---------------------------------------------
-      (function () {
-        const svg = document.querySelector<SVGSVGElement>('[data-draw]');
-        if (!svg) return;
-        const path = svg.querySelector('path');
-        if (!path) return;
-        const len = Math.ceil(path.getTotalLength());
-        svg.style.setProperty('--len', String(len));
-        if (reduce || !('IntersectionObserver' in window)) { svg.classList.add('is-drawn'); return; }
-        new IntersectionObserver((entries, obs) => {
-          entries.forEach(e => {
-            if (!e.isIntersecting) return;
-            svg.classList.add('is-drawn');
-            obs.disconnect();
-          });
-        }, { threshold: 0.4 }).observe(svg);
-      })();
-
       // --- the pinned carousel ------------------------------------------------
-      // Three panels on one stage. Each rises over the one before it and the
-      // one it covers settles back and dims. Scrubbed, never snapped.
+      // A deck, measured off the reference's own. Three plates stand in a
+      // stack: the front one at full size, the two behind it smaller and
+      // pushed down so their rounded feet show below it. The front plate
+      // leaves straight up at full size and the stack promotes, each plate
+      // growing towards 1 and rising towards 0. Nothing fades; the queued
+      // plates are fully opaque the whole time, and that is the difference
+      // between a deck and a crossfade. Measured at 1440 on the reference:
+      // scale 1 / 0.862 / 0.729 with the second and third pushed down 12.4%
+      // and 23.6% of a plate's height.
+      //
+      // Only the plate stacks. The caption is not part of the deck and takes
+      // its own crossfade, as it does there.
       (function () {
         const section = document.querySelector<HTMLElement>('[data-car]');
         const stage = document.querySelector<HTMLElement>('[data-car-stage]');
         const panels = Array.from(document.querySelectorAll<HTMLElement>('.car-panel'));
         if (!section || !stage || panels.length < 2) return;
-        const live = (i: number) => {
-          panels.forEach((p, k) => p.classList.toggle('is-live', k === i));
-        };
 
-        if (!canScrub) {
-          section.classList.add('is-static');
-          // Stacked, each panel runs while it is the one on screen.
-          if ('IntersectionObserver' in window) {
-            const io = new IntersectionObserver(entries => {
-              entries.forEach(e => (e.target as HTMLElement).classList.toggle('is-live', e.isIntersecting));
-            }, { threshold: 0.4 });
-            panels.forEach(p => io.observe(p));
-          } else {
-            panels.forEach(p => p.classList.add('is-live'));
-          }
-          return;
-        }
+        // There is no `.is-live` any more. It marked whichever plate was at
+        // the front so that only that one's figure would run, and it was
+        // computed on every frame of the scrub. The figures became independent
+        // of scroll, nothing has read the class since, and a per-frame
+        // calculation feeding a class nobody styles is work the handover
+        // cannot afford.
+        if (!canScrub) { section.classList.add('is-static'); return; }
 
         const copies = panels.map(p => p.querySelector<HTMLElement>('.car-copy'));
         const mm = g.matchMedia();
 
         mm.add('(max-width: 1279px)', () => {
           section.classList.add('is-static');
-          const io = new IntersectionObserver(entries => {
-            entries.forEach(e => (e.target as HTMLElement).classList.toggle('is-live', e.isIntersecting));
-          }, { threshold: 0.4 });
-          panels.forEach(p => io.observe(p));
-          return () => { io.disconnect(); panels.forEach(p => p.classList.remove('is-live')); };
         });
 
         mm.add('(min-width: 1280px)', () => {
@@ -1224,55 +1232,74 @@ const PANELS = [
           // why the reference writes this deck backwards in the DOM. Only the
           // rounded edge of the next card shows below the one in front.
           panels.forEach((p, i) => { p.style.zIndex = String(panels.length - i); });
-          g.set(panels.slice(1), { yPercent: 10, scale: 0.95, opacity: 0.3 });
-          g.set(copies.slice(1), { opacity: 0 });
+          const STACK_S = [1, 0.862, 0.729];
+          const STACK_Y = [0, 12.4, 23.6];
+          const medias = panels.map(p => p.querySelector<HTMLElement>('.car-media'));
+          medias.forEach((m, i) => {
+            if (m) g.set(m, { scale: STACK_S[Math.min(i, 2)], yPercent: STACK_Y[Math.min(i, 2)] });
+          });
+          g.set(panels, { opacity: 1, scale: 1, y: 0, yPercent: 0 });
+          // The cloud arrives rather than merely appearing: it rises the last
+          // 24px as it fades in and lifts away as it goes. The caption owns no
+          // transform for layout any more (it is placed with `top`), so this
+          // is free to be the only thing on it.
+          g.set(copies.slice(1), { opacity: 0, y: 24 });
+          g.set(copies[0], { y: 0 });
 
           const tl = g.timeline({
             defaults: { ease: 'none' },
             scrollTrigger: {
               trigger: section,
               start: 'center center',
-              end: () => `+=${2.4 * window.innerHeight}`,
+              end: () => `+=${3.5 * window.innerHeight}`,
               pin: stage,
               scrub: 0.3,
               invalidateOnRefresh: true,
-              // Whichever panel holds the front is the one that runs.
-              onUpdate: (self: any) => {
-                const t = self.progress * TOTAL;
-                let front = 0;
-                // Back to the midpoint now the screens loop: a cycle starts
-                // and ends on the built state, so a plate can be alive while
-                // it is still sliding in and will be showing a complete
-                // screen the whole way.
-                for (let i = 1; i < panels.length; i++) if (t >= HOLD + (i - 1) * STEP + 0.4) front = i;
-                live(front);
-              },
-              onLeaveBack: () => live(0),
             },
           });
 
           // Each panel is held before it leaves. The first arrangement had the
           // front card starting to go at 8 per cent of the pin, about 180px of
           // scroll, so the first caption was gone before it could be read.
-          // Now each of the three rests for about a fifth of the pin and the
-          // two transitions take about a quarter each.
+          //
+          // A handover takes 2 units, not 1, and the pin grew from 2.4 screens
+          // to 3.5 to pay for it, so the holds keep the same 305px of scroll
+          // they had. Measured against the reference at 1440 with the same
+          // probe on both: a plate there advances about 0.5px for every px of
+          // scroll and ours advanced 1.00, which is twice the travel packed
+          // into each frame (4.74px against 2.83px) and 70 per cent more jerk.
+          // Neither deck drops a frame; ours was simply moving twice as fast.
           const HOLD = 0.9;
-          const STEP = 1.9;
-          const TOTAL = HOLD + (panels.length - 1) * STEP + 1 + (HOLD - 0.3);
+          const TRANS = 2;
+          const STEP = TRANS + 0.9;
+          const TOTAL = HOLD + (panels.length - 1) * STEP + TRANS + (HOLD - 0.3);
           for (let i = 1; i < panels.length; i++) {
             const at = HOLD + (i - 1) * STEP;
             // The scale finishes early and on its own tween. Opacity runs 0.3
             // to 1 over the whole transition and crosses 0.5 at progress
             // 0.286; a scale tween of 0.25 is done before that, so the plate
             // is never both legible and rasterised at a fraction.
-            tl.to(panels[i - 1], { y: () => -window.innerHeight, duration: 1 }, at)
-              .to(copies[i - 1], { opacity: 0, duration: 0.35 }, at)
-              .to(panels[i], { yPercent: 0, opacity: 1, duration: 1 }, at)
-              .to(panels[i], { scale: 1, duration: 0.25 }, at)
-              .to(copies[i], { opacity: 1, duration: 0.4 }, at + 0.4);
+            // The front plate leaves at full size, straight up, far enough to
+            // clear the stage whatever the plate measures. Everything behind
+            // it promotes one place in the stack on the same beat.
+            // The plates are the one thing here that is not linear. Measured
+            // off the reference at 1440: over its handover the travel runs
+            // consistently ahead of the scroll, 0.41 of the way at a quarter
+            // of the scroll and 0.72 at half, which is power2.out almost
+            // exactly (0.4375 and 0.75). Ours was `ease: 'none'` like
+            // everything else on the timeline, so a plate set off at full rate
+            // and stopped dead on its mark. Nothing was dropping frames, both
+            // decks hold 60fps; what was missing was the settle.
+            const DECK = 'power2.out';
+            tl.to(medias[i - 1], { yPercent: -190, duration: TRANS, ease: DECK }, at)
+              .to(copies[i - 1], { opacity: 0, y: -24, duration: 0.35 }, at);
+            for (let k = i; k < panels.length; k++) {
+              const place = Math.min(k - i, 2);
+              tl.to(medias[k], { scale: STACK_S[place], yPercent: STACK_Y[place], duration: TRANS, ease: DECK }, at);
+            }
+            tl.to(copies[i], { opacity: 1, y: 0, duration: 0.5 }, at + TRANS * 0.45);
           }
           tl.to({}, { duration: HOLD - 0.3 });
-          live(0);
 
           // Crossing the breakpoint has to leave nothing behind: the timeline
           // and its pin go with it, and the inline state comes off.
@@ -1280,8 +1307,233 @@ const PANELS = [
             section.classList.add('is-static');
             g.set(panels, { clearProps: 'all' });
             g.set(copies, { clearProps: 'all' });
-            panels.forEach(p => { p.style.zIndex = ''; p.classList.remove('is-live'); });
+            g.set(medias.filter(Boolean), { clearProps: 'all' });
+            panels.forEach(p => { p.style.zIndex = ''; });
           };
+        });
+      })();
+
+      // --- the panels do their work ---------------------------------------------
+      // A rolling queue, and it is the one thing on this page scroll does not
+      // touch. It starts when the deck is anywhere in view and then loops on
+      // its own clock, start to end, whichever plate happens to be at the
+      // front; tying it to .is-live meant a panel reset every time the reader
+      // moved, which is exactly what the reference does not do.
+      //
+      // Three rows are on the card and a fourth waits under the fold. The top
+      // row runs, completes, takes the green, and then the roll steps up by one
+      // row: the finished row leaves, the fourth arrives, and the row that left
+      // goes to the end of the roll carrying the next item in the list. The
+      // list is longer than the window, so the card is small and the work still
+      // has somewhere to go.
+      (function () {
+        // Reduced motion keeps the authored state: the first row done, the
+        // rest waiting, nothing moving.
+        if (reduce) return;
+        const RUN = 1250;   // a row is working
+        const SETTLE = 620; // it holds the green before it goes
+        const ARRIVE = 420; // after the roll has stepped, before the next runs
+
+        const decks = Array.from(document.querySelectorAll<HTMLElement>('.fig-work'));
+        if (!decks.length) return;
+
+        decks.forEach(card => {
+          const roll = card.querySelector<HTMLElement>('[data-roll]');
+          if (!roll) return;
+          // Four rows are the least this can run on: three in the window and
+          // one under the fold to arrive.
+          if (roll.children.length < 4) return;
+
+          let timer = 0;
+          let running = false;
+          const after = (ms: number, fn: () => void) => { timer = window.setTimeout(fn, ms); };
+
+          const rows = () => Array.from(roll.children) as HTMLElement[];
+          const paint = (row: HTMLElement, state: string, text: string) => {
+            const m = row.querySelector<HTMLElement>('[data-mark]');
+            const v = row.querySelector<HTMLElement>('[data-status]');
+            if (m) m.className = 'fig-mark is-' + state;
+            if (v) v.textContent = text;
+          };
+
+          // A row that has left goes to the foot of the roll as it is. It
+          // already carries its own icon, label and value, so it only has to
+          // go back to waiting.
+          const refill = (row: HTMLElement) => {
+            row.classList.remove('is-flash', 'is-out');
+            paint(row, 'wait', 'Pending');
+          };
+
+          const step = () => {
+            if (!running) return;
+            const r = rows();
+            const head = r[0];
+            paint(head, 'run', 'In progress…');
+            // The two behind it say how far away they are, as the reference's
+            // own rows do.
+            if (r[1]) paint(r[1], 'wait', 'Up next');
+            if (r[2]) paint(r[2], 'wait', 'Pending');
+
+            after(RUN, () => {
+              if (!running) return;
+              paint(head, 'done', head.dataset.done || 'Done');
+              head.classList.add('is-flash');
+
+              after(SETTLE, () => {
+                if (!running) return;
+                head.classList.add('is-out');
+                roll.classList.add('is-rolling');
+
+                const done = () => {
+                  roll.removeEventListener('transitionend', done);
+                  // Put the roll back with the transition off and the finished
+                  // row moved to the end. Reading offsetHeight between the two
+                  // is what stops the browser coalescing them into no move at
+                  // all.
+                  roll.classList.remove('is-rolling');
+                  roll.appendChild(head);
+                  refill(head);
+                  void roll.offsetHeight;
+                  after(ARRIVE, step);
+                };
+                roll.addEventListener('transitionend', done, { once: true });
+                // A transition that never fires must not stall the queue.
+                after(900, () => { if (running && roll.classList.contains('is-rolling')) done(); });
+              });
+            });
+          };
+
+          const start = () => { if (running) return; running = true; step(); };
+          const stop = () => { running = false; window.clearTimeout(timer); };
+
+          const section = card.closest('.car') || card.closest('section');
+          if (!section || !('IntersectionObserver' in window)) { start(); return; }
+          new IntersectionObserver(entries => {
+            entries.forEach(e => (e.isIntersecting ? start() : stop()));
+          }, { rootMargin: '200px' }).observe(section);
+        });
+      })();
+
+      // --- 01: the introduction arrives -----------------------------------------
+      // The route draws, the far end takes it, and the two conditions under it
+      // confirm in turn. Its own timer, started by the deck intersecting;
+      // scroll never touches it.
+      (function () {
+        if (reduce) return;
+        const OPEN = 900, DRAW = 950, TAKE = 520, FLAG = 460, HOLD = 2600, DARK = 800;
+
+        document.querySelectorAll<HTMLElement>('[data-arrive]').forEach(card => {
+          const wire = card.querySelector<HTMLElement>('[data-wire]');
+          const target = card.querySelector<HTMLElement>('.fig-node-mark [data-mark]');
+          const flags = Array.from(card.querySelectorAll<HTMLElement>('[data-flag]'));
+          if (!wire || !target || !flags.length) return;
+
+          let timer = 0;
+          let running = false;
+          const after = (ms: number, fn: () => void) => { timer = window.setTimeout(fn, ms); };
+          const setMark = (el: HTMLElement | null, state: string) => {
+            if (el) el.className = 'fig-mark is-' + state;
+          };
+
+          const dark = () => {
+            card.classList.remove('is-sent');
+            setMark(target, 'wait');
+            flags.forEach(f => { f.classList.remove('is-on'); setMark(f.querySelector<HTMLElement>('[data-mark]'), 'wait'); });
+          };
+
+          const cycle = () => {
+            if (!running) return;
+            dark();
+            after(OPEN, () => {
+              if (!running) return;
+              // The wire draws itself, which is the one entrance this
+              // variation already allows, and the far end waits on it.
+              card.classList.add('is-sent');
+              setMark(target, 'run');
+              after(DRAW, () => {
+                if (!running) return;
+                setMark(target, 'done');
+                const flag = (i: number) => {
+                  if (!running) return;
+                  if (i >= flags.length) { after(HOLD, () => { dark(); after(DARK, cycle); }); return; }
+                  flags[i].classList.add('is-on');
+                  setMark(flags[i].querySelector<HTMLElement>('[data-mark]'), 'done');
+                  after(FLAG, () => flag(i + 1));
+                };
+                after(TAKE, () => flag(0));
+              });
+            });
+          };
+
+          const start = () => { if (running) return; running = true; cycle(); };
+          const stop = () => { running = false; window.clearTimeout(timer); };
+          const section = card.closest('.car') || card.closest('section');
+          if (!section || !('IntersectionObserver' in window)) { start(); return; }
+          new IntersectionObserver(es => es.forEach(e => (e.isIntersecting ? start() : stop())),
+            { rootMargin: '200px' }).observe(section);
+        });
+      })();
+
+      // --- 03: the plan is assembled --------------------------------------------
+      // Three parts light one at a time, the live line comes on under them, and
+      // it holds before it goes dark and builds again. Nothing rolls and
+      // nothing grows: the third machine moves by lighting, not by moving.
+      (function () {
+        if (reduce) return;
+        const LIGHT = 820, SETTLE = 700, HOLD = 2600, DARK = 800;
+
+        document.querySelectorAll<HTMLElement>('[data-plan]').forEach(plan => {
+          const parts = Array.from(plan.querySelectorAll<HTMLElement>('[data-part]'));
+          const live = plan.querySelector<HTMLElement>('[data-live]');
+          const status = plan.querySelector<HTMLElement>('[data-live-status]');
+          if (!parts.length || !live || !status) return;
+          const OFF = status.dataset.off || '';
+          const ON = status.dataset.on || '';
+          let timer = 0;
+          let running = false;
+          const after = (ms: number, fn: () => void) => { timer = window.setTimeout(fn, ms); };
+          const setMark = (el: HTMLElement, state: string) => {
+            const m = el.querySelector<HTMLElement>('[data-mark]');
+            if (m) m.className = 'fig-mark is-' + state;
+          };
+
+          const dark = () => {
+            parts.forEach(p => { p.classList.remove('is-on'); setMark(p, 'wait'); });
+            live.classList.remove('is-live');
+            status.textContent = OFF;
+          };
+
+          const cycle = () => {
+            if (!running) return;
+            dark();
+            const light = (i: number) => {
+              if (!running) return;
+              if (i >= parts.length) {
+                after(SETTLE, () => {
+                  if (!running) return;
+                  live.classList.add('is-live');
+                  status.textContent = ON;
+                  after(HOLD, () => { dark(); after(DARK, cycle); });
+                });
+                return;
+              }
+              setMark(parts[i], 'run');
+              after(LIGHT * 0.55, () => {
+                if (!running) return;
+                parts[i].classList.add('is-on');
+                setMark(parts[i], 'done');
+                after(LIGHT * 0.45, () => light(i + 1));
+              });
+            };
+            after(LIGHT, () => light(0));
+          };
+
+          const start = () => { if (running) return; running = true; cycle(); };
+          const stop = () => { running = false; window.clearTimeout(timer); };
+          const section = plan.closest('.car') || plan.closest('section');
+          if (!section || !('IntersectionObserver' in window)) { start(); return; }
+          new IntersectionObserver(es => es.forEach(e => (e.isIntersecting ? start() : stop())),
+            { rootMargin: '200px' }).observe(section);
         });
       })();
 
@@ -1309,6 +1561,9 @@ const PANELS = [
           const narrow = w < 700;
           const mid = w >= 700 && w < 1280;
           const half = w / 2;
+          // The stage's own height, not the window's: it is the thing that
+          // clips, and 100svh is not innerHeight on every browser.
+          const halfH = stage.offsetHeight / 2;
           const copyBox = copy ? copy.getBoundingClientRect() : null;
 
           // On a phone the ring cannot clear the line: a 300px headline in a
@@ -1375,14 +1630,26 @@ const PANELS = [
             const ang = a0 + (a1 - a0) * p;
             const rad = ((ang - 60) * Math.PI) / 180;
             const ow = el.offsetWidth * scale;
+            const oh = el.offsetHeight * scale;
             let x = Math.cos(rad) * rx - el.offsetWidth / 2 + OFFSETS[i][0] * k;
-            const y = Math.sin(rad) * ry - el.offsetHeight / 2 + OFFSETS[i][1] * k + bias;
+            let y = Math.sin(rad) * ry - el.offsetHeight / 2 + OFFSETS[i][1] * k + bias;
 
             // Nothing is cut by a border: the sweep takes a card through
             // cos = 1, and without this it would be sliced there.
             const lo = -half - (el.offsetWidth - ow) / 2 + 16;
             const hi = half - ow - (el.offsetWidth - ow) / 2 - 16;
             x = Math.max(lo, Math.min(hi, x));
+
+            // The same on the block axis, and for the same reason. The ellipse
+            // takes its vertical radius from the window while a tile keeps its
+            // size, so below about 880px of window the lowest photograph of the
+            // sweep reached past the foot of the stage, and the stage is the
+            // element that clips: the picture lost its two bottom corners to a
+            // straight edge. Measured, not guessed: 41px of it were gone at a
+            // 700px window and 14 at 800.
+            const up = -halfH - (el.offsetHeight - oh) / 2 + 16;
+            const dn = halfH - oh - (el.offsetHeight - oh) / 2 - 16;
+            y = Math.max(up, Math.min(dn, y));
 
             el.style.transform = `translate(${x}px, ${y}px) scale(${Math.min(1, 2 * p) * scale})`;
             const inner = el.querySelector<HTMLElement>('.orb-photo .ph, .orb-photo img');
@@ -1422,186 +1689,6 @@ const PANELS = [
         }
       })();
 
-      // --- the mark trail ---------------------------------------------------
-      // The pointer leaves a line of marks across the orbit; each one blooms and
-      // then wilts over two seconds. Pointer devices only, and never under
-      // reduced motion. It is the cheapest memorable thing on the reference and
-      // it costs one canvas.
-      (function () {
-        const canvas = document.querySelector<HTMLCanvasElement>('[data-trail]');
-        const host = document.querySelector<HTMLElement>('[data-orbit-stage]');
-        if (!canvas || !host) return;
-        if (reduce || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-          canvas.remove();
-          return;
-        }
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        const D =
-          'M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53' +
-          'M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1' +
-          'M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38';
-        const mark = new Path2D(D);
-        const LIFE = 2000;
-        const SIZE = 46;
-        const stamps: { x: number; y: number; t: number; r: number }[] = [];
-        let dpr = 1;
-        let last = { x: -999, y: -999 };
-        let raf = 0;
-
-        function size() {
-          dpr = Math.min(2, window.devicePixelRatio || 1);
-          canvas!.width = host!.clientWidth * dpr;
-          canvas!.height = host!.clientHeight * dpr;
-          canvas!.style.width = host!.clientWidth + 'px';
-          canvas!.style.height = host!.clientHeight + 'px';
-        }
-        size();
-        window.addEventListener('resize', size, { passive: true });
-
-        host.addEventListener('pointermove', e => {
-          const r = host.getBoundingClientRect();
-          const x = e.clientX - r.left;
-          const y = e.clientY - r.top;
-          if (Math.hypot(x - last.x, y - last.y) < 38) return;
-          last = { x, y };
-          stamps.push({ x, y, t: performance.now(), r: (Math.random() - 0.5) * 0.9 });
-          if (stamps.length > 26) stamps.shift();
-          if (!raf) raf = requestAnimationFrame(draw);
-        }, { passive: true });
-
-        function draw(now: number) {
-          raf = 0;
-          ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
-          ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
-          let alive = false;
-          for (const st of stamps) {
-            const age = (now - st.t) / LIFE;
-            if (age >= 1) continue;
-            alive = true;
-            // Bloom over the first fifth, wilt over the rest.
-            const bloom = age < 0.2 ? 1 - Math.pow(1 - age / 0.2, 3) : 1;
-            const wilt = age < 0.2 ? 1 : 1 - 0.38 * ((age - 0.2) / 0.8);
-            const alpha = (age < 0.2 ? age / 0.2 : 1 - (age - 0.2) / 0.8) * 0.34;
-            const k = (SIZE * bloom * wilt) / 120;
-            ctx!.save();
-            ctx!.translate(st.x, st.y);
-            ctx!.rotate(st.r);
-            ctx!.scale(k, k);
-            ctx!.translate(-60, -60);
-            ctx!.strokeStyle = `rgba(26, 22, 19, ${alpha})`;
-            ctx!.lineWidth = 5.88;
-            ctx!.lineJoin = 'round';
-            ctx!.lineCap = 'round';
-            ctx!.stroke(mark);
-            ctx!.restore();
-          }
-          if (alive) raf = requestAnimationFrame(draw);
-        }
-      })();
-
-      // --- the accordion ----------------------------------------------------
-      // One open at a time. The panel's height is animated from its measured
-      // content height, so it works with any amount of copy.
-      (function () {
-        const root = document.querySelector<HTMLElement>('[data-acc]');
-        if (!root) return;
-        const items = Array.from(root.querySelectorAll<HTMLElement>('.acc-item'));
-
-        // Without script every row stays open, which is why the panel's
-        // resting height is auto in the stylesheet. Script closes them on
-        // load and takes ownership of the wiring at the same time.
-        items.forEach((item, i) => {
-          const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
-          const panel = item.querySelector<HTMLElement>('.acc-panel');
-          if (!btn || !panel) return;
-          btn.id = `acc-btn-${i}`;
-          panel.id = `acc-panel-${i}`;
-          btn.setAttribute('aria-controls', panel.id);
-          btn.setAttribute('aria-expanded', 'false');
-          panel.setAttribute('role', 'region');
-          panel.setAttribute('aria-labelledby', btn.id);
-          panel.style.height = '0px';
-        });
-
-        function close(item: HTMLElement) {
-          const panel = item.querySelector<HTMLElement>('.acc-panel');
-          const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
-          if (!panel || !btn) return;
-          panel.style.height = panel.scrollHeight + 'px';
-          requestAnimationFrame(() => { panel.style.height = '0px'; });
-          item.classList.remove('is-open');
-          btn.setAttribute('aria-expanded', 'false');
-        }
-        function open(item: HTMLElement) {
-          const panel = item.querySelector<HTMLElement>('.acc-panel');
-          const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
-          if (!panel || !btn) return;
-          items.forEach(other => { if (other !== item) close(other); });
-          item.classList.add('is-open');
-          btn.setAttribute('aria-expanded', 'true');
-          panel.style.height = panel.scrollHeight + 'px';
-          panel.addEventListener('transitionend', function done(e) {
-            if (e.propertyName !== 'height') return;
-            if (item.classList.contains('is-open')) panel.style.height = 'auto';
-            panel.removeEventListener('transitionend', done);
-          });
-        }
-
-        items.forEach(item => {
-          const btn = item.querySelector<HTMLButtonElement>('.acc-btn');
-          btn?.addEventListener('click', () => {
-            if (item.classList.contains('is-open')) close(item);
-            else open(item);
-          });
-        });
-      })();
-
-      // --- the count -----------------------------------------------------------
-      (function () {
-        const el = document.querySelector<HTMLElement>('[data-count]');
-        if (!el) return;
-        const target = Number(el.dataset.count);
-        if (reduce || !('IntersectionObserver' in window)) { el.textContent = String(target); return; }
-        const ease = (t: number) => 1 - Math.pow(1 - t, 3);
-        new IntersectionObserver((entries, obs) => {
-          entries.forEach(e => {
-            if (!e.isIntersecting) return;
-            obs.disconnect();
-            const t0 = performance.now();
-            const tick = (now: number) => {
-              const t = Math.min(1, (now - t0) / 1400);
-              el.textContent = String(Math.round(ease(t) * target));
-              if (t < 1) requestAnimationFrame(tick);
-            };
-            requestAnimationFrame(tick);
-          });
-        }, { threshold: 0.5 }).observe(el);
-      })();
-
-      // --- the two captures hand their address to the real form ----------------
-      // Neither posts. There is one submission on this page and it is the form
-      // at the foot; these carry the address down to it and put the reader in
-      // the first field they still have to fill.
-      (function () {
-        document.querySelectorAll<HTMLFormElement>('[data-handoff]').forEach(form => {
-          form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const from = form.querySelector<HTMLInputElement>('[data-handoff-email]');
-            const to = document.getElementById('wf-email') as HTMLInputElement | null;
-            if (from && to && from.value.trim()) to.value = from.value.trim();
-            const target = document.getElementById('joinwaitlist');
-            const lenis = (window as any).__lenis;
-            if (lenis && target) lenis.scrollTo(target, { offset: -80 });
-            else target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            window.setTimeout(() => {
-              const first = document.getElementById('wf-fname') as HTMLInputElement | null;
-              first?.focus({ preventScroll: true });
-            }, 700);
-          });
-        });
-      })();
     })();
   </script>
 
@@ -1906,6 +1993,164 @@ const PANELS = [
         clearError();
       });
     }
+  </script>
+
+
+  <!-- The step controller. It owns the sequencing only: every value, the
+       audience routing, the validation that matters and the submission stay in
+       the script above, which is the live form's. Additive by design, so the
+       form still works as one long form if this never runs. -->
+  <script>
+    (function () {
+      const panelWindow = document.getElementById('sfWindow') as HTMLElement | null;
+      const steps = Array.from(document.querySelectorAll<HTMLElement>('.sf-step'));
+      const countEl = document.getElementById('sfCount') as HTMLElement | null;
+      const barEl = document.getElementById('sfBar') as HTMLElement | null;
+      const backBtn = document.getElementById('sfBack') as HTMLButtonElement | null;
+      const nextBtn = document.getElementById('sfNext') as HTMLButtonElement | null;
+      const skipBtn = document.getElementById('sfSkip') as HTMLButtonElement | null;
+      const submitBtn = document.getElementById('wfSubmit') as HTMLButtonElement | null;
+      const errorBox = document.getElementById('wfError') as HTMLElement | null;
+      const errorMsg = errorBox?.querySelector('.wf-error-msg') as HTMLElement | null;
+      const resetBtn = document.getElementById('wsReset') as HTMLButtonElement | null;
+      if (!panelWindow || !steps.length || !nextBtn || !submitBtn || !backBtn || !skipBtn) return;
+
+      const LAST = steps.length - 1;
+      let at = 0;
+
+      panelWindow.classList.add('is-stepped');
+
+      // The visible half of a step: steps four and five each hold a client
+      // field and a partner field, and applyAudience() in the form script
+      // hides the one that does not apply.
+      function liveFields(step: HTMLElement) {
+        return Array.from(step.querySelectorAll<HTMLElement>('.wf-field')).filter(f => !f.hidden);
+      }
+      function firstControl(step: HTMLElement) {
+        const scope = liveFields(step)[0] ?? step;
+        return scope.querySelector<HTMLElement>(
+          '.wf-dd-btn, input.wf-input, .wf-segment.is-active, .wf-segment'
+        );
+      }
+
+      // The window's height is written here because the steps are stacked in
+      // one place, so nothing else can know it.
+      function measure() {
+        panelWindow.style.height = steps[at].offsetHeight + 'px';
+      }
+
+      function showError(message: string) {
+        if (!errorBox) return;
+        if (errorMsg) errorMsg.textContent = message;
+        errorBox.classList.add('visible');
+      }
+      function clearError() { errorBox?.classList.remove('visible'); }
+
+      // What has to be true before the reader can leave a step. The submit
+      // script checks all of it again on the way out, which is what actually
+      // guards the payload; this is here so the reader is told at the question
+      // rather than four steps later.
+      function blocking(index: number): { el: HTMLElement | null; message: string } | null {
+        const step = steps[index];
+        const value = (id: string) =>
+          (document.getElementById(id) as HTMLInputElement | HTMLSelectElement | null)?.value.trim() ?? '';
+        const el = (id: string) => document.getElementById(id) as HTMLElement | null;
+
+        if (index === 1) {
+          if (!value('wf-fname')) return { el: el('wf-fname'), message: 'Please enter your first name.' };
+          if (!value('wf-lname')) return { el: el('wf-lname'), message: 'Please enter your last name.' };
+          return null;
+        }
+        if (index === 2) {
+          const email = value('wf-email');
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            return { el: el('wf-email'), message: 'Please enter an email address we can reach you on.' };
+          }
+          return null;
+        }
+        if (index === 3) {
+          const live = liveFields(step)[0];
+          if (!live) return null;
+          const control = live.querySelector<HTMLInputElement | HTMLSelectElement>('input, select');
+          if (control && !control.value.trim()) {
+            const isSelect = control.tagName === 'SELECT';
+            const focusable =
+              (live.querySelector('.wf-dd-btn') as HTMLElement | null) ?? (control as HTMLElement);
+            return {
+              el: focusable,
+              message: isSelect ? 'Please choose a tier.' : 'Please enter your organization name.',
+            };
+          }
+        }
+        return null;
+      }
+
+      function go(index: number, focus = true) {
+        at = Math.max(0, Math.min(LAST, index));
+        steps.forEach((step, i) => step.classList.toggle('is-active', i === at));
+        if (countEl) countEl.textContent = `Step ${at + 1} of ${steps.length}`;
+        // The bar's width is the step number, which is the one kind of inline
+        // value this system allows: a position that comes from data.
+        if (barEl) barEl.style.width = `${((at + 1) / steps.length) * 100}%`;
+        backBtn.hidden = at === 0;
+        skipBtn.hidden = at !== LAST;
+        nextBtn.hidden = at === LAST;
+        submitBtn.hidden = at !== LAST;
+        clearError();
+        measure();
+        if (focus) firstControl(steps[at])?.focus({ preventScroll: true });
+      }
+
+      function advance() {
+        const stop = blocking(at);
+        if (stop) {
+          showError(stop.message);
+          stop.el?.focus({ preventScroll: true });
+          return;
+        }
+        go(at + 1);
+      }
+
+      nextBtn.addEventListener('click', advance);
+      backBtn.addEventListener('click', () => go(at - 1));
+
+      // Skip is the optional step's own way past it: it clears whatever is in
+      // the field and submits, which is what the reader means by skipping.
+      skipBtn.addEventListener('click', () => {
+        const live = liveFields(steps[LAST])[0];
+        const control = live?.querySelector<HTMLInputElement | HTMLSelectElement>('input, select');
+        if (control) {
+          control.value = '';
+          control.dispatchEvent(new Event('change'));
+        }
+        submitBtn.click();
+      });
+
+      // Enter carries the reader forward, as it would in a one-field form.
+      // The listbox has its own Enter and keeps it.
+      panelWindow.addEventListener('keydown', event => {
+        if (event.key !== 'Enter') return;
+        const target = event.target as HTMLElement | null;
+        if (target?.closest('.wf-dd')) return;
+        event.preventDefault();
+        if (at === LAST) submitBtn.click();
+        else advance();
+      });
+
+      // Changing the answer to "I am" swaps the fields on steps four and five,
+      // so the window is remeasured on the frame after the swap.
+      document.addEventListener('click', event => {
+        const segment = (event.target as HTMLElement | null)?.closest('.wf-segment');
+        if (segment) requestAnimationFrame(measure);
+      });
+
+      resetBtn?.addEventListener('click', () => go(0, false));
+      window.addEventListener('resize', measure, { passive: true });
+      if ('fonts' in document) (document as any).fonts.ready.then(measure);
+
+      go(0, false);
+      requestAnimationFrame(measure);
+    })();
   </script>
 
 </V3Layout>
