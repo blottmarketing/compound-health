@@ -670,13 +670,24 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .nav {
   position: fixed;
   top: 1.6rem;
-  left: 50%;
-  transform: translateX(-50%);
   z-index: 40;
   display: flex;
-  width: max-content;
-  max-width: calc(100vw - 3.2rem);
-  padding: 0;
+  align-items: center;
+  /* Below 1024 the bar is the container, lockup at one end and the burger at
+     the other. From 1024 it becomes the reference's floating pill again,
+     sized to its contents and centred. */
+  left: var(--gutter);
+  right: var(--gutter);
+  justify-content: space-between;
+}
+@media (min-width: 1024px) {
+  .nav {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: max-content;
+    justify-content: flex-start;
+  }
 }
 
 /* The shell is drawn as an oversized sibling so the items sit inside it with
@@ -776,69 +787,109 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
    the menu item takes over. There is no full-screen drawer in this system: the
    pill itself opens into a small glass card directly beneath it. */
 .nav-links { display: none; }
+.nav-item.is-cta { display: none; }
 @media (min-width: 1024px) {
   .nav-links { display: flex; }
+  .nav-item.is-cta { display: flex; }
   .nav-shell { height: 5.6rem; top: -6px; left: -6px; width: calc(100% + 12px); }
-  .nav-menu-btn { display: none !important; }
+  .nav-burger { display: none !important; }
 }
 
-.nav-menu-btn {
+.nav-burger {
   /* The shell is an absolutely positioned sibling, so a static item paints
      underneath its translucent fill and comes out washed. */
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
   height: 4.4rem;
-  padding-inline: 1.4rem;
   border: 0;
   background: none;
   border-radius: var(--r-chrome);
-  font-family: var(--font-body);
-  font-size: 1.4rem;
-  color: inherit;
+  color: var(--text-primary);
   cursor: pointer;
+  transition: color var(--t-tint) var(--ease-out-quint);
 }
-.nav-menu-btn .ico { width: 1.6rem; height: 1.6rem; }
-.nav.is-dark .nav-menu-btn { color: var(--white); }
+.nav.is-dark .nav-burger { color: var(--white); }
+.nav.is-menu-open .nav-burger,
+.nav.is-menu-open .nav-logo,
+.nav.is-menu-open .nav-item { color: var(--text-primary); }
+.nav.is-menu-open .nav-shell { background: transparent; border-color: transparent; backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+.nav-burger-bars {
+  position: relative;
+  display: block;
+  width: 1.8rem;
+  height: 1.2rem;
+}
+.nav-burger-bars span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  border-radius: 1px;
+  background: currentColor;
+  transition: transform var(--t-move) var(--ease-out-quint),
+              opacity var(--t-tint) var(--ease-out-quint);
+}
+.nav-burger-bars span:nth-child(1) { top: 0; }
+.nav-burger-bars span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.nav-burger-bars span:nth-child(3) { bottom: 0; }
+.nav.is-menu-open .nav-burger-bars span:nth-child(1) { transform: translateY(5.25px) rotate(45deg); }
+.nav.is-menu-open .nav-burger-bars span:nth-child(2) { opacity: 0; }
+.nav.is-menu-open .nav-burger-bars span:nth-child(3) { transform: translateY(-5.25px) rotate(-45deg); }
 
 .nav-drop {
   position: fixed;
-  top: 7.6rem;
-  left: 50%;
-  transform: translateX(-50%) translateY(-0.8rem);
-  z-index: 39;
-  width: calc(100vw - 3.2rem);
-  max-width: 42rem;
-  padding: 0.8rem;
-  border-radius: var(--r-shell);
-  border: 1px solid var(--white-a-100);
-  background: var(--stone-a-600);
-  backdrop-filter: blur(13px);
-  -webkit-backdrop-filter: blur(13px);
+  inset: 0;
+  z-index: 38;
+  display: flex;
+  align-items: flex-end;
+  padding: 9.6rem var(--gutter) 6.4rem;
+  background: rgba(249, 248, 245, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   opacity: 0;
   visibility: hidden;
   transition: opacity var(--t-tint) var(--ease-out-quint),
-              transform var(--t-move) var(--ease-out-quint),
               visibility var(--t-move);
 }
-.nav-drop.is-open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-.nav-drop a {
+.nav-drop.is-open { opacity: 1; visibility: visible; }
+
+.nav-drop-inner {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.2rem 1.4rem;
-  border-radius: var(--r-chrome);
-  font-size: 1.6rem;
-  color: var(--text-primary);
-  transition: background-color var(--t-tint) var(--ease-out-quint);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  width: 100%;
 }
-.nav-drop a:hover { background: var(--white); }
-.nav-drop .ico { width: 1.6rem; height: 1.6rem; opacity: 0.4; }
+.nav-drop-link {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: clamp(3.2rem, 9vw, 4.4rem);
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  /* Each line arrives after the one above it, and only on the way in. */
+  opacity: 0;
+  transform: translateY(0.8rem);
+  transition: opacity var(--t-tint) var(--ease-out-quint),
+              transform var(--t-move) var(--ease-out-quint);
+}
+.nav-drop.is-open .nav-drop-link { opacity: 1; transform: none; }
+.nav-drop.is-open .nav-drop-link:nth-child(1) { transition-delay: 0.04s; }
+.nav-drop.is-open .nav-drop-link:nth-child(2) { transition-delay: 0.08s; }
+.nav-drop.is-open .nav-drop-link:nth-child(3) { transition-delay: 0.12s; }
+.nav-drop.is-open .nav-drop-link:nth-child(4) { transition-delay: 0.16s; }
+.nav-drop.is-open .nav-drop-link:nth-child(5) { transition-delay: 0.20s; }
+.nav-drop-cta { margin-top: 3.2rem; }
+
+/* The page underneath does not move while the menu is over it. */
+html.is-locked, html.is-locked body { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-drop-link { transition: none; transform: none; }
+}
 
 /* ---------------------------------------------------------------------------
    9. THE HERO
@@ -861,14 +912,19 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   position: absolute;
   inset: 0;
   z-index: 0;
-  clip-path: inset(0);
+  /* Every value is written out in both states, all four insets and the
+     radius. inset(0) carries no radius at all, and a browser asked to tween a
+     shape that has one against a shape that does not will sometimes give up
+     and jump instead. */
+  clip-path: inset(0px 0px 0px 0px round 0px);
   transition: clip-path var(--dur-slow) var(--ease-out-quint);
   will-change: clip-path;
   contain: layout paint;
 }
-.hero.is-zoomed .hero-media { clip-path: inset(16px round 24px); }
+.hero.is-zoomed .hero-media { clip-path: inset(16px 16px 16px 16px round 24px); }
 @media (min-width: 1280px) {
-  .hero.is-zoomed .hero-media { clip-path: inset(32px round 64px); }
+  .hero-media { transition-duration: var(--dur-slow); }
+  .hero.is-zoomed .hero-media { clip-path: inset(32px 32px 32px 32px round 64px); }
 }
 .hero-media .ph,
 .hero-media img { width: 100%; height: 100%; object-fit: cover; }
@@ -885,60 +941,14 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 }
 .hero.is-zoomed .hero-inner { transform: translateY(-2.4rem); }
 
-.hero h1 { margin-bottom: 4rem; }
+.hero h1 { margin-bottom: 3.2rem; }
 .hero-sub {
   max-width: 62rem;
-  margin: 0 auto 0.8rem;
+  margin: 0 auto;
   color: var(--white);
 }
 
-/* The ticker: one line of proof at a time, rising into a fixed window every
-   two and a half seconds. Eight items would be too many; ours are three. */
-.hero-ticker {
-  position: relative;
-  height: 3rem;
-  margin-top: 1.6rem;
-  overflow: hidden;
-}
-.hero-ticker-item {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.9rem;
-  color: var(--white);
-  opacity: 0.7;
-}
-.hero-ticker-item .ico { width: 1.8rem; height: 1.8rem; opacity: 0.85; }
-.hero-ticker-item {
-  transform: translateY(100%);
-  opacity: 0;
-  transition: transform 0.68s var(--ease-out-quint), opacity 0.68s var(--ease-out-quint);
-}
-.hero-ticker-item.is-in { transform: none; opacity: 0.7; }
-.hero-ticker-item.is-out { transform: translateY(-100%); opacity: 0; }
-@media (prefers-reduced-motion: reduce) {
-  .hero-ticker-item { transition: none; }
-}
 
-/* The inline capture, on the reference's glass pill. Submitting it carries the
-   address down to the real form rather than posting from here. */
-.hero-form {
-  position: absolute;
-  left: 50%;
-  bottom: 7.2rem;
-  transform: translateX(-50%);
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-  width: calc(100% - 3.2rem);
-  max-width: 52rem;
-}
-@media (max-width: 640px) { .hero-form { bottom: 4.8rem; } }
 .field-glass {
   display: flex;
   align-items: center;
@@ -967,17 +977,6 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
   .field-glass { width: 100%; }
 }
 
-.hero-note {
-  margin-top: 2.4rem;
-  color: var(--white-a-700);
-}
-.hero-note a {
-  text-decoration: underline;
-  text-decoration-color: rgba(255, 255, 255, 0.45);
-  text-underline-offset: 3px;
-  transition: text-decoration-color var(--t-tint) var(--ease-out-quint);
-}
-.hero-note a:hover { text-decoration-color: currentColor; }
 
 /* ---------------------------------------------------------------------------
    10. THE FOOTER AND THE PANEL BEHIND IT
@@ -2732,4 +2731,71 @@ select.wf-input { appearance: none; cursor: pointer; }
 
 @media (min-width: 1280px) {
   .tag, .wf-role-label { font-size: 1.4rem; }
+}
+
+
+/* ---------------------------------------------------------------------------
+   28. THE PARTNER PILL
+   The invitation that used to sit under the hero copy. A small object at the
+   foot of the screen that arrives once the reader is past the picture, on the
+   same glass as the bar, and stays dismissed for the session.
+   --------------------------------------------------------------------------- */
+
+.nudge {
+  position: fixed;
+  left: var(--gutter);
+  bottom: var(--gutter);
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  max-width: calc(100vw - var(--gutter) * 2);
+  padding: 0.6rem 0.6rem 0.6rem 1.8rem;
+  border-radius: var(--r-shell);
+  border: 1px solid var(--white-a-100);
+  background: var(--stone-a-600);
+  backdrop-filter: blur(13px);
+  -webkit-backdrop-filter: blur(13px);
+  box-shadow: var(--shadow-card);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.8rem);
+  transition: opacity var(--t-tint) var(--ease-out-quint),
+              transform var(--t-move) var(--ease-out-quint),
+              visibility var(--t-move);
+}
+.nudge.is-in { opacity: 1; visibility: visible; transform: none; }
+.nudge-link {
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--t-tint) var(--ease-out-quint);
+}
+.nudge-link:hover { text-decoration-color: currentColor; }
+.nudge-close {
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  flex-shrink: 0;
+  border: 0;
+  background: none;
+  border-radius: var(--r-chrome);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color var(--t-tint) var(--ease-out-quint),
+              color var(--t-tint) var(--ease-out-quint);
+}
+.nudge-close:hover { background: var(--white); color: var(--text-primary); }
+.nudge-close .ico { width: 1.6rem; height: 1.6rem; }
+
+@media (max-width: 700px) {
+  .nudge { right: var(--gutter); padding-left: 1.4rem; }
+  .nudge-link { font-size: 1.3rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nudge { transition: none; }
 }

@@ -101,25 +101,30 @@ const NAV_LINKS = [
 
       <a class="nav-item is-cta" href={anchor('joinwaitlist')}>Get access</a>
 
-      <button class="nav-menu-btn" id="navMenuBtn" aria-expanded="false" aria-controls="navDrop">
-        Menu
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+      <!-- Below 1024 the bar is the lockup and this, nothing else. Three bars
+           that become a cross; no label, because the shape is the label. -->
+      <button class="nav-burger" id="navMenuBtn" aria-expanded="false" aria-controls="navDrop" aria-label="Menu">
+        <span class="nav-burger-bars" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </span>
       </button>
     </nav>
 
-    <!-- The pill opens into a small glass card directly beneath it. There is no
-         full-screen drawer in this system: the chrome stays a floating object. -->
+    <!-- Open, the menu takes the whole screen. The bar stays above it so the
+         cross is where the burger was. -->
     <div class="nav-drop" id="navDrop" aria-hidden="true">
-      {NAV_LINKS.map(l => (
-        <a href={anchor(l.hash)} data-menu-link>
-          {l.label}
-          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <nav class="nav-drop-inner" aria-label="Menu">
+        {NAV_LINKS.map(l => (
+          <a class="nav-drop-link" href={anchor(l.hash)} data-menu-link>{l.label}</a>
+        ))}
+        <a class="nav-drop-link" href="/for-advisors" data-menu-link>For advisors and firms</a>
+        <a class="btn btn-secondary nav-drop-cta" href={anchor('joinwaitlist')} data-menu-link>
+          <span class="btn-label">Get access</span>
+          <span class="btn-icon">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
         </a>
-      ))}
-      <a href="/for-advisors" data-menu-link>
-        For advisors and firms
-        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
+      </nav>
     </div>
 
     <main>
@@ -388,21 +393,21 @@ const NAV_LINKS = [
         const btn = document.getElementById('navMenuBtn');
         const drop = document.getElementById('navDrop');
         if (btn && drop) {
-          const close = () => {
-            drop.classList.remove('is-open');
-            drop.setAttribute('aria-hidden', 'true');
-            btn.setAttribute('aria-expanded', 'false');
-          };
-          btn.addEventListener('click', () => {
-            const open = drop.classList.toggle('is-open');
+          const lenis = () => (window as any).__lenis;
+          const setOpen = (open: boolean) => {
+            drop.classList.toggle('is-open', open);
+            nav!.classList.toggle('is-menu-open', open);
             drop.setAttribute('aria-hidden', String(!open));
             btn.setAttribute('aria-expanded', String(open));
-          });
+            document.documentElement.classList.toggle('is-locked', open);
+            // The menu covers the page, so the page underneath stops moving.
+            if (open) lenis()?.stop(); else lenis()?.start();
+          };
+          const close = () => setOpen(false);
+          btn.addEventListener('click', () => setOpen(!drop.classList.contains('is-open')));
           drop.querySelectorAll('[data-menu-link]').forEach(a => a.addEventListener('click', close));
           document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-          document.addEventListener('click', e => {
-            if (!drop.contains(e.target as Node) && !btn.contains(e.target as Node)) close();
-          });
+          window.matchMedia('(min-width: 1024px)').addEventListener('change', e => { if (e.matches) close(); });
         }
       })();
 

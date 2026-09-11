@@ -26,16 +26,6 @@ const QUAD_ART: (string | null)[] = [
 ];
 const CLOSING_ART: string | null = '/images/v3/closing-frame.webp';  // 1414x744, 1.9:1
 
-/** The hero ticker: one promise at a time, each one a phrase from the page. */
-const TICKER = [
-  { label: 'A dashboard for your body', icon: 'grid' },
-  { label: 'Full biomarker tracking', icon: 'pulse' },
-  { label: 'Personalized protocols', icon: 'doc' },
-  { label: 'Curated clinical delivery', icon: 'shield' },
-  { label: 'Health concierge', icon: 'user' },
-  { label: 'Healthspan score, owned by the client', icon: 'check' },
-];
-
 /** The three process steps, in the pinned carousel. Captions alternate side. */
 const STEPS = [
   {
@@ -272,43 +262,21 @@ const PANELS = [
         data stays yours.
       </p>
 
-      <div class="hero-ticker" data-ticker aria-live="polite">
-        {TICKER.map(item => (
-          <div class="hero-ticker-item t-body" data-ticker-item>
-            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" set:html={{
-              grid:  '<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>',
-              pulse: '<path d="M3 12h4l2-6 4 12 2-6h6"/>',
-              doc:   '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h4"/>',
-              shield:'<path d="M12 3l7 3v6c0 4.4-3 7.7-7 9-4-1.3-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/>',
-              user:  '<path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM5 20a7 7 0 0 1 14 0"/>',
-              check: '<path d="M4 12.5l5 5L20 6"/>',
-            }[item.icon]} />
-            <span>{item.label}</span>
-          </div>
-        ))}
-      </div>
-
-      <p class="hero-note t-body-sm">
-        <a href="#partners">Introducing Compound Health to your clients, employees or members?</a>
-      </p>
     </div>
 
-    <!-- The inline capture, at the foot of the picture. It does not post from
-         here: it carries the address down to the real form, which is the one
-         place a submission happens. -->
-    <form class="hero-form" data-handoff novalidate>
-      <label class="u-sr-only" for="heroEmail">Email address</label>
-      <div class="field-glass">
-        <input id="heroEmail" data-handoff-email type="email" placeholder="Your email address" autocomplete="email" />
-        <button class="btn btn-primary" type="submit">
-          <span class="btn-label">Get access</span>
-          <span class="btn-icon">
-            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </button>
-      </div>
-    </form>
   </section>
+
+  <!-- The partner invitation. Not in the hero any more: a small pill at the
+       foot of the screen that arrives once the reader is past the picture,
+       and stays dismissed for the rest of the session. -->
+  <aside class="nudge" id="nudge" hidden>
+    <a class="nudge-link" href="#partners">
+      Introducing Compound Health to your clients, employees or members?
+    </a>
+    <button class="nudge-close" id="nudgeClose" type="button" aria-label="Dismiss">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </aside>
 
   <!-- ===================================================================
        THE INTRO
@@ -1163,25 +1131,30 @@ const PANELS = [
         update();
       })();
 
-      // --- the hero ticker ---------------------------------------------------
-      // One line at a time, rising into a fixed window every 2.5s.
+      // --- the partner pill --------------------------------------------------
       (function () {
-        const items = Array.from(document.querySelectorAll<HTMLElement>('[data-ticker-item]'));
-        if (!items.length) return;
-        items[0].classList.add('is-in');
-        if (reduce || items.length === 1) return;
-        let i = 0;
-        setInterval(() => {
-          const out = items[i];
-          i = (i + 1) % items.length;
-          const next = items[i];
-          out.classList.remove('is-in');
-          out.classList.add('is-out');
-          next.classList.remove('is-out');
-          // A frame at translateY(100%) before the class lands, so it rises.
-          requestAnimationFrame(() => next.classList.add('is-in'));
-          window.setTimeout(() => out.classList.remove('is-out'), 1000);
-        }, 2500);
+        const el = document.getElementById('nudge');
+        const close = document.getElementById('nudgeClose');
+        if (!el) return;
+        let dismissed = false;
+        try { dismissed = sessionStorage.getItem('ch-v3-nudge') === 'off'; } catch (e) {}
+        if (dismissed) return;
+        el.hidden = false;
+        const hero = document.getElementById('hero');
+        const show = () => {
+          const past = hero ? hero.getBoundingClientRect().bottom < window.innerHeight * 0.4 : true;
+          el.classList.toggle('is-in', past);
+        };
+        window.addEventListener('scroll', show, { passive: true });
+        show();
+        const dismiss = () => {
+          el.classList.remove('is-in');
+          try { sessionStorage.setItem('ch-v3-nudge', 'off'); } catch (e) {}
+          window.removeEventListener('scroll', show);
+          window.setTimeout(() => { el.hidden = true; }, 400);
+        };
+        close?.addEventListener('click', dismiss);
+        el.querySelector('.nudge-link')?.addEventListener('click', dismiss);
       })();
 
       // --- the mark draws itself ---------------------------------------------
