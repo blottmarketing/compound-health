@@ -2824,3 +2824,239 @@ select.wf-input { appearance: none; cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .nudge { transition: none; }
 }
+
+
+/* === F2b/F6 figure fill and motion === */
+/* ---------------------------------------------------------------------------
+   F2b. FILL. The three panels floated in their plates with a dead band above
+   and below: 67%, 72% and 74% of the frame height against 92% of its width.
+   The fix is content and block-axis distribution, never scale: --u is
+   untouched, so no label grows relative to the body copy beside it.
+
+   Two moves. The composition claims the stage's block axis instead of being
+   centred in it, and the inset rows share whatever is left over. A row that
+   grows keeps its content vertically centred, so the drawing reads as an
+   interface with generous rows rather than a small drawing in a large plate.
+   --------------------------------------------------------------------------- */
+
+/* Both arrangements, not only the wide one. Below 780px the composition
+   stacks, and it floated in the plate there too (panel 03 filled 56% of a
+   700x441 frame). The same two moves fix both, so they are unconditional. */
+
+/* The composition claims the stage's block axis. */
+.fig-panel-stage > .fig-card { flex: 1 1 auto; min-height: 0; }
+.fig-panel-stage > .fig-link { flex: 0 0 auto; }
+.fig-panel-stage.fig-panel-split { align-items: stretch; }
+.fig-panel-stage.fig-panel-split > .fig-link { align-self: center; }
+
+/* Inside a card the head and the quiet sub keep their size; the rows take the
+   slack, and a grown row keeps its content centred, so what grows is the fill
+   and never the type. */
+.fig-panel-stage .fig-card > .fig-head,
+.fig-panel-stage .fig-card > .fig-sub,
+.fig-panel-stage .fig-card > .fig-link { flex: 0 0 auto; }
+/* The rows keep their own height and the slack goes into the spaces between
+   them. Growing the rows instead was tried and is wrong twice over: a row
+   three times the height of its line stops reading as a row, and a cap low
+   enough to prevent that clips the two-line label in panel 01 by 2px at
+   1440, 1024 and 900. The card gap stays the minimum; space-between adds to
+   it. Nothing can ever be shorter than its own content this way. */
+.fig-panel-stage .fig-card > .fig-row.is-inset,
+.fig-panel-stage .fig-col > .fig-row.is-inset { flex: 0 0 auto; }
+.fig-panel-stage .fig-card,
+.fig-panel-stage .fig-col { justify-content: space-between; }
+/* Panel 03's two columns hold two rows and three, so the card's slack lands
+   here. Spreading the rows was tried and reads as three isolated strips
+   rather than a list; stacking them at the top leaves a hole under the short
+   column. Centred, each column is a tight list, the two are centred on each
+   other, and the card's own space-between keeps the head at the top and the
+   chip at the foot, which is where a product screen puts them. */
+.fig-panel-stage .fig-cols { align-items: stretch; }
+.fig-panel-stage .fig-cols > .fig-col { justify-content: flex-start; }
+/* The sub stays at the top of its column so the two line up with each other,
+   and the rows below it are centred in what is left by a pair of auto
+   margins. Centring the whole column instead drops the short column's sub
+   below the tall one's, which reads as a mistake. */
+.fig-panel-stage .fig-cols > .fig-col > .fig-row.is-inset:first-of-type { margin-top: auto; }
+.fig-panel-stage .fig-cols > .fig-col > .fig-row.is-inset:last-child { margin-bottom: auto; }
+.fig-panel-stage .fig-card > .fig-cols { flex: 1 1 auto; min-height: 0; }
+.fig-panel-stage .fig-row.is-inset { align-items: center; }
+
+/* The two stacked nominals carry two more lines than they were measured with
+   (the quiet subs added below), so the design box grows with them. Without
+   this the natural composition is taller than the clamp allows and the cards
+   push out through the top and bottom of the frame at 691, 728 and 358px. */
+@container figpanel (max-width: 779px) {
+  .fig-panel-stage { --u: min(calc(100cqw / 420), calc(100cqh / 560)); }
+}
+@container figpanel (max-width: 420px) {
+  .fig-panel-stage { --u: min(calc(100cqw / 420), calc(100cqh / 505)); }
+}
+
+
+
+/* ---------------------------------------------------------------------------
+   F6. THE PANELS AT WORK
+
+   The reference films its product; this one is drawn, so the drawing performs
+   instead. `.car-panel.is-live` is put on whichever panel holds the front of
+   the deck and taken off the others, so every sequence below is idempotent by
+   construction: removing the class removes the animations and the element
+   falls back to its own resting state, which is the finished screen. Scroll
+   across a panel five times and you see the same thing five times.
+
+   The resting state is the complete screen. Nothing here is required for the
+   drawing to be correct, which is why the whole block sits inside
+   prefers-reduced-motion: no-preference: ask for less motion and you get the
+   finished interface immediately, not an empty frame.
+
+   Durations are the page's own: --t-move for anything that travels, --t-tint
+   for anything that only changes colour or opacity, --ease-out-quint for both.
+   Only the sequence offsets are local, and every sequence is over inside 2s.
+   --------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  @keyframes fig-in   { from { opacity: 0; transform: translateY(calc(var(--u) * 7)); } }
+  @keyframes fig-pop  { from { opacity: 0; transform: scale(0.4); } }
+  @keyframes fig-rise { from { transform: scaleY(0); } }
+  @keyframes fig-turn { from { transform: rotate(0deg); } to { transform: rotate(720deg); } }
+  @keyframes fig-step { from { transform: translateY(0); } }
+  @keyframes fig-fade { from { opacity: 0; } }
+
+  /* A row arrives from under the card's own edge, so the card clips for as
+     long as its sequence is running. Nothing overflows at rest, so this is
+     only ever in force while the class is, and it goes when the class goes. */
+  .car-panel.is-live .fig-panel .fig-card { overflow: hidden; }
+
+  /* Everything that arrives, arrives the same way. */
+  .car-panel.is-live .fig-panel .fig-head,
+  .car-panel.is-live .fig-panel .fig-sub,
+  .car-panel.is-live .fig-panel .fig-row.is-inset,
+  .car-panel.is-live .fig-panel .fig-chip {
+    animation: fig-in var(--t-move) var(--ease-out-quint) both;
+  }
+  /* Everything that lands, lands after the row that carries it. */
+  .car-panel.is-live .fig-panel .fig-tick,
+  .car-panel.is-live .fig-panel .fig-avatar {
+    animation: fig-pop var(--t-move) var(--ease-out-quint) both;
+  }
+  /* A reading draws itself up from its own baseline. */
+  .car-panel.is-live .fig-panel .fig-bar {
+    transform-origin: bottom;
+    animation: fig-rise var(--t-move) var(--ease-out-quint) both;
+  }
+
+  /* --- 01. an introduction arriving from a firm -------------------------
+     The three ways in land in turn, the advisor's is confirmed, the chip
+     states the condition, and only then does the second card open and take
+     its tick. The two pending rings are never resolved: two of the three
+     routes stay open, which is what the sentence says. */
+  .car-panel.is-live [data-panel="01"] .fig-panel-a > *:nth-child(1) { animation-delay: 0s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-a > *:nth-child(2) { animation-delay: .08s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-a > *:nth-child(3) { animation-delay: .17s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-a > *:nth-child(4) { animation-delay: .30s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-a > *:nth-child(5) { animation-delay: .43s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-a .fig-tick        { animation-delay: .52s; }
+
+  .car-panel.is-live [data-panel="01"] > .fig-link .fig-chip { animation-delay: .78s; }
+
+  /* The second card arrives as a card. Without this its white surface is
+     already there while its contents are still queued, which at 390 is a
+     blank rectangle the size of the first card for half a second.
+     It fades rather than travels: a whole card moving 7u eats 6 to 9px of the
+     stage's own 38u edge allowance while it is in flight, and the allowance
+     exists precisely so the drawing stays away from the frame. */
+  .car-panel.is-live [data-panel="01"] .fig-panel-b {
+    animation: fig-fade var(--t-move) var(--ease-out-quint) .86s both;
+  }
+
+  .car-panel.is-live [data-panel="01"] .fig-panel-b > *:nth-child(1) { animation-delay: .95s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-b > *:nth-child(2) { animation-delay: 1.03s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-b > *:nth-child(3) { animation-delay: 1.12s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-b > *:nth-child(4) { animation-delay: 1.25s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-b .fig-head .fig-tick { animation-delay: 1.52s; }
+  .car-panel.is-live [data-panel="01"] .fig-panel-b .fig-row .fig-tick  { animation-delay: 1.60s; }
+
+  /* --- 02. the baseline being collected ---------------------------------
+     Five assessments arrive and four are ticked off as they land. The counter
+     steps with them. The fifth is still going: its ring turns twice and comes
+     to rest still dashed, because the row is not finished and the drawing
+     should not claim it is. */
+  .car-panel.is-live [data-panel="02"] .fig-panel-single > *:nth-child(1) { animation-delay: 0s; }
+  .car-panel.is-live [data-panel="02"] .fig-panel-single > *:nth-child(2) { animation-delay: .09s; }
+  .car-panel.is-live [data-panel="02"] .fig-panel-single > *:nth-child(3) { animation-delay: .18s; }
+  .car-panel.is-live [data-panel="02"] .fig-panel-single > *:nth-child(4) { animation-delay: .30s; }
+  .car-panel.is-live [data-panel="02"] .fig-panel-single > *:nth-child(5) { animation-delay: .42s; }
+  .car-panel.is-live [data-panel="02"] .fig-panel-single > *:nth-child(6) { animation-delay: .54s; }
+  .car-panel.is-live [data-panel="02"] .fig-panel-single > *:nth-child(7) { animation-delay: .66s; }
+
+  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(3) .fig-tick { animation-delay: .44s; }
+  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(4) .fig-tick { animation-delay: .56s; }
+  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(5) .fig-tick { animation-delay: .68s; }
+  .car-panel.is-live [data-panel="02"] .fig-row:nth-child(6) .fig-tick { animation-delay: .80s; }
+
+  .car-panel.is-live [data-panel="02"] .fig-count-strip {
+    animation: fig-step 1.05s steps(4, end) .42s both;
+  }
+  .car-panel.is-live [data-panel="02"] .fig-dot {
+    animation: fig-turn 0.9s linear .70s 2 both;
+  }
+  .car-panel.is-live [data-panel="02"] > .fig-link .fig-chip { animation-delay: 1.30s; }
+
+  /* --- 03. a protocol under active management ---------------------------
+     The team assembles, the reading draws itself, the two settled parts of
+     the protocol are ticked, and the chip states what is being done to it.
+     The bars are staggered so the reading builds rather than appearing. */
+  .car-panel.is-live [data-panel="03"] .fig-card > *:nth-child(1) { animation-delay: 0s; }
+  .car-panel.is-live [data-panel="03"] .fig-card > *:nth-child(2) { animation-delay: .10s; }
+
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(1) > *:nth-child(1) { animation-delay: .16s; }
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(1) > *:nth-child(2) { animation-delay: .26s; }
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(1) > *:nth-child(3) { animation-delay: .38s; }
+  .car-panel.is-live [data-panel="03"] .fig-avatar:nth-child(1) { animation-delay: .42s; }
+  .car-panel.is-live [data-panel="03"] .fig-avatar:nth-child(2) { animation-delay: .50s; }
+  .car-panel.is-live [data-panel="03"] .fig-avatar:nth-child(3) { animation-delay: .58s; }
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(1) .fig-tick { animation-delay: .70s; }
+
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(2) > *:nth-child(1) { animation-delay: .24s; }
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(2) > *:nth-child(2) { animation-delay: .34s; }
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(2) > *:nth-child(3) { animation-delay: .46s; }
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(2) > *:nth-child(4) { animation-delay: .58s; }
+  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(1) { animation-delay: .62s; }
+  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(2) { animation-delay: .70s; }
+  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(3) { animation-delay: .78s; }
+  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(4) { animation-delay: .86s; }
+  .car-panel.is-live [data-panel="03"] .fig-bar:nth-child(5) { animation-delay: .94s; }
+  .car-panel.is-live [data-panel="03"] .fig-col:nth-child(2) .fig-tick { animation-delay: 1.10s; }
+  .car-panel.is-live [data-panel="03"] .fig-card > .fig-link .fig-chip { animation-delay: 1.34s; }
+}
+
+/* ---------------------------------------------------------------------------
+   F6b. THE STEPPING COUNTER
+   A strip of the five readings, clipped to one line. At rest it shows the
+   last, so the finished screen and the reduced-motion screen both read 4/5;
+   the animation above walks it there in four steps. The strip is duplication
+   for the eye only, and .car-media is already aria-hidden, so nothing here
+   reaches the accessibility tree.
+   --------------------------------------------------------------------------- */
+
+.fig-count {
+  display: block;
+  overflow: hidden;
+  height: calc(var(--t-mono) * 1.2);
+  flex: 0 0 auto;
+}
+.fig-count-strip {
+  --fig-line: calc(var(--t-mono) * 1.2);
+  display: block;
+  /* Four lines up, in lines. A percentage here is a percentage of the strip,
+     which is five lines tall, so -400% would be twenty lines and the value
+     would never be on screen. */
+  transform: translateY(calc(var(--fig-line) * -4));
+}
+.fig-count-strip > span {
+  display: block;
+  height: calc(var(--t-mono) * 1.2);
+  line-height: 1.2;
+}

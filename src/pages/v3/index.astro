@@ -58,6 +58,7 @@ const PANELS = [
   <div class="fig-panel-stage fig-panel-split">
 
     <div class="fig-card fig-panel-a">
+      <span class="fig-sub">Join through</span>
       <div class="fig-head">
         <span class="fig-tile">
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.2 20.8V5.4A2.4 2.4 0 0 1 6.6 3h6.6a2.4 2.4 0 0 1 2.4 2.4v15.4"/><path d="M15.6 10.2h2.4a2.4 2.4 0 0 1 2.4 2.4v8.2"/><path d="M3 20.8h18"/><path d="M8.2 7.4h3.4"/><path d="M8.2 11.4h3.4"/><path d="M8.2 15.4h3.4"/></svg>
@@ -97,6 +98,9 @@ const PANELS = [
         <span class="fig-tick"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg></span>
       </div>
       <div class="fig-row is-inset">
+        <span class="fig-label">through a relationship you already have</span>
+      </div>
+      <div class="fig-row is-inset">
         <span class="fig-label">as a benefit</span>
         <span class="fig-val">2026-04-09</span>
       </div>
@@ -117,8 +121,9 @@ const PANELS = [
           <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
         </span>
         <span class="fig-title">Deep diagnostic intake</span>
-        <span class="fig-val">4/5</span>
+        <span class="fig-val fig-count"><span class="fig-count-strip"><span>0/5</span><span>1/5</span><span>2/5</span><span>3/5</span><span>4/5</span></span></span>
       </div>
+      <span class="fig-sub">A full-picture biological audit by elite clinicians</span>
 
       <div class="fig-row is-inset">
         <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v14.6a2 2 0 0 0 4 0V3"/><path d="M10 12.4h4"/></svg>
@@ -215,7 +220,7 @@ const PANELS = [
       </div>
 
       <div class="fig-link">
-        <span class="fig-chip">actively manage</span>
+        <span class="fig-chip">build and actively manage</span>
       </div>
     </div>
 
@@ -1235,7 +1240,10 @@ const PANELS = [
               onUpdate: (self: any) => {
                 const t = self.progress * TOTAL;
                 let front = 0;
-                for (let i = 1; i < panels.length; i++) if (t >= HOLD + (i - 1) * STEP + 0.5) front = i;
+                // +0.85, not the midpoint: the plate is in place and its
+                // caption is up by then, so the screen performs for someone
+                // who is looking at it rather than at the card it replaced.
+                for (let i = 1; i < panels.length; i++) if (t >= HOLD + (i - 1) * STEP + 0.85) front = i;
                 live(front);
               },
               onLeaveBack: () => live(0),
