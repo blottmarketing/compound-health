@@ -14,6 +14,11 @@ the failing assertion is what tells you it is time.
 
 --- Round of 14 September 2026 -------------------------------------------------
 
+Two deliveries, and the second supersedes the first. The WhatsApp messages of
+12:26 and 12:29 came first; "Compound Health website changes.pdf" arrived later
+the same day with the same items reworded and eight more added. Where the two
+disagree the PDF wins, and the four places they disagree are marked PDF below.
+
 Mostly claim substantiation rather than design: a superiority claim, an efficacy
 figure, a menu of regulated therapies, and a reach number that overstated what
 happened. The wording is the client's and is exact.
@@ -97,20 +102,22 @@ def revise(text, old, new, label, expect=1):
 def apply_to_page(content):
     """The home page's own markup."""
 
-    # The reach figure. "reached 400 clients" overstated it: the session was
-    # delivered to one advisory team, and 400 is the size of that team's book.
-    # The hero marquee lists the strip twice, so this one lands twice.
-    content = revise(
-        content,
-        '<span class="cred-text">UHNW clients in the advisory book we delivered our first session to</span>',
-        '<span class="cred-text">UHNW households covered by the advisory team we delivered to</span>',
-        'hero stat: 400 reach figure', expect=2)
+    # The whole "Where we are" strip. The PDF asks for the Healthspan stat to go
+    # and adds a condition: "if that leaves fewer than three items, remove the
+    # strip". Removing it leaves two, so the strip goes, and with it the hero's
+    # copy of the 400 figure. The Partners section keeps the claim.
+    content = _drop_hero_strip(content)
 
+    # The reach figure in the Partners section, the only copy left once the hero
+    # strip is gone. The PDF's sentence is "Delivered to an advisory team
+    # covering 400 UHNW households"; the cell sets the number large and the line
+    # beneath it, and the sibling cell does not repeat its own figure in its
+    # line, so the number stays the number and the rest becomes the line.
     content = revise(
         content,
-        '<div class="case-stat-label">UHNW clients in the advisory team\'s book, reached through a single educational session.</div>',
-        '<div class="case-stat-label">UHNW households covered by the advisory team we delivered a single educational session to.</div>',
-        'partners stat: 400 reach figure')
+        "<div class=\"case-stat-label\">UHNW clients in the advisory team's book, reached through a single educational session.</div>",
+        '<div class="case-stat-label">UHNW households in the advisory team we delivered to.</div>',
+        'partners stat: 400 reach figure (PDF)')
 
     # "First of its kind": a superiority claim, unsubstantiated. The whole cell
     # goes; the two that remain still carry the engagement.
@@ -122,19 +129,6 @@ def apply_to_page(content):
         '          </div>\n',
         '',
         'partners stat: "First of its kind" removed')
-
-    # The Healthspan score stat, and its divider, in both copies of the strip.
-    for label, hidden in (('hero stat: Healthspan score removed', ''),
-                          ('hero stat: Healthspan score removed (marquee copy)', ' aria-hidden="true"')):
-        content = revise(
-            content,
-            '          <div class="cred-divider" aria-hidden="true"></div>\n'
-            f'          <div class="cred-item"{hidden}>\n'
-            '            <span class="cred-num">1</span>\n'
-            '            <span class="cred-text">Healthspan score, owned by the client</span>\n'
-            '          </div>\n',
-            '',
-            label)
 
     # The therapy menu. Naming hormones, peptides, regenerative therapies and
     # NAD IV as a list of options is the part that reads as a menu. The two
@@ -186,10 +180,10 @@ def apply_to_page(content):
         '            A private longevity membership, introduced through the people who already advise you, your\n'
         '            firm or your organization. Delivered by clinical partners chosen against one standard. Your\n'
         '            data stays yours.',
-        '            A private longevity membership, through partner you trust. Clinical partners selected on\n'
-        '            three things: published outcomes, clinical governance, and your ownership of your own\n'
-        '            data.',
-        'hero standfirst')
+        '            A private longevity membership, introduced through the people who already advise\n'
+        '            you. Clinical partners selected on three things: published outcomes, clinical\n'
+        '            governance, and ownership of your own data.',
+        'hero standfirst (PDF)')
 
     # Section 2, the process.
     content = revise(
@@ -229,9 +223,10 @@ def apply_to_page(content):
         '              chose the partners who meet it.',
         '              Longevity medicine is not one company. We assessed the field against three tests:\n'
         '              published outcomes, clinical governance, and whether the patient owns the record.\n'
-        '              The partners here meet all three. Every partner is re-reviewed each year, and if a\n'
-        '              better option emerges the membership moves with it.',
-        'how we choose: opener, with the annual re-review folded in')
+        '              The partners here meet all three. We re-run the review every year. If a better\n'
+        '              clinician, test or platform emerges, your membership moves to it. You are never\n'
+        '              locked to a provider because we are.',
+        'how we choose: opener, with the annual re-review folded in (PDF)')
 
     content = revise(
         content,
@@ -241,8 +236,46 @@ def apply_to_page(content):
         '',
         'how we choose: footnote removed, now in the opener')
 
+    # The data firewall note takes the PDF's own text, which is longer and says
+    # more than the line it replaces: participation as well as engagement, and
+    # the partner being out of the path of care as well as of the record.
+    content = revise(
+        content,
+        '<p>Health data belongs to the individual. You see engagement, never medical information.</p>',
+        '<p>Before anything else. Health data belongs to the individual. You see engagement and '
+        'participation, never medical information. Your people join through you, and you are never '
+        'in the path of their care or their record.</p>',
+        'partners: data firewall note rewritten (PDF)')
+
     content = _move_partner_notes_up(content)
     return content
+
+
+def _drop_hero_strip(content):
+    """Remove the hero's "Where we are" strip, both copies of every item.
+
+    The strip is listed twice in the source: once for reading, once aria-hidden
+    so the phone marquee has something to loop. Taking the element out takes
+    both. The intro timeline looks the strip up with a guard and skips it when
+    it is absent, so nothing in the layout script needs changing.
+    """
+    m = re.search(r'[ \t]*<div class="credbar">', content)
+    if not m:
+        sys.exit('client revision "hero strip": the .credbar block was not found')
+    start = content.rfind('\n', 0, m.start()) + 1
+    depth, end = 0, None
+    for t in re.finditer(r'<(/?)div\b[^>]*?(/?)>', content[m.start():]):
+        if t.group(2) == '/':
+            continue
+        depth += -1 if t.group(1) else 1
+        if depth == 0:
+            end = m.start() + t.end()
+            break
+    if end is None:
+        sys.exit('client revision "hero strip": the block is never closed')
+    end = content.find('\n', end) + 1
+    APPLIED.append('hero: the "Where we are" strip removed entirely (PDF)')
+    return content[:start] + content[end:]
 
 
 def _move_partner_notes_up(content):
@@ -307,14 +340,15 @@ def apply_to_footer(footer):
         '',
         'footer: Sitemap link removed')
 
-    # For advisors. /for-advisors redirects to the home page, so the link went
-    # back to the page the reader was already on. The bar's copy of it went
-    # earlier the same day.
+    # For advisors. The WhatsApp round read as "remove it"; the PDF is explicit:
+    # "Repoint to #partners until the real page ships". So it stays and points at
+    # the Partners section, which is where the advisor material actually is while
+    # /for-advisors is a redirect to the home page.
     footer = revise(
         footer,
-        '          <a href="/for-advisors">For advisors and firms</a>\n',
-        '',
-        'footer: For advisors link removed, that route redirects to /')
+        '<a href="/for-advisors">For advisors and firms</a>',
+        '<a href={`${base}#partners`}>For advisors and firms</a>',
+        'footer: For advisors repointed to #partners (PDF)')
 
     return footer
 
