@@ -2165,3 +2165,27 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
   -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
   isolation: isolate;
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   CLIENT REVISIONS, 14 September 2026
+   Appended by scripts/client_revisions.py. Consequences of the markup
+   changes in that file, not design decisions of their own. Do not edit by
+   hand: edit the script and re-port.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* The partners proof block lost its "First of its kind" cell, so the three
+   columns are two. Without this the row keeps an empty third column and the
+   two figures sit in the left two-thirds of the card. The 900px stack is
+   restated because it is declared earlier in the file than this block. */
+.case-band .case-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 900px) {
+  .case-band .case-stats { grid-template-columns: 1fr; }
+}
+
+/* The therapies panel lost its chip strip, and .gate-flow was pinned to the
+   foot of a stretching column by margin-top: auto. With nothing above it that
+   left roughly 200px of empty gradient between the card's head and its two
+   conditions. The conditions now sit in the middle of the space instead. */
+.gate { justify-content: center; }
+.gate-flow { margin-top: 0; }
+

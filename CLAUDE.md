@@ -88,7 +88,7 @@ The client sends new HTML. Do this, in order:
 7. Update `PAGES.xlsx` and `public/sitemap.xml` if any page was added, removed or renamed.
 8. Commit, referencing what the drop changed.
 
-The script makes seven changes to the drop and no others. They are listed in its docstring; the two worth knowing here are that fonts, photographs and icons are linked from `public/` rather than embedded as base64, and that the legal pages' section anchors take a `base` of `/` so they reach the home page (the drop leaves bare `#how` hashes in the legal footer, which go nowhere there).
+The script makes eight changes to the drop and no others. They are listed in its docstring; the two worth knowing here are that fonts, photographs and icons are linked from `public/` rather than embedded as base64, and that the legal pages' section anchors take a `base` of `/` so they reach the home page (the drop leaves bare `#how` hashes in the legal footer, which go nowhere there).
 
 ## The design system
 
