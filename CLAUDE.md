@@ -20,7 +20,7 @@ That has one consequence that governs almost every rule below: **`src/styles/glo
 
 ```
 compound-health/
-├── astro.config.mjs            # site: https://compoundhealth.io
+├── astro.config.mjs            # site: https://compoundhealth.io; /for-advisors redirects to /
 ├── package.json                # astro dev | build | preview
 ├── scripts/
 │   ├── port-drop.py            # splits a client drop into the tree below; read its docstring first
@@ -46,16 +46,16 @@ compound-health/
 │   │   └── Footer.astro        # GENERATED. The fixed footer the closing card uncovers.
 │   ├── layouts/
 │   │   ├── SiteLayout.astro    # GENERATED. Head, bar, mobile menu, footer, and the script driving them.
-│   │   └── MainLayout.astro    # Legacy. Serves /for-advisors alone; loads legacy.css.
+│   │   └── MainLayout.astro    # Legacy. Serves nothing now; loads legacy.css.
 │   ├── pages/
 │   │   ├── index.astro             # GENERATED. The home page.
 │   │   ├── privacy-policy.astro    # GENERATED.
 │   │   ├── website-terms.astro     # GENERATED.
 │   │   ├── 404.astro               # Hand-written, on SiteLayout. Not touched by the port.
-│   │   └── for-advisors.astro      # Hand-written, on the previous design. Noindex draft.
+│   │   └── _for-advisors.astro     # Hand-written, on the previous design. Unrouted; / serves it.
 │   └── styles/
 │       ├── global.css          # GENERATED. The design system.
-│       └── legacy.css          # The previous design system. /for-advisors only.
+│       └── legacy.css          # The previous design system. Unreachable while /for-advisors redirects.
 ├── PAGES.xlsx                  # source of truth for the page inventory
 └── CLAUDE.md                   # this file
 ```
@@ -106,16 +106,22 @@ The drop is a design, so it carries none of this and `scripts/port-drop.py` adds
 - **Canonicals have no trailing slash**, matching `sitemap.xml` and the URLs already indexed, even though the build emits directories. Which form the host actually serves is still an open hosting decision; this only stops the two files in the repo contradicting each other. `MainLayout` does the same.
 - **`noindex` and the canonical are one prop.** `SiteLayout`'s `noindex` emits the robots meta and suppresses the canonical, because a noindex page with a self-referencing canonical tells a crawler to index the URL it was just told to ignore.
 - **`Organization` JSON-LD on the home page alone.** `sameAs` is deliberately absent: no social profile has been supplied. Add the real URLs when there are any; a guessed profile is worse than none.
-- **The skip link** is the first tab stop on every page, and lands on `id="main"`: the hero section on the home page, `<main>` on the legal pages, `.nf` on the 404, `.deck-hero` on for-advisors. The page has no `<main>` wrapper of its own because every section must stay a body child for the ground rule that keeps the fixed footer covered.
+- **The skip link** is the first tab stop on every page, and lands on `id="main"`: the hero section on the home page, `<main>` on the legal pages, `.nf` on the 404, `.deck-hero` on the unrouted for-advisors draft. The page has no `<main>` wrapper of its own because every section must stay a body child for the ground rule that keeps the fixed footer covered.
 - **The 404 makes the footer static.** `global.css` fixes the footer and has only `.closer` reserve room for it, so any page without a closing card has to override that, as the legal pages do.
 
 Still open and not repo work: preview-deployment `noindex`, www against non-www, the trailing-slash decision at the host, HTTPS and HSTS, security headers, analytics, form anti-spam and rate limiting, CRM and lead alerting, and a DPA for the personal data the form writes into Google Sheets.
 
 ## The legacy system
 
-`src/styles/legacy.css` is the design system this one replaced, and `src/layouts/MainLayout.astro` is its layout. Between them they serve exactly one page, `/for-advisors`, which is a noindex draft and has not been redesigned. It is kept because the new home page's bar and footer both link to it.
+`src/styles/legacy.css` is the design system this one replaced, and `src/layouts/MainLayout.astro` is its layout. Between them they served exactly one page, `/for-advisors`, a noindex draft that was never redesigned.
 
-Do not build anything new on it, and do not merge it into `global.css`. When `/for-advisors` is redesigned, `legacy.css` and `MainLayout.astro` go with it and `src/styles/` holds one file again.
+Since **2026-09-14** that route redirects to the home page, declared in `astro.config.mjs`. The page source is kept at `src/pages/_for-advisors.astro`: the leading underscore takes it out of Astro routing, so the draft stays in the tree without answering a request and without colliding with the redirect. Nothing routes `MainLayout` any more, so neither it nor `legacy.css` is emitted into `dist/`. Both are kept for the redesign, and the draft is restored by renaming the file back and removing the redirect.
+
+A static build emits the redirect as `dist/for-advisors/index.html`, a meta-refresh document carrying `noindex` and a canonical at the home page rather than a 301. The real 301 belongs at the host, with the www and trailing-slash decisions that are still open.
+
+The home page bar and footer both still link to `/for-advisors`, so those links now bounce back to the home page. Both are generated files: the fix is in `scripts/port-drop.py`, which already rewrites that href, or in the next client drop. Do not hand-patch it into `SiteLayout.astro` or `Footer.astro`.
+
+Do not build anything new on the legacy system, and do not merge it into `global.css`. When `/for-advisors` is redesigned, `legacy.css` and `MainLayout.astro` go with it and `src/styles/` holds one file again.
 
 ## History
 
