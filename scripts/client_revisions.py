@@ -44,7 +44,7 @@ import sys
 APPLIED = []
 
 RECORD_BLOCK = """\
-          <article class="feat-card">
+          <article class="feat-card is-wide">
             <div class="feat-visual tone-ink" aria-hidden="true">
               <div class="fm-card">
                 <div class="fm-row fm-between"><span class="fm-title">Your clinical record</span><span class="fm-muted">In your name</span></div>
@@ -146,26 +146,35 @@ def apply_to_page(content):
         '',
         'therapy menu removed from the disciplines panel')
 
-    # The record block, after the biomarker feature. Applied on the user's
-    # instruction of 14 September, having been held back once: its closing
-    # sentence still contradicts the live privacy policy, which permits sharing
-    # health summary data with the advisory firm on explicit consent and permits
-    # transfer on a merger. The policy has to be amended, or the sentence
-    # softened, before this is a promise the site can keep.
+    # The record block. The brief asks for it "after Full biomarker tracking";
+    # it goes in at the foot of the section instead, immediately before the
+    # closing card, and it is wide.
     #
-    # It goes in as a sixth feature card rather than a band across the page:
-    # the grid is two columns, five cards left an orphan row, and six do not.
+    # The reason is the grid, and the first attempt got it wrong. The section is
+    # two columns and its last card, "Health concierge", is .is-wide and spans
+    # both, so the client's five cards fill it exactly: two rows of two, then the
+    # wide one. Adding a sixth normal card makes five normal cards, and five can
+    # never fill a two-column grid: one is always left alone beside a hole, which
+    # is what happened to "Personalized protocols". Making the new card wide as
+    # well keeps four normal cards in two clean rows and puts two wide cards
+    # under them, which fills the grid at every width.
+    #
+    # Placing it immediately after the biomarker card is not available: a wide
+    # card cannot sit in the second column, so it would strand the biomarker card
+    # the same way. One card later, and wide, is the closest placement that does
+    # not damage the section.
     content = revise(
         content,
-        '<h3 class="feat-name">Full biomarker tracking</h3>',
-        '<h3 class="feat-name">Full biomarker tracking</h3>',
+        '<h3 class="feat-name">Health concierge</h3>',
+        '<h3 class="feat-name">Health concierge</h3>',
         'record block anchor check')
-    marker = '</article>'
-    at = content.find('<h3 class="feat-name">Full biomarker tracking</h3>')
-    at = content.find(marker, at) + len(marker)
-    at = content.find('\n', at) + 1
+    at = content.rfind('<article class="feat-card is-wide">',
+                       0, content.find('<h3 class="feat-name">Health concierge</h3>'))
+    if at < 0:
+        sys.exit('client revision "record block": the wide closing card was not found')
+    at = content.rfind('\n', 0, at) + 1
     content = content[:at] + RECORD_BLOCK + content[at:]
-    APPLIED.append('new block: "One record, held in your name" after the biomarker feature')
+    APPLIED.append('new block: "One record, held in your name" as a wide card before the closing one')
 
     # The efficacy figure, neutralised.
     content = revise(
