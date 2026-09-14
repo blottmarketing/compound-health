@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Compound Health favicon: the mark in cream on sage -->
-  <rect width="64" height="64" rx="14" ry="14" fill="#2D5016"/>
-  <g transform="translate(8 8) scale(0.4)" fill="none" stroke="#F7F4EF" stroke-width="7.2" stroke-linejoin="round">
-    <path d="M65.88 13.31L65.88 56.6L103.38 78.25M77.65 16.38L77.65 49.81L106.6 66.53M97.49 88.44L60 66.79L22.51 88.44M88.96 97.1L60 80.38L31.04 97.1M16.62 78.25L54.12 56.6L54.12 13.31M13.4 66.53L42.35 49.81L42.35 16.38"/>
-  </g>
-</svg>

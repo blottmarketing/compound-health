@@ -25,6 +25,14 @@ interface Props {
    * pieces before first paint, so a page without one must not ask for it.
    */
   intro?: boolean;
+  /** Emit the Organization JSON-LD. The home page alone, or it duplicates. */
+  organizationSchema?: boolean;
+  /**
+   * Keep the page out of the index. It emits the robots meta and suppresses the
+   * canonical: a noindex page pointing a canonical at itself is telling a
+   * crawler to index the URL it was just told to ignore.
+   */
+  noindex?: boolean;
 }
 
 const SITE_NAME = 'Compound Health';
@@ -39,11 +47,33 @@ const {
   base = '',
   bodyClass = '',
   intro = false,
+  organizationSchema = false,
+  noindex = false,
 } = Astro.props;
 
 const siteOrigin = Astro.site ?? new URL('https://compoundhealth.io');
-const canonical = new URL(Astro.url.pathname, siteOrigin).toString();
+// The build emits directories, so Astro.url.pathname carries a trailing slash.
+// Strip it: public/sitemap.xml and the URLs already indexed are slash-less, and
+// a canonical that disagrees with the sitemap is a canonical pointing at a URL
+// nobody indexed. The root keeps its own '/'. Which form the host actually
+// serves is a hosting decision and still has to be made; this only stops the
+// two files in the repo contradicting each other.
+const canonical = new URL(Astro.url.pathname.replace(/(.)\/$/, '$1'), siteOrigin).toString();
 const ogImage = new URL(image, siteOrigin).toString();
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_NAME,
+  legalName: 'Compound Health, Inc.',
+  url: siteOrigin.toString(),
+  logo: new URL('/logo.png', siteOrigin).toString(),
+  email: 'hello@compoundhealth.io',
+  description: DEFAULT_DESCRIPTION,
+  // sameAs is deliberately absent: no social profile has been given for this
+  // organization. Add the real URLs here when there are any; an invented or
+  // guessed profile is worse than none.
+};
 ---
 
 <!doctype html>
@@ -54,11 +84,27 @@ const ogImage = new URL(image, siteOrigin).toString();
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
 
     <link rel="icon" type="image/svg+xml" href="/favicon-black.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#83392c" />
+
+    <!-- Aeonik Regular sets the reading copy and the hero standfirst, so it is
+         on the critical path. Medium is not preloaded: it sets the headline,
+         which the intro holds hidden anyway. -->
+    <link
+      rel="preload"
+      href="/fonts/Aeonik-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE_NAME} />
@@ -94,10 +140,25 @@ const ogImage = new URL(image, siteOrigin).toString();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css" />
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js" is:inline></script>
 
+    {
+      organizationSchema && (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(organization)}
+        />
+      )
+    }
+
     <slot name="head" />
   </head>
 
   <body id="top" class={bodyClass}>
+    <!-- Skip link. The bar is four section anchors and an action before any
+         content, and the mobile menu adds five more, so a keyboard reader
+         otherwise tabs through the whole of it on every page. It is off-screen
+         until focused, and it sits above the bar's own z-index when it is. -->
+    <a class="skip-link" href="#main">Skip to content</a>
     <nav class="main-nav">
       <div class="nav-inner">
         <div class="nav-links">
@@ -150,6 +211,35 @@ const ogImage = new URL(image, siteOrigin).toString();
     <slot />
 
     <Footer base={base} />
+
+    <style is:global>
+      .skip-link {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        z-index: 2000;
+        padding: 12px 20px;
+        border-radius: 0 0 10px 10px;
+        background: #18181b;
+        color: #ffffff;
+        font-family: var(--font-sans);
+        font-size: var(--fs-small);
+        line-height: var(--lh-small);
+        text-decoration: none;
+        transition: transform 0.18s ease-out;
+      }
+      .skip-link:focus-visible {
+        transform: translate(-50%, 0);
+        outline: 2px solid #ffffff;
+        outline-offset: -6px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .skip-link { transition: none; }
+      }
+      /* The target takes focus programmatically, so it must not draw a ring. */
+      [id='main'][tabindex='-1'] { outline: none; }
+    </style>
 
     <!-- Nav, scroll reveal and mobile menu. -->
     <script is:inline>

@@ -1,4 +1,45 @@
+# Compound Health. Three indexed pages; everything else on the site carries its
+# own noindex and is listed nowhere here, because a Disallow would stop a crawler
+# reading the noindex it is meant to obey.
+
 User-agent: *
+Allow: /
+
+# AI crawlers, stated rather than left to the wildcard above, so the position is
+# a decision on the record and not an accident. All are allowed today.
+#
+# GPTBot and OAI-SearchBot are not the same thing and must be set separately:
+# GPTBot collects for model training, OAI-SearchBot serves ChatGPT's search
+# results. Disallowing OAI-SearchBot removes this site from ChatGPT answers.
+# Google-Extended governs Gemini training only and has no effect on Google
+# Search ranking or indexing.
+#
+# To decline training while staying visible in AI search, disallow GPTBot,
+# ClaudeBot and Google-Extended and leave OAI-SearchBot and PerplexityBot as
+# they are. That is a commercial decision, not a technical one.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
 Allow: /
 
 Sitemap: https://compoundhealth.io/sitemap.xml

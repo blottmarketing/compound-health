@@ -1,0 +1,76 @@
+---
+/**
+ * 404.
+ *
+ * Hand-written, not generated: the client's drops have no notion of one, so
+ * scripts/port-drop.py neither writes nor overwrites this file. It is built on
+ * SiteLayout and the atoms already in global.css, so it carries the bar, the
+ * menu and the footer and needs no styles of its own beyond the two below.
+ *
+ * A static host serves this for an unknown path and returns a real 404 with it.
+ * Confirm that once the site is deployed: a host that serves it with a 200
+ * instead is the failure this page exists to avoid, and it cannot be tested
+ * from the repo.
+ *
+ * `base` is '/' because every section anchor here has to reach the home page.
+ */
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Page not found | Compound Health"
+  description="That page does not exist. Return to the Compound Health home page."
+  base="/"
+  noindex={true}
+>
+  <section class="nf" id="main" tabindex="-1">
+    <div class="nf-inner">
+      <span class="s-chip">404</span>
+      <h1>That page does not exist</h1>
+      <p class="nf-lead">
+        The link may be out of date, or the address may have been mistyped. Everything else is
+        where it was.
+      </p>
+      <div class="nf-actions">
+        <a href="/" class="btn-solid">Back to the home page</a>
+        <a href="/#joinwaitlist" class="btn-outline">Get access &rarr;</a>
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style is:global>
+  /* global.css fixes the footer at the foot of the window and has only .closer
+     reserve room for it. This page has no closing card, so the footer is made
+     static here exactly as the legal pages do it, or it would sit over the
+     copy. */
+  .site-footer { position: static; }
+
+  /* The bar is fixed, so the column clears its height before it starts. */
+  .nf {
+    padding: calc(1.5rem * 2 + 2.5rem + 6rem) 4.5rem 10rem;
+    background: var(--warm-white);
+  }
+  .nf-inner { max-width: 760px; margin: 0 auto; }
+  .nf h1 {
+    font-size: var(--fs-h2l);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--ls-h2);
+    font-weight: 500;
+    margin: 0.75rem 0 0;
+  }
+  .nf-lead {
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    letter-spacing: var(--ls-body);
+    color: var(--zinc-700);
+    margin: 1rem 0 2.5rem;
+    max-width: 46ch;
+  }
+  .nf-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  @media (max-width: 900px) {
+    .nf { padding: calc(1rem * 2 + 2.5rem + 3rem) 1.25rem 5rem; }
+    .nf h1 { font-size: 2rem; }
+  }
+</style>
