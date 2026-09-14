@@ -127,7 +127,15 @@ Do not build anything new on the legacy system, and do not merge it into `global
 
 The site was rebuilt through 2026 as a set of candidate home-page designs on their own routes, `/v1` (superpower.com), `/v2` (joindawn.com) and `/v3` (lassie.ai), each with its own stylesheet, layout and lockup, reachable from a switcher pill. The client chose v1. On **2026-09-14** its final version arrived as the three-page drop in `client_resources/final_version/`, was ported to `/`, `/privacy-policy` and `/website-terms`, and the three variations were deleted along with the switcher, `src/data/variants.ts` and the variant layouts, stylesheets and components.
 
-Deleted in the same pass, all recoverable from git history before that commit: the pre-launch blog (`/blog`, `/blog/category/*`, `/authors/*`, `src/data/blog.ts`, `BlogLayout`), the internal design-system documentation (`/design-system/*`, `design-system.css`, `DesignSystemLayout`), the private June RIA deck (`/overview-deck-june/`), `LegalLayout`, and the v3 photography. If any of those is wanted back, take it from the commit before, not from a rewrite.
+Deleted in the same pass: the pre-launch blog (`/blog`, `/blog/category/*`, `/authors/*`, `src/data/blog.ts`, `BlogLayout`), the internal design-system documentation (`/design-system/*`, `design-system.css`, `DesignSystemLayout`), the private June RIA deck (`/overview-deck-june/`), `LegalLayout`, and the v3 photography. All of it is recoverable from **`cd10d5e`**, the commit before the port. If any of those is wanted back, take it from there rather than rewriting it.
+
+## Branches
+
+**Work on `main`.** It is the only branch, and it is what mirrors production.
+
+The rebuild was done on a branch called `redesign`, branched from `main` on 2026-09-03. It was merged into `main` on **2026-09-14** (`86d7a16`, then `9540e35`) and deleted the same day, locally and on the remote, once every one of its commits was confirmed present on the pushed `origin/main`. Do not recreate it: the history is linear from here, and a second long-lived branch is what made the variations diverge in the first place.
+
+Nothing is pushed without the user asking. That has not changed.
 
 ## Commands
 
