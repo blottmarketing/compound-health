@@ -36,8 +36,12 @@ interface Props {
 }
 
 const SITE_NAME = 'Compound Health';
+// 155 characters, so it is not truncated in a result. The drop's own is 200 and
+// its <title> 103; both are the client's words, cut rather than rewritten, and
+// both are metadata rather than copy that appears on the page. If the client
+// wants the full sentences back, they belong in the drop, not here.
 const DEFAULT_DESCRIPTION =
-  'A private longevity membership, introduced through the people who already advise you, your firm or your organization. Delivered by clinical partners chosen against one standard. Your data stays yours.';
+  'A private longevity membership, introduced through the people who already advise you. Clinical partners chosen against one standard. Your data stays yours.';
 const DEFAULT_OG = '/og-image.png';
 
 const {
@@ -198,7 +202,7 @@ const organization = {
       </nav>
       <a href={`${base}#joinwaitlist`} class="mobile-nav-cta" id="menuCta" data-menu-link>
         Get access
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
           <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
