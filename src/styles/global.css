@@ -2189,3 +2189,17 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
 .gate { justify-content: center; }
 .gate-flow { margin-top: 0; }
 
+/* The partner notes moved above the stats and had no space under them, so the
+   dark panel sat flush on the stats card. 1rem is the gap .case-band uses
+   between its own halves and the gap .deliver takes from the card above it, so
+   the three blocks now sit on one rhythm. */
+.partner-notes { margin-bottom: 1rem; }
+
+/* Step cards: the titles start at the top, not the bottom.
+   .step-n carried margin-bottom: auto, which pushed the title and body to the
+   foot of a fixed-height card. A two-line title or a four-line body then
+   started higher than its neighbours, so no two titles in the row began at the
+   same height. The copy sits under the number now and the slack falls at the
+   foot of the card, where it is not read as misalignment. */
+.step-n { margin-bottom: 0; }
+

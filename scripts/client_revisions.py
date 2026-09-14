@@ -38,6 +38,26 @@ import sys
 
 APPLIED = []
 
+RECORD_BLOCK = """\
+          <article class="feat-card">
+            <div class="feat-visual tone-ink" aria-hidden="true">
+              <div class="fm-card">
+                <div class="fm-row fm-between"><span class="fm-title">Your clinical record</span><span class="fm-muted">In your name</span></div>
+                <ul class="fm-list">
+                  <li><span class="fm-chip is-moss">Panels</span><span>Every result, every year</span></li>
+                  <li><span class="fm-chip is-moss">Scans</span><span>Imaging and reports</span></li>
+                  <li><span class="fm-chip is-rust">Wearables</span><span>Continuous stream</span></li>
+                </ul>
+                <div class="fm-row fm-between"><span class="fm-muted">Grant a physician access</span><span class="fm-muted">This afternoon</span></div>
+              </div>
+            </div>
+            <div class="feat-copy">
+              <h3 class="feat-name">One record, held in your name</h3>
+              <p class="feat-desc">Every panel, scan and wearable stream lands in a single clinical record. Grant a new physician access in an afternoon, and take it with you if you leave. We do not sell it, license it, or share it with your advisor, your employer or an insurer.</p>
+            </div>
+          </article>
+"""
+
 
 def revise(text, old, new, label, expect=1):
     """Replace `old` with `new`, asserting it appears exactly `expect` times.
@@ -131,6 +151,27 @@ def apply_to_page(content):
         '                    </div>\n',
         '',
         'therapy menu removed from the disciplines panel')
+
+    # The record block, after the biomarker feature. Applied on the user's
+    # instruction of 14 September, having been held back once: its closing
+    # sentence still contradicts the live privacy policy, which permits sharing
+    # health summary data with the advisory firm on explicit consent and permits
+    # transfer on a merger. The policy has to be amended, or the sentence
+    # softened, before this is a promise the site can keep.
+    #
+    # It goes in as a sixth feature card rather than a band across the page:
+    # the grid is two columns, five cards left an orphan row, and six do not.
+    content = revise(
+        content,
+        '<h3 class="feat-name">Full biomarker tracking</h3>',
+        '<h3 class="feat-name">Full biomarker tracking</h3>',
+        'record block anchor check')
+    marker = '</article>'
+    at = content.find('<h3 class="feat-name">Full biomarker tracking</h3>')
+    at = content.find(marker, at) + len(marker)
+    at = content.find('\n', at) + 1
+    content = content[:at] + RECORD_BLOCK + content[at:]
+    APPLIED.append('new block: "One record, held in your name" after the biomarker feature')
 
     # The efficacy figure, neutralised.
     content = revise(
@@ -285,7 +326,7 @@ def apply_to_css(css):
     verbatim above it and every revision-driven rule is visible in one block.
     Appended last, so it wins on order alone and needs no extra specificity.
     """
-    APPLIED.append('stylesheet: case-stats to two columns, therapies panel re-centred')
+    APPLIED.append('stylesheet: case-stats, therapies panel, notes spacing, step-card titles')
     return css + """
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -310,31 +351,34 @@ def apply_to_css(css):
    conditions. The conditions now sit in the middle of the space instead. */
 .gate { justify-content: center; }
 .gate-flow { margin-top: 0; }
+
+/* The partner notes moved above the stats and had no space under them, so the
+   dark panel sat flush on the stats card. 1rem is the gap .case-band uses
+   between its own halves and the gap .deliver takes from the card above it, so
+   the three blocks now sit on one rhythm. */
+.partner-notes { margin-bottom: 1rem; }
+
+/* Step cards: the titles start at the top, not the bottom.
+   .step-n carried margin-bottom: auto, which pushed the title and body to the
+   foot of a fixed-height card. A two-line title or a four-line body then
+   started higher than its neighbours, so no two titles in the row began at the
+   same height. The copy sits under the number now and the slack falls at the
+   foot of the card, where it is not read as misalignment. */
+.step-n { margin-bottom: 0; }
 """
 
-# ── UNAPPLIED ────────────────────────────────────────────────────────────────
+# ── STILL OPEN ───────────────────────────────────────────────────────────────
 #
-# "New block, after the biomarker feature: One record, held in your name. Every
-# panel, scan and wearable stream lands in a single clinical record. Grant a new
-# physician access in an afternoon, and take it with you if you leave. We do not
-# sell it, license it, or share it with your advisor, your employer or an
-# insurer."
-#
-# Not applied. The last sentence contradicts the live privacy policy, which says
-# under Sharing and disclosure:
+# The record block above is live, and its closing sentence contradicts
+# compoundhealth.io/privacy-policy, Sharing and disclosure:
 #
 #   "Wealth advisors: With your explicit consent, relevant health summary data
 #    may be shared with your advisory firm to support integrated financial and
 #    health planning"
 #
-# and permits transfer of personal data on a merger or acquisition under
-# "Business transfers", which sits badly with an unqualified "we do not license
-# it". A home page that promises what its own policy contradicts is a worse
-# outcome than no block at all, and in the US an unsubstantiated data-handling
-# promise is an FTC deception exposure rather than a copy question.
-#
-# Resolve one of two ways, then add the block here:
+# and the same section permits transfer of personal data on a merger, which sits
+# badly with an unqualified "we do not license it". Resolve one of two ways:
 #   * amend the privacy policy so the promise is true, or
-#   * soften the sentence to what the policy actually allows, for example
-#     "never shared with your employer or an insurer, and with your advisory
-#     firm only on your explicit instruction".
+#   * soften the sentence to what the policy allows, for example "never shared
+#     with your employer or an insurer, and with your advisory firm only on your
+#     explicit instruction".
