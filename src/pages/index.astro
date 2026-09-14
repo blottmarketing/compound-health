@@ -290,8 +290,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
                 <span class="prod-title">Diagnostics and screening</span>
               </span>
               <span class="prod-copy">
-                Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and
-                usefulness.
+                                Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and
+                usefulness. Multi-cancer early detection is a laboratory-developed test and is not
+                FDA approved.
               </span>
             </button>
             <button class="prod-item" type="button" role="tab" id="tab-therapies"
@@ -550,7 +551,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         <div class="plans-grid reveal">
           <div class="plan">
             <div class="plan-head"><div class="plan-name">Baseline</div></div>
-            <p class="plan-price-note">Credited toward year one if you continue.</p>
+
             <ul class="plan-features">
               <li>Advanced and standard bloodwork, mobile-drawn at home</li>
               <li>DEXA scan, VO2 max with training zones, resting metabolic rate</li>
@@ -573,7 +574,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             <a href="#joinwaitlist" class="plan-btn is-solid">Get access &rarr;</a>
           </div>
           <div class="plan">
-            <div class="plan-head"><div class="plan-name">Eternal</div></div>
+            <div class="plan-head"><div class="plan-name">Private</div></div>
             <p class="plan-price-note">Top of practice, always on.</p>
             <ul class="plan-features">
               <li>Everything in Optimize</li>
@@ -585,6 +586,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             <a href="#joinwaitlist" class="plan-btn">Contact us &rarr;</a>
           </div>
         </div>
+        <p class="family-note">Multi-cancer early detection is a laboratory-developed test and is not FDA approved.</p>
         <p class="family-note">Family and household coverage is available as an extension across all tiers. Terms are structured with each partner. Ask your introducer, or ask us.</p>
       </div>
     </section>
@@ -646,12 +648,12 @@ import SiteLayout from '../layouts/SiteLayout.astro';
                 <option value="" disabled selected>Select a tier</option>
                 <option value="baseline">Baseline</option>
                 <option value="optimize">Optimize</option>
-                <option value="eternal">Eternal</option>
+                <option value="eternal">Private</option>
               </select>
             </div>
             <div class="wf-field" data-shown-to="client">
-              <label class="wf-label" for="wf-advisor">Referring advisor or firm (optional)</label>
-              <input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" />
+              <label class="wf-label" for="wf-advisor">Referring advisor or firm</label>
+              <input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" required />
             </div>
 
             <!-- Partner path. Swaps in for the two client fields. -->
@@ -1090,11 +1092,12 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             emailInput?.focus();
             return;
           }
-          if (isPartner) {
-            if (!org) { orgInput?.focus(); return; }
-          } else if (!tier) {
-            tierInput?.focus();
-            return;
+                    if (isPartner) {
+          if (!org) { orgInput?.focus(); return; }
+          } else {
+          if (!tier) { tierInput?.focus(); return; }
+          // Introduced, not sold: a client submission names its introducer.
+          if (!advisor) { advisorInput?.focus(); return; }
           }
 
           // Submitting state
@@ -1249,7 +1252,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           </p>
           <div class="closer-btns">
             <a href="#joinwaitlist" class="btn-solid">Get access</a>
-            <a href="#partners" class="btn-outline">For advisors and firms &#8594;</a>
+
           </div>
         </div>
       </div>

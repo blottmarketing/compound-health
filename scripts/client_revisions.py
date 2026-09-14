@@ -247,6 +247,96 @@ def apply_to_page(content):
         'in the path of their care or their record.</p>',
         'partners: data firewall note rewritten (PDF)')
 
+
+    # ── "Fix this week", from the PDF ───────────────────────────────────
+
+    # The tier name. "Eternal" reads as an immortality claim; the PDF offers
+    # Executive, Private or Full Practice. Private was chosen: it sits beside
+    # Baseline and Optimize and it is the site's own word for the membership.
+    # Only the label changes. The option's value stays "eternal" so the Apps
+    # Script behind the form, and every row already in the sheet, are untouched;
+    # rename it there too if the client wants the stored value to match.
+    content = revise(
+        content,
+        '<div class="plan-name">Eternal</div>',
+        '<div class="plan-name">Private</div>',
+        'membership: "Eternal" tier renamed Private (PDF)')
+    content = revise(
+        content,
+        '<option value="eternal">Eternal</option>',
+        '<option value="eternal">Private</option>',
+        'form: tier option relabelled Private (PDF)')
+
+    # The Baseline price note implies a figure the page never gives.
+    content = revise(
+        content,
+        '            <p class="plan-price-note">Credited toward year one if you continue.</p>\n',
+        '',
+        'membership: "Credited toward year one" removed (PDF)')
+
+    # The screening claim. Multi-cancer early detection appears four times, not
+    # three as the brief says: once in the disciplines copy, twice in the tier
+    # lists, and once inside an aria-hidden figure that repeats the discipline's
+    # own words. The qualifier goes inline where the claim is introduced, and as
+    # a note under the tiers, which is what the two tier mentions sit in. The
+    # figure is decoration and is left alone, as with the biological-age label.
+    content = revise(
+        content,
+        '                Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and\n'
+        '                usefulness.',
+        '                Baseline testing, multi-cancer early detection and imaging, chosen for accuracy and\n'
+        '                usefulness. Multi-cancer early detection is a laboratory-developed test and is not\n'
+        '                FDA approved.',
+        'disciplines: screening qualifier added (PDF)')
+
+    content = revise(
+        content,
+        '<p class="family-note">Family and household coverage',
+        '<p class="family-note">Multi-cancer early detection is a laboratory-developed test and is '
+        'not FDA approved.</p>\n'
+        '        <p class="family-note">Family and household coverage',
+        'membership: screening qualifier added under the tiers (PDF)')
+
+    # The referring advisor becomes required for clients. The page promises
+    # introduced, not sold, and an optional field said the opposite. The label
+    # drops "(optional)", the input carries required, and the submit handler
+    # checks it in the client branch beside the tier.
+    content = revise(
+        content,
+        '<label class="wf-label" for="wf-advisor">Referring advisor or firm (optional)</label>',
+        '<label class="wf-label" for="wf-advisor">Referring advisor or firm</label>',
+        'form: advisor label no longer says optional (PDF)')
+    content = revise(
+        content,
+        '<input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" />',
+        '<input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" required />',
+        'form: advisor field required (PDF)')
+    content = revise(
+        content,
+        '          if (isPartner) {\n'
+        '            if (!org) { orgInput?.focus(); return; }\n'
+        '          } else if (!tier) {\n'
+        '            tierInput?.focus();\n'
+        '            return;\n'
+        '          }',
+        '          if (isPartner) {\n'
+        '            if (!org) { orgInput?.focus(); return; }\n'
+        '          } else {\n'
+        '            if (!tier) { tierInput?.focus(); return; }\n'
+        '            // Introduced, not sold: a client submission names its introducer.\n'
+        '            if (!advisor) { advisorInput?.focus(); return; }\n'
+        '          }',
+        'form: advisor required in the submit handler (PDF)')
+
+    # The closing card carried two actions side by side, which splits intent at
+    # the point of highest commitment. The partner route is reachable from the
+    # bar, the footer and the Partners section itself.
+    content = revise(
+        content,
+        '\n            <a href="#partners" class="btn-outline">For advisors and firms &#8594;</a>',
+        '',
+        'closing card: second CTA removed (PDF)')
+
     content = _move_partner_notes_up(content)
     return content
 
