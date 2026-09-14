@@ -37,7 +37,9 @@ Five changes are made in the port and no others:
      target it lands on (the hero section, and <main> on the legal pages). The
      canonical also drops its trailing slash so it agrees with sitemap.xml, and
      every unnamed inline <svg> is marked aria-hidden, which the drop does for
-     its logo and its burger but missed on four icons.
+     its logo and its burger but missed on four icons. The footer's legal row
+     gains a Sitemap link, and the bar's For advisors link is removed, that
+     route now redirecting to the home page.
 """
 
 import base64
@@ -295,6 +297,12 @@ def main():
     footer = footer.replace('href="https://compoundhealth.io/for-advisors"', 'href="/for-advisors"')
     footer = footer.replace('href="privacy-policy.html"', 'href="/privacy-policy"')
     footer = footer.replace('href="website-terms.html"', 'href="/website-terms"')
+    # A Sitemap link in the legal row. It points at the XML itself, which is what
+    # public/sitemap.xml is; there is no HTML sitemap on a four-page site.
+    footer = footer.replace(
+        '<a href="/website-terms">Website Terms</a>',
+        '<a href="/website-terms">Website Terms</a>\n          '
+        '<a href="/sitemap.xml">Sitemap</a>')
     # Section anchors resolve against the home page. On the home page `base` is
     # empty and they stay plain hashes, which neither reload it nor leave it.
     footer = anchors(footer)
@@ -333,6 +341,15 @@ const { base = '' } = Astro.props;
 
     chrome = nav + '\n\n' + menu
     chrome = chrome.replace(svg, '<Logo />')
+    # The bar's For advisors link is removed rather than rewritten: /for-advisors
+    # redirects to the home page (astro.config.mjs), so the link went back to the
+    # page the reader was already on. The footer's own "For advisors and firms"
+    # is left as it is, which is a separate call.
+    chrome, dropped = re.subn(
+        r'\s*<a href="https://compoundhealth\.io/for-advisors" class="nav-text-link">'
+        r'For advisors</a>', '', chrome)
+    if dropped != 1:
+        sys.exit('the bar\'s For advisors link was not found; the drop has changed shape')
     chrome = chrome.replace('href="https://compoundhealth.io/for-advisors"', 'href="/for-advisors"')
     chrome = anchors(chrome)
     chrome = hide_decorative_svgs(chrome, 'the bar and the menu')
