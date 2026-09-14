@@ -1,8 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /overview-deck-june/
-Disallow: /v1/
-Disallow: /v2/
-Disallow: /v3/
 
 Sitemap: https://compoundhealth.io/sitemap.xml
