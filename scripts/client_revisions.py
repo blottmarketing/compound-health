@@ -346,7 +346,7 @@ def apply_to_page(content):
         '',
         'closing card: second CTA removed (PDF)')
 
-    content = _move_partner_notes_up(content)
+    content = _split_partner_notes(content)
     return content
 
 
@@ -377,21 +377,21 @@ def _drop_hero_strip(content):
     return content[:start] + content[end:]
 
 
-def _move_partner_notes_up(content):
-    """Put "Nothing crosses the line" at the top of the Partners section.
+def _split_partner_notes(content):
+    """Lift "Nothing crosses the line" out on its own, above the stats.
 
-    The three notes are one composed block on a dark panel, a three-column grid
-    with its own background: lifting one note out of it leaves a one-item grid
-    above and a two-item grid below, and both read as broken. So the block moves
-    up whole, above the stats, and "Nothing crosses the line" is reordered to
-    lead it. That puts the statement where the client asked for it without
-    dismantling the composition.
+    The client asked for that one note at the top of the Partners section, above
+    the stats, so that is what moves: it becomes its own full-width band, and the
+    two that remain stay where they were as a pair. The first attempt moved the
+    whole three-up because they are one composed panel on a dark ground; the
+    client's answer was that the single note is what was meant, so the panel is
+    split and both halves are re-declared in the stylesheet, .is-lead as one
+    column and .is-pair as two.
     """
-    m = re.search(r'[ \t]*<div class="partner-notes[^"]*">', content)
+    m = re.search(r'[ \t]*<div class="partner-notes([^"]*)">', content)
     if not m:
         sys.exit('client revision "partner notes": the .partner-notes block was not found')
     start = content.rfind('\n', 0, m.start()) + 1
-
     depth, end = 0, None
     for t in re.finditer(r'<(/?)div\b[^>]*?(/?)>', content[m.start():]):
         if t.group(2) == '/':
@@ -406,25 +406,54 @@ def _move_partner_notes_up(content):
     block = content[start:end]
 
     pieces = re.split(r'(?=[ \t]*<div class="partner-note">)', block)
-    notes = [p for p in pieces if '<div class="partner-note">' in p]
+    notes = [x for x in pieces if '<div class="partner-note">' in x]
     if len(notes) != 3:
         sys.exit(f'client revision "partner notes": expected 3 notes, found {len(notes)}')
     lead = [n for n in notes if 'Nothing crosses the line' in n]
     if len(lead) != 1:
         sys.exit('client revision "partner notes": "Nothing crosses the line" not found exactly once')
     rest = [n for n in notes if n is not lead[0]]
-    head = pieces[0]
-    tail = ''
-    # The closing </div> of the wrapper rides on the last note; keep it there.
-    reordered = head + ''.join(lead + rest) + tail
 
-    content = content[:start] + content[end:]
+    # The closing </div> of the wrapper rides on the last note, so rebuild both
+    # wrappers from the opening tag rather than reusing the original text.
+    open_tag = re.search(r'[ \t]*<div class="partner-notes[^"]*">', block).group(0)
+    indent = open_tag[:len(open_tag) - len(open_tag.lstrip())]
+    close = indent + '</div>\n'
+
+    def balance(piece):
+        """One note, trimmed of any wrapper close that rode along with it.
+
+        The three notes are split on their opening tags, so the last piece
+        carries the wrapper's own </div> as well as its own. Count and drop the
+        surplus rather than stripping a fixed number, which is what broke the
+        first attempt: the note that led the block had no surplus to drop and
+        lost its own closing tag instead.
+        """
+        while True:
+            opens = len(re.findall(r'<div\b[^>]*?(?<!/)>', piece))
+            closes = len(re.findall(r'</div>', piece))
+            if closes <= opens:
+                return piece.rstrip('\n') + '\n'
+            piece = re.sub(r'\s*</div>\s*$', '\n', piece)
+
+    def wrap(kind, items):
+        head = open_tag.replace('class="partner-notes', f'class="partner-notes {kind}')
+        body = ''.join(balance(x) for x in items)
+        out = head + '\n' + body + close
+        if len(re.findall(r'<div\b[^>]*?(?<!/)>', out)) != len(re.findall(r'</div>', out)):
+            sys.exit(f'client revision "partner notes": the {kind} block is unbalanced')
+        return out
+
+    lead_block = wrap('is-lead', lead)
+    pair_block = wrap('is-pair', rest)
+
+    content = content[:start] + pair_block + content[end:]
     at = content.find('<!-- Proof block: the first partner engagement')
     if at < 0:
         sys.exit('client revision "partner notes": the proof block comment was not found')
     at = content.rfind('\n', 0, at) + 1
-    APPLIED.append('partners: notes moved above the stats, "Nothing crosses the line" first')
-    return content[:at] + reordered + '\n' + content[at:]
+    APPLIED.append('partners: "Nothing crosses the line" lifted out as its own band above the stats')
+    return content[:at] + lead_block + '\n' + content[at:]
 
 
 def apply_to_footer(footer):
@@ -485,11 +514,21 @@ def apply_to_css(css):
 .gate { justify-content: center; }
 .gate-flow { margin-top: 0; }
 
-/* The partner notes moved above the stats and had no space under them, so the
-   dark panel sat flush on the stats card. 1rem is the gap .case-band uses
-   between its own halves and the gap .deliver takes from the card above it, so
-   the three blocks now sit on one rhythm. */
-.partner-notes { margin-bottom: 1rem; }
+/* The partner notes are two blocks now, not one: the data firewall on its own
+   above the stats, and the remaining pair where the three used to be. Both are
+   declared here because .partner-notes is a three-column grid everywhere above
+   900px and neither half is three. The 1rem under the lead band is the gap
+   .case-band uses between its own halves, so the band, the stats and the block
+   below them sit on one rhythm. The 900px stack is restated because it is
+   declared earlier in the file than this block. */
+.partner-notes.is-lead { grid-template-columns: 1fr; margin-top: 0; margin-bottom: 1rem; }
+.partner-notes.is-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* One note across 1120px is a 130-character line. Hold it to a reading measure;
+   the note keeps the band's full width, its sentence does not. */
+.partner-notes.is-lead .partner-note p { max-width: 68ch; }
+@media (max-width: 900px) {
+  .partner-notes.is-lead, .partner-notes.is-pair { grid-template-columns: 1fr; }
+}
 
 /* Step cards: the titles start at the top, not the bottom.
    .step-n carried margin-bottom: auto, which pushed the title and body to the

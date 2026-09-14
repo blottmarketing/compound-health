@@ -2189,11 +2189,21 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
 .gate { justify-content: center; }
 .gate-flow { margin-top: 0; }
 
-/* The partner notes moved above the stats and had no space under them, so the
-   dark panel sat flush on the stats card. 1rem is the gap .case-band uses
-   between its own halves and the gap .deliver takes from the card above it, so
-   the three blocks now sit on one rhythm. */
-.partner-notes { margin-bottom: 1rem; }
+/* The partner notes are two blocks now, not one: the data firewall on its own
+   above the stats, and the remaining pair where the three used to be. Both are
+   declared here because .partner-notes is a three-column grid everywhere above
+   900px and neither half is three. The 1rem under the lead band is the gap
+   .case-band uses between its own halves, so the band, the stats and the block
+   below them sit on one rhythm. The 900px stack is restated because it is
+   declared earlier in the file than this block. */
+.partner-notes.is-lead { grid-template-columns: 1fr; margin-top: 0; margin-bottom: 1rem; }
+.partner-notes.is-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* One note across 1120px is a 130-character line. Hold it to a reading measure;
+   the note keeps the band's full width, its sentence does not. */
+.partner-notes.is-lead .partner-note p { max-width: 68ch; }
+@media (max-width: 900px) {
+  .partner-notes.is-lead, .partner-notes.is-pair { grid-template-columns: 1fr; }
+}
 
 /* Step cards: the titles start at the top, not the bottom.
    .step-n carried margin-bottom: auto, which pushed the title and body to the
