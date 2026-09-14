@@ -2165,3 +2165,51 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
   -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
   isolation: isolate;
 }
+
+/* ══════════════════════════════════════════════════════════════════════
+   CLIENT REVISIONS, 14 September 2026
+   Appended by scripts/client_revisions.py. Consequences of the markup
+   changes in that file, not design decisions of their own. Do not edit by
+   hand: edit the script and re-port.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* The partners proof block lost its "First of its kind" cell, so the three
+   columns are two. Without this the row keeps an empty third column and the
+   two figures sit in the left two-thirds of the card. The 900px stack is
+   restated because it is declared earlier in the file than this block. */
+.case-band .case-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 900px) {
+  .case-band .case-stats { grid-template-columns: 1fr; }
+}
+
+/* The therapies panel lost its chip strip, and .gate-flow was pinned to the
+   foot of a stretching column by margin-top: auto. With nothing above it that
+   left roughly 200px of empty gradient between the card's head and its two
+   conditions. The conditions now sit in the middle of the space instead. */
+.gate { justify-content: center; }
+.gate-flow { margin-top: 0; }
+
+/* The partner notes are two blocks now, not one: the data firewall on its own
+   above the stats, and the remaining pair where the three used to be. Both are
+   declared here because .partner-notes is a three-column grid everywhere above
+   900px and neither half is three. The 1rem under the lead band is the gap
+   .case-band uses between its own halves, so the band, the stats and the block
+   below them sit on one rhythm. The 900px stack is restated because it is
+   declared earlier in the file than this block. */
+.partner-notes.is-lead { grid-template-columns: 1fr; margin-top: 0; margin-bottom: 1rem; }
+.partner-notes.is-pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* One note across 1120px is a 130-character line. Hold it to a reading measure;
+   the note keeps the band's full width, its sentence does not. */
+.partner-notes.is-lead .partner-note p { max-width: 68ch; }
+@media (max-width: 900px) {
+  .partner-notes.is-lead, .partner-notes.is-pair { grid-template-columns: 1fr; }
+}
+
+/* Step cards: the titles start at the top, not the bottom.
+   .step-n carried margin-bottom: auto, which pushed the title and body to the
+   foot of a fixed-height card. A two-line title or a four-line body then
+   started higher than its neighbours, so no two titles in the row began at the
+   same height. The copy sits under the number now and the slack falls at the
+   foot of the card, where it is not read as misalignment. */
+.step-n { margin-bottom: 0; }
+

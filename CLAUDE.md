@@ -88,7 +88,7 @@ The client sends new HTML. Do this, in order:
 7. Update `PAGES.xlsx` and `public/sitemap.xml` if any page was added, removed or renamed.
 8. Commit, referencing what the drop changed.
 
-The script makes seven changes to the drop and no others. They are listed in its docstring; the two worth knowing here are that fonts, photographs and icons are linked from `public/` rather than embedded as base64, and that the legal pages' section anchors take a `base` of `/` so they reach the home page (the drop leaves bare `#how` hashes in the legal footer, which go nowhere there).
+The script makes eight changes to the drop and no others. They are listed in its docstring; the two worth knowing here are that fonts, photographs and icons are linked from `public/` rather than embedded as base64, and that the legal pages' section anchors take a `base` of `/` so they reach the home page (the drop leaves bare `#how` hashes in the legal footer, which go nowhere there).
 
 ## The design system
 
@@ -133,11 +133,15 @@ Deleted in the same pass: the pre-launch blog (`/blog`, `/blog/category/*`, `/au
 
 ## Branches
 
-**Work on `main`.** It is the only branch, and it is what mirrors production.
+Two branches, and the difference matters.
 
-The rebuild was done on a branch called `redesign`, branched from `main` on 2026-09-03. It was merged into `main` on **2026-09-14** (`86d7a16`, then `9540e35`) and deleted the same day, locally and on the remote, once every one of its commits was confirmed present on the pushed `origin/main`. Do not recreate it: the history is linear from here, and a second long-lived branch is what made the variations diverge in the first place.
+**`main` mirrors production.** It is what compoundhealth.io serves. Do not commit to it directly and do not push it without the user asking: a push to `main` is a release.
 
-Nothing is pushed without the user asking. That has not changed.
+**`staging` is where work happens.** Cut from `main` on **2026-09-14** to hold the client's copy and claims round, which is reviewed rather than shipped. Commit here, push here, and merge into `main` only when the client signs the round off. As of that date `staging` is six commits ahead of `main`, all of them the 14 September revisions.
+
+The rebuild before that ran on a branch called `redesign`, cut from `main` on 2026-09-03. It was merged into `main` on 2026-09-14 (`86d7a16`, then `9540e35`) and deleted the same day, locally and on the remote, once every one of its commits was confirmed present on the pushed `origin/main`. Do not recreate it; `staging` is its successor.
+
+Anything deleted in the port is recoverable from **`cd10d5e`**, the commit before it. Take the blog, the design-system documentation or the June deck from there rather than rewriting them.
 
 ## Commands
 
