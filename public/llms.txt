@@ -1,0 +1,21 @@
+# Compound Health
+
+> A private longevity membership, introduced through the people who already advise you, your firm or your organization. Diagnostics, continuous tracking and personalized protocols delivered by clinical partners chosen against one standard. Members own their own data.
+
+Compound Health, Inc. is a US company. It does not sell to individuals directly: membership arrives through a wealth advisor, a firm, an employer or an executive network, and the clinical care is delivered by partner providers rather than by Compound Health itself.
+
+## Pages
+
+- [Home](https://compoundhealth.io/): what the membership is, how it works, what it includes, the partner model, and the access form.
+- [Privacy Policy](https://compoundhealth.io/privacy-policy): what personal and health data is collected, how it is used and shared, and the rights members hold over it.
+- [Website Terms](https://compoundhealth.io/website-terms): the terms governing use of the website. Membership itself is governed by separate Membership Terms and Conditions, which are not published here.
+
+## Optional
+
+- [Full text](https://compoundhealth.io/llms-full.txt): the readable copy of all three pages in one file.
+
+## Notes
+
+- Nothing on this site is medical advice, and no clinical relationship is created by reading it or by requesting access.
+- Pricing, tiers and partner commercial terms are not published. Requests go through the access form on the home page.
+- There is no blog, no documentation and no product login on this domain.

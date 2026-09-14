@@ -1,0 +1,16 @@
+{
+  "name": "Compound Health",
+  "short_name": "Compound Health",
+  "description": "A private longevity membership, introduced through the people who already advise you, your firm or your organization.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#ffffff",
+  "theme_color": "#83392c",
+  "icons": [
+    { "src": "/favicon-16x16.png", "sizes": "16x16", "type": "image/png" },
+    { "src": "/favicon-32x32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon-black.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

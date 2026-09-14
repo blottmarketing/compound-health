@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css';
+import '../styles/legacy.css';
 
 interface Props {
   title: string;
@@ -22,7 +22,9 @@ const {
 
 // Astro.site is set in astro.config.mjs and used for absolute URLs
 const siteOrigin = Astro.site ?? new URL('https://compoundhealth.io');
-const canonical  = new URL(Astro.url.pathname, siteOrigin).toString();
+// No trailing slash, so the canonical agrees with public/sitemap.xml and with
+// SiteLayout. The root keeps its own '/'.
+const canonical  = new URL(Astro.url.pathname.replace(/(.)\/$/, '$1'), siteOrigin).toString();
 const ogImage    = new URL(image, siteOrigin).toString();
 ---
 
@@ -41,7 +43,9 @@ const ogImage    = new URL(image, siteOrigin).toString();
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#2D5016" />
 
     <!-- Open Graph -->
@@ -70,8 +74,36 @@ const ogImage    = new URL(image, siteOrigin).toString();
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
+
+    <style is:global>
+      .skip-link {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -120%);
+        z-index: 2000;
+        padding: 12px 20px;
+        border-radius: 0 0 10px 10px;
+        background: #18181b;
+        color: #ffffff;
+        font-size: 0.875rem;
+        text-decoration: none;
+        transition: transform 0.18s ease-out;
+      }
+      .skip-link:focus-visible {
+        transform: translate(-50%, 0);
+        outline: 2px solid #ffffff;
+        outline-offset: -6px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .skip-link { transition: none; }
+      }
+      [id='main'][tabindex='-1'] { outline: none; }
+    </style>
   </head>
   <body>
+    <!-- Skip link, matching SiteLayout. This layout serves /for-advisors alone. -->
+    <a class="skip-link" href="#main">Skip to content</a>
 
     <nav class="main-nav">
       <a href="/" class="nav-logo">Compound <em>Health</em></a>
