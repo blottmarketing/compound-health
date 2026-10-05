@@ -20,7 +20,7 @@ first, because a re-download arrives under a new name and is not a revision.
 
     python3 scripts/port-drop.py
 
-Five changes are made in the port and no others:
+Nine changes are made in the port and no others:
   1. The two Aeonik faces are linked from /fonts/ rather than embedded as base64.
   2. The five photographs are linked from /images/ rather than embedded as base64.
   3. The favicon and the touch icon are linked from / rather than embedded.
@@ -44,6 +44,13 @@ Five changes are made in the port and no others:
      its logo and its burger but missed on four icons. The footer's legal row
      gains a Sitemap link, and the bar's For advisors link is removed, that
      route now redirecting to the home page.
+  9. Every comment the drop carries is removed: <!-- --> in its markup, /* */
+     in its stylesheets, and // and /* */ in its scripts. They are working notes
+     rather than part of the site, and the markup and script ones ship in the
+     page source. The comments this script writes itself are kept. Before
+     anything is written, the whole output is checked against the term list in
+     client_resources/reference-terms.txt (not committed), and a match stops the
+     port with the files on disk untouched.
 """
 
 import base64
@@ -89,12 +96,22 @@ def read(path):
         return fh.read()
 
 
+# Every output is held here until the whole tree has been generated and checked
+# (check_terms), so a failed check leaves the files in place untouched.
+OUTPUTS = {}
+
+
 def write(rel, text):
-    path = os.path.join(ROOT, rel)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, 'w', encoding='utf-8') as fh:
-        fh.write(text)
-    print(f'  wrote {rel}  ({len(text):,} bytes)')
+    OUTPUTS[rel] = text
+
+
+def flush():
+    for rel, text in OUTPUTS.items():
+        path = os.path.join(ROOT, rel)
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, 'w', encoding='utf-8') as fh:
+            fh.write(text)
+        print(f'  wrote {rel}  ({len(text):,} bytes)')
 
 
 def style_blocks(html):
@@ -168,6 +185,115 @@ def hide_decorative_svgs(markup, where):
     if sub.count:
         print(f'  marked {sub.count} unnamed svg(s) decorative in {where}')
     return out
+
+
+_GONE = '\x00'
+
+
+def _tidy(text):
+    """Close up the holes the strippers leave: a line that held nothing but a
+    comment goes, a trailing comment takes its padding with it, and the blank
+    lines either side of a removed block fold to one."""
+    out = []
+    for line in text.split('\n'):
+        if _GONE in line:
+            if not line.replace(_GONE, '').strip():
+                continue
+            line = line.replace(_GONE, '').rstrip()
+        out.append(line)
+    return re.sub(r'\n[ \t]*\n(?:[ \t]*\n)+', '\n\n', '\n'.join(out))
+
+
+def _strip_c_like(code, line_comments):
+    """Remove /* */ comments (and // ones when `line_comments`), leaving strings,
+    template literals and regex literals untouched."""
+    out, i, n = [], 0, len(code)
+    prev = ''  # last significant character, to tell a regex from a division
+    while i < n:
+        c = code[i]
+        if c in '\'"`':
+            j = i + 1
+            while j < n and code[j] != c:
+                j += 2 if code[j] == '\\' else 1
+            out.append(code[i:j + 1])
+            prev, i = c, j + 1
+        elif code.startswith('/*', i):
+            j = code.find('*/', i + 2)
+            i = n if j < 0 else j + 2
+            out.append(_GONE)
+        elif line_comments and code.startswith('//', i):
+            j = code.find('\n', i)
+            i = n if j < 0 else j
+            out.append(_GONE)
+        elif line_comments and c == '/' and (prev == '' or prev in '(,=:[!&|?{};+-*%<>~^'):
+            j, in_class = i + 1, False
+            while j < n and (in_class or code[j] != '/') and code[j] != '\n':
+                if code[j] == '\\':
+                    j += 1
+                elif code[j] == '[':
+                    in_class = True
+                elif code[j] == ']':
+                    in_class = False
+                j += 1
+            out.append(code[i:j + 1])
+            prev, i = '/', j + 1
+        else:
+            out.append(c)
+            if not c.isspace():
+                prev = c
+            i += 1
+    return ''.join(out)
+
+
+def strip_css_comments(css):
+    return _tidy(_strip_c_like(css, line_comments=False))
+
+
+def strip_js_comments(js):
+    return _tidy(_strip_c_like(js, line_comments=True))
+
+
+def strip_markup_comments(markup):
+    """Remove the drop's comments from markup: <!-- --> in the markup itself,
+    and the script and style comments inside any <script> or <style> in it."""
+    parts = re.split(r'(<(script|style)\b[^>]*>[\s\S]*?</\2>)', markup)
+    out = []
+    # re.split with two groups yields text, block, tag name, text, block, ...
+    for k in range(0, len(parts), 3):
+        out.append(re.sub(r'<!--[\s\S]*?-->', _GONE, parts[k]))
+        if k + 1 < len(parts):
+            block = parts[k + 1]
+            open_end = block.find('>') + 1
+            close_at = block.rfind('</')
+            body = block[open_end:close_at]
+            body = (_strip_c_like(body, True) if parts[k + 2] == 'script'
+                    else _strip_c_like(body, False))
+            out.append(block[:open_end] + body + block[close_at:])
+    return _tidy(''.join(out))
+
+
+# Terms that must not appear anywhere in the generated tree. The list lives in
+# client_resources/, which is not committed, so the terms are never written into
+# this repository themselves. One term per line; blank lines and # lines skipped.
+TERM_LIST = os.path.join(ROOT, 'client_resources', 'reference-terms.txt')
+
+
+def check_terms(outputs):
+    if not os.path.exists(TERM_LIST):
+        sys.exit(f'{os.path.relpath(TERM_LIST, ROOT)} is missing; the port will not run '
+                 'without its term list.')
+    terms = [t.strip() for t in read(TERM_LIST).split('\n')
+             if t.strip() and not t.lstrip().startswith('#')]
+    found = []
+    for rel, text in outputs.items():
+        for term in terms:
+            for m in re.finditer(re.escape(term), text, re.I):
+                line = text.count('\n', 0, m.start()) + 1
+                found.append(f'  {rel}:{line}: {term!r}')
+    if found:
+        sys.exit('a listed term survived into the output; nothing was written:\n'
+                 + '\n'.join(found))
+    print(f'  checked {len(outputs)} files against {len(terms)} listed term(s): clean')
 
 
 def anchors(markup):
@@ -262,11 +388,12 @@ def main():
  * client_resources/final_version/. Do not edit by hand: a new drop is ported by
  * running that script again, so this file cannot drift from what was delivered.
  *
- * This is the drop's own <style> block verbatim. The system: superpower.com's
- * type scale and zinc palette, the client's brand tones (rust, umber, bronze,
- * moss, sand) carrying the accent, Aeonik at 400 and 500, one white ground, a
- * transparent bar that collapses into a blurred pill, photographic cards opening
- * and closing the page, and a fixed footer the closing card uncovers.
+ * This is the drop's own <style> block, with its comments removed. The system:
+ * a fluid type scale and a zinc palette, the client's brand tones (rust, umber,
+ * bronze, moss, sand) carrying the accent, Aeonik at 400 and 500, one white
+ * ground, a transparent bar that collapses into a blurred pill, photographic
+ * cards opening and closing the page, and a fixed footer the closing card
+ * uncovers.
  */
 
 """
@@ -279,6 +406,7 @@ def main():
     if dead:
         print(f'  dropped {dead} dead --hero-image declaration')
     css = client_revisions.apply_to_css(css)
+    css = strip_css_comments(css)
     write('src/styles/global.css', header + fonts + css + '\n')
 
     # ── src/components/Logo.astro ────────────────────────────────────────
@@ -296,7 +424,7 @@ def main():
  */
 ---
 
-''' + svg + '\n'
+''' + strip_markup_comments(svg) + '\n'
     write('src/components/Logo.astro', logo)
 
     # ── src/components/Footer.astro ──────────────────────────────────────
@@ -316,6 +444,7 @@ def main():
     footer = anchors(footer)
     footer = hide_decorative_svgs(footer, 'the footer')
     footer = client_revisions.apply_to_footer(footer)
+    footer = strip_markup_comments(footer)
     footer_astro = '''---
 /**
  * The site footer. Generated by scripts/port-drop.py from the client's drop
@@ -362,6 +491,7 @@ const { base = '' } = Astro.props;
     chrome = chrome.replace('href="https://compoundhealth.io/for-advisors"', 'href="/for-advisors"')
     chrome = anchors(chrome)
     chrome = hide_decorative_svgs(chrome, 'the bar and the menu')
+    chrome = strip_markup_comments(chrome)
 
     layout = '''---
 /**
@@ -571,7 +701,7 @@ LAYOUTJS
 </html>
 '''
     layout = layout.replace('CHROME', reindent(chrome, 4))
-    layout = layout.replace('LAYOUTJS', reindent(layout_js, 6))
+    layout = layout.replace('LAYOUTJS', reindent(strip_js_comments(layout_js), 6))
     write('src/layouts/SiteLayout.astro', layout)
 
     # ── src/pages/index.astro ────────────────────────────────────────────
@@ -597,6 +727,7 @@ LAYOUTJS
         sys.exit('the hero section was not found, so the skip link has no target')
     content = hide_decorative_svgs(content, 'the home page')
     content = client_revisions.apply_to_page(content)
+    content = strip_markup_comments(content)
 
     page = '''---
 /**
@@ -638,6 +769,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         main = main.replace('href="website-terms.html"', 'href="/website-terms"')
         main = main.replace('href="index.html"', 'href="/"')
         main = re.sub(r'href="index\.html#', 'href="/#', main)
+        main = strip_markup_comments(main)
         astro = f'''---
 /**
  * {title.split(' |')[0]}. Copy is the client's, verbatim.
@@ -658,7 +790,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 </SiteLayout>
 
 <style is:global>
-''' + textwrap.dedent(legal_css).strip() + '''
+''' + strip_css_comments(textwrap.dedent(legal_css)).strip() + '''
 </style>
 '''
         write(rel, astro)
@@ -677,6 +809,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         for label in client_revisions.APPLIED:
             print(f'    - {label}')
 
+    check_terms(OUTPUTS)
+    flush()
     print('\nported.')
 
 

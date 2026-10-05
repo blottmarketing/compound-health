@@ -32,6 +32,7 @@ compound-health/
 │   │   ├── privacy-policy.html
 │   │   └── website-terms.html
 │   ├── logo-new.svg            # the lockup, as delivered
+│   ├── reference-terms.txt     # terms the port refuses to emit; this folder is not committed
 │   └── ...                     # earlier drops and the original brief, kept for reference
 ├── public/                     # static assets copied as-is to /
 │   ├── favicon.* / apple-touch-icon.png / logo.png / site.webmanifest
@@ -73,6 +74,7 @@ compound-health/
 7. **American English** in all prose. Compound Health is US-based and serves US clients, so the entire site uses American spelling (optimize, color, personalized, program, advisor). Legal copy already uses US spelling.
 8. **No em dashes** in copy.
 9. **Copy is the client's.** Do not rewrite, shorten, add or remove marketing copy, headings or CTA labels. If a layout needs different words, raise it rather than changing them.
+10. **Name no other website.** Not in code, comments, commit messages, docs, this file or `PAGES.xlsx`. Describe a design in its own terms: "a transparent bar that collapses into a blurred pill", never "after" another site or "that site's" values. Everything here is public, and comments in markup and scripts ship in the page source. The port enforces this for the generated tree against the term list in `client_resources/reference-terms.txt`, which is not committed; extend that list rather than writing a term into the repo.
 
 ## Porting a new drop
 
@@ -88,13 +90,12 @@ The client sends new HTML. Do this, in order:
 7. Update `PAGES.xlsx` and `public/sitemap.xml` if any page was added, removed or renamed.
 8. Commit, referencing what the drop changed.
 
-The script makes eight changes to the drop and no others. They are listed in its docstring; the two worth knowing here are that fonts, photographs and icons are linked from `public/` rather than embedded as base64, and that the legal pages' section anchors take a `base` of `/` so they reach the home page (the drop leaves bare `#how` hashes in the legal footer, which go nowhere there).
+The script makes nine changes to the drop and no others. They are listed in its docstring; the three worth knowing here are that every comment the drop carries is removed, so none of the designer's working notes reach the page source, and that fonts, photographs and icons are linked from `public/` rather than embedded as base64, and that the legal pages' section anchors take a `base` of `/` so they reach the home page (the drop leaves bare `#how` hashes in the legal footer, which go nowhere there).
 
 ## The design system
 
 `src/styles/global.css` is the whole visual system: tokens, atoms and molecules. It is the drop's own `<style>` block.
 
-- **Visual reference: [superpower.com](https://superpower.com).** Its type scale, its zinc palette, its bar collapsing into a blurred pill, its inset photographic hero card with the credibility items along the foot, and its feature cards of a tinted visual panel over a title and a large muted description. The client's brand tones stand in for superpower's vermillion, and Aeonik for its face.
 - **One white ground, and the colour arrives in the photographs.** The page runs on `--warm-white` from the bar to the footer. Text and surfaces come from the zinc ramp; the accent is the client's own rust (`--sage` is an alias of `--tone-rust`), and the brand tones (rust, umber, bronze, moss, sand) carry every tint, every data figure and every gradient. Two photographic cards open and close the page, `.hero-card` and `.closer-card`, built on the same shape; `.plans` is the one dark section; the feature panels take a tone through `.feat-visual.tone-*`. Anything over the fixed footer has to be opaque, which is what the `body > section, body > div, body > .rule` ground rule is for.
 - **Type is Aeonik.** Two faces and no third, Regular for reading and Medium (500) for titles, self-hosted at `public/fonts/`. The root size is fluid, about 15px at 1440 and 16px on phones, and every size, leading and tracking resolves to a `--fs-*`, `--lh-*` and `--ls-*` tier in the type block at the top of the file.
 - **The bar and the footer are the two set pieces.** The bar is transparent over the top of the page and collapses into a blurred black pill once scrolled, its pill lining up with the 1120px content column so bar and content share one edge. Every value that differs between the two states is a custom property on `.main-nav` (`--nav-pad-y`, `--nav-inner-max`, `--nav-pill-a`, `--nav-blur`, `--nav-ink`, `--nav-cta-*`, `--ham-*`) and GSAP tweens them as a set, so the bar reshapes, recolours and blurs in one movement; a change of mind mid-tween retargets rather than restarting, and a little hysteresis at the threshold stops it flickering. The bar also measures its own height into `--nav-h` so the hero clears it at any width. Below 900px it stays at rest and the nine-dot button opens the full-screen menu. The footer is fixed at the foot of the window behind the page, and the closing card travels over it and slides away to uncover it: the page reserves exactly the footer's height in `--footer-h`, measured by the script in the layout.
@@ -127,7 +128,7 @@ Do not build anything new on the legacy system, and do not merge it into `global
 
 ## History
 
-The site was rebuilt through 2026 as a set of candidate home-page designs on their own routes, `/v1` (superpower.com), `/v2` (joindawn.com) and `/v3` (lassie.ai), each with its own stylesheet, layout and lockup, reachable from a switcher pill. The client chose v1. On **2026-09-14** its final version arrived as the three-page drop in `client_resources/final_version/`, was ported to `/`, `/privacy-policy` and `/website-terms`, and the three variations were deleted along with the switcher, `src/data/variants.ts` and the variant layouts, stylesheets and components.
+The site was rebuilt through 2026 as a set of candidate home-page designs on their own routes, `/v1`, `/v2` and `/v3`, each with its own stylesheet, layout and lockup, reachable from a switcher pill. The client chose v1. On **2026-09-14** its final version arrived as the three-page drop in `client_resources/final_version/`, was ported to `/`, `/privacy-policy` and `/website-terms`, and the three variations were deleted along with the switcher, `src/data/variants.ts` and the variant layouts, stylesheets and components.
 
 Deleted in the same pass: the pre-launch blog (`/blog`, `/blog/category/*`, `/authors/*`, `src/data/blog.ts`, `BlogLayout`), the internal design-system documentation (`/design-system/*`, `design-system.css`, `DesignSystemLayout`), the private June RIA deck (`/overview-deck-june/`), `LegalLayout`, and the v3 photography. All of it is recoverable from **`cd10d5e`**, the commit before the port. If any of those is wanted back, take it from there rather than rewriting it.
 

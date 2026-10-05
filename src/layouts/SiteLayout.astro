@@ -190,7 +190,6 @@ const organization = {
       </button>
     </nav>
 
-    <!-- Mobile menu overlay -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <div class="mobile-menu-bg" id="menuBg"></div>
       <nav class="mobile-nav-links">
@@ -246,11 +245,6 @@ const organization = {
 
     <!-- Nav, scroll reveal and mobile menu. -->
     <script is:inline>
-      // Footer reveal. The footer is fixed behind the page; the closing card
-      // scrolls over it and slides away to uncover it, so the footer is
-      // revealed rather than pushed up. The page reserves exactly the
-      // footer's height below the card, measured here and kept in
-      // --footer-h. No transform, so nothing to fight the browser over.
       (function () {
         const footer = document.querySelector('.site-footer');
         if (!footer) return;
@@ -262,12 +256,6 @@ const organization = {
         window.addEventListener('load', measure);
       })();
 
-      // Intro. One GSAP timeline on first load: the hero photograph fades in,
-      // the bar drops in, then the headline, the lead, the buttons and the
-      // credibility row each blur in from nothing, in that order. The
-      // document carries .is-intro from the <head> so the pieces are hidden
-      // before first paint; it is removed when the timeline ends, or at once
-      // if GSAP is missing.
       (function () {
         const root = document.documentElement;
         if (!root.classList.contains('is-intro')) return;
@@ -286,13 +274,8 @@ const organization = {
           defaults: { ease: 'power3.out' },
           onComplete: () => {
             root.classList.remove('is-intro');
-            // Clear only what the intro itself animated. 'all' would also wipe
-            // the --nav-* custom properties the scroll tween writes on the bar,
-            // which left the bar looking un-styled if the page was scrolled
-            // while the intro was still running.
             gsap.set([card, h1, sub, ...btns, cred].filter(Boolean), { clearProps: 'opacity,transform,filter' });
             if (nav) gsap.set(nav, { clearProps: 'opacity,transform' });
-            // Let the bar re-read the scroll position it may have missed.
             window.dispatchEvent(new Event('scroll'));
           },
         });
@@ -305,10 +288,6 @@ const organization = {
         if (cred) tl.fromTo(cred, blurIn, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 1.0 }, 1.75);
       })();
 
-      // Lenis smooth scrolling. It scrolls the real window, so the scroll
-      // listeners and observers below keep working. GSAP's ticker drives it so
-      // the nav tween and the scroll share one clock. Anchor links scroll
-      // smoothly too, stopping short of the fixed bar. Off with reduced motion.
       (function () {
         if (typeof Lenis === 'undefined' || typeof gsap === 'undefined') return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -322,14 +301,6 @@ const organization = {
         (window).lenis = lenis;
       })();
 
-      // Nav, after superpower.com: a transparent bar at the top of the page that
-      // collapses into a blurred pill once scrolled. Every value that differs
-      // between the two states is a custom property on .main-nav (see the
-      // stylesheet), and GSAP tweens them as a set, so the bar reshapes,
-      // recolours and blurs in one movement. Both directions ease out, and a
-      // change of mind mid-tween simply retargets. A little hysteresis on the
-      // trigger stops it flickering around the threshold. Below 900px the bar
-      // stays at rest; with reduced motion the states are set, not tweened.
       (function () {
         const nav = document.querySelector('.main-nav');
         const inner = nav?.querySelector('.nav-inner');
@@ -339,12 +310,7 @@ const organization = {
         const phone  = window.matchMedia('(max-width: 900px)');
         const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
 
-        // The pill's width is superpower.com's calc(49.37% + 429px) of the row,
-        // resolved to pixels so it can be tweened from the resting width.
         const rowWidth  = () => nav.clientWidth - 2 * (phone.matches ? 1.25 * rem() : 4.5 * rem()) - (phone.matches ? 2.5 * rem() + 0.75 * rem() : 0);
-        // The pill lines up with the page's content column (the 1120px .inner
-        // used by every section), so the bar and the content share one edge.
-        // On phones it runs the full width of the row.
         const CONTENT = 1120;
         const pillWidth = () => phone.matches ? rowWidth() : Math.min(rowWidth(), CONTENT);
 
@@ -366,7 +332,6 @@ const organization = {
           const d = instant || reduce.matches ? 0 : 0.7;
           const vars = toPill ? PILL() : REST;
           gsap.to(nav, { ...vars, duration: d, ease: 'expo.out', overwrite: 'auto' });
-          // max-width is tweened in pixels; at rest it is cleared so 'none' applies.
           const start = toPill ? rowWidth() : parseFloat(getComputedStyle(inner).maxWidth) || rowWidth();
           gsap.fromTo(nav,
             { '--nav-inner-max': start + 'px' },
@@ -379,13 +344,9 @@ const organization = {
           const y = window.scrollY;
           if (!scrolled && y > 40) { scrolled = true; apply(true, !ready); }
           else if (scrolled && y < 12) { scrolled = false; apply(false, !ready); }
-          // If something else cleared the bar's inline properties (the intro
-          // used to), put the current state back without animating.
           else if (scrolled && !nav.style.getPropertyValue('--nav-pill-a')) apply(true, true);
         }
 
-        // The hero clears the bar's real height, so the space under the pill
-        // matches the space above it at any width or font size.
         const measureNav = () => document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
         measureNav();
         window.addEventListener('resize', measureNav, { passive: true });
@@ -398,9 +359,6 @@ const organization = {
         phone.addEventListener('change', () => { scrolled = false; apply(false, true); onScroll(); });
       })();
 
-      // Scroll reveal. Anything marked .reveal rises and sharpens once, when it
-      // first comes into view. No GSAP, no ScrollTrigger: one observer, and it
-      // stops watching an element as soon as it has played.
       (function () {
         const items = document.querySelectorAll('.reveal');
         if (!items.length) return;

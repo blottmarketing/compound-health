@@ -18,13 +18,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
   intro={true}
   organizationSchema={true}
 >
-  <!-- ==================================================================
-         THE PAGE (was src/pages/index.astro)
-         ================================================================== -->
-
-  <!-- HERO, after superpower.com: one dark photographic card inset from the
-         viewport, copy set left and centred vertically, the credibility items
-         along the foot of the card. Copy is unchanged. -->
     <section class="hero" id="main" tabindex="-1">
       <div class="hero-card">
         <div class="hero-media" aria-hidden="true">
@@ -53,15 +46,11 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           </div>
         </div>
 
-        <!-- CREDIBILITY BAR, now the foot of the hero card. On phones the track
-             scrolls: the items are listed twice so the loop is seamless, and
-             the second set is hidden from assistive technology. -->
       </div>
     </section>
 
     <div class="rule"></div>
 
-    <!-- HOW IT WORKS -->
     <section class="how" id="how">
       <div class="inner">
         <div class="s-head reveal">
@@ -107,11 +96,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       </div>
     </section>
 
-    <!-- WHAT YOU GET
-         Bento grid: one tall cell carries the product surface, the rest carry a
-         line icon, a title and a sentence. Deliberately not the two-column
-         product pattern used by 'How we choose' below, so the two sections do
-         not read as the same section twice. -->
     <section class="features" id="features">
       <div class="inner">
         <div class="s-head reveal">
@@ -128,9 +112,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           </div>
         </div>
 
-        <!-- Feature cards, after superpower.com: a visual panel in the brand
-             tones with a small product card on it, then the title and a large
-             muted description. The product cards are illustrative mock-ups. -->
         <div class="feat-grid reveal">
           <article class="feat-card">
             <div class="feat-visual tone-moss" aria-hidden="true">
@@ -235,10 +216,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       </div>
     </section>
 
-    <!-- HOW WE CHOOSE
-         The three disciplines are a tablist. Choosing one swaps the card in the
-         panel and marks the row in the card behind it. Every line inside the
-         panel is a phrase from that discipline's own paragraph. -->
     <section class="curated prod">
       <div class="inner">
         <div class="s-head reveal">
@@ -318,12 +295,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
           <div class="prod-panel reveal">
             <div class="prod-panes">
-              <!-- Clinical care: who is on the team, and that it runs between visits. -->
               <div class="prod-pane is-active" id="pane-clinical" role="tabpanel" aria-labelledby="tab-clinical">
                 <div class="stack-card">
                   <div class="stack-card-head">Your clinical team</div>
-                  <!-- The team as one bar in four colours, with a legend of who
-                       is on it. -->
                   <div class="team">
                     <div class="team-bar" aria-hidden="true"><span class="team-seg"></span><span class="team-seg"></span><span class="team-seg"></span><span class="team-seg"></span></div>
                     <div class="team-legend">
@@ -352,12 +326,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
                 </div>
               </div>
 
-              <!-- Diagnostics: the breadth of one baseline, as a number and a coverage map. -->
               <div class="prod-pane" id="pane-diagnostics" role="tabpanel" aria-labelledby="tab-diagnostics">
                 <div class="stack-card">
                   <div class="stack-card-head">Baseline testing</div>
-                  <!-- Six arcs, one per panel, draw in around the number; the
-                       legend names them. Without JS the figure reads 500+. -->
                   <div class="cov">
                     <div class="cov-body">
                       <div class="cov-ring">
@@ -390,13 +361,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
                 </div>
               </div>
 
-              <!-- Advanced therapies: available, but behind two gates. -->
               <div class="prod-pane" id="pane-therapies" role="tabpanel" aria-labelledby="tab-therapies">
                 <div class="stack-card is-feature">
                   <div class="stack-card-head">On a curated add-on layer</div>
-                  <!-- The therapies are frosted chips on the gradient; the two
-                       conditions sit under them in a glass strip and are ticked
-                       in turn. -->
                   <div class="gate">
 
                     <div class="gate-flow">
@@ -416,11 +383,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           </div>
         </div>
 
-
       </div>
     </section>
 
-    <!-- PARTNERS (formerly Case study) -->
     <section class="case" id="partners">
       <div class="inner">
         <div class="s-head reveal">
@@ -441,8 +406,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           </div>
         </div>
 
-        <!-- Proof block: the first partner engagement, kept as evidence. Three
-             hairline cells, not three billboard numbers. -->
         <div class="case-band reveal">
           <div class="case-media" aria-hidden="true">
             <img class="case-media-img" src="/images/partners.webp" alt="" width="800" height="1000" loading="lazy" decoding="async" />
@@ -460,8 +423,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         </div>
         </div>
 
-        <!-- The agenda reads as a list, not as a card: the heading holds the left
-             column and the four items are hairline rows in the right. -->
         <div class="deliver reveal">
           <h3 class="deliver-title">What we delivered</h3>
           <ul class="deliver-list">
@@ -536,7 +497,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
     <div class="rule"></div>
 
-    <!-- MEMBERSHIP (formerly Plans) -->
     <section class="plans" id="membership">
       <div class="inner">
         <div class="s-head reveal">
@@ -593,9 +553,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       </div>
     </section>
 
-    <!-- ACCESS: the closing call and the form, one section. The card on the
-         left is the one gradient surface on the page; the form sits beside it
-         on the page ground. -->
     <section class="cta" id="joinwaitlist">
       <div class="inner cta-grid">
         <div class="cta-card reveal">
@@ -643,7 +600,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
               <input class="wf-input" type="email" id="wf-email" placeholder="james@example.com" autocomplete="email" />
             </div>
 
-            <!-- Client path. Same two fields, and the same card height, as before. -->
             <div class="wf-field" data-shown-to="client">
               <label class="wf-label" for="wf-tier">Membership tier of interest</label>
               <select class="wf-input wf-select" id="wf-tier">
@@ -658,7 +614,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
               <input class="wf-input" type="text" id="wf-advisor" placeholder="e.g. Rockefeller Capital" required />
             </div>
 
-            <!-- Partner path. Swaps in for the two client fields. -->
             <div class="wf-field" data-shown-to="partner" hidden>
               <label class="wf-label" for="wf-org">Organization name</label>
               <input class="wf-input" type="text" id="wf-org" placeholder="e.g. Pemberton Family Office" autocomplete="organization" />
@@ -693,7 +648,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </p>
           </div>
 
-          <!-- Success state: swaps in for the form on successful submit -->
           <div class="waitlist-success" id="waitlistSuccess" role="status" aria-live="polite">
             <div class="ws-icon">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
@@ -713,19 +667,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       </div>
     </section>
 
-    <!-- Discipline tabs. Each discipline has its own figure in the panel, not the
-         same list three times, and all three figures share one height so nothing
-         moves as the tab changes.
-
-         The tabs advance on their own every 7s. The countdown is the ring around
-         the icon of the open tab: a CSS animation on the ring's stroke, with the
-         advance driven by its animationend, so the ring and the switch can never
-         drift apart. Hovering does not stop it. Keyboard
-         focus does, so nothing moves under someone reading with the keyboard, and
-         so does leaving the viewport. Choosing a tab restarts the countdown from
-         it rather than ending the rotation. With reduced motion, or no
-         JavaScript, nothing rotates, the rings stay as plain hairlines and the
-         first pane stays open. -->
     <script is:inline>
       (function () {
         const AUTO_MS = 7000;
@@ -752,8 +693,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           if (auto) restartTimer();
         }
 
-        // Clearing the animation and forcing a reflow is what makes the ring
-        // start over, including when the open tab is chosen again.
         function restartTimer() {
           const ring = rings[current];
           if (!ring) return;
@@ -772,8 +711,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         const pause  = () => { if (auto) list.classList.add('is-paused'); };
         const resume = () => list.classList.remove('is-paused');
 
-        // Only a keyboard focus pauses. A mouse click focuses the tab too, and
-        // pausing on that left the rotation stuck until the pointer moved away.
         root.addEventListener('focusin', e => {
           const el = e.target;
           if (el.matches && el.matches(':focus-visible')) pause();
@@ -781,8 +718,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         root.addEventListener('focusout', resume);
 
         tabs.forEach((tab, i) => {
-          // Choosing a tab restarts the countdown from it rather than ending the
-          // rotation.
           tab.addEventListener('click', () => select(i));
           tab.addEventListener('keydown', e => {
             const last = tabs.length - 1;
@@ -797,11 +732,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           });
         });
 
-        // Both the ring and the panel figures run on this length.
         root.style.setProperty('--auto-ms', AUTO_MS + 'ms');
         if (auto) list.classList.add('is-auto');
 
-        // Only rotate while the section is actually on screen.
         if (auto && 'IntersectionObserver' in window) {
           new IntersectionObserver(entries => {
             entries.forEach(entry => {
@@ -816,11 +749,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       })();
     </script>
 
-    <!-- Custom dropdowns. Each select.wf-select is wrapped in .wf-dd and given a
-         button and a listbox; the native select stays as the value the form
-         script reads, and is updated on every choice. Arrow keys, Home, End,
-         Enter, Space and Escape work; a click outside closes. Without JavaScript
-         the native select is what the reader sees. -->
     <script is:inline>
       (function () {
         const CHEV = '<svg class="wf-dd-chev" viewBox="0 0 12 8" fill="none" aria-hidden="true"><path d="M1 1l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -923,11 +851,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       })();
     </script>
 
-    <!-- The diagnostics figure runs up to its number. The count reads the clock
-         of the first arc of the ring rather than a clock of its own, so it can
-         never land ahead of the ring, and it writes nothing while another tab is
-         open. With reduced motion, or no JavaScript, the figure simply
-         reads what is in the markup. -->
     <script is:inline>
       (function () {
         const num = document.querySelector('[data-count-to]');
@@ -939,7 +862,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         const pane   = num.closest('.prod-pane');
         if (!target || !light || !pane) return;
 
-        // The window the panels land in, as a fraction of one rotation.
         const START = 0.02;
         const END   = 0.30;
         const ease  = (t) => 1 - Math.pow(1 - t, 3);
@@ -962,18 +884,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       })();
     </script>
 
-    <!-- Waitlist form script -->
     <script is:inline>
-      // LIVE ENDPOINT. This is the client's real Google Apps Script, and anything
-      // submitted from a local build lands in the real sheet. Point it at your own
-      // while you work on the form, or leave the form alone.
       const WAITLIST_ENDPOINT =
         'https://script.google.com/macros/s/AKfycbw9x1Q9dVIDbTRRnsgajzbXHrL2Y3mz7SSWO2qHGtDeK9XsrxKhtBpItlPaY3oDn28/exec';
 
-      // Routing. The Apps Script endpoint branches on `audience` so partner
-      // submissions land somewhere other than the client waitlist. The tag values
-      // are placeholders: the inbox / CRM tag for partners is still an open point
-      // in the designer brief, and changing them here is a one-line edit.
       const ROUTING_TAG = {
         client:  'client-waitlist',
         partner: 'partner-pipeline',
@@ -995,13 +909,11 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         wfRole?.querySelectorAll('.wf-segment') ?? []
       );
 
-      /** 'client' or 'partner', from the currently selected segment. */
       function currentAudience() {
         const active = segments.find((s) => s.classList.contains('is-active'));
         return active?.dataset.audience ?? 'client';
       }
 
-      /** The specific segment value, e.g. 'client', 'wealth-firm', 'employer', 'network'. */
       function currentRole() {
         const active = segments.find((s) => s.classList.contains('is-active'));
         return active?.dataset.role ?? 'client';
@@ -1017,10 +929,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         wfError?.classList.remove('visible');
       }
 
-      /**
-       * Reveal the fields for one audience and hide the other's. Both paths carry
-       * two conditional fields, so the card keeps the same height either way.
-       */
       function applyAudience(audience) {
         document
           .querySelectorAll('[data-shown-to]')
@@ -1029,7 +937,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           });
       }
 
-      /** Select a segment by role slug. 'partner' picks the first partner option. */
       function selectRole(role) {
         const target =
           segments.find((s) => s.dataset.role === role) ??
@@ -1053,9 +960,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         });
       });
 
-      // Links elsewhere on the page can preset the selector before the browser
-      // scrolls to the form, e.g. the Partners CTA. Delegated, so triggers added
-      // to the page later are wired without touching this file.
       document.addEventListener('click', (event) => {
         const trigger = (event.target)?.closest('[data-wf-role]');
         if (trigger) selectRole(trigger.dataset.wfRole ?? 'partner');
@@ -1086,8 +990,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           const org       = orgInput?.value.trim()     ?? '';
           const reach     = reachInput?.value          ?? '';
 
-          // Minimal validation, matching the existing pattern: focus the first
-          // field that needs attention. Required fields differ by audience.
           if (!firstName) { fnameInput?.focus(); return; }
           if (!lastName)  { lnameInput?.focus(); return; }
           if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -1098,11 +1000,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           if (!org) { orgInput?.focus(); return; }
           } else {
           if (!tier) { tierInput?.focus(); return; }
-          // Introduced, not sold: a client submission names its introducer.
           if (!advisor) { advisorInput?.focus(); return; }
           }
 
-          // Submitting state
           wfSubmit.disabled = true;
           if (wfLabel) wfLabel.textContent = 'Submitting…';
 
@@ -1113,7 +1013,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             firstName,
             lastName,
             email,
-            // Only the fields belonging to the chosen path are sent.
             tier:         isPartner ? '' : tier,
             advisor:      isPartner ? '' : advisor,
             organization: isPartner ? org : '',
@@ -1126,15 +1025,12 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           try {
             const res = await fetch(WAITLIST_ENDPOINT, {
               method: 'POST',
-              // application/x-www-form-urlencoded is a "simple" request and avoids
-              // a CORS preflight against the Apps Script endpoint.
               headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
               body: payload.toString(),
             });
 
             if (!res.ok) throw new Error('Request failed: ' + res.status);
 
-            // Confirmation copy differs by audience.
             if (isPartner) {
               if (wsTitle) wsTitle.textContent = 'Request received';
               if (wsBody) {
@@ -1144,7 +1040,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             } else {
               if (wsTitle) wsTitle.textContent = "You're on the list";
               if (wsBody) {
-                // Personalize: "Thank you, {First Name}." Without a name: "Thank you."
                 wsBody.textContent =
                   'Thank you' + (firstName ? ', ' + firstName : '') +
                   '. Your founding member request has been received. Our team will be in ' +
@@ -1155,7 +1050,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             waitlistForm.style.display = 'none';
             waitlistSuccess.classList.add('visible');
 
-            // Smoothly bring the success panel into view on smaller screens
             waitlistSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
           } catch (err) {
             console.error('Waitlist submission failed', err);
@@ -1166,7 +1060,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         });
       }
 
-      // Allow the user to submit another response without a page reload
       if (wsReset && waitlistForm && waitlistSuccess && wfSubmit) {
         wsReset.addEventListener('click', () => {
           ['wf-fname', 'wf-lname', 'wf-email', 'wf-advisor', 'wf-org'].forEach((id) => {
@@ -1178,7 +1071,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             if (el) { el.value = ''; el.dispatchEvent(new Event('change')); }
           });
 
-          // Restore form, reset button, and return the selector to the client path
           selectRole('client');
           waitlistSuccess.classList.remove('visible');
           waitlistForm.style.display = '';
@@ -1189,10 +1081,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       }
     </script>
 
-    <!-- Feature mock-ups play once when their card comes into view. The
-         observer adds .is-in, which the stylesheet keys its animations off,
-         and runs the score up to its figure over the same window. With
-         reduced motion the cards are marked in at once and the figure is set. -->
     <script is:inline>
       (function () {
         const cards = Array.from(document.querySelectorAll('.feat-card'));
@@ -1231,8 +1119,6 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       })();
     </script>
 
-    <!-- Closing call to action: one photographic card, built like the hero so
-         the page opens and closes on the same shape. -->
     <section class="closer">
       <div class="closer-card">
         <div class="closer-media" aria-hidden="true">
