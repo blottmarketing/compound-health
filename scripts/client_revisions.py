@@ -478,6 +478,16 @@ def apply_to_footer(footer):
         '<a href={`${base}#partners`}>For advisors and firms</a>',
         'footer: For advisors repointed to #partners (PDF)')
 
+    # The research publication, asked for on 5 October 2026. It joins the Site
+    # column ahead of the action, which stays last. An external link, so it
+    # opens where it is, like every other link on the site.
+    footer = revise(
+        footer,
+        '<a href={`${base}#joinwaitlist`}>Get access</a>',
+        '<a href="https://compoundhealthresearch.substack.com/">Research</a>\n'
+        '<a href={`${base}#joinwaitlist`}>Get access</a>',
+        'footer: Research link to the Substack added')
+
     return footer
 
 

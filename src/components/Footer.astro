@@ -23,11 +23,7 @@ const { base = '' } = Astro.props;
 ---
 
 <footer class="site-footer">
-  <div class="footer-media" aria-hidden="true"></div>
-
   <div class="footer-inner">
-    <div class="footer-divider"></div>
-
     <div class="footer-cols">
       <div class="footer-brand">
         <a href={base || "#top"} class="footer-logo" aria-label="Compound Health, home">
@@ -44,6 +40,7 @@ const { base = '' } = Astro.props;
         <a href={`${base}#features`}>What you get</a>
         <a href={`${base}#membership`}>Membership</a>
         <a href={`${base}#partners`}>For advisors and firms</a>
+        <a href="https://compoundhealthresearch.substack.com/">Research</a>
         <a href={`${base}#joinwaitlist`}>Get access</a>
       </div>
 

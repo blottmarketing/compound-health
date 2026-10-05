@@ -165,29 +165,24 @@ const organization = {
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="main-nav">
       <div class="nav-inner">
+        <a href={base || "#top"} class="nav-logo" aria-label="Compound Health, home">
+          <Logo />
+        </a>
         <div class="nav-links">
           <a href={`${base}#how`}>How it works</a>
           <a href={`${base}#features`}>What you get</a>
           <a href={`${base}#partners`}>Partners</a>
           <a href={`${base}#membership`}>Membership</a>
         </div>
-        <a href={base || "#top"} class="nav-logo" aria-label="Compound Health, home">
-          <Logo />
-        </a>
         <div class="nav-actions">
           <a href={`${base}#joinwaitlist`} class="nav-cta">Get access</a>
         </div>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
       </div>
-      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-        <svg class="hamburger-dots" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <circle cx="4" cy="4" r="2.2"/><circle cx="12" cy="4" r="2.2"/><circle cx="20" cy="4" r="2.2"/>
-          <circle cx="4" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="20" cy="12" r="2.2"/>
-          <circle cx="4" cy="20" r="2.2"/><circle cx="12" cy="20" r="2.2"/><circle cx="20" cy="20" r="2.2"/>
-        </svg>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
     </nav>
 
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
@@ -200,9 +195,6 @@ const organization = {
       </nav>
       <a href={`${base}#joinwaitlist`} class="mobile-nav-cta" id="menuCta" data-menu-link>
         Get access
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" focusable="false">
-          <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
       </a>
       <div class="mobile-menu-footer" id="menuFooter">
         <span class="mobile-menu-tagline">Compound Health &copy; 2026</span>
@@ -222,7 +214,7 @@ const organization = {
         transform: translate(-50%, -120%);
         z-index: 2000;
         padding: 12px 20px;
-        border-radius: 0 0 10px 10px;
+        border-radius: 0 0 6px 6px;
         background: #18181b;
         color: #ffffff;
         font-family: var(--font-sans);
@@ -303,60 +295,63 @@ const organization = {
 
       (function () {
         const nav = document.querySelector('.main-nav');
-        const inner = nav?.querySelector('.nav-inner');
-        if (!nav || !inner || typeof gsap === 'undefined') return;
-
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-        const phone  = window.matchMedia('(max-width: 900px)');
-        const rem = () => parseFloat(getComputedStyle(document.documentElement).fontSize);
-
-        const rowWidth  = () => nav.clientWidth - 2 * (phone.matches ? 1.25 * rem() : 4.5 * rem()) - (phone.matches ? 2.5 * rem() + 0.75 * rem() : 0);
-        const CONTENT = 1120;
-        const pillWidth = () => phone.matches ? rowWidth() : Math.min(rowWidth(), CONTENT);
-
-        const REST = {
-          '--nav-pad-y': 1.5 * rem() + 'px', '--nav-pill-a': 0.04, '--nav-blur': 0.5 * rem() + 'px',
-          '--nav-inner-pad': 0.375 * rem() + 'px', '--nav-inner-pad-l': 1.5 * rem() + 'px', '--nav-ink': '#18181b',
-          '--nav-cta-bg': '#000000', '--nav-cta-ink': '#ffffff', '--ham-size': '30px', '--ham-a': 0,
-        };
-        const PILL = () => ({
-          '--nav-pad-y': 1.25 * rem() + 'px', '--nav-pill-a': 0.3, '--nav-blur': 1 * rem() + 'px',
-          '--nav-inner-pad': 0.19 * rem() + 'px', '--nav-inner-pad-l': 1.5 * rem() + 'px', '--nav-ink': '#ffffff',
-          '--nav-cta-bg': '#f4f4f5', '--nav-cta-ink': '#18181b', '--ham-size': 2.5 * rem() + 'px', '--ham-a': 0.3,
-        });
-
-        let scrolled = false;
-        let ready = false;
-
-        function apply(toPill, instant = false) {
-          const d = instant || reduce.matches ? 0 : 0.7;
-          const vars = toPill ? PILL() : REST;
-          gsap.to(nav, { ...vars, duration: d, ease: 'expo.out', overwrite: 'auto' });
-          const start = toPill ? rowWidth() : parseFloat(getComputedStyle(inner).maxWidth) || rowWidth();
-          gsap.fromTo(nav,
-            { '--nav-inner-max': start + 'px' },
-            { '--nav-inner-max': (toPill ? pillWidth() : rowWidth()) + 'px', duration: d, ease: 'expo.out', overwrite: 'auto',
-              onComplete: () => { if (!toPill) nav.style.removeProperty('--nav-inner-max'); } });
-          nav.classList.toggle('is-scrolled', toPill);
-        }
-
-        function onScroll() {
-          const y = window.scrollY;
-          if (!scrolled && y > 40) { scrolled = true; apply(true, !ready); }
-          else if (scrolled && y < 12) { scrolled = false; apply(false, !ready); }
-          else if (scrolled && !nav.style.getPropertyValue('--nav-pill-a')) apply(true, true);
-        }
+        if (!nav) return;
 
         const measureNav = () => document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
         measureNav();
         window.addEventListener('resize', measureNav, { passive: true });
         if ('ResizeObserver' in window) new ResizeObserver(measureNav).observe(nav);
 
-        onScroll();
-        ready = true;
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', () => { if (scrolled) apply(true, true); }, { passive: true });
-        phone.addEventListener('change', () => { scrolled = false; apply(false, true); onScroll(); });
+        // The island takes the opposite tone to whatever is under it: light glass
+        // over a photograph or a dark section, dark glass over the white page. The
+        // ground is read off the page itself, at seven points along the island's
+        // middle, so no list of sections has to be kept in step with the markup.
+        // A photograph counts as dark; a gradient by its first colour stop. The ink
+        // is white in both tones, so the brightest point decides: one light card
+        // under the links, a white tier in a dark band, turns the island dark.
+        const inner = nav.querySelector('.nav-inner');
+        if (!inner) return;
+        const channel = (v) => (v /= 255) <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+        const lum = (rgb) => 0.2126 * channel(rgb[0]) + 0.7152 * channel(rgb[1]) + 0.0722 * channel(rgb[2]);
+        const rgba = (text) => {
+          const m = text && text.match(/rgba?\(([^)]*)\)/);
+          return m ? m[1].split(/[\s,/]+/).filter(Boolean).map(Number) : null;
+        };
+        const groundAt = (x, y) => {
+          const hit = document.elementsFromPoint(x, y).find((el) => !el.closest('.main-nav, .mobile-menu'));
+          for (let n = hit; n && n !== document.documentElement; n = n.parentElement) {
+            if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return 0;
+            const s = getComputedStyle(n);
+            if (s.backgroundImage !== 'none') {
+              if (s.backgroundImage.includes('url(')) return 0;
+              const stop = rgba(s.backgroundImage);
+              if (stop) return lum(stop);
+            }
+            const c = rgba(s.backgroundColor);
+            if (c && (c.length < 4 || c[3] > 0.5)) return lum(c);
+          }
+          return 1;
+        };
+
+        let dark = false;
+        let queued = false;
+        const update = () => {
+          queued = false;
+          const r = inner.getBoundingClientRect();
+          const y = r.top + r.height / 2;
+          let ground = 0;
+          for (let i = 0; i < 7; i++) ground = Math.max(ground, groundAt(r.left + 24 + (r.width - 48) * i / 6, y));
+          // Two thresholds, so a ground near the boundary cannot make it flicker.
+          if (!dark && ground > 0.5) dark = true;
+          else if (dark && ground < 0.35) dark = false;
+          else return;
+          nav.classList.toggle('is-dark', dark);
+        };
+        const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+        update();
+        window.addEventListener('scroll', queue, { passive: true });
+        window.addEventListener('resize', queue, { passive: true });
+        window.addEventListener('load', queue);
       })();
 
       (function () {
@@ -467,6 +462,97 @@ const organization = {
         document.addEventListener('keydown', e => {
           if (e.key === 'Escape' && isOpen) closeMenu();
         });
+      })();
+
+      (function () {
+        // What you get as a stack (design revision 14). From 901px the script lays
+        // the stack on with .is-stacked; on phones, and without it, the rows stand.
+        // On every frame that scrolls it marks the figure on top as .is-current
+        // (its copy shows) and those under it as .is-covered, sets each figure's
+        // --recede from how far the next has risen over it, and it starts each
+        // figure's mock-up as it comes up the screen, which the page's own observer
+        // cannot do once the articles have no box.
+        const grid = document.querySelector('.feat-grid');
+        if (!grid) return;
+        const cards = Array.from(grid.children).filter((el) => el.classList.contains('feat-card'));
+        if (cards.length < 2) return;
+        const wide = window.matchMedia('(min-width: 901px)');
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        const countUp = (el) => {
+          const target = Number(el.dataset.count);
+          if (!target) return;
+          if (reduce.matches) { el.textContent = String(target); return; }
+          const start = performance.now() + 450;
+          const tick = (now) => {
+            const t = Math.max(0, Math.min(1, (now - start) / 1100));
+            el.textContent = String(Math.round((1 - Math.pow(1 - t, 3)) * target));
+            if (t < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        };
+        const enter = (card) => {
+          if (card.classList.contains('is-in')) return;
+          card.classList.add('is-in');
+          card.querySelectorAll('[data-count]').forEach(countUp);
+        };
+
+        // One progress per hand-over: how far figure i + 1 has travelled from the
+        // foot of the screen to the top figure i is stuck at, 0 to 1. Everything is
+        // derived from it, so the figures and the copy can never drift apart.
+        const ease = (x) => x * x * (3 - 2 * x);
+        const band = (p, a, b) => ease(Math.min(1, Math.max(0, (p - a) / (b - a))));
+        // A figure's top as laid out, before its own shrink: the shrink is about
+        // the centre, so half the height it has lost is added back. Measuring the
+        // drawn top instead would let a shrinking figure uncover the one beneath.
+        const topOf = (fig) => {
+          const r = fig.getBoundingClientRect();
+          return r.top - (fig.offsetHeight - r.height) / 2;
+        };
+
+        let queued = false;
+        const update = () => {
+          queued = false;
+          if (!grid.classList.contains('is-stacked')) return;
+          const figs = cards.map((card) => card.querySelector('.feat-visual'));
+          const copies = cards.map((card) => card.querySelector('.feat-copy'));
+          if (figs.some((f) => !f)) return;
+          const vh = window.innerHeight;
+          const stuck = parseFloat(getComputedStyle(figs[0]).top) || 0;
+          const progress = figs.slice(1).map((fig) =>
+            Math.min(1, Math.max(0, (vh - topOf(fig)) / Math.max(1, vh - stuck))));
+          let current = 0;
+          cards.forEach((card, i) => {
+            const before = i > 0 ? progress[i - 1] : 1;
+            const after = i < progress.length ? progress[i] : 0;
+            if (before >= 0.5) current = i;
+            figs[i].style.setProperty('--recede', ease(after).toFixed(4));
+            // The outgoing copy is gone by the midpoint and the incoming one starts
+            // there, so the two are never on screen together.
+            copies[i]?.style.setProperty('--in', (i === 0 ? 1 : band(before, 0.5, 0.75)).toFixed(4));
+            copies[i]?.style.setProperty('--out', band(after, 0.25, 0.5).toFixed(4));
+            if (topOf(figs[i]) < vh * 0.85) enter(card);
+          });
+          cards.forEach((card, i) => {
+            card.classList.toggle('is-current', i === current);
+            card.classList.toggle('is-covered', i < current);
+          });
+        };
+        const queue = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+        const mode = () => {
+          grid.classList.toggle('is-stacked', wide.matches);
+          if (!wide.matches) cards.forEach((card) => {
+            card.classList.remove('is-current', 'is-covered');
+            card.querySelector('.feat-visual')?.style.removeProperty('--recede');
+            card.querySelector('.feat-copy')?.style.removeProperty('--in');
+            card.querySelector('.feat-copy')?.style.removeProperty('--out');
+          });
+          update();
+        };
+        mode();
+        wide.addEventListener('change', mode);
+        window.addEventListener('scroll', queue, { passive: true });
+        window.addEventListener('resize', queue, { passive: true });
       })();
     </script>
   </body>
