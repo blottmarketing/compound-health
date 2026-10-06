@@ -1983,6 +1983,9 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
   height: 100vh; height: 100svh; min-height: 600px;
   padding: 6.5rem 4rem 4rem;
 }
+/* Revision 15: she sits right of centre and the left of the photograph is its
+   darkest ground, so the frame holds her right and the copy sits on the dark. */
+.hero-img { object-position: 0% 30%; }
 
 @media (max-width: 900px) {
   .main-nav, .main-nav.is-scrolled { padding: 0.75rem 0.75rem 0; }
@@ -2027,6 +2030,7 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
     height: auto; min-height: 100vh; min-height: 100svh;
     padding: 5.5rem 1.25rem 1.25rem; border-radius: 0;
   }
+  .hero-img { object-position: 45% 20%; }
   /* Both hero actions run the full width of the column on a phone: the
      drop's own width: 100% did nothing while .hero-actions shrank to fit its
      content, so the column stretches and the actions stack. */

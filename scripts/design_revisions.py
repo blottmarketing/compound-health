@@ -57,6 +57,10 @@ Revisions, October 2026:
      shrinks behind it as it comes, while the copy on the left hands over at
      the midpoint of the same travel. Both run off one progress per hand-over. It is laid on by script (.feat-grid.is-stacked), so
      without it, and on phones, the rows of revision 9 stand.
+ 15. The hero carries a new photograph, public/images/hero-portrait.webp, in
+     place of the drop's. The drop's own stays in public/images/hero.webp,
+     because the port matches each embedded photograph to its file there by
+     checksum; only the page's reference to it moves.
 """
 
 import re
@@ -574,6 +578,9 @@ CSS = """
   height: 100vh; height: 100svh; min-height: 600px;
   padding: 6.5rem 4rem 4rem;
 }
+/* Revision 15: she sits right of centre and the left of the photograph is its
+   darkest ground, so the frame holds her right and the copy sits on the dark. */
+.hero-img { object-position: 0% 30%; }
 
 @media (max-width: 900px) {
   .main-nav, .main-nav.is-scrolled { padding: 0.75rem 0.75rem 0; }
@@ -618,6 +625,7 @@ CSS = """
     height: auto; min-height: 100vh; min-height: 100svh;
     padding: 5.5rem 1.25rem 1.25rem; border-radius: 0;
   }
+  .hero-img { object-position: 45% 20%; }
   /* Both hero actions run the full width of the column on a phone: the
      drop's own width: 100% did nothing while .hero-actions shrank to fit its
      content, so the column stretches and the actions stack. */
@@ -654,7 +662,27 @@ def apply_to_page(content):
         sys.exit(f'design revision "{label}": the submit button\'s arrow was not found')
     content = content[:submit] + button + content[end:]
     APPLIED.append(f'{label} ({n} labels, the submit)')
-    return content
+    return _hero_photo(content)
+
+
+# ── 15. The hero photograph ─────────────────────────────────────────────
+
+HERO_PHOTO = {'src': '/images/hero-portrait.webp', 'width': '2560', 'height': '1089'}
+DROP_PHOTO = {'src': '/images/hero.webp', 'width': '1600', 'height': '800'}
+
+
+def _hero_photo(content):
+    label = 'hero: the new photograph'
+    start = _once(content, 'class="hero-img"', label)
+    end = content.index('/>', start)
+    img = content[start:end]
+    for attr, value in HERO_PHOTO.items():
+        img, n = re.subn(f'{attr}="{re.escape(DROP_PHOTO[attr])}"', f'{attr}="{value}"', img)
+        if n != 1:
+            sys.exit(f'design revision "{label}": expected the hero image\'s '
+                     f'{attr}="{DROP_PHOTO[attr]}", which the drop no longer has')
+    APPLIED.append(label)
+    return content[:start] + img + content[end:]
 
 
 # ── 8. The superseded footer ────────────────────────────────────────────

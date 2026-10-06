@@ -10,7 +10,7 @@ declares in og:image:width and og:image:height, and screenshotted.
 Both source pieces are read out of the repo rather than kept as a second copy,
 so the card cannot drift from the site:
 
-  public/images/hero.webp    the photograph the hero card uses
+  public/images/hero-portrait.webp  the photograph the hero card uses
   src/components/Logo.astro  the lockup, mark and wordmark on one viewBox
 
 The mark is forced to white here. It holds the brand rust on the site, where it
@@ -38,7 +38,7 @@ import tempfile
 from PIL import Image
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-HERO = os.path.join(REPO, 'public/images/hero.webp')
+HERO = os.path.join(REPO, 'public/images/hero-portrait.webp')
 LOGO_SRC = os.path.join(REPO, 'src/components/Logo.astro')
 OUT_PNG = os.path.join(REPO, 'public/og-image.png')
 OUT_JPG = os.path.join(REPO, 'public/og-image.jpg')
@@ -72,13 +72,13 @@ def build_html():
 <html lang="en"><head><meta charset="utf-8" /><title>og</title><style>
   html, body { margin: 0; padding: 0; width: %(w)dpx; height: %(h)dpx; overflow: hidden; background: #18181b; }
   .frame { position: relative; width: %(w)dpx; height: %(h)dpx; overflow: hidden; }
-  .photo { position: absolute; inset: 0; width: 100%%; height: 100%%; object-fit: cover; object-position: 62%% 18%%; display: block; }
+  .photo { position: absolute; inset: 0; width: 100%%; height: 100%%; object-fit: cover; object-position: 0%% 30%%; display: block; }
   /* The gradient the site already runs over the hero, .hero-media::after,
      carried at a little more weight so the lockup holds on a small card. */
   .scrim { position: absolute; inset: 0;
     background: linear-gradient(90deg, rgba(0,0,0,.46) 0%%, rgba(0,0,0,.16) 38%%, rgba(0,0,0,0) 60%%); }
-  .lock { position: absolute; left: 84px; top: 50%%; transform: translateY(-50%%);
-    height: 62px; color: #fff; --logo-icon: #fff; }
+  .lock { position: absolute; left: 72px; top: 50%%; transform: translateY(-50%%);
+    height: 50px; color: #fff; --logo-icon: #fff; }
   .lock .logo-svg { display: block; height: 100%%; width: auto; }
 </style></head>
 <body><div class="frame">
