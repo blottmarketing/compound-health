@@ -73,6 +73,10 @@ Revisions, October 2026:
      panel alike. The figures share one set of atoms on colour (quiet labels,
      white values, square segments, white rules, a solid white chip), which
      each figure composes from.
+ 18. The Healthspan score is a field of its own: the score at display size on
+     the left, its three counts stacked on the right under rules, each keyed
+     to its block, and the bar beneath as three square blocks divided by the
+     counts themselves. Biological age stays as a quiet row at the foot.
 """
 
 import re
@@ -709,6 +713,54 @@ CSS = """
 @media (max-width: 900px) {
   .feat-card .feat-visual, .feat-card.is-wide .feat-visual { padding: 1.5rem 1.25rem; }
 }
+
+/* Revision 18: the Healthspan score. The header row gives up its box so the
+   label and the score become cells of the card's own grid: the label across
+   the top, the score at display size on the left, the counts stacked on the
+   right, the bar across the foot. The score scales with the panel, not the
+   window, so it holds its proportion in the stack and in a phone's row. */
+.feat-visual:has(.fm-score) { container-type: inline-size; }
+.fm-score {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "title title" "big legend" "track track";
+  column-gap: 1.5rem; row-gap: 1.25rem;
+}
+.fm-score > .fm-row:first-child { display: contents; }
+.fm-score .fm-title { grid-area: title; }
+.fm-score .fm-big {
+  grid-area: big; align-self: end;
+  font-size: clamp(4rem, 24cqi, 8.5rem); line-height: 0.78; letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.fm-score .fm-big small { font-size: var(--fs-body); letter-spacing: 0; margin-left: 0.15em; }
+.fm-score .fm-legend {
+  grid-area: legend; align-self: end; margin: 0;
+  display: flex; flex-direction: column; align-items: stretch; gap: 0.625rem;
+  font-size: var(--fs-small); line-height: var(--lh-small);
+}
+.fm-score .fm-legend > span {
+  display: flex; align-items: baseline; gap: 0.625rem;
+  padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.22);
+}
+.fm-score .fm-legend > span::before {
+  content: ''; flex: none; width: 0.5rem; height: 0.5rem; align-self: center;
+}
+.fm-score .fm-legend b {
+  margin: 0 auto 0 0;
+  font-size: clamp(1.375rem, 6cqi, 2.25rem); line-height: 1; letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.fm-score .fm-track { grid-area: track; margin: 0; height: 0.75rem; gap: 4px; }
+/* The drop sizes the segments inline; the field divides the bar by the counts. */
+.fm-score .fm-seg { width: auto !important; }
+.fm-score .fm-seg { flex-basis: 0; flex-shrink: 1; }
+.fm-score .fm-seg:nth-child(1) { flex-grow: 76; }
+.fm-score .fm-seg:nth-child(2) { flex-grow: 22; }
+.fm-score .fm-seg:nth-child(3) { flex-grow: 4; }
+.fm-score .fm-seg:nth-child(1), .fm-score .fm-legend > span:nth-child(1)::before { background: var(--tone-moss-bright); }
+.fm-score .fm-seg:nth-child(2), .fm-score .fm-legend > span:nth-child(2)::before { background: var(--tone-blue-pale); }
+.fm-score .fm-seg:nth-child(3), .fm-score .fm-legend > span:nth-child(3)::before { background: #fff; }
 """
 
 
@@ -738,7 +790,7 @@ def apply_to_page(content):
         sys.exit(f'design revision "{label}": the submit button\'s arrow was not found')
     content = content[:submit] + button + content[end:]
     APPLIED.append(f'{label} ({n} labels, the submit)')
-    return _cool_page(_hero_photo(content))
+    return _score_page(_cool_page(_hero_photo(content)))
 
 
 # ── 15. The hero photograph ─────────────────────────────────────────────
@@ -965,6 +1017,18 @@ def _cool_page(content):
     return content
 
 
+# ── 18. The Healthspan score ────────────────────────────────────────────
+
+def _score_page(content):
+    label = 'healthspan: the score card marked for its own layout'
+    content, n = re.subn(r'(<div class="feat-visual tone-moss" aria-hidden="true">\s*<div class="fm-card)(">)',
+                         r'\1 fm-score\2', content)
+    if n != 1:
+        sys.exit(f'design revision "{label}": expected one score card in the moss panel, found {n}')
+    APPLIED.append(label)
+    return content
+
+
 # ── 5. The type scale ───────────────────────────────────────────────────
 
 TYPE = """html { font-size: 100%; }
@@ -1019,6 +1083,7 @@ def apply_to_css(css):
     APPLIED.append('close: a centred statement over a panorama, not copy on a photograph')
     APPLIED.append('chips: the two on dark grounds solid, not glass')
     APPLIED.append('figures: flat fields, no card, no blur')
+    APPLIED.append('healthspan: the score as a field')
     css = css.rstrip('\n') + '\n' + CSS
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
     if left:
