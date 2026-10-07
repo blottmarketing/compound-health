@@ -77,6 +77,10 @@ Revisions, October 2026:
      the left, its three counts stacked on the right under rules, each keyed
      to its block, and the bar beneath as three square blocks divided by the
      counts themselves. Biological age stays as a quiet row at the foot.
+ 19. ApoB is a field of its own: the marker's name at display size, the white
+     Optimal chip beside it, and the chart as one heavy white line over a
+     square band for the range, with every point dropped but the last, which
+     is drawn larger as the reading that matters.
 """
 
 import re
@@ -761,6 +765,23 @@ CSS = """
 .fm-score .fm-seg:nth-child(1), .fm-score .fm-legend > span:nth-child(1)::before { background: var(--tone-moss-bright); }
 .fm-score .fm-seg:nth-child(2), .fm-score .fm-legend > span:nth-child(2)::before { background: var(--tone-blue-pale); }
 .fm-score .fm-seg:nth-child(3), .fm-score .fm-legend > span:nth-child(3)::before { background: #fff; }
+
+/* Revision 19: ApoB. The marker's name is the figure's headline, at display
+   size against the chip; the chart is one heavy line over a square band, and
+   of its points only the latest reading is drawn, larger, ringed in white. */
+.feat-visual:has(.fm-apob) { container-type: inline-size; }
+.fm-apob > .fm-row:first-child { align-items: flex-start; }
+.fm-apob .fm-title {
+  font-size: clamp(2.25rem, 9cqi, 4rem); line-height: 0.9; letter-spacing: -0.04em;
+  font-weight: 500; color: #fff;
+}
+.fm-apob .fm-chart { overflow: visible; }
+.fm-apob .fm-band { rx: 0; }
+.fm-apob .fm-line { stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.fm-apob .fm-pts circle { display: none; }
+.fm-apob .fm-pts circle.fm-end {
+  display: inline; fill: var(--tone-moss-bright); stroke: #fff; stroke-width: 2.2;
+}
 """
 
 
@@ -790,7 +811,7 @@ def apply_to_page(content):
         sys.exit(f'design revision "{label}": the submit button\'s arrow was not found')
     content = content[:submit] + button + content[end:]
     APPLIED.append(f'{label} ({n} labels, the submit)')
-    return _score_page(_cool_page(_hero_photo(content)))
+    return _apob_page(_score_page(_cool_page(_hero_photo(content))))
 
 
 # ── 15. The hero photograph ─────────────────────────────────────────────
@@ -1029,6 +1050,22 @@ def _score_page(content):
     return content
 
 
+# ── 19. ApoB ────────────────────────────────────────────────────────────
+
+def _apob_page(content):
+    label = 'apob: the chart card marked, its latest reading drawn larger'
+    content, n = re.subn(r'(<div class="feat-visual tone-pine" aria-hidden="true">\s*<div class="fm-card)(">)',
+                         r'\1 fm-apob\2', content)
+    if n != 1:
+        sys.exit(f'design revision "{label}": expected one chart card in the pine panel, found {n}')
+    content, n = re.subn(r'<circle cx="304" cy="86" r="3.5"/>',
+                         '<circle class="fm-end" cx="304" cy="86" r="6"/>', content)
+    if n != 1:
+        sys.exit(f'design revision "{label}": expected the latest reading at 304,86 once, found {n}')
+    APPLIED.append(label)
+    return content
+
+
 # ── 5. The type scale ───────────────────────────────────────────────────
 
 TYPE = """html { font-size: 100%; }
@@ -1084,6 +1121,7 @@ def apply_to_css(css):
     APPLIED.append('chips: the two on dark grounds solid, not glass')
     APPLIED.append('figures: flat fields, no card, no blur')
     APPLIED.append('healthspan: the score as a field')
+    APPLIED.append('apob: the marker as a field')
     css = css.rstrip('\n') + '\n' + CSS
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
     if left:

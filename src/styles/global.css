@@ -2149,3 +2149,20 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
 .fm-score .fm-seg:nth-child(2), .fm-score .fm-legend > span:nth-child(2)::before { background: var(--tone-blue-pale); }
 .fm-score .fm-seg:nth-child(3), .fm-score .fm-legend > span:nth-child(3)::before { background: #fff; }
 
+/* Revision 19: ApoB. The marker's name is the figure's headline, at display
+   size against the chip; the chart is one heavy line over a square band, and
+   of its points only the latest reading is drawn, larger, ringed in white. */
+.feat-visual:has(.fm-apob) { container-type: inline-size; }
+.fm-apob > .fm-row:first-child { align-items: flex-start; }
+.fm-apob .fm-title {
+  font-size: clamp(2.25rem, 9cqi, 4rem); line-height: 0.9; letter-spacing: -0.04em;
+  font-weight: 500; color: #fff;
+}
+.fm-apob .fm-chart { overflow: visible; }
+.fm-apob .fm-band { rx: 0; }
+.fm-apob .fm-line { stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.fm-apob .fm-pts circle { display: none; }
+.fm-apob .fm-pts circle.fm-end {
+  display: inline; fill: var(--tone-moss-bright); stroke: #fff; stroke-width: 2.2;
+}
+
