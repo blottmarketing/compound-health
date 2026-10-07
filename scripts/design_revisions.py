@@ -67,6 +67,12 @@ Revisions, October 2026:
      tones onto night blue, which gains tokens of its own. The four feature
      panels drawn from warm tones take cool ones under new class names, and
      the port stops if any warm tone survives.
+ 17. Every figure is a field: one flat tone with its content set straight on
+     the colour in white. The gradient, the blurred light and the white card
+     floating on it are gone, from the feature figures and the disciplines
+     panel alike. The figures share one set of atoms on colour (quiet labels,
+     white values, square segments, white rules, a solid white chip), which
+     each figure composes from.
 """
 
 import re
@@ -647,6 +653,62 @@ CSS = """
   .hero .hero-btns { flex-direction: column; align-items: stretch; width: 100%; }
   .hero .hero-btns > * { width: 100%; justify-content: center; text-align: center; }
 }
+
+/* Revision 17: every figure is a field. The panel is one flat tone, with no
+   gradient, no blurred light and no card floating on it: the figure's content
+   is set straight on the colour in white, its heading at the top as a quiet
+   label and its data anchored to the foot. The atoms below are the shared
+   language every figure composes from: labels at 72% white, values in white,
+   square segments, rules at 22% white, a solid white chip carrying the
+   panel's own colour as its ink. */
+.feat-card .feat-visual, .feat-card.is-wide .feat-visual {
+  justify-content: flex-start; padding: 2rem 2.25rem; color: #fff;
+}
+.feat-visual::before, .prod-panel::before { display: none; }
+.feat-visual.tone-ink { --fv-bg: var(--tone-night); }
+.prod-panel { --fv-bg: var(--tone-night); }
+.prod-panel .stack-card { box-shadow: none; }
+
+.fm-card {
+  display: flex; flex-direction: column; flex: 1 1 auto;
+  background: none; border-radius: 0; padding: 0; box-shadow: none; color: #fff;
+}
+.fm-card + .fm-card {
+  flex: 0 0 auto; margin-top: 1.25rem; padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.22);
+}
+.fm-card > :nth-child(2) { margin-top: auto; }
+.fm-card + .fm-card > :nth-child(2) { margin-top: 0.75rem; }
+.fm-title {
+  font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: 0.01em;
+  font-weight: 400; color: rgba(255,255,255,0.72);
+}
+.fm-big { font-size: var(--fs-h1); line-height: 0.9; letter-spacing: -0.04em; font-weight: 500; color: #fff; }
+.fm-big small { color: rgba(255,255,255,0.72); letter-spacing: 0; }
+.fm-muted, .fm-legend { color: rgba(255,255,255,0.72); }
+.fm-legend b { color: #fff; font-weight: 500; }
+.fm-track { gap: 3px; height: 0.625rem; }
+.fm-track.fm-thin { height: 3px; background: rgba(255,255,255,0.22); border-radius: 0; }
+.fm-seg { border-radius: 0; }
+.fm-seg.is-moss, .fm-dot.is-moss { background: #fff; }
+.fm-seg.is-bronze, .fm-dot.is-bronze { background: var(--tone-blue-pale); }
+.fm-seg.is-rust { background: rgba(255,255,255,0.4); }
+.fm-marker { border-top-color: #fff; }
+.fm-chip, .fm-chip.is-moss, .fm-chip.is-rust { background: #fff; color: var(--fv-bg); font-weight: 500; }
+.fm-list { margin: 0; }
+.fm-list li { border-top: 1px solid rgba(255,255,255,0.22); color: #fff; }
+.fm-band { fill: rgba(255,255,255,0.09); stroke: none; }
+.fm-line { stroke: #fff; }
+.fm-pts { fill: #fff; }
+.fm-thread { margin-top: auto; max-width: 30rem; }
+.fm-bubble { box-shadow: none; }
+.fm-bubble.is-me { background: #fff; color: var(--fv-bg); }
+.fm-bubble.is-team { background: rgba(255,255,255,0.12); color: #fff; }
+.fm-avatars i { border-color: var(--fv-bg); }
+
+@media (max-width: 900px) {
+  .feat-card .feat-visual, .feat-card.is-wide .feat-visual { padding: 1.5rem 1.25rem; }
+}
 """
 
 
@@ -956,6 +1018,7 @@ def apply_to_css(css):
     APPLIED.append('buttons: secondaries on dark grounds are text links')
     APPLIED.append('close: a centred statement over a panorama, not copy on a photograph')
     APPLIED.append('chips: the two on dark grounds solid, not glass')
+    APPLIED.append('figures: flat fields, no card, no blur')
     css = css.rstrip('\n') + '\n' + CSS
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
     if left:
