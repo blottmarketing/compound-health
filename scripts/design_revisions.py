@@ -96,6 +96,12 @@ Revisions, October 2026:
  24. The disciplines panel is a field too: its three devices (the team bar,
      the coverage ring, the gate) lose the light card and are drawn in white
      on the panel's tone, with square segments and keys.
+ 25. The disciplines panel moves as one choreography. The panes cross rather
+     than swap: the outgoing one leaves quickly while the panel's colour turns
+     slowly, and the incoming one builds in order on one long decelerating
+     curve. The team bar grows as one bar, the coverage ring is revealed as
+     one sweep with its count tied to it, the foot lines wipe in. Nothing
+     loops and nothing fades out before a switch: once built, a pane holds.
 """
 
 import re
@@ -916,6 +922,101 @@ CSS = """
 .prod-panel .gate-step + .gate-step { border-top-color: rgba(255,255,255,0.22); }
 .prod-panel .gate-step .gate-dot { background: #fff !important; border-color: #fff !important; color: var(--fv-bg) !important; }
 .prod-panel .gate-dot svg path, .prod-panel .gate-step .gate-dot svg path { stroke: var(--fv-bg) !important; }
+
+/* Revision 25: motion in the disciplines panel. Three curves and no others:
+   a long deceleration for everything that arrives, a quick acceleration for
+   what leaves, and an even in-out for the panel's colour. Every element rests
+   in its final state; the entries are one-shot animations keyed on
+   .is-active, so they replay on each switch and never loop. */
+:root {
+  --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-leave: cubic-bezier(0.4, 0, 1, 1);
+  --ease-turn: cubic-bezier(0.65, 0, 0.35, 1);
+}
+@property --cov-sweep { syntax: '<angle>'; inherits: false; initial-value: 360deg; }
+@property --cov-n { syntax: '<integer>'; inherits: false; initial-value: 500; }
+@keyframes fieldRise { from { opacity: 0; transform: translateY(0.75rem); } to { opacity: 1; transform: none; } }
+@keyframes fieldFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fieldGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes fieldWipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes fieldSweep { from { --cov-sweep: 0deg; } to { --cov-sweep: 360deg; } }
+@keyframes fieldCount { from { --cov-n: 0; } to { --cov-n: 500; } }
+@keyframes fieldDrawShield { from { stroke-dashoffset: 51; } to { stroke-dashoffset: 0; } }
+@keyframes fieldDrawTick { from { stroke-dashoffset: 10; } to { stroke-dashoffset: 0; } }
+@keyframes fieldBreathe { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+.prod-panel {
+  transition: --fv-bg 0.9s var(--ease-turn), --fv-light 0.9s var(--ease-turn), --fv-shade 0.9s var(--ease-turn);
+}
+/* The panes share one cell, so the outgoing one can leave while the next
+   arrives, and the panel takes the height of the tallest. */
+.prod-panes { display: grid; }
+.prod-pane, .prod-pane.is-active { display: flex; grid-area: 1 / 1; height: 100%; animation: none; }
+.prod-pane {
+  opacity: 0; visibility: hidden; transform: translateY(-0.5rem); pointer-events: none;
+  transition: opacity 0.3s var(--ease-leave), transform 0.3s var(--ease-leave), visibility 0s linear 0.3s;
+}
+.prod-pane.is-active { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition: none; }
+
+/* At rest, every element is in its final state. */
+.prod-panel .team-seg, .prod-panel .team-row, .prod-panel .cov-num, .prod-panel .cov-plus,
+.prod-panel .cov-label, .prod-panel .cov-legend li, .prod-panel .cov-foot {
+  animation: none; opacity: 1; transform: none;
+}
+.prod-panel .cov-arc, .prod-panel .cov-foot svg path { animation: none; stroke-dashoffset: 0; }
+
+.prod-pane.is-active .stack-card-head { animation: fieldRise 0.7s var(--ease-arrive) 0.15s both; }
+
+/* The team: one bar growing from the left, then the rows in order. */
+.prod-panel .team-seg { transform-origin: left center; }
+.prod-pane.is-active .team-seg { animation: fieldGrow 1.1s var(--ease-arrive) both; }
+.prod-pane.is-active .team-seg:nth-child(1) { animation-delay: 0.25s; }
+.prod-pane.is-active .team-seg:nth-child(2) { animation-delay: 0.33s; }
+.prod-pane.is-active .team-seg:nth-child(3) { animation-delay: 0.41s; }
+.prod-pane.is-active .team-seg:nth-child(4) { animation-delay: 0.49s; }
+.prod-pane.is-active .team-row { animation: fieldRise 0.8s var(--ease-arrive) both; }
+.prod-pane.is-active .team-row:nth-child(1) { animation-delay: 0.45s; }
+.prod-pane.is-active .team-row:nth-child(2) { animation-delay: 0.53s; }
+.prod-pane.is-active .team-row:nth-child(3) { animation-delay: 0.61s; }
+.prod-pane.is-active .team-row:nth-child(4) { animation-delay: 0.69s; }
+.prod-pane.is-active .team-foot { animation: fieldWipe 1.2s var(--ease-arrive) 0.7s both; }
+.prod-panel .team-pulse span { animation: fieldBreathe 2.4s var(--ease-turn) infinite; }
+.prod-panel .team-pulse span:nth-child(2) { animation-delay: 0.3s; }
+.prod-panel .team-pulse span:nth-child(3) { animation-delay: 0.6s; }
+.prod-panel .team-pulse span:nth-child(4) { animation-delay: 0.9s; }
+
+/* Coverage: the ring revealed as one sweep from twelve o'clock, the count
+   running on the same curve, so the two cannot drift apart. The ring's svg is
+   turned a quarter back, so the sweep starts a quarter on in its own frame. */
+.prod-panel .cov-ring svg {
+  -webkit-mask: conic-gradient(from 90deg, #000 var(--cov-sweep), transparent 0);
+  mask: conic-gradient(from 90deg, #000 var(--cov-sweep), transparent 0);
+}
+.prod-pane.is-active .cov-ring svg { animation: fieldSweep 1.6s var(--ease-arrive) 0.25s both; }
+.prod-panel .cov-num { font-size: 0; counter-reset: cov-n var(--cov-n); }
+.prod-panel .cov-num::after {
+  content: counter(cov-n); display: inline-block; min-width: 3ch; text-align: right;
+  font-size: var(--fs-h3); line-height: var(--lh-h3); letter-spacing: var(--ls-h3);
+  font-variant-numeric: tabular-nums;
+}
+.prod-pane.is-active .cov-num { animation: fieldCount 1.6s var(--ease-arrive) 0.25s both, fieldFade 0.6s var(--ease-arrive) 0.25s both; }
+.prod-pane.is-active .cov-plus, .prod-pane.is-active .cov-label { animation: fieldFade 0.8s var(--ease-arrive) 0.5s both; }
+.prod-pane.is-active .cov-legend li { animation: fieldRise 0.8s var(--ease-arrive) both; }
+.prod-pane.is-active .cov-legend li:nth-child(1) { animation-delay: 0.35s; }
+.prod-pane.is-active .cov-legend li:nth-child(2) { animation-delay: 0.47s; }
+.prod-pane.is-active .cov-legend li:nth-child(3) { animation-delay: 0.59s; }
+.prod-pane.is-active .cov-legend li:nth-child(4) { animation-delay: 0.71s; }
+.prod-pane.is-active .cov-legend li:nth-child(5) { animation-delay: 0.83s; }
+.prod-pane.is-active .cov-legend li:nth-child(6) { animation-delay: 0.95s; }
+.prod-pane.is-active .cov-foot { animation: fieldWipe 1.2s var(--ease-arrive) 0.8s both; }
+.prod-pane.is-active .cov-foot svg path:first-of-type { animation: fieldDrawShield 0.9s var(--ease-arrive) 1.1s both; }
+.prod-pane.is-active .cov-foot svg path:last-of-type { animation: fieldDrawTick 0.5s var(--ease-arrive) 1.5s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .prod-panel, .prod-pane { transition: none; }
+  .prod-pane { transform: none; }
+  .prod-panel *, .prod-panel *::before, .prod-panel *::after { animation: none !important; }
+}
 """
 
 
@@ -1261,6 +1362,7 @@ def apply_to_css(css):
     APPLIED.append('clinical record: a ledger on the field')
     APPLIED.append('concierge: the thread set as type, not bubbles')
     APPLIED.append('disciplines: the three devices drawn on the field')
+    APPLIED.append('disciplines: one choreography, panes that cross, nothing that loops')
     css = css.rstrip('\n') + '\n' + CSS
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
     if left:
