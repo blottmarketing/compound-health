@@ -508,8 +508,7 @@ CSS = """
    framed on the face. Nothing is laid over the photograph. The DOM keeps the
    photograph first, as the drop has it; order places it. The section ends on
    the photograph's lower edge, with no padding under it, so it is the
-   photograph that slides away to uncover the footer; its lower corners are
-   square, sitting on that edge. */
+   photograph that slides away to uncover the footer. */
 .closer { padding: 7rem 1.5rem 0; }
 .closer .closer-card {
   max-width: 1120px; margin: 0 auto; min-height: 0; padding: 0;
@@ -525,7 +524,7 @@ CSS = """
 .closer .closer-btns { justify-content: center; }
 .closer .closer-media {
   order: 1; position: relative; inset: auto; width: 100%;
-  aspect-ratio: 21 / 9; border-radius: 12px 12px 0 0; overflow: hidden;
+  aspect-ratio: 21 / 9; border-radius: 12px; overflow: hidden;
 }
 .closer .closer-media::after { display: none; }
 .closer .closer-img { object-position: 50% 15%; }
