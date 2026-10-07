@@ -85,6 +85,17 @@ Revisions, October 2026:
      its category a small label above it rather than a chip. The photograph
      behind it stays until its replacement arrives; the layer that darkens it
      turns night blue, so the type reads on it in the palette's own shade.
+ 21. Your care team is a field: each discipline at headline size, keyed by a
+     square, how it is delivered as a quiet label at the line's end.
+ 22. Your clinical record is a ledger on the field: each source's name as a
+     label in a left column, what it holds at headline size beside it, the
+     access line a quiet row at the foot.
+ 23. The concierge thread is set as type, not bubbles: the member's question
+     quiet and to the right, the team's answer at headline size under a rule,
+     the team keyed by three squares.
+ 24. The disciplines panel is a field too: its three devices (the team bar,
+     the coverage ring, the gate) lose the light card and are drawn in white
+     on the panel's tone, with square segments and keys.
 """
 
 import re
@@ -807,6 +818,104 @@ CSS = """
   font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.15; letter-spacing: -0.02em;
   font-weight: 500; color: #fff;
 }
+
+/* Revisions 21 to 23 size their headline rows against the panel. */
+.feat-visual.tone-night, .feat-visual.tone-ink, .feat-visual.tone-blue { container-type: inline-size; }
+
+/* Revision 21: Your care team. */
+.tone-night .fm-list li { align-items: baseline; gap: 0.75rem; padding: 0.75rem 0 0; }
+.tone-night .fm-list li + li { margin-top: 0.75rem; }
+.tone-night .fm-list li > span:nth-child(2) {
+  font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.15; letter-spacing: -0.02em; font-weight: 500;
+}
+.tone-night .fm-list .fm-muted { font-size: var(--fs-small); }
+.tone-night .fm-dot { width: 0.5rem; height: 0.5rem; border-radius: 0; align-self: center; }
+
+/* Revision 22: Your clinical record, as a ledger. */
+.tone-ink .fm-list li {
+  display: grid; grid-template-columns: minmax(5.5rem, 26%) minmax(0, 1fr);
+  align-items: baseline; gap: 1rem; padding: 0.75rem 0 0;
+}
+.tone-ink .fm-list li + li { margin-top: 0.75rem; }
+.tone-ink .fm-list .fm-chip, .tone-ink .fm-list .fm-chip.is-moss, .tone-ink .fm-list .fm-chip.is-rust {
+  background: none; color: var(--tone-blue-pale); padding: 0; border-radius: 0;
+  font-size: var(--fs-tiny); line-height: var(--lh-tiny); letter-spacing: 0.08em;
+  text-transform: uppercase; font-weight: 500;
+}
+.tone-ink .fm-list li > span:nth-child(2) {
+  font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.15; letter-spacing: -0.02em; font-weight: 500;
+}
+.tone-ink .fm-card > .fm-row:last-child {
+  margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.22);
+  font-size: var(--fs-small);
+}
+
+/* Revision 23: the concierge thread, set as type. */
+.fm-thread { width: 100%; max-width: none; gap: 1rem; align-items: stretch; }
+.fm-bubble, .fm-bubble.is-me, .fm-bubble.is-team {
+  background: none; border-radius: 0; padding: 0; box-shadow: none;
+}
+.fm-bubble.is-me {
+  align-self: flex-end; max-width: 75%; text-align: right;
+  color: rgba(255,255,255,0.72); font-size: var(--fs-body); line-height: var(--lh-body);
+}
+.fm-bubble.is-team {
+  display: flex; flex-direction: column; gap: 0.75rem; padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.22); color: #fff;
+  font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.2; letter-spacing: -0.02em; font-weight: 500;
+}
+.fm-avatars { gap: 4px; margin: 0; }
+.fm-avatars i, .fm-avatars i:first-child, .fm-avatars i:last-child {
+  width: 0.625rem; height: 0.625rem; border: 0; border-radius: 0; margin: 0;
+}
+.fm-avatars i { background: var(--tone-blue-pale); }
+.fm-avatars i:first-child { background: #fff; }
+.fm-avatars i:last-child { background: var(--tone-moss-bright); }
+
+/* Revision 24: the disciplines panel. The card gives up its fill, border, blur
+   and padding; each device is drawn in white and the palette's pale tones on
+   the panel's own colour, with square segments, arcs and keys. */
+.prod-panel .stack-card, .prod-panel .stack-card.is-feature {
+  background: none; border: 0; border-radius: 0; padding: 0;
+  -webkit-backdrop-filter: none; backdrop-filter: none; color: #fff;
+}
+.prod-panel .stack-card-head, .prod-panel .stack-card.is-feature .stack-card-head {
+  text-transform: none; letter-spacing: 0.01em; font-size: var(--fs-small); line-height: var(--lh-small);
+  color: rgba(255,255,255,0.72);
+}
+.prod-panel .team-bar { gap: 4px; height: 0.75rem; }
+.prod-panel .team-seg { border-radius: 0; }
+.prod-panel .team-row::before { border-radius: 0; top: 0.45em; }
+.prod-panel .team-seg:nth-child(1), .prod-panel .team-row:nth-child(1)::before { background: #fff; }
+.prod-panel .team-seg:nth-child(2), .prod-panel .team-row:nth-child(2)::before { background: var(--tone-blue-pale); }
+.prod-panel .team-seg:nth-child(3), .prod-panel .team-row:nth-child(3)::before { background: var(--tone-moss-bright); }
+.prod-panel .team-seg:nth-child(4), .prod-panel .team-row:nth-child(4)::before { background: rgba(255,255,255,0.4); }
+.prod-panel .team-role { color: #fff; font-size: var(--fs-large); line-height: 1.2; font-weight: 500; letter-spacing: -0.01em; }
+.prod-panel .team-note { color: rgba(255,255,255,0.72); }
+.prod-panel .team-foot { border-top: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.72); }
+.prod-panel .team-pulse span { background: #fff; border-radius: 0; }
+
+.prod-panel .cov-arc { stroke-linecap: butt; }
+.prod-panel .cov-arc:nth-child(1), .prod-panel .cov-legend li:nth-child(1)::before { stroke: #fff; background: #fff; }
+.prod-panel .cov-arc:nth-child(2), .prod-panel .cov-legend li:nth-child(2)::before { stroke: var(--tone-blue-pale); background: var(--tone-blue-pale); }
+.prod-panel .cov-arc:nth-child(3), .prod-panel .cov-legend li:nth-child(3)::before { stroke: rgba(255,255,255,0.7); background: rgba(255,255,255,0.7); }
+.prod-panel .cov-arc:nth-child(4), .prod-panel .cov-legend li:nth-child(4)::before { stroke: rgba(255,255,255,0.5); background: rgba(255,255,255,0.5); }
+.prod-panel .cov-arc:nth-child(5), .prod-panel .cov-legend li:nth-child(5)::before { stroke: rgba(255,255,255,0.35); background: rgba(255,255,255,0.35); }
+.prod-panel .cov-arc:nth-child(6), .prod-panel .cov-legend li:nth-child(6)::before { stroke: rgba(255,255,255,0.2); background: rgba(255,255,255,0.2); }
+.prod-panel .cov-legend li { color: #fff; font-size: var(--fs-small); }
+.prod-panel .cov-legend li::before { border-radius: 0; }
+.prod-panel .cov-num, .prod-panel .cov-plus { color: #fff; }
+.prod-panel .cov-label { color: rgba(255,255,255,0.72); }
+.prod-panel .cov-body { padding-bottom: 1.25rem; }
+.prod-panel .cov-foot { color: #fff; border-top: 1px solid rgba(255,255,255,0.22); }
+
+.prod-panel .gate-flow { background: none; padding: 0; border-radius: 0; }
+.prod-panel .gate-step {
+  color: #fff; padding: 1rem 0; font-size: var(--fs-large); line-height: 1.2; font-weight: 500; letter-spacing: -0.01em;
+}
+.prod-panel .gate-step + .gate-step { border-top-color: rgba(255,255,255,0.22); }
+.prod-panel .gate-step .gate-dot { background: #fff !important; border-color: #fff !important; color: var(--fv-bg) !important; }
+.prod-panel .gate-dot svg path, .prod-panel .gate-step .gate-dot svg path { stroke: var(--fv-bg) !important; }
 """
 
 
@@ -1148,6 +1257,10 @@ def apply_to_css(css):
     APPLIED.append('healthspan: the score as a field')
     APPLIED.append('apob: the marker as a field')
     APPLIED.append('protocol: the items as rows on the field')
+    APPLIED.append('care team: the disciplines as rows on the field')
+    APPLIED.append('clinical record: a ledger on the field')
+    APPLIED.append('concierge: the thread set as type, not bubbles')
+    APPLIED.append('disciplines: the three devices drawn on the field')
     css = css.rstrip('\n') + '\n' + CSS
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
     if left:
