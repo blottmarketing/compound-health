@@ -81,6 +81,10 @@ Revisions, October 2026:
      Optimal chip beside it, and the chart as one heavy white line over a
      square band for the range, with every point dropped but the last, which
      is drawn larger as the reading that matters.
+ 20. Your protocol is a field of its own: each item a large row under a rule,
+     its category a small label above it rather than a chip. The photograph
+     behind it stays until its replacement arrives; the layer that darkens it
+     turns night blue, so the type reads on it in the palette's own shade.
 """
 
 import re
@@ -782,6 +786,27 @@ CSS = """
 .fm-apob .fm-pts circle.fm-end {
   display: inline; fill: var(--tone-moss-bright); stroke: #fff; stroke-width: 2.2;
 }
+
+/* Revision 20: Your protocol. Each item is a row under a rule: its category a
+   small label above, the instruction itself at headline size. */
+.feat-visual:has(.fm-plan) { container-type: inline-size; }
+.feat-visual:has(.fm-plan)::after {
+  background: linear-gradient(180deg, rgba(10,26,38,0.2) 0%, rgba(10,26,38,0.72) 100%);
+}
+.fm-plan li {
+  flex-direction: column; align-items: flex-start; gap: 0.3rem;
+  padding: 0.875rem 0 0;
+}
+.fm-plan li + li { margin-top: 0.875rem; }
+.fm-plan .fm-chip, .fm-plan .fm-chip.is-moss, .fm-plan .fm-chip.is-rust {
+  background: none; color: var(--tone-blue-pale); padding: 0; border-radius: 0;
+  font-size: var(--fs-tiny); line-height: var(--lh-tiny); letter-spacing: 0.08em;
+  text-transform: uppercase; font-weight: 500;
+}
+.fm-plan li > span:nth-child(2) {
+  font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.15; letter-spacing: -0.02em;
+  font-weight: 500; color: #fff;
+}
 """
 
 
@@ -1122,6 +1147,7 @@ def apply_to_css(css):
     APPLIED.append('figures: flat fields, no card, no blur')
     APPLIED.append('healthspan: the score as a field')
     APPLIED.append('apob: the marker as a field')
+    APPLIED.append('protocol: the items as rows on the field')
     css = css.rstrip('\n') + '\n' + CSS
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
     if left:
