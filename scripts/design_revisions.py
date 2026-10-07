@@ -24,12 +24,12 @@ Revisions, October 2026:
      panels, the form, the figures) 12px. True circles, the status dots and
      the avatars, stay round.
   4. The drop's unused accent ramps are removed, and the three uses of one of
-     them move onto the brand tones.
+     them move onto the brand tones (night blue, since revision 16).
   5. The type scale is new: a fixed 16px root, and headings that scale with
      the viewport through clamp(), with their own leading and tracking.
   6. The menu button below 900px is two lines that cross into an X when the
      menu opens.
-  7. Every solid button is the brand rust, the bar's action included: one
+  7. Every solid button is the brand moss, the bar's action included: one
      colour for one kind of button.
   8. The dark gradient footer the drop superseded is removed: its rules, every
      one overridden by the white footer that replaced it, and the two empty
@@ -61,6 +61,12 @@ Revisions, October 2026:
      place of the drop's. The drop's own stays in public/images/hero.webp,
      because the port matches each embedded photograph to its file there by
      checksum; only the page's reference to it moves.
+ 16. The warm tones go. Rust, umber, bronze, taupe, olive and sand are
+     removed from the palette and every use moves onto the two cool families:
+     the accent, its tint and its deeper steps onto moss, the secondary warm
+     tones onto night blue, which gains tokens of its own. The four feature
+     panels drawn from warm tones take cool ones under new class names, and
+     the port stops if any warm tone survives.
 """
 
 import re
@@ -349,36 +355,36 @@ CSS = """
   color: #fff; --logo-icon: #fff; font-size: 18px; gap: 8px;
 }
 .main-nav .nav-links { margin-left: 0; gap: 0.125rem; }
-/* Hover changes the ink alone, to the brand sand, with no fill behind it. */
+/* Hover changes the ink alone, to a pale night blue, with no fill behind it. */
 .main-nav .nav-links a {
   height: 2.5rem; padding: 0 0.875rem; border-radius: 6px;
   color: #fff; transition: color 0.2s ease;
 }
-.main-nav .nav-links a:hover { background: transparent; color: var(--tone-sand); }
+.main-nav .nav-links a:hover { background: transparent; color: var(--tone-blue-pale); }
 .main-nav .nav-actions { margin-left: 0.375rem; }
 .main-nav .nav-cta {
   height: 2.5rem; padding: 0 1.25rem !important; border-radius: 6px !important;
-  background: var(--tone-rust) !important; color: #fff !important;
+  background: var(--tone-moss-light) !important; color: #fff !important;
 }
 /* The drop's shared button hover sets a dark border-color !important; it has
    to be cleared here, or it draws an outline round the action on hover. */
 .main-nav .nav-cta, .main-nav .nav-cta:hover { border-color: transparent !important; }
 .main-nav .nav-cta:hover {
-  background: color-mix(in srgb, var(--tone-rust) 86%, #000) !important;
+  background: var(--tone-moss) !important;
   filter: none;
 }
 .main-nav .hamburger { display: none; }
 
-/* One colour for one kind of button: every solid button is the brand rust,
-   over the photographs as on the white page, with a deeper rust on hover. */
+/* One colour for one kind of button: every solid button is the brand moss,
+   over the photographs as on the white page, with a deeper moss on hover. */
 .btn-solid, .mobile-nav-cta, .plan-btn.is-solid, .wf-submit,
 .hero .btn-solid, .closer .btn-solid, .plan.featured .plan-btn.is-solid {
-  background: var(--tone-rust) !important; border-color: var(--tone-rust) !important; color: #fff !important;
+  background: var(--tone-moss-light) !important; border-color: var(--tone-moss-light) !important; color: #fff !important;
 }
 .btn-solid:hover, .mobile-nav-cta:hover, .plan-btn.is-solid:hover, .wf-submit:hover,
 .hero .btn-solid:hover, .closer .btn-solid:hover, .plan.featured .plan-btn.is-solid:hover {
-  background: color-mix(in srgb, var(--tone-rust) 86%, #000) !important;
-  border-color: color-mix(in srgb, var(--tone-rust) 86%, #000) !important; color: #fff !important;
+  background: var(--tone-moss) !important;
+  border-color: var(--tone-moss) !important; color: #fff !important;
 }
 
 /* What you get, as an index of rows. One feature per row, ruled off above
@@ -404,7 +410,7 @@ CSS = """
   content: counter(feat, decimal-leading-zero);
   margin-bottom: 0.5rem;
   font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums; color: var(--tone-rust);
+  font-variant-numeric: tabular-nums; color: var(--tone-moss-light);
 }
 .feat-name {
   font-size: var(--fs-h4); line-height: var(--lh-h4); letter-spacing: var(--ls-h4);
@@ -435,7 +441,7 @@ CSS = """
 /* Secondary actions on a dark ground are text links: white text, no fill, no
    outline, no blur, with just enough padding to keep the hit area and the
    baseline of the button beside them, and an underline on hover. Primary
-   stays solid rust. */
+   stays solid moss. */
 .hero .btn-outline, .closer .btn-outline,
 .plans .btn-pill, .plans .plan-btn:not(.is-solid) {
   display: inline-block; text-align: center;
@@ -570,6 +576,14 @@ CSS = """
   -webkit-backdrop-filter: none; backdrop-filter: none;
 }
 
+/* Revision 16: the membership band glows night blue from its lower left, where
+   the drop had rust, under the moss it already carries at the upper right. */
+.plans::before {
+  background:
+    radial-gradient(ellipse 55% 60% at 8% 100%, rgba(42,95,131,0.7) 0%, rgba(42,95,131,0) 65%),
+    radial-gradient(ellipse 50% 45% at 95% 0%, rgba(33,72,51,0.45) 0%, rgba(33,72,51,0) 65%);
+}
+
 /* The hero fills the first screen, edge to edge. The card keeps its own top
    padding so the copy clears the island floating over it. */
 .hero { padding: 0; }
@@ -662,7 +676,7 @@ def apply_to_page(content):
         sys.exit(f'design revision "{label}": the submit button\'s arrow was not found')
     content = content[:submit] + button + content[end:]
     APPLIED.append(f'{label} ({n} labels, the submit)')
-    return _hero_photo(content)
+    return _cool_page(_hero_photo(content))
 
 
 # ── 15. The hero photograph ─────────────────────────────────────────────
@@ -788,9 +802,9 @@ RAMPS = r'(?:vermillion|green|yellow|pink)-\d+'
 
 def _palette(css):
     label = 'palette: the unused accent ramps removed'
-    for old, new in (('var(--yellow-700)', 'var(--tone-bronze)'),
-                     ('var(--yellow-50)', 'var(--tone-sand-tint)'),
-                     ('var(--yellow-100)', 'var(--tone-sand-tint)')):
+    for old, new in (('var(--yellow-700)', 'var(--tone-blue-light)'),
+                     ('var(--yellow-50)', 'var(--tone-blue-tint)'),
+                     ('var(--yellow-100)', 'var(--tone-blue-tint)')):
         css = css.replace(old, new)
     css, n = re.subn(r'[ \t]*(?:--' + RAMPS + r':\s*#[0-9a-fA-F]{3,8};\s*)+\n', '', css)
     if n == 0:
@@ -800,6 +814,93 @@ def _palette(css):
         sys.exit(f'design revision "{label}": still referenced: {sorted(set(left))}')
     APPLIED.append(label)
     return css
+
+
+# ── 16. Moss and night blue ─────────────────────────────────────────────
+
+# The warm tones as the drop declares them, matched exactly so a drop that
+# changes them stops the port rather than half-converting.
+WARM_DECLS = (
+    '  --tone-rust: #83392c; --tone-rust-deep: #5e2d24; --tone-rust-soft: #854937;\n'
+    '  --tone-umber: #623f30; --tone-umber-deep: #351f1c;\n'
+    '  --tone-bronze: #917e64; --tone-taupe: #736050; --tone-olive: #5e503a;\n'
+    '  --tone-sand: #bd9f82; --tone-sand-pale: #b0ab9a;\n')
+WARM_TINTS = '  --tone-rust-tint: #f3e6e1; --tone-sand-tint: #f1ebe3; --tone-moss-tint: #e4ebe5;\n'
+
+# The two families that replace them. Moss keeps the drop's three steps and
+# tint and gains the light stop its panel already used; night blue is the
+# hero photograph's sky, until now written into each rule by hand.
+COOL_TONES = (
+    '  --tone-moss-bright: #4a7a5c; --tone-moss-tint: #e4ebe5;\n'
+    '  --tone-night: #0a1a26; --tone-blue-deep: #10293a; --tone-blue: #1b4561;\n'
+    '  --tone-blue-light: #2a5f83; --tone-blue-pale: #9fbbd0; --tone-blue-tint: #e6edf2;\n')
+
+# Every warm tone, by role, onto its cool counterpart. The accent (rust) becomes
+# the light moss: white on it holds 6.5:1, and it still separates from the
+# night-blue island the bar's action sits in. Its tint and its deeper steps go
+# to moss with it; the secondary warm tones (umber, bronze, taupe, olive, sand)
+# go to night blue, so the two families divide the page between them.
+WARM_TO_COOL = {
+    'rust': 'moss-light', 'rust-deep': 'moss-deep', 'rust-soft': 'moss',
+    'rust-tint': 'moss-tint',
+    'umber': 'blue', 'umber-deep': 'blue-deep',
+    'bronze': 'blue-light', 'taupe': 'blue', 'olive': 'night',
+    'sand': 'blue-pale', 'sand-pale': 'blue-pale', 'sand-tint': 'blue-tint',
+}
+WARM_TOKEN = re.compile(r'--tone-(rust|umber|bronze|taupe|olive|sand)(-deep|-soft|-tint|-pale)?\b')
+ACCENT_RGB = '59,101,75'  # --tone-moss-light, for the drop's translucent rust
+RUST_RGBA = re.compile(r'rgba\(\s*131\s*,\s*57\s*,\s*44\s*,')
+
+# The four feature panels drawn from warm tones take cool ones, under new names
+# so no class says rust where the colour is moss.
+WARM_PANELS = {'tone-sand': 'tone-night', 'tone-rust': 'tone-pine', 'tone-umber': 'tone-tide'}
+WARM_PANEL_RULES = (
+    '.feat-visual.tone-sand  { --fv-bg: var(--tone-taupe); --fv-light: #d9bfa1; --fv-shade: var(--tone-olive); }\n'
+    '.feat-visual.tone-rust  { --fv-bg: var(--tone-rust);  --fv-light: #b0634a; --fv-shade: var(--tone-rust-deep); }\n'
+    '.feat-visual.tone-umber { --fv-bg: var(--tone-umber); --fv-light: var(--tone-bronze); --fv-shade: var(--tone-umber-deep); }\n')
+COOL_PANEL_RULES = (
+    '.feat-visual.tone-night { --fv-bg: var(--tone-blue-deep);  --fv-light: var(--tone-blue-light);  --fv-shade: var(--tone-night); }\n'
+    '.feat-visual.tone-pine  { --fv-bg: var(--tone-moss-deep);  --fv-light: var(--tone-moss-light);  --fv-shade: var(--tone-night); }\n'
+    '.feat-visual.tone-tide  { --fv-bg: var(--tone-blue);       --fv-light: var(--tone-moss-bright); --fv-shade: var(--tone-moss-deep); }\n')
+
+WARM_LEFT = re.compile(
+    r'--tone-(?:rust|umber|bronze|taupe|olive|sand)\b|rgba\(\s*131\s*,\s*57\s*,\s*44\b|'
+    r'#(?:83392c|5e2d24|854937|623f30|351f1c|917e64|736050|5e503a|bd9f82|b0ab9a|f3e6e1|f1ebe3|b0634a|d9bfa1)\b',
+    re.I)
+
+
+def _warm_token(m):
+    return '--tone-' + WARM_TO_COOL[m.group(1) + (m.group(2) or '')]
+
+
+def _cool(css):
+    label = 'palette: the warm tones replaced by moss and night blue'
+    i = _once(css, WARM_DECLS, label)
+    css = css[:i] + css[i + len(WARM_DECLS):]
+    i = _once(css, WARM_TINTS, label)
+    css = css[:i] + COOL_TONES + css[i + len(WARM_TINTS):]
+    i = _once(css, WARM_PANEL_RULES, label)
+    css = css[:i] + COOL_PANEL_RULES + css[i + len(WARM_PANEL_RULES):]
+    css, n = WARM_TOKEN.subn(_warm_token, css)
+    # A typed custom property's initial value has to be a literal colour.
+    i = _once(css, '--fv-light { syntax: \'<color>\'; inherits: true; initial-value: #83392c; }', label)
+    css = css.replace('initial-value: #83392c;', 'initial-value: #3b654b;', 1)
+    css, k = RUST_RGBA.subn(f'rgba({ACCENT_RGB},', css)
+    APPLIED.append(f'{label} ({n} references, {k} translucent)')
+    return css
+
+
+def _cool_page(content):
+    label = 'palette: the warm panels and chart marks moved to moss and night blue'
+    for old, new in WARM_PANELS.items():
+        content, n = re.subn(rf'class="feat-visual {old}"', f'class="feat-visual {new}"', content)
+        if n != 1:
+            sys.exit(f'design revision "{label}": expected one {old} panel, found {n}')
+    content, n = WARM_TOKEN.subn(_warm_token, content)
+    if n != 3:
+        sys.exit(f'design revision "{label}": expected three warm chart marks, found {n}')
+    APPLIED.append(label)
+    return content
 
 
 # ── 5. The type scale ───────────────────────────────────────────────────
@@ -846,6 +947,7 @@ def _type(css):
 def apply_to_css(css):
     css = _footer(css)
     css = _palette(css)
+    css = _cool(css)
     css = _type(css)
     css = _boxy(css)
     APPLIED.append('bar: one light island of fixed width')
@@ -854,4 +956,8 @@ def apply_to_css(css):
     APPLIED.append('buttons: secondaries on dark grounds are text links')
     APPLIED.append('close: a centred statement over a panorama, not copy on a photograph')
     APPLIED.append('chips: the two on dark grounds solid, not glass')
-    return css.rstrip('\n') + '\n' + CSS
+    css = css.rstrip('\n') + '\n' + CSS
+    left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
+    if left:
+        sys.exit(f'design revision "palette": warm tones survived: {left}')
+    return css
