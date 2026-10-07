@@ -49,7 +49,8 @@ Revisions, October 2026:
  12. The close of the page is a statement on the white ground, not copy laid
      over a photograph: the heading, the line beneath it and the action
      centred, and the photograph below them as a wide, low panorama inside
-     the content column. The footer still sits beneath it.
+     the content column. The section ends on the photograph's lower edge, so
+     the photograph itself uncovers the footer.
  13. The two chips on dark grounds (the membership band, the access card)
      are solid tones a step off their ground, not translucent glass.
  14. From 901px, What you get is a stack: the figures stick under the bar
@@ -505,8 +506,11 @@ CSS = """
    line under it and the action are centred in a reading measure; the
    photograph sits beneath them as a 21:9 panorama in the content column,
    framed on the face. Nothing is laid over the photograph. The DOM keeps the
-   photograph first, as the drop has it; order places it. */
-.closer { padding: 7rem 1.5rem 5rem; }
+   photograph first, as the drop has it; order places it. The section ends on
+   the photograph's lower edge, with no padding under it, so it is the
+   photograph that slides away to uncover the footer; its lower corners are
+   square, sitting on that edge. */
+.closer { padding: 7rem 1.5rem 0; }
 .closer .closer-card {
   max-width: 1120px; margin: 0 auto; min-height: 0; padding: 0;
   background: none; color: var(--charcoal); border-radius: 0; overflow: visible;
@@ -521,13 +525,13 @@ CSS = """
 .closer .closer-btns { justify-content: center; }
 .closer .closer-media {
   order: 1; position: relative; inset: auto; width: 100%;
-  aspect-ratio: 21 / 9; border-radius: 12px; overflow: hidden;
+  aspect-ratio: 21 / 9; border-radius: 12px 12px 0 0; overflow: hidden;
 }
 .closer .closer-media::after { display: none; }
 .closer .closer-img { object-position: 50% 15%; }
 
 @media (max-width: 900px) {
-  .closer { padding: 4.5rem 1.25rem 3rem; }
+  .closer { padding: 4.5rem 1.25rem 0; }
   .closer .closer-card { gap: 2.5rem; }
   .closer .closer-media { aspect-ratio: 4 / 3; }
   .closer .closer-img { object-position: 62% 12%; }
