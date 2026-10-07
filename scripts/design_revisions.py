@@ -102,12 +102,14 @@ Revisions, October 2026:
      curve. The team bar grows as one bar, the coverage ring is revealed as
      one sweep with its count tied to it, the foot lines wipe in. Nothing
      loops and nothing fades out before a switch: once built, a pane holds.
- 26. Advanced therapies is drawn as a gate. Three faint bands stand for the
-     layers the membership already has, with an empty, outlined slot above
-     them; the two conditions sit below as headline rows with square check
-     boxes. On entry the conditions are checked one after the other, and only
-     then does the slot fill and the add-on layer settle onto the stack. The
-     bands are drawing only, so the pane carries no new copy.
+ 26. Advanced therapies is drawn as a gate, read top to bottom: the two
+     conditions as headline rows with square check boxes, then the stack the
+     therapies are added to. Its two bands are the membership's other two
+     disciplines, named by their tab titles; above them sits the add-on
+     layer, named by the tab's own words for the therapies, as an empty
+     outlined slot. On entry the conditions are checked one after the other,
+     and only then does the slot fill and settle onto the stack. Every label
+     is lifted verbatim from the section.
 """
 
 import re
@@ -1018,18 +1020,23 @@ CSS = """
 .prod-pane.is-active .cov-foot svg path:first-of-type { animation: fieldDrawShield 0.9s var(--ease-arrive) 1.1s both; }
 .prod-pane.is-active .cov-foot svg path:last-of-type { animation: fieldDrawTick 0.5s var(--ease-arrive) 1.5s both; }
 
-/* Revision 26: Advanced therapies as a gate. */
+/* Revision 26: Advanced therapies as a gate. The conditions come first and
+   the stack follows, so the page reads as cause and effect. */
 .prod-panel .gate { justify-content: flex-start; }
+.prod-panel .gate-flow { order: 0; border-top: 1px solid rgba(255,255,255,0.22); }
 .prod-panel .gate-layers {
-  flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 6px;
-  padding: 1.5rem 0;
+  order: 1; margin-top: auto; padding-top: 1.5rem;
+  display: flex; flex-direction: column; gap: 4px;
 }
-.prod-panel .gate-layers span { display: block; height: 0.75rem; background: rgba(255,255,255,0.14); transform-origin: left center; }
+.prod-panel .gate-layers span {
+  display: flex; align-items: center; min-height: 2.5rem; padding: 0.5rem 1rem;
+  font-size: var(--fs-small); line-height: var(--lh-small);
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.72);
+}
 .prod-panel .gate-layers .is-addon {
-  margin-bottom: 0.625rem; background-color: #fff;
+  background-color: #fff; color: var(--fv-bg); font-weight: 500;
   outline: 1px dashed transparent; outline-offset: -1px;
 }
-.prod-panel .gate-flow { border-top: 1px solid rgba(255,255,255,0.22); }
 .prod-panel .gate-label, .prod-panel .gate-dot, .prod-panel .gate-dot svg path { animation: none; opacity: 1; transform: none; }
 .prod-panel .gate-dot svg path { stroke-dashoffset: 0; }
 /* The box is drawn by its own outline (the drop sets every box-shadow to
@@ -1046,25 +1053,24 @@ CSS = """
 @keyframes gateFill { from { transform: scale(0); } to { transform: scale(1); } }
 @keyframes gateTick { from { stroke-dashoffset: 22; } to { stroke-dashoffset: 0; } }
 @keyframes gateSlot {
-  from { background-color: rgba(255,255,255,0); outline-color: rgba(255,255,255,0.5); transform: translateY(-0.5rem); }
-  to { background-color: #fff; outline-color: transparent; transform: none; }
-}
-.prod-pane.is-active .gate-layers span:not(.is-addon) { animation: fieldGrow 1.1s var(--ease-arrive) both; }
-.prod-pane.is-active .gate-layers span:nth-child(2) { animation-delay: 0.25s; }
-.prod-pane.is-active .gate-layers span:nth-child(3) { animation-delay: 0.32s; }
-.prod-pane.is-active .gate-layers span:nth-child(4) { animation-delay: 0.39s; }
-.prod-pane.is-active .gate-layers .is-addon {
-  animation: fieldFade 0.6s var(--ease-arrive) 0.45s both, gateSlot 0.9s var(--ease-arrive) 1.4s both;
+  from { background-color: rgba(255,255,255,0); color: rgba(255,255,255,0.45); outline-color: rgba(255,255,255,0.5); transform: translateY(-0.5rem); }
+  to { background-color: #fff; color: var(--fv-bg); outline-color: transparent; transform: none; }
 }
 .prod-pane.is-active .gate-step { animation: fieldRise 0.8s var(--ease-arrive) both; }
-.prod-pane.is-active .gate-step:nth-of-type(1) { animation-delay: 0.45s; }
-.prod-pane.is-active .gate-step:nth-of-type(2) { animation-delay: 0.6s; }
+.prod-pane.is-active .gate-step:nth-of-type(1) { animation-delay: 0.25s; }
+.prod-pane.is-active .gate-step:nth-of-type(2) { animation-delay: 0.38s; }
+.prod-pane.is-active .gate-layers span:not(.is-addon) { animation: fieldWipe 1.1s var(--ease-arrive) both; }
+.prod-pane.is-active .gate-layers span:nth-child(2) { animation-delay: 0.4s; }
+.prod-pane.is-active .gate-layers span:nth-child(3) { animation-delay: 0.48s; }
+.prod-pane.is-active .gate-layers .is-addon {
+  animation: fieldFade 0.6s var(--ease-arrive) 0.55s both, gateSlot 0.9s var(--ease-arrive) 1.35s both;
+}
 .prod-pane.is-active .gate-dot::before { animation: gateFill 0.45s var(--ease-arrive) both; }
-.prod-pane.is-active .gate-step:nth-of-type(1) .gate-dot::before { animation-delay: 0.75s; }
-.prod-pane.is-active .gate-step:nth-of-type(2) .gate-dot::before { animation-delay: 1.05s; }
+.prod-pane.is-active .gate-step:nth-of-type(1) .gate-dot::before { animation-delay: 0.7s; }
+.prod-pane.is-active .gate-step:nth-of-type(2) .gate-dot::before { animation-delay: 1s; }
 .prod-pane.is-active .gate-dot svg path { animation: gateTick 0.4s var(--ease-arrive) both; }
-.prod-pane.is-active .gate-step:nth-of-type(1) .gate-dot svg path { animation-delay: 0.95s; }
-.prod-pane.is-active .gate-step:nth-of-type(2) .gate-dot svg path { animation-delay: 1.25s; }
+.prod-pane.is-active .gate-step:nth-of-type(1) .gate-dot svg path { animation-delay: 0.9s; }
+.prod-pane.is-active .gate-step:nth-of-type(2) .gate-dot svg path { animation-delay: 1.2s; }
 
 @media (prefers-reduced-motion: reduce) {
   .prod-panel, .prod-pane { transition: none; }
@@ -1357,12 +1363,15 @@ def _apob_page(content):
 
 # ── 26. Advanced therapies as a gate ────────────────────────────────────
 
+# Named by the section's own words: the therapies as the tab describes them,
+# and the two disciplines beneath by their tab titles.
 GATE_LAYERS = ('<div class="gate-layers" aria-hidden="true">'
-               '<span class="is-addon"></span><span></span><span></span><span></span></div>')
+               '<span class="is-addon">Hormones, peptides, and regenerative therapies</span>'
+               '<span>Diagnostics and screening</span><span>Clinical care</span></div>')
 
 
 def _gate_page(content):
-    label = 'therapies: the layers drawn above the two conditions'
+    label = 'therapies: the stack drawn beneath the two conditions'
     content, n = re.subn(r'(<div class="gate">)(\s*)(<div class="gate-flow">)',
                          lambda m: m.group(1) + m.group(2) + GATE_LAYERS + m.group(2) + m.group(3), content)
     if n != 1:
