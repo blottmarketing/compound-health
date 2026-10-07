@@ -111,6 +111,13 @@ Revisions, October 2026:
      outlined slot. On entry the conditions are checked one after the other,
      and only then does the slot fill and settle onto the stack. Every label
      is lifted verbatim from the section.
+ 27. The three warm photographs are replaced by new cool ones, sky and water
+     in the palette's own moss and night blue: Your protocol is set over a
+     swimmer, the partners band and the closing panorama over a figure among
+     leaves against the sky. As with the hero (15), the drop's own files stay
+     in public/images/ for the checksum match; only the references move. The
+     two sky photographs are marked data-ground="light", which the bar reads
+     as white page, so it turns to its dark glass over them.
 """
 
 import re
@@ -191,7 +198,8 @@ NAV_SCRIPT = """\
   // over a photograph or a dark section, dark glass over the white page. The
   // ground is read off the page itself, at seven points along the island's
   // middle, so no list of sections has to be kept in step with the markup.
-  // A photograph counts as dark; a gradient by its first colour stop. The ink
+  // A photograph counts as dark unless it is marked data-ground="light" (a
+  // bright sky reads as white page); a gradient by its first colour stop. The ink
   // is white in both tones, so the brightest point decides: one light card
   // under the links, a white tier in a dark band, turns the island dark.
   const inner = nav.querySelector('.nav-inner');
@@ -205,7 +213,7 @@ NAV_SCRIPT = """\
   const groundAt = (x, y) => {
     const hit = document.elementsFromPoint(x, y).find((el) => !el.closest('.main-nav, .mobile-menu'));
     for (let n = hit; n && n !== document.documentElement; n = n.parentElement) {
-      if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return 0;
+      if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return n.dataset.ground === 'light' ? 1 : 0;
       const s = getComputedStyle(n);
       if (s.backgroundImage !== 'none') {
         if (s.backgroundImage.includes('url(')) return 0;
@@ -1075,6 +1083,15 @@ CSS = """
 .prod-pane.is-active .gate-step:nth-of-type(1) .gate-dot svg path { animation-delay: 0.9s; }
 .prod-pane.is-active .gate-step:nth-of-type(2) .gate-dot svg path { animation-delay: 1.2s; }
 
+/* Revision 27: the cool photographs. Each crop keeps the face in frame; the
+   closing panorama is cut at 21:9 and so needs placing only on phones. */
+.feat-img { object-position: 50% 40%; }
+.case-media-img { object-position: 50% 30%; }
+
+@media (max-width: 900px) {
+  .closer .closer-img { object-position: 55% 25%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .prod-panel, .prod-pane { transition: none; }
   .prod-pane { transform: none; }
@@ -1109,7 +1126,7 @@ def apply_to_page(content):
         sys.exit(f'design revision "{label}": the submit button\'s arrow was not found')
     content = content[:submit] + button + content[end:]
     APPLIED.append(f'{label} ({n} labels, the submit)')
-    return _gate_page(_apob_page(_score_page(_cool_page(_hero_photo(content)))))
+    return _gate_page(_apob_page(_score_page(_cool_page(_photos(_hero_photo(content))))))
 
 
 # ── 15. The hero photograph ─────────────────────────────────────────────
@@ -1130,6 +1147,41 @@ def _hero_photo(content):
                      f'{attr}="{DROP_PHOTO[attr]}", which the drop no longer has')
     APPLIED.append(label)
     return content[:start] + img + content[end:]
+
+
+# ── 27. The cool photographs ────────────────────────────────────────────
+
+# Each image's class, then its drop attributes and its new ones. The originals
+# are in client_resources/photos-2026-10-07/; the files here are cut from them.
+PHOTOS = (
+    ('feat-img', {'src': '/images/feature.webp', 'width': '1000', 'height': '667'},
+                 {'src': '/images/feature-water.webp', 'width': '1500', 'height': '1000'}),
+    ('case-media-img', {'src': '/images/partners.webp', 'width': '800', 'height': '1000'},
+                       {'src': '/images/partners-leaves.webp', 'width': '1200', 'height': '900'}),
+    ('closer-img', {'src': '/images/closing.webp', 'width': '1600', 'height': '1067'},
+                   {'src': '/images/closing-sky.webp', 'width': '2560', 'height': '1092'}),
+)
+# The two sky photographs are light enough that white ink on the bar's light
+# glass would vanish over them; marked, the bar reads them as white page.
+LIGHT_GROUND = ('case-media-img', 'closer-img')
+
+
+def _photos(content):
+    label = 'photographs: the three warm ones replaced by cool ones'
+    for cls, drop, new in PHOTOS:
+        start = _once(content, f'class="{cls}"', label)
+        end = content.index('/>', start)
+        img = content[start:end]
+        for attr, value in new.items():
+            img, n = re.subn(f'{attr}="{re.escape(drop[attr])}"', f'{attr}="{value}"', img)
+            if n != 1:
+                sys.exit(f'design revision "{label}": expected the {cls} image\'s '
+                         f'{attr}="{drop[attr]}", which the drop no longer has')
+        if cls in LIGHT_GROUND:
+            img = img.replace(f'class="{cls}"', f'class="{cls}" data-ground="light"', 1)
+        content = content[:start] + img + content[end:]
+    APPLIED.append(label)
+    return content
 
 
 # ── 8. The superseded footer ────────────────────────────────────────────
@@ -1446,6 +1498,7 @@ def apply_to_css(css):
     APPLIED.append('disciplines: the three devices drawn on the field')
     APPLIED.append('disciplines: one choreography, panes that cross, nothing that loops')
     APPLIED.append('therapies: drawn as a gate')
+    APPLIED.append('photographs: placed in their frames')
     css = css.rstrip('\n') + '\n' + CSS
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
     if left:

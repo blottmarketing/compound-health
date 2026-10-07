@@ -2428,6 +2428,15 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
 .prod-pane.is-active .gate-step:nth-of-type(1) .gate-dot svg path { animation-delay: 0.9s; }
 .prod-pane.is-active .gate-step:nth-of-type(2) .gate-dot svg path { animation-delay: 1.2s; }
 
+/* Revision 27: the cool photographs. Each crop keeps the face in frame; the
+   closing panorama is cut at 21:9 and so needs placing only on phones. */
+.feat-img { object-position: 50% 40%; }
+.case-media-img { object-position: 50% 30%; }
+
+@media (max-width: 900px) {
+  .closer .closer-img { object-position: 55% 25%; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .prod-panel, .prod-pane { transition: none; }
   .prod-pane { transform: none; }

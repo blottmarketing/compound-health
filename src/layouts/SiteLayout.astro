@@ -306,7 +306,8 @@ const organization = {
         // over a photograph or a dark section, dark glass over the white page. The
         // ground is read off the page itself, at seven points along the island's
         // middle, so no list of sections has to be kept in step with the markup.
-        // A photograph counts as dark; a gradient by its first colour stop. The ink
+        // A photograph counts as dark unless it is marked data-ground="light" (a
+        // bright sky reads as white page); a gradient by its first colour stop. The ink
         // is white in both tones, so the brightest point decides: one light card
         // under the links, a white tier in a dark band, turns the island dark.
         const inner = nav.querySelector('.nav-inner');
@@ -320,7 +321,7 @@ const organization = {
         const groundAt = (x, y) => {
           const hit = document.elementsFromPoint(x, y).find((el) => !el.closest('.main-nav, .mobile-menu'));
           for (let n = hit; n && n !== document.documentElement; n = n.parentElement) {
-            if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return 0;
+            if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return n.dataset.ground === 'light' ? 1 : 0;
             const s = getComputedStyle(n);
             if (s.backgroundImage !== 'none') {
               if (s.backgroundImage.includes('url(')) return 0;
