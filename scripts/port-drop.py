@@ -602,7 +602,7 @@ const organization = {
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#83392c" />
+    <meta name="theme-color" content="#0a1a26" />
 
     <!-- Aeonik Regular sets the reading copy and the hero standfirst, so it is
          on the critical path. Medium is not preloaded: it sets the headline,
@@ -682,7 +682,7 @@ CHROME
         transform: translate(-50%, -120%);
         z-index: 2000;
         padding: 12px 20px;
-        border-radius: 0 0 6px 6px;
+        border-radius: 0;
         background: #18181b;
         color: #ffffff;
         font-family: var(--font-sans);

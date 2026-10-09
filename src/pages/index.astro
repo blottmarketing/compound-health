@@ -26,7 +26,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             src="/images/hero-portrait.webp"
             alt=""
             width="2560"
-            height="1089"
+            height="1086"
             fetchpriority="high"
             decoding="async"
           />
@@ -115,7 +115,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         <div class="feat-grid reveal">
           <article class="feat-card">
             <div class="feat-visual tone-moss" aria-hidden="true">
-              <div class="fm-card">
+              <div class="fm-card fm-score">
                 <div class="fm-row fm-between"><span class="fm-title">Healthspan score</span><span class="fm-big"><span data-count="78">0</span><small>/100</small></span></div>
                 <div class="fm-track"><span class="fm-seg is-moss" style="width:64%"></span><span class="fm-seg is-bronze" style="width:22%"></span><span class="fm-seg is-rust" style="width:8%"></span></div>
                 <div class="fm-row fm-legend"><span><b>76</b> Optimal</span><span><b>22</b> In range</span><span><b>4</b> Out of range</span></div>
@@ -131,7 +131,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </div>
           </article>
           <article class="feat-card">
-            <div class="feat-visual tone-sand" aria-hidden="true">
+            <div class="feat-visual tone-night" aria-hidden="true">
               <div class="fm-card">
                 <div class="fm-row fm-between"><span class="fm-title">Your care team</span><span class="fm-chip is-moss">Selected</span></div>
                 <ul class="fm-list">
@@ -147,17 +147,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </div>
           </article>
           <article class="feat-card">
-            <div class="feat-visual tone-rust" aria-hidden="true">
-              <div class="fm-card">
-                <div class="fm-row fm-between"><span class="fm-title">ApoB</span><span class="fm-chip is-moss">Optimal</span></div>
-                <svg class="fm-chart" viewBox="0 0 320 130" aria-hidden="true">
-                  <rect class="fm-band" x="0" y="62" width="320" height="60" rx="4" fill="var(--tone-moss-tint)" stroke="var(--tone-moss-light)" stroke-dasharray="3 3" stroke-width="1"/>
-                  <polyline class="fm-line fm-line-1" pathLength="1" points="16,96 76,90 136,64 196,28" fill="none" stroke="var(--tone-bronze)" stroke-width="2"/>
-                  <polyline class="fm-line fm-line-2" pathLength="1" points="196,28 256,88 304,86" fill="none" stroke="var(--tone-moss)" stroke-width="2"/>
-                  <g class="fm-pts" fill="var(--tone-moss)"><circle cx="16" cy="96" r="3.5"/><circle cx="76" cy="90" r="3.5"/><circle cx="256" cy="88" r="3.5"/><circle cx="304" cy="86" r="3.5"/></g>
-                  <g class="fm-pts" fill="var(--tone-bronze)"><circle cx="136" cy="64" r="3.5"/></g>
-                  <g class="fm-pts" fill="var(--tone-rust)"><circle cx="196" cy="28" r="3.5"/></g>
-                </svg>
+            <div class="feat-visual tone-pine" aria-hidden="true">
+              <div class="fm-card fm-apob">
+                <div class="fm-row"><span class="fm-title">ApoB</span></div>
+                <ol class="fm-year"><li></li><li></li><li class="is-above"></li><li></li><li class="is-now"><span class="fm-chip is-moss">Optimal</span></li></ol>
                 <div class="fm-row fm-legend fm-axis"><span>Jan</span><span>May</span><span>Sep</span><span>Jan</span><span>May</span></div>
               </div>
             </div>
@@ -167,8 +160,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </div>
           </article>
           <article class="feat-card">
-            <div class="feat-visual tone-umber" aria-hidden="true">
-              <img class="feat-img" src="/images/feature.webp" alt="" width="1000" height="667" loading="lazy" decoding="async" />
+            <div class="feat-visual tone-tide" aria-hidden="true">
+              <img class="feat-img" src="/images/feature-water.webp" alt="" width="1500" height="1000" loading="lazy" decoding="async" />
               <div class="fm-card">
                 <div class="fm-row fm-between"><span class="fm-title">Your protocol</span><span class="fm-muted">Updated today</span></div>
                 <ul class="fm-list fm-plan">
@@ -366,6 +359,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
                   <div class="stack-card-head">On a curated add-on layer</div>
                   <div class="gate">
 
+                    <div class="gate-layers" aria-hidden="true"><span class="is-addon">Hormones, peptides, and regenerative therapies</span><span>Diagnostics and screening</span><span>Clinical care</span></div>
+
                     <div class="gate-flow">
                       <div class="gate-step">
                         <span class="gate-dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12.5l4.5 4.5L20 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
@@ -408,7 +403,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
         <div class="case-band reveal">
           <div class="case-media" aria-hidden="true">
-            <img class="case-media-img" src="/images/partners.webp" alt="" width="800" height="1000" loading="lazy" decoding="async" />
+            <img class="case-media-img" data-ground="light" src="/images/partners-leaves.webp" alt="" width="1200" height="900" loading="lazy" decoding="async" />
           </div>
           <div class="case-stats">
             <div class="case-stat">
@@ -474,7 +469,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             </p>
           </div>
           <div class="audience-media" aria-hidden="true">
-            <img class="audience-media-img" src="/images/audiences.webp" alt="" width="800" height="1000" loading="lazy" decoding="async" />
+            <img class="audience-media-img" data-ground="light" src="/images/audiences-eye.webp" alt="" width="1536" height="1736" loading="lazy" decoding="async" />
           </div>
         </div>
 
@@ -1120,11 +1115,11 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       <div class="closer-card">
         <div class="closer-media" aria-hidden="true">
           <img
-            class="closer-img"
-            src="/images/closing.webp"
+            class="closer-img" data-ground="light"
+            src="/images/closing-sky.webp"
             alt=""
-            width="1600"
-            height="1067"
+            width="2560"
+            height="1092"
             loading="lazy"
             decoding="async"
           />

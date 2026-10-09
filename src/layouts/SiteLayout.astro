@@ -97,7 +97,7 @@ const organization = {
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#83392c" />
+    <meta name="theme-color" content="#0a1a26" />
 
     <!-- Aeonik Regular sets the reading copy and the hero standfirst, so it is
          on the critical path. Medium is not preloaded: it sets the headline,
@@ -214,7 +214,7 @@ const organization = {
         transform: translate(-50%, -120%);
         z-index: 2000;
         padding: 12px 20px;
-        border-radius: 0 0 6px 6px;
+        border-radius: 0;
         background: #18181b;
         color: #ffffff;
         font-family: var(--font-sans);
@@ -306,7 +306,8 @@ const organization = {
         // over a photograph or a dark section, dark glass over the white page. The
         // ground is read off the page itself, at seven points along the island's
         // middle, so no list of sections has to be kept in step with the markup.
-        // A photograph counts as dark; a gradient by its first colour stop. The ink
+        // A photograph counts as dark unless it is marked data-ground="light" (a
+        // bright sky reads as white page); a gradient by its first colour stop. The ink
         // is white in both tones, so the brightest point decides: one light card
         // under the links, a white tier in a dark band, turns the island dark.
         const inner = nav.querySelector('.nav-inner');
@@ -320,7 +321,7 @@ const organization = {
         const groundAt = (x, y) => {
           const hit = document.elementsFromPoint(x, y).find((el) => !el.closest('.main-nav, .mobile-menu'));
           for (let n = hit; n && n !== document.documentElement; n = n.parentElement) {
-            if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return 0;
+            if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return n.dataset.ground === 'light' ? 1 : 0;
             const s = getComputedStyle(n);
             if (s.backgroundImage !== 'none') {
               if (s.backgroundImage.includes('url(')) return 0;

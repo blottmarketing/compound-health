@@ -11,7 +11,7 @@ When a drop arrives that already carries a revision, delete it from here.
 
 Revisions, October 2026:
 
-  1. The bar is one glass island of fixed width, almost square at the
+  1. The bar is one glass island of fixed width, square at the
      corners, floating over the page: the lockup on the left, the section
      links and the action on the right, the action last. It never changes
      shape. Its ink is white; its glass is 10% white over the photographs and
@@ -19,17 +19,15 @@ Revisions, October 2026:
      page. Below 900px the menu button sits inside the island.
   2. The hero photograph fills the whole first screen, edge to edge: no inset,
      no rounded corners, no white margin, with the island floating over it.
-  3. Every corner on the site follows the bar's: almost square. Controls
-     (buttons, chips, tags, inputs, badges) take 6px and surfaces (cards,
-     panels, the form, the figures) 12px. True circles, the status dots and
-     the avatars, stay round.
+  3. Every corner on the site is square: no element carries a radius, the
+     status dots and the avatars included.
   4. The drop's unused accent ramps are removed, and the three uses of one of
-     them move onto the brand tones.
+     them move onto the brand tones (night blue, since revision 16).
   5. The type scale is new: a fixed 16px root, and headings that scale with
      the viewport through clamp(), with their own leading and tracking.
   6. The menu button below 900px is two lines that cross into an X when the
      menu opens.
-  7. Every solid button is the brand rust, the bar's action included: one
+  7. Every solid button is the brand moss, the bar's action included: one
      colour for one kind of button.
   8. The dark gradient footer the drop superseded is removed: its rules, every
      one overridden by the white footer that replaced it, and the two empty
@@ -49,7 +47,8 @@ Revisions, October 2026:
  12. The close of the page is a statement on the white ground, not copy laid
      over a photograph: the heading, the line beneath it and the action
      centred, and the photograph below them as a wide, low panorama inside
-     the content column. The footer still sits beneath it.
+     the content column. The section ends on the photograph's lower edge, so
+     the photograph itself uncovers the footer.
  13. The two chips on dark grounds (the membership band, the access card)
      are solid tones a step off their ground, not translucent glass.
  14. From 901px, What you get is a stack: the figures stick under the bar
@@ -60,7 +59,102 @@ Revisions, October 2026:
  15. The hero carries a new photograph, public/images/hero-portrait.webp, in
      place of the drop's. The drop's own stays in public/images/hero.webp,
      because the port matches each embedded photograph to its file there by
-     checksum; only the page's reference to it moves.
+     checksum; only the page's reference to it moves. The photograph was
+     replaced on 2026-10-09 by a man in profile by a window, looking left,
+     under the same file name; on a desktop the frame holds him right of
+     centre and the copy sits on the dark, blurred foliage at his left.
+ 16. The warm tones go. Rust, umber, bronze, taupe, olive and sand are
+     removed from the palette and every use moves onto the two cool families:
+     the accent, its tint and its deeper steps onto moss, the secondary warm
+     tones onto night blue, which gains tokens of its own. The four feature
+     panels drawn from warm tones take cool ones under new class names, and
+     the port stops if any warm tone survives.
+ 17. Every figure is a field: one flat tone with its content set straight on
+     the colour in white. The gradient, the blurred light and the white card
+     floating on it are gone, from the feature figures and the disciplines
+     panel alike. The figures share one set of atoms on colour (quiet labels,
+     white values, square segments, white rules, a solid white chip), which
+     each figure composes from.
+ 18. The Healthspan score is a field of its own: the score at display size on
+     the left, its three counts stacked on the right under rules, each keyed
+     to its block, and the bar beneath as three square blocks divided by the
+     counts themselves. Biological age stays as a quiet row at the foot.
+ 19. ApoB is a field of its own: the marker's name at display size, the white
+     Optimal chip beside it, and the chart as one heavy white line over a
+     square band for the range, with every point dropped but the last, which
+     is drawn larger as the reading that matters. Revision 32 replaces the
+     chart and moves the chip.
+ 20. Your protocol is a field of its own: each item a large row under a rule,
+     its category a small label above it rather than a chip. The photograph
+     behind it stays until its replacement arrives; the layer that darkens it
+     turns night blue, so the type reads on it in the palette's own shade.
+ 21. Your care team is a field: each discipline at headline size, keyed by a
+     square, how it is delivered as a quiet label at the line's end.
+ 22. Your clinical record is a ledger on the field: each source's name as a
+     label in a left column, what it holds at headline size beside it, the
+     access line a quiet row at the foot.
+ 23. The concierge thread is set as type, not bubbles: the member's question
+     quiet and to the right, the team's answer at headline size under a rule,
+     the team keyed by three squares.
+ 24. The disciplines panel is a field too: its three devices (the team bar,
+     the coverage ring, the gate) lose the light card and are drawn in white
+     on the panel's tone, with square segments and keys.
+ 25. The disciplines panel moves as one choreography. The panes cross rather
+     than swap: the outgoing one leaves quickly while the panel's colour turns
+     slowly, and the incoming one builds in order on one long decelerating
+     curve. The team bar grows as one bar, the coverage ring is revealed as
+     one sweep with its count tied to it, the foot lines wipe in. Nothing
+     loops and nothing fades out before a switch: once built, a pane holds.
+ 26. Advanced therapies is drawn as a gate, read top to bottom: the two
+     conditions as headline rows with square check boxes, then the stack the
+     therapies are added to. Its two bands are the membership's other two
+     disciplines, named by their tab titles; above them sits the add-on
+     layer, named by the tab's own words for the therapies, as an empty
+     outlined slot. On entry the conditions are checked one after the other,
+     and only then does the slot fill and settle onto the stack. Every label
+     is lifted verbatim from the section.
+ 27. The three warm photographs are replaced by new cool ones, sky and water
+     in the palette's own moss and night blue: Your protocol is set over a
+     swimmer, the partners band and the closing panorama over a figure among
+     leaves against the sky. As with the hero (15), the drop's own files stay
+     in public/images/ for the checksum match; only the references move. The
+     two sky photographs are marked data-ground="light", which the bar reads
+     as white page, so it turns to its dark glass over them.
+ 28. The hero's copy rests on the foot of the photograph, bottom left, on
+     its dark ground, rather than at the middle of the screen: the upper
+     screen is the photograph alone. A split along the foot, the standfirst
+     and actions on the right, was tried and dropped: on the right they fall
+     on the lit subject and do not read. From 901px the actions sit beside
+     the standfirst, and the secondary one, which lands there nearer the
+     subject, takes the bar's deep blue glass in place of a bare text link.
+ 29. The home page has no white ground. One gradient runs the length of the
+     page, from white under the hero through the night blue tint and the moss
+     tint and back to white at the close, so the photograph that uncovers the
+     footer still meets white. It is one layer behind every section, and the
+     sections are clear over it; the dark membership band keeps its own
+     ground. The legal pages and the 404 keep white: their footer is in the
+     flow, and the layer would cover it. A secondary action on the gradient
+     is a white fill rather than an outline, which vanished into the tint.
+ 30. The headings are set in Inter Display SemiBold, self-hosted at
+     public/fonts/ with its licence (SIL OFL) beside it: the display cut is
+     drawn tighter for large sizes, so with the type tiers' own negative
+     tracking it keeps the dense, heavy titles Aeonik Medium gave. Text,
+     labels and the figures' data stay in Aeonik.
+ 31. The audiences panel carries a new photograph, a close-up of an eye in
+     profile against the sky, public/images/audiences-eye.webp, in place of
+     the drop's close-up; the drop's file stays for the checksum match. The
+     upright frame crops its sides and holds the eye at the left third, so
+     the profile looks into the sky, and it is marked data-ground="light"
+     with the other sky photographs.
+ 32. ApoB is five fields across the year, not a chart: one square field per
+     month on the axis (Jan, May, Sep, Jan, May), on a shared foot, with no
+     axis, line or band. A reading in range is moss; the one that rose above
+     it (September, the chart's peak) is night blue and stands taller than
+     the row, so it reads as above by shape as well as tone; the latest is
+     white and carries the Optimal chip, which leaves the headline row. The
+     fields rise one after another at an even pace, each month lighting with
+     its field, and the chip arrives last. No new words: the five months and
+     the chip are the figure's own.
 """
 
 import re
@@ -141,7 +235,8 @@ NAV_SCRIPT = """\
   // over a photograph or a dark section, dark glass over the white page. The
   // ground is read off the page itself, at seven points along the island's
   // middle, so no list of sections has to be kept in step with the markup.
-  // A photograph counts as dark; a gradient by its first colour stop. The ink
+  // A photograph counts as dark unless it is marked data-ground="light" (a
+  // bright sky reads as white page); a gradient by its first colour stop. The ink
   // is white in both tones, so the brightest point decides: one light card
   // under the links, a white tier in a dark band, turns the island dark.
   const inner = nav.querySelector('.nav-inner');
@@ -155,7 +250,7 @@ NAV_SCRIPT = """\
   const groundAt = (x, y) => {
     const hit = document.elementsFromPoint(x, y).find((el) => !el.closest('.main-nav, .mobile-menu'));
     for (let n = hit; n && n !== document.documentElement; n = n.parentElement) {
-      if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return 0;
+      if (n.tagName === 'IMG' || n.tagName === 'VIDEO') return n.dataset.ground === 'light' ? 1 : 0;
       const s = getComputedStyle(n);
       if (s.backgroundImage !== 'none') {
         if (s.backgroundImage.includes('url(')) return 0;
@@ -309,9 +404,10 @@ CSS = """
    ══════════════════════════════════════════════════════════════════════ */
 
 /* The bar. .main-nav is only a frame that centres the island and lets clicks
-   through around it; .nav-inner is the island: 960px wide wherever it fits,
-   and it never changes shape. Its corners are almost square, 12px, and the
-   action's are 6px: the island's radius less its padding, so they nest. No
+   through around it; .nav-inner is the island, as wide as the sections'
+   content column (.inner: 1120px, inside the sections' 56px gutters, 20px
+   on phones), so its edges line up with the content's, and it never changes
+   shape. Its corners are square, as are the action's. No
    outline and no shadow (the drop sets every box-shadow to none, site-wide).
 
    The ink is white in both of the island's tones; only the glass changes.
@@ -325,12 +421,12 @@ CSS = """
 .main-nav, .main-nav.is-scrolled {
   top: 0; left: 0; right: 0;
   display: flex; justify-content: center; align-items: flex-start;
-  padding: 1rem 1rem 0; pointer-events: none;
+  padding: 1rem 56px 0; pointer-events: none;
   background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none;
 }
 .main-nav .nav-inner {
   pointer-events: auto;
-  flex: 0 1 960px; width: 960px; max-width: 100%;
+  flex: 0 1 1120px; width: 1120px; max-width: 100%;
   display: flex; align-items: center; justify-content: flex-start; gap: 0.125rem;
   padding: 0.375rem 0.375rem 0.375rem 1.5rem;
   border-radius: 12px; border: 0;
@@ -349,36 +445,36 @@ CSS = """
   color: #fff; --logo-icon: #fff; font-size: 18px; gap: 8px;
 }
 .main-nav .nav-links { margin-left: 0; gap: 0.125rem; }
-/* Hover changes the ink alone, to the brand sand, with no fill behind it. */
+/* Hover changes the ink alone, to a pale night blue, with no fill behind it. */
 .main-nav .nav-links a {
   height: 2.5rem; padding: 0 0.875rem; border-radius: 6px;
   color: #fff; transition: color 0.2s ease;
 }
-.main-nav .nav-links a:hover { background: transparent; color: var(--tone-sand); }
+.main-nav .nav-links a:hover { background: transparent; color: var(--tone-blue-pale); }
 .main-nav .nav-actions { margin-left: 0.375rem; }
 .main-nav .nav-cta {
   height: 2.5rem; padding: 0 1.25rem !important; border-radius: 6px !important;
-  background: var(--tone-rust) !important; color: #fff !important;
+  background: var(--tone-moss-light) !important; color: #fff !important;
 }
 /* The drop's shared button hover sets a dark border-color !important; it has
    to be cleared here, or it draws an outline round the action on hover. */
 .main-nav .nav-cta, .main-nav .nav-cta:hover { border-color: transparent !important; }
 .main-nav .nav-cta:hover {
-  background: color-mix(in srgb, var(--tone-rust) 86%, #000) !important;
+  background: var(--tone-moss) !important;
   filter: none;
 }
 .main-nav .hamburger { display: none; }
 
-/* One colour for one kind of button: every solid button is the brand rust,
-   over the photographs as on the white page, with a deeper rust on hover. */
+/* One colour for one kind of button: every solid button is the brand moss,
+   over the photographs as on the white page, with a deeper moss on hover. */
 .btn-solid, .mobile-nav-cta, .plan-btn.is-solid, .wf-submit,
 .hero .btn-solid, .closer .btn-solid, .plan.featured .plan-btn.is-solid {
-  background: var(--tone-rust) !important; border-color: var(--tone-rust) !important; color: #fff !important;
+  background: var(--tone-moss-light) !important; border-color: var(--tone-moss-light) !important; color: #fff !important;
 }
 .btn-solid:hover, .mobile-nav-cta:hover, .plan-btn.is-solid:hover, .wf-submit:hover,
 .hero .btn-solid:hover, .closer .btn-solid:hover, .plan.featured .plan-btn.is-solid:hover {
-  background: color-mix(in srgb, var(--tone-rust) 86%, #000) !important;
-  border-color: color-mix(in srgb, var(--tone-rust) 86%, #000) !important; color: #fff !important;
+  background: var(--tone-moss) !important;
+  border-color: var(--tone-moss) !important; color: #fff !important;
 }
 
 /* What you get, as an index of rows. One feature per row, ruled off above
@@ -404,7 +500,7 @@ CSS = """
   content: counter(feat, decimal-leading-zero);
   margin-bottom: 0.5rem;
   font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums; color: var(--tone-rust);
+  font-variant-numeric: tabular-nums; color: var(--tone-moss-light);
 }
 .feat-name {
   font-size: var(--fs-h4); line-height: var(--lh-h4); letter-spacing: var(--ls-h4);
@@ -435,7 +531,7 @@ CSS = """
 /* Secondary actions on a dark ground are text links: white text, no fill, no
    outline, no blur, with just enough padding to keep the hit area and the
    baseline of the button beside them, and an underline on hover. Primary
-   stays solid rust. */
+   stays solid moss. */
 .hero .btn-outline, .closer .btn-outline,
 .plans .btn-pill, .plans .plan-btn:not(.is-solid) {
   display: inline-block; text-align: center;
@@ -456,8 +552,10 @@ CSS = """
    line under it and the action are centred in a reading measure; the
    photograph sits beneath them as a 21:9 panorama in the content column,
    framed on the face. Nothing is laid over the photograph. The DOM keeps the
-   photograph first, as the drop has it; order places it. */
-.closer { padding: 7rem 1.5rem 5rem; }
+   photograph first, as the drop has it; order places it. The section ends on
+   the photograph's lower edge, with no padding under it, so it is the
+   photograph that slides away to uncover the footer. */
+.closer { padding: 7rem 1.5rem 0; }
 .closer .closer-card {
   max-width: 1120px; margin: 0 auto; min-height: 0; padding: 0;
   background: none; color: var(--charcoal); border-radius: 0; overflow: visible;
@@ -478,7 +576,7 @@ CSS = """
 .closer .closer-img { object-position: 50% 15%; }
 
 @media (max-width: 900px) {
-  .closer { padding: 4.5rem 1.25rem 3rem; }
+  .closer { padding: 4.5rem 1.25rem 0; }
   .closer .closer-card { gap: 2.5rem; }
   .closer .closer-media { aspect-ratio: 4 / 3; }
   .closer .closer-img { object-position: 62% 12%; }
@@ -570,6 +668,14 @@ CSS = """
   -webkit-backdrop-filter: none; backdrop-filter: none;
 }
 
+/* Revision 16: the membership band glows night blue from its lower left, where
+   the drop had rust, under the moss it already carries at the upper right. */
+.plans::before {
+  background:
+    radial-gradient(ellipse 55% 60% at 8% 100%, rgba(42,95,131,0.7) 0%, rgba(42,95,131,0) 65%),
+    radial-gradient(ellipse 50% 45% at 95% 0%, rgba(33,72,51,0.45) 0%, rgba(33,72,51,0) 65%);
+}
+
 /* The hero fills the first screen, edge to edge. The card keeps its own top
    padding so the copy clears the island floating over it. */
 .hero { padding: 0; }
@@ -578,12 +684,97 @@ CSS = """
   height: 100vh; height: 100svh; min-height: 600px;
   padding: 6.5rem 4rem 4rem;
 }
-/* Revision 15: she sits right of centre and the left of the photograph is its
-   darkest ground, so the frame holds her right and the copy sits on the dark. */
-.hero-img { object-position: 0% 30%; }
+/* Revision 15: he sits right of centre and looks left, and the left of the
+   photograph is a pale window, so the frame holds him right and the copy sits
+   on the darker foliage between the two. At 80% the standfirst holds 5:1 or
+   more and the headline 3.7:1 or more from 1280 by 800 up. */
+.hero-img { object-position: 80% 30%; }
+/* Revision 28: the copy rests on the foot of the photograph, bottom left, on
+   its dark ground; the upper screen is the photograph alone. Phones
+   already set it at the foot. On a large, tall screen the actions sit beside
+   the standfirst, on its last line, under the headline that spans both, and
+   the standfirst narrows to make room. Beside it the secondary action lands
+   nearer the lit subject, where a bare text link fell to 2.8:1 on the first
+   photograph, so there it takes the bar's deep blue glass, night blue at 88%
+   over a 24px blur, and stays legible whatever is behind it. */
+.hero-card { justify-content: flex-end; }
+@media (min-width: 901px) {
+  .hero-inner {
+    display: grid; max-width: none; width: auto;
+    grid-template-columns: auto auto; column-gap: 2.5rem; align-items: end;
+  }
+  .hero h1 { grid-column: 1 / -1; }
+  .hero-sub { max-width: 22rem; }
+  .hero-actions { margin-top: 0; }
+  .hero .hero-btns .btn-outline {
+    background: rgba(10, 26, 38, 0.88);
+    -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+    padding: 15px 32px !important;
+  }
+  .hero .hero-btns .btn-outline:hover {
+    background: var(--tone-blue-deep); text-decoration-color: transparent;
+  }
+}
+
+/* Revision 29: one gradient the length of the home page in place of the white
+   ground. It is a layer on the body, under the sections and over the fixed
+   footer, ending where the body ends: the close's margin, which reserves the
+   footer's room, falls outside the body, so the footer is still uncovered.
+   The sections go clear over it; the dark membership band keeps its ground.
+   Only the home page has a close, so only the home page takes it.
+   The tones are deep enough to read as colour at a glance, and change within
+   every screen: down the page they alternate night blue and moss, and across
+   it the left, where the copy sits, is lighter than the right. On them the
+   quiet grey of the copy (--mid) is one step darker, so it keeps over 4.5:1. */
+body:has(> .closer) { position: relative; --mid: var(--zinc-600); }
+body:has(> .closer)::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 70%),
+    linear-gradient(180deg,
+      var(--white) 0%,
+      color-mix(in srgb, var(--tone-blue-pale) 50%, var(--white)) 8%,
+      color-mix(in srgb, var(--tone-moss-bright) 32%, var(--white)) 24%,
+      color-mix(in srgb, var(--tone-blue-light) 28%, var(--white)) 40%,
+      color-mix(in srgb, var(--tone-moss-bright) 32%, var(--white)) 56%,
+      color-mix(in srgb, var(--tone-blue-light) 28%, var(--white)) 72%,
+      color-mix(in srgb, var(--tone-blue-pale) 45%, var(--white)) 88%,
+      var(--white) 100%);
+}
+body:has(> .closer) > :is(section, div:not(.mobile-menu), .rule):not(.plans) {
+  background-color: transparent;
+}
+/* A secondary action on the gradient is a white fill, not an outline: a
+   zinc-300 outline round a clear fill vanishes into the tint. The dark
+   grounds (the hero, the membership band) keep their own text links. */
+body:has(> .closer) :is(.btn-pill, .btn-outline):not(:is(.hero, .plans) *) {
+  background: var(--white); border-color: var(--white); color: var(--charcoal);
+}
+body:has(> .closer) :is(.btn-pill, .btn-outline):not(:is(.hero, .plans) *):hover {
+  background: var(--zinc-100); border-color: var(--zinc-100); color: var(--charcoal);
+}
+
+/* Revision 31: the frame crops the photograph's sides and holds the eye at
+   its left third, so the profile looks into the sky. */
+.audience-media-img { object-position: 50% 60%; }
+
+/* Revision 30: the headings in Inter Display SemiBold. The display cut is
+   drawn tight for large sizes, so with the tiers' negative tracking the titles
+   stay dense and heavy. Text, labels and the figures' data stay in Aeonik. */
+@font-face {
+  font-family: 'Inter Display';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/InterDisplay-SemiBold.woff2') format('woff2');
+}
+:root { --font-head: 'Inter Display', var(--font-sans); }
+body :is(h1, h2, h3, h4, h5, h6, .step-title, .plan-name, .case-num, .mobile-nav-link) {
+  font-family: var(--font-head); font-weight: 600;
+}
 
 @media (max-width: 900px) {
-  .main-nav, .main-nav.is-scrolled { padding: 0.75rem 0.75rem 0; }
+  .main-nav, .main-nav.is-scrolled { padding: 0.75rem 20px 0; }
   .main-nav .nav-inner, .main-nav.is-scrolled .nav-inner {
     flex: 1 1 auto; width: 100%; max-width: none !important;
     justify-content: flex-start;
@@ -625,13 +816,450 @@ CSS = """
     height: auto; min-height: 100vh; min-height: 100svh;
     padding: 5.5rem 1.25rem 1.25rem; border-radius: 0;
   }
-  .hero-img { object-position: 45% 20%; }
+  .hero-img { object-position: 57% 20%; }
   /* Both hero actions run the full width of the column on a phone: the
      drop's own width: 100% did nothing while .hero-actions shrank to fit its
      content, so the column stretches and the actions stack. */
   .hero .hero-actions { align-items: stretch; width: 100%; }
   .hero .hero-btns { flex-direction: column; align-items: stretch; width: 100%; }
   .hero .hero-btns > * { width: 100%; justify-content: center; text-align: center; }
+}
+
+/* Revision 17: every figure is a field. The panel is one flat tone, with no
+   gradient, no blurred light and no card floating on it: the figure's content
+   is set straight on the colour in white, its heading at the top as a quiet
+   label and its data anchored to the foot. The atoms below are the shared
+   language every figure composes from: labels at 72% white, values in white,
+   square segments, rules at 22% white, a solid white chip carrying the
+   panel's own colour as its ink. */
+.feat-card .feat-visual, .feat-card.is-wide .feat-visual {
+  justify-content: flex-start; padding: 2rem 2.25rem; color: #fff;
+}
+.feat-visual::before, .prod-panel::before { display: none; }
+.feat-visual.tone-ink { --fv-bg: var(--tone-night); }
+.prod-panel { --fv-bg: var(--tone-night); }
+.prod-panel .stack-card { box-shadow: none; }
+
+.fm-card {
+  display: flex; flex-direction: column; flex: 1 1 auto;
+  background: none; border-radius: 0; padding: 0; box-shadow: none; color: #fff;
+}
+.fm-card + .fm-card {
+  flex: 0 0 auto; margin-top: 1.25rem; padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.22);
+}
+.fm-card > :nth-child(2) { margin-top: auto; }
+.fm-card + .fm-card > :nth-child(2) { margin-top: 0.75rem; }
+.fm-title {
+  font-size: var(--fs-small); line-height: var(--lh-small); letter-spacing: 0.01em;
+  font-weight: 400; color: rgba(255,255,255,0.72);
+}
+.fm-big { font-size: var(--fs-h1); line-height: 0.9; letter-spacing: -0.04em; font-weight: 500; color: #fff; }
+.fm-big small { color: rgba(255,255,255,0.72); letter-spacing: 0; }
+.fm-muted, .fm-legend { color: rgba(255,255,255,0.72); }
+.fm-legend b { color: #fff; font-weight: 500; }
+.fm-track { gap: 3px; height: 0.625rem; }
+.fm-track.fm-thin { height: 3px; background: rgba(255,255,255,0.22); border-radius: 0; }
+.fm-seg { border-radius: 0; }
+.fm-seg.is-moss, .fm-dot.is-moss { background: #fff; }
+.fm-seg.is-bronze, .fm-dot.is-bronze { background: var(--tone-blue-pale); }
+.fm-seg.is-rust { background: rgba(255,255,255,0.4); }
+.fm-marker { border-top-color: #fff; }
+.fm-chip, .fm-chip.is-moss, .fm-chip.is-rust { background: #fff; color: var(--fv-bg); font-weight: 500; }
+.fm-list { margin: 0; }
+.fm-list li { border-top: 1px solid rgba(255,255,255,0.22); color: #fff; }
+.fm-band { fill: rgba(255,255,255,0.09); stroke: none; }
+.fm-line { stroke: #fff; }
+.fm-pts { fill: #fff; }
+.fm-thread { margin-top: auto; max-width: 30rem; }
+.fm-bubble { box-shadow: none; }
+.fm-bubble.is-me { background: #fff; color: var(--fv-bg); }
+.fm-bubble.is-team { background: rgba(255,255,255,0.12); color: #fff; }
+.fm-avatars i { border-color: var(--fv-bg); }
+
+@media (max-width: 900px) {
+  .feat-card .feat-visual, .feat-card.is-wide .feat-visual { padding: 1.5rem 1.25rem; }
+}
+
+/* Revision 18: the Healthspan score. The header row gives up its box so the
+   label and the score become cells of the card's own grid: the label across
+   the top, the score at display size on the left, the counts stacked on the
+   right, the bar across the foot. The score scales with the panel, not the
+   window, so it holds its proportion in the stack and in a phone's row. */
+.feat-visual:has(.fm-score) { container-type: inline-size; }
+.fm-score {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "title title" "big legend" "track track";
+  column-gap: 1.5rem; row-gap: 1.25rem;
+}
+.fm-score > .fm-row:first-child { display: contents; }
+.fm-score .fm-title { grid-area: title; }
+.fm-score .fm-big {
+  grid-area: big; align-self: end;
+  font-size: clamp(4rem, 24cqi, 8.5rem); line-height: 0.78; letter-spacing: -0.06em;
+  font-variant-numeric: tabular-nums;
+}
+.fm-score .fm-big small { font-size: var(--fs-body); letter-spacing: 0; margin-left: 0.15em; }
+.fm-score .fm-legend {
+  grid-area: legend; align-self: end; margin: 0;
+  display: flex; flex-direction: column; align-items: stretch; gap: 0.625rem;
+  font-size: var(--fs-small); line-height: var(--lh-small);
+}
+.fm-score .fm-legend > span {
+  display: flex; align-items: baseline; gap: 0.625rem;
+  padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.22);
+}
+.fm-score .fm-legend > span::before {
+  content: ''; flex: none; width: 0.5rem; height: 0.5rem; align-self: center;
+}
+.fm-score .fm-legend b {
+  margin: 0 auto 0 0;
+  font-size: clamp(1.375rem, 6cqi, 2.25rem); line-height: 1; letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.fm-score .fm-track { grid-area: track; margin: 0; height: 0.75rem; gap: 4px; }
+/* The drop sizes the segments inline; the field divides the bar by the counts. */
+.fm-score .fm-seg { width: auto !important; }
+.fm-score .fm-seg { flex-basis: 0; flex-shrink: 1; }
+.fm-score .fm-seg:nth-child(1) { flex-grow: 76; }
+.fm-score .fm-seg:nth-child(2) { flex-grow: 22; }
+.fm-score .fm-seg:nth-child(3) { flex-grow: 4; }
+.fm-score .fm-seg:nth-child(1), .fm-score .fm-legend > span:nth-child(1)::before { background: var(--tone-moss-bright); }
+.fm-score .fm-seg:nth-child(2), .fm-score .fm-legend > span:nth-child(2)::before { background: var(--tone-blue-pale); }
+.fm-score .fm-seg:nth-child(3), .fm-score .fm-legend > span:nth-child(3)::before { background: #fff; }
+
+/* Revision 19: ApoB. The marker's name is the figure's headline, at display
+   size. Revision 32 below draws the readings. */
+.feat-visual:has(.fm-apob) { container-type: inline-size; }
+.fm-apob > .fm-row:first-child { align-items: flex-start; }
+.fm-apob .fm-title {
+  font-size: clamp(2.25rem, 9cqi, 4rem); line-height: 0.9; letter-spacing: -0.04em;
+  font-weight: 500; color: #fff;
+}
+
+/* Revision 32: ApoB as five fields across the year. One field per month on
+   the axis, square, on a shared foot: moss in range, night blue and taller
+   for the reading that rose above it, white for the latest, which carries
+   the chip. The months sit under their fields on the same grid. The fields
+   rise in turn at an even pace, each month lighting with its own, and the
+   chip arrives last; nothing overshoots. */
+.fm-apob { --field: clamp(4.5rem, 20cqi, 8.5rem); --field-gap: 0.375rem; --field-step: 0.22s; --field-wait: 0.35s; }
+.fm-year {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--field-gap);
+  align-items: end; list-style: none; margin: 0; padding: 0;
+}
+.fm-year li {
+  height: var(--field); background: var(--tone-moss-bright);
+  display: flex; align-items: flex-end; padding: 0.625rem;
+  transform-origin: bottom;
+}
+.fm-year li.is-above { height: calc(var(--field) * 1.4); background: var(--tone-blue-light); }
+.fm-year li.is-now { background: #fff; }
+.fm-year .fm-chip { padding: 0; font-size: var(--fs-small); line-height: var(--lh-small); }
+.fm-apob .fm-axis {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--field-gap);
+  margin-top: 0.75rem;
+}
+.fm-apob .fm-axis > span { opacity: 0.35; }
+/* On a phone a field is under 60px wide: a tighter inset and the chip at its
+   own small size keep Optimal inside the white field. After the rules above,
+   since a container query adds no specificity. */
+@container (max-width: 420px) {
+  .fm-year li { padding: 0.375rem; }
+  .fm-year .fm-chip { font-size: var(--fs-tiny); line-height: var(--lh-tiny); }
+}
+.fm-year li { transform: scaleY(0); }
+.fm-year .fm-chip { opacity: 0; }
+@keyframes fmGrow { from { transform: scaleY(0); } to { transform: none; } }
+@keyframes fmLight { from { opacity: 0.35; } to { opacity: 1; } }
+.feat-card.is-in .fm-year li { animation: fmGrow 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+.feat-card.is-in .fm-apob .fm-axis > span { animation: fmLight 0.35s ease both; }
+.feat-card.is-in .fm-year li:nth-child(1), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(1) { animation-delay: var(--field-wait); }
+.feat-card.is-in .fm-year li:nth-child(2), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(2) { animation-delay: calc(var(--field-wait) + var(--field-step)); }
+.feat-card.is-in .fm-year li:nth-child(3), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(3) { animation-delay: calc(var(--field-wait) + var(--field-step) * 2); }
+.feat-card.is-in .fm-year li:nth-child(4), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(4) { animation-delay: calc(var(--field-wait) + var(--field-step) * 3); }
+.feat-card.is-in .fm-year li:nth-child(5), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(5) { animation-delay: calc(var(--field-wait) + var(--field-step) * 4); }
+.feat-card.is-in .fm-year .fm-chip { animation: fmFade 0.4s ease calc(var(--field-wait) + var(--field-step) * 4 + 0.45s) both; }
+@media (prefers-reduced-motion: reduce) {
+  .fm-year li, .fm-year .fm-chip, .fm-apob .fm-axis > span {
+    opacity: 1 !important; transform: none !important; animation: none !important;
+  }
+}
+
+/* Revision 20: Your protocol. Each item is a row under a rule: its category a
+   small label above, the instruction itself at headline size. */
+.feat-visual:has(.fm-plan) { container-type: inline-size; }
+.feat-visual:has(.fm-plan)::after {
+  background: linear-gradient(180deg, rgba(10,26,38,0.2) 0%, rgba(10,26,38,0.72) 100%);
+}
+.fm-plan li {
+  flex-direction: column; align-items: flex-start; gap: 0.3rem;
+  padding: 0.875rem 0 0;
+}
+.fm-plan li + li { margin-top: 0.875rem; }
+.fm-plan .fm-chip, .fm-plan .fm-chip.is-moss, .fm-plan .fm-chip.is-rust {
+  background: none; color: var(--tone-blue-pale); padding: 0; border-radius: 0;
+  font-size: var(--fs-tiny); line-height: var(--lh-tiny); letter-spacing: 0.08em;
+  text-transform: uppercase; font-weight: 500;
+}
+.fm-plan li > span:nth-child(2) {
+  font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.15; letter-spacing: -0.02em;
+  font-weight: 500; color: #fff;
+}
+
+/* Revisions 21 to 23 size their headline rows against the panel. */
+.feat-visual.tone-night, .feat-visual.tone-ink, .feat-visual.tone-blue { container-type: inline-size; }
+
+/* Revision 21: Your care team. */
+.tone-night .fm-list li { align-items: baseline; gap: 0.75rem; padding: 0.75rem 0 0; }
+.tone-night .fm-list li + li { margin-top: 0.75rem; }
+.tone-night .fm-list li > span:nth-child(2) {
+  font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.15; letter-spacing: -0.02em; font-weight: 500;
+}
+.tone-night .fm-list .fm-muted { font-size: var(--fs-small); }
+.tone-night .fm-dot { width: 0.5rem; height: 0.5rem; border-radius: 0; align-self: center; }
+
+/* Revision 22: Your clinical record, as a ledger. */
+.tone-ink .fm-list li {
+  display: grid; grid-template-columns: minmax(5.5rem, 26%) minmax(0, 1fr);
+  align-items: baseline; gap: 1rem; padding: 0.75rem 0 0;
+}
+.tone-ink .fm-list li + li { margin-top: 0.75rem; }
+.tone-ink .fm-list .fm-chip, .tone-ink .fm-list .fm-chip.is-moss, .tone-ink .fm-list .fm-chip.is-rust {
+  background: none; color: var(--tone-blue-pale); padding: 0; border-radius: 0;
+  font-size: var(--fs-tiny); line-height: var(--lh-tiny); letter-spacing: 0.08em;
+  text-transform: uppercase; font-weight: 500;
+}
+.tone-ink .fm-list li > span:nth-child(2) {
+  font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.15; letter-spacing: -0.02em; font-weight: 500;
+}
+.tone-ink .fm-card > .fm-row:last-child {
+  margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(255,255,255,0.22);
+  font-size: var(--fs-small);
+}
+
+/* Revision 23: the concierge thread, set as type. */
+.fm-thread { width: 100%; max-width: none; gap: 1rem; align-items: stretch; }
+.fm-bubble, .fm-bubble.is-me, .fm-bubble.is-team {
+  background: none; border-radius: 0; padding: 0; box-shadow: none;
+}
+.fm-bubble.is-me {
+  align-self: flex-end; max-width: 75%; text-align: right;
+  color: rgba(255,255,255,0.72); font-size: var(--fs-body); line-height: var(--lh-body);
+}
+.fm-bubble.is-team {
+  display: flex; flex-direction: column; gap: 0.75rem; padding-top: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.22); color: #fff;
+  font-size: clamp(1.125rem, 4.6cqi, 1.75rem); line-height: 1.2; letter-spacing: -0.02em; font-weight: 500;
+}
+.fm-avatars { gap: 4px; margin: 0; }
+.fm-avatars i, .fm-avatars i:first-child, .fm-avatars i:last-child {
+  width: 0.625rem; height: 0.625rem; border: 0; border-radius: 0; margin: 0;
+}
+.fm-avatars i { background: var(--tone-blue-pale); }
+.fm-avatars i:first-child { background: #fff; }
+.fm-avatars i:last-child { background: var(--tone-moss-bright); }
+
+/* Revision 24: the disciplines panel. The card gives up its fill, border, blur
+   and padding; each device is drawn in white and the palette's pale tones on
+   the panel's own colour, with square segments, arcs and keys. */
+.prod-panel .stack-card, .prod-panel .stack-card.is-feature {
+  background: none; border: 0; border-radius: 0; padding: 0;
+  -webkit-backdrop-filter: none; backdrop-filter: none; color: #fff;
+}
+.prod-panel .stack-card-head, .prod-panel .stack-card.is-feature .stack-card-head {
+  text-transform: none; letter-spacing: 0.01em; font-size: var(--fs-small); line-height: var(--lh-small);
+  color: rgba(255,255,255,0.72);
+}
+.prod-panel .team-bar { gap: 4px; height: 0.75rem; }
+.prod-panel .team-seg { border-radius: 0; }
+.prod-panel .team-row::before { border-radius: 0; top: 0.45em; }
+.prod-panel .team-seg:nth-child(1), .prod-panel .team-row:nth-child(1)::before { background: #fff; }
+.prod-panel .team-seg:nth-child(2), .prod-panel .team-row:nth-child(2)::before { background: var(--tone-blue-pale); }
+.prod-panel .team-seg:nth-child(3), .prod-panel .team-row:nth-child(3)::before { background: var(--tone-moss-bright); }
+.prod-panel .team-seg:nth-child(4), .prod-panel .team-row:nth-child(4)::before { background: rgba(255,255,255,0.4); }
+.prod-panel .team-role { color: #fff; font-size: var(--fs-large); line-height: 1.2; font-weight: 500; letter-spacing: -0.01em; }
+.prod-panel .team-note { color: rgba(255,255,255,0.72); }
+.prod-panel .team-foot { border-top: 1px solid rgba(255,255,255,0.22); color: rgba(255,255,255,0.72); }
+.prod-panel .team-pulse span { background: #fff; border-radius: 0; }
+
+.prod-panel .cov-arc { stroke-linecap: butt; }
+.prod-panel .cov-arc:nth-child(1), .prod-panel .cov-legend li:nth-child(1)::before { stroke: #fff; background: #fff; }
+.prod-panel .cov-arc:nth-child(2), .prod-panel .cov-legend li:nth-child(2)::before { stroke: var(--tone-blue-pale); background: var(--tone-blue-pale); }
+.prod-panel .cov-arc:nth-child(3), .prod-panel .cov-legend li:nth-child(3)::before { stroke: rgba(255,255,255,0.7); background: rgba(255,255,255,0.7); }
+.prod-panel .cov-arc:nth-child(4), .prod-panel .cov-legend li:nth-child(4)::before { stroke: rgba(255,255,255,0.5); background: rgba(255,255,255,0.5); }
+.prod-panel .cov-arc:nth-child(5), .prod-panel .cov-legend li:nth-child(5)::before { stroke: rgba(255,255,255,0.35); background: rgba(255,255,255,0.35); }
+.prod-panel .cov-arc:nth-child(6), .prod-panel .cov-legend li:nth-child(6)::before { stroke: rgba(255,255,255,0.2); background: rgba(255,255,255,0.2); }
+.prod-panel .cov-legend li { color: #fff; font-size: var(--fs-small); }
+.prod-panel .cov-legend li::before { border-radius: 0; }
+.prod-panel .cov-num, .prod-panel .cov-plus { color: #fff; }
+.prod-panel .cov-label { color: rgba(255,255,255,0.72); }
+.prod-panel .cov-body { padding-bottom: 1.25rem; }
+.prod-panel .cov-foot { color: #fff; border-top: 1px solid rgba(255,255,255,0.22); }
+
+.prod-panel .gate-flow { background: none; padding: 0; border-radius: 0; }
+.prod-panel .gate-step {
+  color: #fff; padding: 1rem 0; font-size: var(--fs-large); line-height: 1.2; font-weight: 500; letter-spacing: -0.01em;
+}
+.prod-panel .gate-step + .gate-step { border-top-color: rgba(255,255,255,0.22); }
+.prod-panel .gate-step .gate-dot { background: #fff !important; border-color: #fff !important; color: var(--fv-bg) !important; }
+.prod-panel .gate-dot svg path, .prod-panel .gate-step .gate-dot svg path { stroke: var(--fv-bg) !important; }
+
+/* Revision 25: motion in the disciplines panel. Three curves and no others:
+   a long deceleration for everything that arrives, a quick acceleration for
+   what leaves, and an even in-out for the panel's colour. Every element rests
+   in its final state; the entries are one-shot animations keyed on
+   .is-active, so they replay on each switch and never loop. */
+:root {
+  --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-leave: cubic-bezier(0.4, 0, 1, 1);
+  --ease-turn: cubic-bezier(0.65, 0, 0.35, 1);
+}
+@property --cov-sweep { syntax: '<angle>'; inherits: false; initial-value: 360deg; }
+@property --cov-n { syntax: '<integer>'; inherits: false; initial-value: 500; }
+@keyframes fieldRise { from { opacity: 0; transform: translateY(0.75rem); } to { opacity: 1; transform: none; } }
+@keyframes fieldFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fieldGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes fieldWipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes fieldSweep { from { --cov-sweep: 0deg; } to { --cov-sweep: 360deg; } }
+@keyframes fieldCount { from { --cov-n: 0; } to { --cov-n: 500; } }
+@keyframes fieldDrawShield { from { stroke-dashoffset: 51; } to { stroke-dashoffset: 0; } }
+@keyframes fieldDrawTick { from { stroke-dashoffset: 10; } to { stroke-dashoffset: 0; } }
+@keyframes fieldBreathe { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+.prod-panel {
+  transition: --fv-bg 0.9s var(--ease-turn), --fv-light 0.9s var(--ease-turn), --fv-shade 0.9s var(--ease-turn);
+}
+/* The panes share one cell, so the outgoing one can leave while the next
+   arrives, and the panel takes the height of the tallest. */
+.prod-panes { display: grid; }
+.prod-pane, .prod-pane.is-active { display: flex; grid-area: 1 / 1; height: 100%; animation: none; }
+.prod-pane {
+  opacity: 0; visibility: hidden; transform: translateY(-0.5rem); pointer-events: none;
+  transition: opacity 0.3s var(--ease-leave), transform 0.3s var(--ease-leave), visibility 0s linear 0.3s;
+}
+.prod-pane.is-active { opacity: 1; visibility: visible; transform: none; pointer-events: auto; transition: none; }
+
+/* At rest, every element is in its final state. */
+.prod-panel .team-seg, .prod-panel .team-row, .prod-panel .cov-num, .prod-panel .cov-plus,
+.prod-panel .cov-label, .prod-panel .cov-legend li, .prod-panel .cov-foot {
+  animation: none; opacity: 1; transform: none;
+}
+.prod-panel .cov-arc, .prod-panel .cov-foot svg path { animation: none; stroke-dashoffset: 0; }
+
+.prod-pane.is-active .stack-card-head { animation: fieldRise 0.7s var(--ease-arrive) 0.15s both; }
+
+/* The team: one bar growing from the left, then the rows in order. */
+.prod-panel .team-seg { transform-origin: left center; }
+.prod-pane.is-active .team-seg { animation: fieldGrow 1.1s var(--ease-arrive) both; }
+.prod-pane.is-active .team-seg:nth-child(1) { animation-delay: 0.25s; }
+.prod-pane.is-active .team-seg:nth-child(2) { animation-delay: 0.33s; }
+.prod-pane.is-active .team-seg:nth-child(3) { animation-delay: 0.41s; }
+.prod-pane.is-active .team-seg:nth-child(4) { animation-delay: 0.49s; }
+.prod-pane.is-active .team-row { animation: fieldRise 0.8s var(--ease-arrive) both; }
+.prod-pane.is-active .team-row:nth-child(1) { animation-delay: 0.45s; }
+.prod-pane.is-active .team-row:nth-child(2) { animation-delay: 0.53s; }
+.prod-pane.is-active .team-row:nth-child(3) { animation-delay: 0.61s; }
+.prod-pane.is-active .team-row:nth-child(4) { animation-delay: 0.69s; }
+.prod-pane.is-active .team-foot { animation: fieldWipe 1.2s var(--ease-arrive) 0.7s both; }
+.prod-panel .team-pulse span { animation: fieldBreathe 2.4s var(--ease-turn) infinite; }
+.prod-panel .team-pulse span:nth-child(2) { animation-delay: 0.3s; }
+.prod-panel .team-pulse span:nth-child(3) { animation-delay: 0.6s; }
+.prod-panel .team-pulse span:nth-child(4) { animation-delay: 0.9s; }
+
+/* Coverage: the ring revealed as one sweep from twelve o'clock, the count
+   running on the same curve, so the two cannot drift apart. The ring's svg is
+   turned a quarter back, so the sweep starts a quarter on in its own frame. */
+.prod-panel .cov-ring svg {
+  -webkit-mask: conic-gradient(from 90deg, #000 var(--cov-sweep), transparent 0);
+  mask: conic-gradient(from 90deg, #000 var(--cov-sweep), transparent 0);
+}
+.prod-pane.is-active .cov-ring svg { animation: fieldSweep 1.6s var(--ease-arrive) 0.25s both; }
+.prod-panel .cov-num { font-size: 0; counter-reset: cov-n var(--cov-n); }
+.prod-panel .cov-num::after {
+  content: counter(cov-n); display: inline-block; min-width: 3ch; text-align: right;
+  font-size: var(--fs-h3); line-height: var(--lh-h3); letter-spacing: var(--ls-h3);
+  font-variant-numeric: tabular-nums;
+}
+.prod-pane.is-active .cov-num { animation: fieldCount 1.6s var(--ease-arrive) 0.25s both, fieldFade 0.6s var(--ease-arrive) 0.25s both; }
+.prod-pane.is-active .cov-plus, .prod-pane.is-active .cov-label { animation: fieldFade 0.8s var(--ease-arrive) 0.5s both; }
+.prod-pane.is-active .cov-legend li { animation: fieldRise 0.8s var(--ease-arrive) both; }
+.prod-pane.is-active .cov-legend li:nth-child(1) { animation-delay: 0.35s; }
+.prod-pane.is-active .cov-legend li:nth-child(2) { animation-delay: 0.47s; }
+.prod-pane.is-active .cov-legend li:nth-child(3) { animation-delay: 0.59s; }
+.prod-pane.is-active .cov-legend li:nth-child(4) { animation-delay: 0.71s; }
+.prod-pane.is-active .cov-legend li:nth-child(5) { animation-delay: 0.83s; }
+.prod-pane.is-active .cov-legend li:nth-child(6) { animation-delay: 0.95s; }
+.prod-pane.is-active .cov-foot { animation: fieldWipe 1.2s var(--ease-arrive) 0.8s both; }
+.prod-pane.is-active .cov-foot svg path:first-of-type { animation: fieldDrawShield 0.9s var(--ease-arrive) 1.1s both; }
+.prod-pane.is-active .cov-foot svg path:last-of-type { animation: fieldDrawTick 0.5s var(--ease-arrive) 1.5s both; }
+
+/* Revision 26: Advanced therapies as a gate. The conditions come first and
+   the stack follows, so the page reads as cause and effect. */
+.prod-panel .gate { justify-content: flex-start; }
+.prod-panel .gate-flow { order: 0; border-top: 1px solid rgba(255,255,255,0.22); }
+.prod-panel .gate-layers {
+  order: 1; margin-top: auto; padding-top: 1.5rem;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.prod-panel .gate-layers span {
+  display: flex; align-items: center; min-height: 2.5rem; padding: 0.5rem 1rem;
+  font-size: var(--fs-small); line-height: var(--lh-small);
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.72);
+}
+.prod-panel .gate-layers .is-addon {
+  background-color: #fff; color: var(--fv-bg); font-weight: 500;
+  outline: 1px dashed transparent; outline-offset: -1px;
+}
+.prod-panel .gate-label, .prod-panel .gate-dot, .prod-panel .gate-dot svg path { animation: none; opacity: 1; transform: none; }
+.prod-panel .gate-dot svg path { stroke-dashoffset: 0; }
+/* The box is drawn by its own outline (the drop sets every box-shadow to
+   none) and a fill underneath the tick, so it can fill on entry: the drop
+   holds the box's background with !important. */
+.prod-panel .gate-step .gate-dot {
+  position: relative; width: 1.25rem; height: 1.25rem; border-radius: 0;
+  background: transparent !important; border-color: transparent !important;
+  outline: 1.5px solid #fff; outline-offset: -1.5px;
+}
+.prod-panel .gate-dot::before { content: ''; position: absolute; inset: 0; background: #fff; }
+.prod-panel .gate-dot svg { position: relative; width: 0.8rem; height: 0.8rem; }
+
+@keyframes gateFill { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes gateTick { from { stroke-dashoffset: 22; } to { stroke-dashoffset: 0; } }
+@keyframes gateSlot {
+  from { background-color: rgba(255,255,255,0); color: rgba(255,255,255,0.45); outline-color: rgba(255,255,255,0.5); transform: translateY(-0.5rem); }
+  to { background-color: #fff; color: var(--fv-bg); outline-color: transparent; transform: none; }
+}
+.prod-pane.is-active .gate-step { animation: fieldRise 0.8s var(--ease-arrive) both; }
+.prod-pane.is-active .gate-step:nth-of-type(1) { animation-delay: 0.25s; }
+.prod-pane.is-active .gate-step:nth-of-type(2) { animation-delay: 0.38s; }
+.prod-pane.is-active .gate-layers span:not(.is-addon) { animation: fieldWipe 1.1s var(--ease-arrive) both; }
+.prod-pane.is-active .gate-layers span:nth-child(2) { animation-delay: 0.4s; }
+.prod-pane.is-active .gate-layers span:nth-child(3) { animation-delay: 0.48s; }
+.prod-pane.is-active .gate-layers .is-addon {
+  animation: fieldFade 0.6s var(--ease-arrive) 0.55s both, gateSlot 0.9s var(--ease-arrive) 1.35s both;
+}
+.prod-pane.is-active .gate-dot::before { animation: gateFill 0.45s var(--ease-arrive) both; }
+.prod-pane.is-active .gate-step:nth-of-type(1) .gate-dot::before { animation-delay: 0.7s; }
+.prod-pane.is-active .gate-step:nth-of-type(2) .gate-dot::before { animation-delay: 1s; }
+.prod-pane.is-active .gate-dot svg path { animation: gateTick 0.4s var(--ease-arrive) both; }
+.prod-pane.is-active .gate-step:nth-of-type(1) .gate-dot svg path { animation-delay: 0.9s; }
+.prod-pane.is-active .gate-step:nth-of-type(2) .gate-dot svg path { animation-delay: 1.2s; }
+
+/* Revision 27: the cool photographs. Each crop keeps the face in frame; the
+   closing panorama is cut at 21:9 and so needs placing only on phones. */
+.feat-img { object-position: 50% 40%; }
+.case-media-img { object-position: 50% 30%; }
+
+@media (max-width: 900px) {
+  .closer .closer-img { object-position: 55% 25%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prod-panel, .prod-pane { transition: none; }
+  .prod-pane { transform: none; }
+  .prod-panel *, .prod-panel *::before, .prod-panel *::after { animation: none !important; }
 }
 """
 
@@ -662,12 +1290,12 @@ def apply_to_page(content):
         sys.exit(f'design revision "{label}": the submit button\'s arrow was not found')
     content = content[:submit] + button + content[end:]
     APPLIED.append(f'{label} ({n} labels, the submit)')
-    return _hero_photo(content)
+    return _gate_page(_apob_page(_score_page(_cool_page(_photos(_hero_photo(content))))))
 
 
 # ── 15. The hero photograph ─────────────────────────────────────────────
 
-HERO_PHOTO = {'src': '/images/hero-portrait.webp', 'width': '2560', 'height': '1089'}
+HERO_PHOTO = {'src': '/images/hero-portrait.webp', 'width': '2560', 'height': '1086'}
 DROP_PHOTO = {'src': '/images/hero.webp', 'width': '1600', 'height': '800'}
 
 
@@ -683,6 +1311,43 @@ def _hero_photo(content):
                      f'{attr}="{DROP_PHOTO[attr]}", which the drop no longer has')
     APPLIED.append(label)
     return content[:start] + img + content[end:]
+
+
+# ── 27. The cool photographs ────────────────────────────────────────────
+
+# Each image's class, then its drop attributes and its new ones. The originals
+# are in client_resources/photos-2026-10-07/; the files here are cut from them.
+PHOTOS = (
+    ('feat-img', {'src': '/images/feature.webp', 'width': '1000', 'height': '667'},
+                 {'src': '/images/feature-water.webp', 'width': '1500', 'height': '1000'}),
+    ('case-media-img', {'src': '/images/partners.webp', 'width': '800', 'height': '1000'},
+                       {'src': '/images/partners-leaves.webp', 'width': '1200', 'height': '900'}),
+    ('closer-img', {'src': '/images/closing.webp', 'width': '1600', 'height': '1067'},
+                   {'src': '/images/closing-sky.webp', 'width': '2560', 'height': '1092'}),
+    ('audience-media-img', {'src': '/images/audiences.webp', 'width': '800', 'height': '1000'},
+                           {'src': '/images/audiences-eye.webp', 'width': '1536', 'height': '1736'}),
+)
+# The two sky photographs are light enough that white ink on the bar's light
+# glass would vanish over them; marked, the bar reads them as white page.
+LIGHT_GROUND = ('case-media-img', 'closer-img', 'audience-media-img')
+
+
+def _photos(content):
+    label = "photographs: four of the drop's replaced by new ones"
+    for cls, drop, new in PHOTOS:
+        start = _once(content, f'class="{cls}"', label)
+        end = content.index('/>', start)
+        img = content[start:end]
+        for attr, value in new.items():
+            img, n = re.subn(f'{attr}="{re.escape(drop[attr])}"', f'{attr}="{value}"', img)
+            if n != 1:
+                sys.exit(f'design revision "{label}": expected the {cls} image\'s '
+                         f'{attr}="{drop[attr]}", which the drop no longer has')
+        if cls in LIGHT_GROUND:
+            img = img.replace(f'class="{cls}"', f'class="{cls}" data-ground="light"', 1)
+        content = content[:start] + img + content[end:]
+    APPLIED.append(label)
+    return content
 
 
 # ── 8. The superseded footer ────────────────────────────────────────────
@@ -737,47 +1402,27 @@ def _footer(css):
     return css
 
 
-# ── 3. Almost-square corners everywhere ─────────────────────────────────
-
-CONTROL = '6px'   # buttons, chips, tags, inputs, badges: the bar's action
-SURFACE = '12px'  # cards, panels, the form, the figures: the bar's island
-
-
-def _corner(part):
-    """One radius, mapped onto the two-step scale by the size it had.
-
-    A pill (anything 40px or more) was a control, and goes to CONTROL. A large
-    radius (14px to 40px) was a surface, and goes to SURFACE. 7px to 10px was a
-    small control, an input or a dropdown option, and joins the buttons at
-    CONTROL. Circles in % and corners already this small or smaller are left.
-    rem is read at 16px, which is near enough to sort a radius into its band.
-    """
-    m = re.fullmatch(r'(\d*\.?\d+)(px|rem|em)', part)
-    if not m:
-        return part
-    px = float(m.group(1)) * (1 if m.group(2) == 'px' else 16)
-    if px >= 40:
-        return CONTROL
-    if px >= 14:
-        return SURFACE
-    if 7 <= px <= 10:
-        return CONTROL
-    return part
-
+# ── 3. Square corners everywhere ─────────────────────────────────────
 
 def _boxy(css):
+    """Every radius goes to 0: controls, surfaces, the bar, and the circles
+    (status dots, avatars) too. Runs over the drop's rules and this file's own
+    block alike, so a radius written anywhere in the stylesheet cannot survive.
+    """
     count = 0
 
     def sub(m):
         nonlocal count
-        value, important = m.group(2), m.group(3) or ''
-        new = ' '.join(_corner(p) for p in value.split())
-        if new != value:
+        if m.group(2).strip() != '0':
             count += 1
-        return m.group(1) + new + important
+        return m.group(1) + '0' + (m.group(3) or '')
 
-    css = re.sub(r'(border-radius\s*:\s*)([^;}!]+?)(\s*!important)?(?=\s*[;}])', sub, css)
-    APPLIED.append(f'corners: {count} radii moved onto the 6px and 12px scale')
+    css = re.sub(r'(border(?:-[a-z]+)*-radius\s*:\s*)([^;}!]+?)(\s*!important)?(?=\s*[;}])', sub, css)
+    left = [v for v in re.findall(r'border(?:-[a-z]+)*-radius\s*:([^;}]*)', css)
+            if v.replace('!important', '').strip() != '0']
+    if left:
+        sys.exit(f'design revision "corners": radii survived: {left}')
+    APPLIED.append(f'corners: {count} radii set to 0, every corner square')
     return css
 
 
@@ -788,9 +1433,9 @@ RAMPS = r'(?:vermillion|green|yellow|pink)-\d+'
 
 def _palette(css):
     label = 'palette: the unused accent ramps removed'
-    for old, new in (('var(--yellow-700)', 'var(--tone-bronze)'),
-                     ('var(--yellow-50)', 'var(--tone-sand-tint)'),
-                     ('var(--yellow-100)', 'var(--tone-sand-tint)')):
+    for old, new in (('var(--yellow-700)', 'var(--tone-blue-light)'),
+                     ('var(--yellow-50)', 'var(--tone-blue-tint)'),
+                     ('var(--yellow-100)', 'var(--tone-blue-tint)')):
         css = css.replace(old, new)
     css, n = re.subn(r'[ \t]*(?:--' + RAMPS + r':\s*#[0-9a-fA-F]{3,8};\s*)+\n', '', css)
     if n == 0:
@@ -800,6 +1445,155 @@ def _palette(css):
         sys.exit(f'design revision "{label}": still referenced: {sorted(set(left))}')
     APPLIED.append(label)
     return css
+
+
+# ── 16. Moss and night blue ─────────────────────────────────────────────
+
+# The warm tones as the drop declares them, matched exactly so a drop that
+# changes them stops the port rather than half-converting.
+WARM_DECLS = (
+    '  --tone-rust: #83392c; --tone-rust-deep: #5e2d24; --tone-rust-soft: #854937;\n'
+    '  --tone-umber: #623f30; --tone-umber-deep: #351f1c;\n'
+    '  --tone-bronze: #917e64; --tone-taupe: #736050; --tone-olive: #5e503a;\n'
+    '  --tone-sand: #bd9f82; --tone-sand-pale: #b0ab9a;\n')
+WARM_TINTS = '  --tone-rust-tint: #f3e6e1; --tone-sand-tint: #f1ebe3; --tone-moss-tint: #e4ebe5;\n'
+
+# The two families that replace them. Moss keeps the drop's three steps and
+# tint and gains the light stop its panel already used; night blue is the
+# hero photograph's sky, until now written into each rule by hand.
+COOL_TONES = (
+    '  --tone-moss-bright: #4a7a5c; --tone-moss-tint: #e4ebe5;\n'
+    '  --tone-night: #0a1a26; --tone-blue-deep: #10293a; --tone-blue: #1b4561;\n'
+    '  --tone-blue-light: #2a5f83; --tone-blue-pale: #9fbbd0; --tone-blue-tint: #e6edf2;\n')
+
+# Every warm tone, by role, onto its cool counterpart. The accent (rust) becomes
+# the light moss: white on it holds 6.5:1, and it still separates from the
+# night-blue island the bar's action sits in. Its tint and its deeper steps go
+# to moss with it; the secondary warm tones (umber, bronze, taupe, olive, sand)
+# go to night blue, so the two families divide the page between them.
+WARM_TO_COOL = {
+    'rust': 'moss-light', 'rust-deep': 'moss-deep', 'rust-soft': 'moss',
+    'rust-tint': 'moss-tint',
+    'umber': 'blue', 'umber-deep': 'blue-deep',
+    'bronze': 'blue-light', 'taupe': 'blue', 'olive': 'night',
+    'sand': 'blue-pale', 'sand-pale': 'blue-pale', 'sand-tint': 'blue-tint',
+}
+WARM_TOKEN = re.compile(r'--tone-(rust|umber|bronze|taupe|olive|sand)(-deep|-soft|-tint|-pale)?\b')
+ACCENT_RGB = '59,101,75'  # --tone-moss-light, for the drop's translucent rust
+RUST_RGBA = re.compile(r'rgba\(\s*131\s*,\s*57\s*,\s*44\s*,')
+
+# The four feature panels drawn from warm tones take cool ones, under new names
+# so no class says rust where the colour is moss.
+WARM_PANELS = {'tone-sand': 'tone-night', 'tone-rust': 'tone-pine', 'tone-umber': 'tone-tide'}
+WARM_PANEL_RULES = (
+    '.feat-visual.tone-sand  { --fv-bg: var(--tone-taupe); --fv-light: #d9bfa1; --fv-shade: var(--tone-olive); }\n'
+    '.feat-visual.tone-rust  { --fv-bg: var(--tone-rust);  --fv-light: #b0634a; --fv-shade: var(--tone-rust-deep); }\n'
+    '.feat-visual.tone-umber { --fv-bg: var(--tone-umber); --fv-light: var(--tone-bronze); --fv-shade: var(--tone-umber-deep); }\n')
+COOL_PANEL_RULES = (
+    '.feat-visual.tone-night { --fv-bg: var(--tone-blue-deep);  --fv-light: var(--tone-blue-light);  --fv-shade: var(--tone-night); }\n'
+    '.feat-visual.tone-pine  { --fv-bg: var(--tone-moss-deep);  --fv-light: var(--tone-moss-light);  --fv-shade: var(--tone-night); }\n'
+    '.feat-visual.tone-tide  { --fv-bg: var(--tone-blue);       --fv-light: var(--tone-moss-bright); --fv-shade: var(--tone-moss-deep); }\n')
+
+WARM_LEFT = re.compile(
+    r'--tone-(?:rust|umber|bronze|taupe|olive|sand)\b|rgba\(\s*131\s*,\s*57\s*,\s*44\b|'
+    r'#(?:83392c|5e2d24|854937|623f30|351f1c|917e64|736050|5e503a|bd9f82|b0ab9a|f3e6e1|f1ebe3|b0634a|d9bfa1)\b',
+    re.I)
+
+
+def _warm_token(m):
+    return '--tone-' + WARM_TO_COOL[m.group(1) + (m.group(2) or '')]
+
+
+def _cool(css):
+    label = 'palette: the warm tones replaced by moss and night blue'
+    i = _once(css, WARM_DECLS, label)
+    css = css[:i] + css[i + len(WARM_DECLS):]
+    i = _once(css, WARM_TINTS, label)
+    css = css[:i] + COOL_TONES + css[i + len(WARM_TINTS):]
+    i = _once(css, WARM_PANEL_RULES, label)
+    css = css[:i] + COOL_PANEL_RULES + css[i + len(WARM_PANEL_RULES):]
+    css, n = WARM_TOKEN.subn(_warm_token, css)
+    # A typed custom property's initial value has to be a literal colour.
+    i = _once(css, '--fv-light { syntax: \'<color>\'; inherits: true; initial-value: #83392c; }', label)
+    css = css.replace('initial-value: #83392c;', 'initial-value: #3b654b;', 1)
+    css, k = RUST_RGBA.subn(f'rgba({ACCENT_RGB},', css)
+    APPLIED.append(f'{label} ({n} references, {k} translucent)')
+    return css
+
+
+def _cool_page(content):
+    label = 'palette: the warm panels and chart marks moved to moss and night blue'
+    for old, new in WARM_PANELS.items():
+        content, n = re.subn(rf'class="feat-visual {old}"', f'class="feat-visual {new}"', content)
+        if n != 1:
+            sys.exit(f'design revision "{label}": expected one {old} panel, found {n}')
+    content, n = WARM_TOKEN.subn(_warm_token, content)
+    if n != 3:
+        sys.exit(f'design revision "{label}": expected three warm chart marks, found {n}')
+    APPLIED.append(label)
+    return content
+
+
+# ── 18. The Healthspan score ────────────────────────────────────────────
+
+def _score_page(content):
+    label = 'healthspan: the score card marked for its own layout'
+    content, n = re.subn(r'(<div class="feat-visual tone-moss" aria-hidden="true">\s*<div class="fm-card)(">)',
+                         r'\1 fm-score\2', content)
+    if n != 1:
+        sys.exit(f'design revision "{label}": expected one score card in the moss panel, found {n}')
+    APPLIED.append(label)
+    return content
+
+
+# ── 19. ApoB ────────────────────────────────────────────────────────────
+
+# Revision 32: the chart gives way to five fields, one per month on the axis.
+# September is the reading that rose above the range (the chart's peak); the
+# latest carries the chip, which leaves the headline row.
+APOB_FIELDS = ('<ol class="fm-year">'
+               '<li></li><li></li><li class="is-above"></li><li></li>'
+               '<li class="is-now"><span class="fm-chip is-moss">Optimal</span></li></ol>')
+
+
+def _apob_page(content):
+    label = 'apob: the card marked, its chart drawn as five fields'
+    content, n = re.subn(r'(<div class="feat-visual tone-pine" aria-hidden="true">\s*<div class="fm-card)(">)',
+                         r'\1 fm-apob\2', content)
+    if n != 1:
+        sys.exit(f'design revision "{label}": expected one chart card in the pine panel, found {n}')
+    start = _once(content, 'class="fm-card fm-apob"', label)
+    head = '<div class="fm-row fm-between"><span class="fm-title">ApoB</span><span class="fm-chip is-moss">Optimal</span></div>'
+    if content.find(head, start) < 0:
+        sys.exit(f'design revision "{label}": the ApoB headline row has changed')
+    content = content[:start] + content[start:].replace(
+        head, '<div class="fm-row"><span class="fm-title">ApoB</span></div>', 1)
+    chart = re.compile(r'<svg class="fm-chart"[\s\S]*?</svg>')
+    m = chart.search(content, start)
+    if not m or 'Jan' not in content[m.end():m.end() + 200]:
+        sys.exit(f'design revision "{label}": the ApoB chart was not found above its axis')
+    content = content[:m.start()] + APOB_FIELDS + content[m.end():]
+    APPLIED.append(label)
+    return content
+
+
+# ── 26. Advanced therapies as a gate ────────────────────────────────────
+
+# Named by the section's own words: the therapies as the tab describes them,
+# and the two disciplines beneath by their tab titles.
+GATE_LAYERS = ('<div class="gate-layers" aria-hidden="true">'
+               '<span class="is-addon">Hormones, peptides, and regenerative therapies</span>'
+               '<span>Diagnostics and screening</span><span>Clinical care</span></div>')
+
+
+def _gate_page(content):
+    label = 'therapies: the stack drawn beneath the two conditions'
+    content, n = re.subn(r'(<div class="gate">)(\s*)(<div class="gate-flow">)',
+                         lambda m: m.group(1) + m.group(2) + GATE_LAYERS + m.group(2) + m.group(3), content)
+    if n != 1:
+        sys.exit(f'design revision "{label}": expected the gate and its flow once, found {n}')
+    APPLIED.append(label)
+    return content
 
 
 # ── 5. The type scale ───────────────────────────────────────────────────
@@ -846,12 +1640,33 @@ def _type(css):
 def apply_to_css(css):
     css = _footer(css)
     css = _palette(css)
+    css = _cool(css)
     css = _type(css)
-    css = _boxy(css)
     APPLIED.append('bar: one light island of fixed width')
     APPLIED.append('hero: the photograph fills the first screen, edge to edge')
     APPLIED.append('what you get: an index of rows, not a grid of tall panels')
     APPLIED.append('buttons: secondaries on dark grounds are text links')
     APPLIED.append('close: a centred statement over a panorama, not copy on a photograph')
     APPLIED.append('chips: the two on dark grounds solid, not glass')
-    return css.rstrip('\n') + '\n' + CSS
+    APPLIED.append('figures: flat fields, no card, no blur')
+    APPLIED.append('healthspan: the score as a field')
+    APPLIED.append('apob: the marker as a field')
+    APPLIED.append('protocol: the items as rows on the field')
+    APPLIED.append('care team: the disciplines as rows on the field')
+    APPLIED.append('clinical record: a ledger on the field')
+    APPLIED.append('concierge: the thread set as type, not bubbles')
+    APPLIED.append('disciplines: the three devices drawn on the field')
+    APPLIED.append('disciplines: one choreography, panes that cross, nothing that loops')
+    APPLIED.append('therapies: drawn as a gate')
+    APPLIED.append('photographs: placed in their frames')
+    APPLIED.append('hero: the copy at the foot of the photograph, bottom left')
+    APPLIED.append('ground: one gradient the length of the home page')
+    APPLIED.append('type: the headings in Inter Display SemiBold')
+    APPLIED.append('audiences: the eye in profile, framed on the left third')
+    APPLIED.append('apob: five fields across the year')
+    css = css.rstrip('\n') + '\n' + CSS
+    css = _boxy(css)
+    left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
+    if left:
+        sys.exit(f'design revision "palette": warm tones survived: {left}')
+    return css
