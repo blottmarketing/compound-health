@@ -13,9 +13,8 @@ so the card cannot drift from the site:
   public/images/hero-portrait.webp  the photograph the hero card uses
   src/components/Logo.astro  the lockup, mark and wordmark on one viewBox
 
-The mark is forced to white here. It holds the brand rust on the site, where it
-sits on the bar, but on this photograph one flat colour reads better at the size
-a feed actually shows.
+The mark is forced to white here, as the bar sets it on the site: on this
+photograph one flat colour reads best at the size a feed actually shows.
 
 Rendering needs a headless Chromium. Playwright's cached headless shell is what
 this looks for, because full Chrome in headless mode hangs on this machine; set
@@ -72,7 +71,12 @@ def build_html():
 <html lang="en"><head><meta charset="utf-8" /><title>og</title><style>
   html, body { margin: 0; padding: 0; width: %(w)dpx; height: %(h)dpx; overflow: hidden; background: #18181b; }
   .frame { position: relative; width: %(w)dpx; height: %(h)dpx; overflow: hidden; }
-  .photo { position: absolute; inset: 0; width: 100%%; height: 100%%; object-fit: cover; object-position: 0%% 30%%; display: block; }
+  .photo { position: absolute; inset: 0; width: 100%%; height: 100%%; object-fit: cover; object-position: 52%% 30%%; display: block; }
+  /* The subject right of centre, as on the site (design revision 15), but
+     less far right than the site's 80%: on this card's narrower frame that
+     brings his face against the end of the wordmark. At 52% the lockup sits
+     clear of him on the darker foliage, with only a sliver of the window at
+     the left edge. */
   /* The gradient the site already runs over the hero, .hero-media::after,
      carried at a little more weight so the lockup holds on a small card. */
   .scrim { position: absolute; inset: 0;
