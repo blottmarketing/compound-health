@@ -127,7 +127,8 @@ Revisions, October 2026:
      footer still meets white. It is one layer behind every section, and the
      sections are clear over it; the dark membership band keeps its own
      ground. The legal pages and the 404 keep white: their footer is in the
-     flow, and the layer would cover it.
+     flow, and the layer would cover it. A secondary action on the gradient
+     is a white fill rather than an outline, which vanished into the tint.
  30. The headings are set in Inter Display SemiBold, self-hosted at
      public/fonts/ with its licence (SIL OFL) beside it: the display cut is
      drawn tighter for large sizes, so with the type tiers' own negative
@@ -695,6 +696,15 @@ body:has(> .closer)::before {
 }
 body:has(> .closer) > :is(section, div:not(.mobile-menu), .rule):not(.plans) {
   background-color: transparent;
+}
+/* A secondary action on the gradient is a white fill, not an outline: a
+   zinc-300 outline round a clear fill vanishes into the tint. The dark
+   grounds (the hero, the membership band) keep their own text links. */
+body:has(> .closer) :is(.btn-pill, .btn-outline):not(:is(.hero, .plans) *) {
+  background: var(--white); border-color: var(--white); color: var(--charcoal);
+}
+body:has(> .closer) :is(.btn-pill, .btn-outline):not(:is(.hero, .plans) *):hover {
+  background: var(--zinc-100); border-color: var(--zinc-100); color: var(--charcoal);
 }
 
 /* Revision 30: the headings in Inter Display SemiBold. The display cut is
