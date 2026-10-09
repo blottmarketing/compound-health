@@ -129,17 +129,17 @@ Revisions, October 2026:
      ground. The legal pages and the 404 keep white: their footer is in the
      flow, and the layer would cover it. A secondary action on the gradient
      is a white fill rather than an outline, which vanished into the tint.
- 31. The audiences panel carries a new photograph, a woman on a terrace
-     against the sky, public/images/audiences-terrace.webp, in place of the
-     close-up of an eye; the drop's file stays for the checksum match. It is
-     a panorama in an upright frame, so the frame holds her face, right of
-     centre, and it is marked data-ground="light" with the other sky
-     photographs.
  30. The headings are set in Inter Display SemiBold, self-hosted at
      public/fonts/ with its licence (SIL OFL) beside it: the display cut is
      drawn tighter for large sizes, so with the type tiers' own negative
      tracking it keeps the dense, heavy titles Aeonik Medium gave. Text,
      labels and the figures' data stay in Aeonik.
+ 31. The audiences panel carries a new photograph, a close-up of an eye in
+     profile against the sky, public/images/audiences-eye.webp, in place of
+     the drop's close-up; the drop's file stays for the checksum match. The
+     upright frame crops its sides and holds the eye at the left third, so
+     the profile looks into the sky, and it is marked data-ground="light"
+     with the other sky photographs.
 """
 
 import re
@@ -672,8 +672,22 @@ CSS = """
 .hero-img { object-position: 0% 30%; }
 /* Revision 28: the copy rests on the foot of the photograph, bottom left, on
    the dark of the sky; the upper screen is the photograph alone. Phones
-   already set it at the foot. */
+   already set it at the foot. On a large, tall screen the actions sit beside
+   the standfirst, on its last line, under the headline that spans both, and
+   the standfirst narrows to make room. The photograph scales with the
+   screen's height, so height decides: below 1000px tall the text link
+   lands on the lit sky by her chin and falls under 4.5:1, so there the
+   actions stay under the standfirst. */
 .hero-card { justify-content: flex-end; }
+@media (min-width: 1600px) and (min-height: 1000px) {
+  .hero-inner {
+    display: grid; max-width: none; width: auto;
+    grid-template-columns: auto auto; column-gap: 2.5rem; align-items: end;
+  }
+  .hero h1 { grid-column: 1 / -1; }
+  .hero-sub { max-width: 22rem; }
+  .hero-actions { margin-top: 0; }
+}
 
 /* Revision 29: one gradient the length of the home page in place of the white
    ground. It is a layer on the body, under the sections and over the fixed
@@ -713,9 +727,9 @@ body:has(> .closer) :is(.btn-pill, .btn-outline):not(:is(.hero, .plans) *):hover
   background: var(--zinc-100); border-color: var(--zinc-100); color: var(--charcoal);
 }
 
-/* Revision 31: the audiences photograph is a panorama in an upright frame;
-   the frame holds her face, right of centre. */
-.audience-media-img { object-position: 62% 50%; }
+/* Revision 31: the frame crops the photograph's sides and holds the eye at
+   its left third, so the profile looks into the sky. */
+.audience-media-img { object-position: 50% 60%; }
 
 /* Revision 30: the headings in Inter Display SemiBold. The display cut is
    drawn tight for large sizes, so with the tiers' negative tracking the titles
@@ -1243,7 +1257,7 @@ PHOTOS = (
     ('closer-img', {'src': '/images/closing.webp', 'width': '1600', 'height': '1067'},
                    {'src': '/images/closing-sky.webp', 'width': '2560', 'height': '1092'}),
     ('audience-media-img', {'src': '/images/audiences.webp', 'width': '800', 'height': '1000'},
-                           {'src': '/images/audiences-terrace.webp', 'width': '1922', 'height': '818'}),
+                           {'src': '/images/audiences-eye.webp', 'width': '1536', 'height': '1736'}),
 )
 # The two sky photographs are light enough that white ink on the bar's light
 # glass would vanish over them; marked, the bar reads them as white page.
@@ -1565,7 +1579,7 @@ def apply_to_css(css):
     APPLIED.append('hero: the copy at the foot of the photograph, bottom left')
     APPLIED.append('ground: one gradient the length of the home page')
     APPLIED.append('type: the headings in Inter Display SemiBold')
-    APPLIED.append('audiences: the terrace photograph, framed on her face')
+    APPLIED.append('audiences: the eye in profile, framed on the left third')
     css = css.rstrip('\n') + '\n' + CSS
     css = _boxy(css)
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))

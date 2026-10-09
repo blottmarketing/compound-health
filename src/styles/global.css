@@ -1995,8 +1995,22 @@ html.is-intro .hero-btns > *, html.is-intro .hero .credbar { opacity: 0; }
 .hero-img { object-position: 0% 30%; }
 /* Revision 28: the copy rests on the foot of the photograph, bottom left, on
    the dark of the sky; the upper screen is the photograph alone. Phones
-   already set it at the foot. */
+   already set it at the foot. On a large, tall screen the actions sit beside
+   the standfirst, on its last line, under the headline that spans both, and
+   the standfirst narrows to make room. The photograph scales with the
+   screen's height, so height decides: below 1000px tall the text link
+   lands on the lit sky by her chin and falls under 4.5:1, so there the
+   actions stay under the standfirst. */
 .hero-card { justify-content: flex-end; }
+@media (min-width: 1600px) and (min-height: 1000px) {
+  .hero-inner {
+    display: grid; max-width: none; width: auto;
+    grid-template-columns: auto auto; column-gap: 2.5rem; align-items: end;
+  }
+  .hero h1 { grid-column: 1 / -1; }
+  .hero-sub { max-width: 22rem; }
+  .hero-actions { margin-top: 0; }
+}
 
 /* Revision 29: one gradient the length of the home page in place of the white
    ground. It is a layer on the body, under the sections and over the fixed
@@ -2036,9 +2050,9 @@ body:has(> .closer) :is(.btn-pill, .btn-outline):not(:is(.hero, .plans) *):hover
   background: var(--zinc-100); border-color: var(--zinc-100); color: var(--charcoal);
 }
 
-/* Revision 31: the audiences photograph is a panorama in an upright frame;
-   the frame holds her face, right of centre. */
-.audience-media-img { object-position: 62% 50%; }
+/* Revision 31: the frame crops the photograph's sides and holds the eye at
+   its left third, so the profile looks into the sky. */
+.audience-media-img { object-position: 50% 60%; }
 
 /* Revision 30: the headings in Inter Display SemiBold. The display cut is
    drawn tight for large sizes, so with the tiers' negative tracking the titles
