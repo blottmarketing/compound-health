@@ -79,7 +79,8 @@ Revisions, October 2026:
  19. ApoB is a field of its own: the marker's name at display size, the white
      Optimal chip beside it, and the chart as one heavy white line over a
      square band for the range, with every point dropped but the last, which
-     is drawn larger as the reading that matters.
+     is drawn larger as the reading that matters. Revision 32 replaces the
+     chart and moves the chip.
  20. Your protocol is a field of its own: each item a large row under a rule,
      its category a small label above it rather than a chip. The photograph
      behind it stays until its replacement arrives; the layer that darkens it
@@ -140,6 +141,15 @@ Revisions, October 2026:
      upright frame crops its sides and holds the eye at the left third, so
      the profile looks into the sky, and it is marked data-ground="light"
      with the other sky photographs.
+ 32. ApoB is five fields across the year, not a chart: one square field per
+     month on the axis (Jan, May, Sep, Jan, May), on a shared foot, with no
+     axis, line or band. A reading in range is moss; the one that rose above
+     it (September, the chart's peak) is night blue and stands taller than
+     the row, so it reads as above by shape as well as tone; the latest is
+     white and carries the Optimal chip, which leaves the headline row. The
+     fields rise one after another at an even pace, each month lighting with
+     its field, and the chip arrives last. No new words: the five months and
+     the chip are the figure's own.
 """
 
 import re
@@ -903,20 +913,61 @@ body :is(h1, h2, h3, h4, h5, h6, .step-title, .plan-name, .case-num, .mobile-nav
 .fm-score .fm-seg:nth-child(3), .fm-score .fm-legend > span:nth-child(3)::before { background: #fff; }
 
 /* Revision 19: ApoB. The marker's name is the figure's headline, at display
-   size against the chip; the chart is one heavy line over a square band, and
-   of its points only the latest reading is drawn, larger, ringed in white. */
+   size. Revision 32 below draws the readings. */
 .feat-visual:has(.fm-apob) { container-type: inline-size; }
 .fm-apob > .fm-row:first-child { align-items: flex-start; }
 .fm-apob .fm-title {
   font-size: clamp(2.25rem, 9cqi, 4rem); line-height: 0.9; letter-spacing: -0.04em;
   font-weight: 500; color: #fff;
 }
-.fm-apob .fm-chart { overflow: visible; }
-.fm-apob .fm-band { rx: 0; }
-.fm-apob .fm-line { stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
-.fm-apob .fm-pts circle { display: none; }
-.fm-apob .fm-pts circle.fm-end {
-  display: inline; fill: var(--tone-moss-bright); stroke: #fff; stroke-width: 2.2;
+
+/* Revision 32: ApoB as five fields across the year. One field per month on
+   the axis, square, on a shared foot: moss in range, night blue and taller
+   for the reading that rose above it, white for the latest, which carries
+   the chip. The months sit under their fields on the same grid. The fields
+   rise in turn at an even pace, each month lighting with its own, and the
+   chip arrives last; nothing overshoots. */
+.fm-apob { --field: clamp(4.5rem, 20cqi, 8.5rem); --field-gap: 0.375rem; --field-step: 0.22s; --field-wait: 0.35s; }
+.fm-year {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--field-gap);
+  align-items: end; list-style: none; margin: 0; padding: 0;
+}
+.fm-year li {
+  height: var(--field); background: var(--tone-moss-bright);
+  display: flex; align-items: flex-end; padding: 0.625rem;
+  transform-origin: bottom;
+}
+.fm-year li.is-above { height: calc(var(--field) * 1.4); background: var(--tone-blue-light); }
+.fm-year li.is-now { background: #fff; }
+.fm-year .fm-chip { padding: 0; font-size: var(--fs-small); line-height: var(--lh-small); }
+.fm-apob .fm-axis {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--field-gap);
+  margin-top: 0.75rem;
+}
+.fm-apob .fm-axis > span { opacity: 0.35; }
+/* On a phone a field is under 60px wide: a tighter inset and the chip at its
+   own small size keep Optimal inside the white field. After the rules above,
+   since a container query adds no specificity. */
+@container (max-width: 420px) {
+  .fm-year li { padding: 0.375rem; }
+  .fm-year .fm-chip { font-size: var(--fs-tiny); line-height: var(--lh-tiny); }
+}
+.fm-year li { transform: scaleY(0); }
+.fm-year .fm-chip { opacity: 0; }
+@keyframes fmGrow { from { transform: scaleY(0); } to { transform: none; } }
+@keyframes fmLight { from { opacity: 0.35; } to { opacity: 1; } }
+.feat-card.is-in .fm-year li { animation: fmGrow 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+.feat-card.is-in .fm-apob .fm-axis > span { animation: fmLight 0.35s ease both; }
+.feat-card.is-in .fm-year li:nth-child(1), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(1) { animation-delay: var(--field-wait); }
+.feat-card.is-in .fm-year li:nth-child(2), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(2) { animation-delay: calc(var(--field-wait) + var(--field-step)); }
+.feat-card.is-in .fm-year li:nth-child(3), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(3) { animation-delay: calc(var(--field-wait) + var(--field-step) * 2); }
+.feat-card.is-in .fm-year li:nth-child(4), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(4) { animation-delay: calc(var(--field-wait) + var(--field-step) * 3); }
+.feat-card.is-in .fm-year li:nth-child(5), .feat-card.is-in .fm-apob .fm-axis > span:nth-child(5) { animation-delay: calc(var(--field-wait) + var(--field-step) * 4); }
+.feat-card.is-in .fm-year .fm-chip { animation: fmFade 0.4s ease calc(var(--field-wait) + var(--field-step) * 4 + 0.45s) both; }
+@media (prefers-reduced-motion: reduce) {
+  .fm-year li, .fm-year .fm-chip, .fm-apob .fm-axis > span {
+    opacity: 1 !important; transform: none !important; animation: none !important;
+  }
 }
 
 /* Revision 20: Your protocol. Each item is a row under a rule: its category a
@@ -1480,16 +1531,31 @@ def _score_page(content):
 
 # ── 19. ApoB ────────────────────────────────────────────────────────────
 
+# Revision 32: the chart gives way to five fields, one per month on the axis.
+# September is the reading that rose above the range (the chart's peak); the
+# latest carries the chip, which leaves the headline row.
+APOB_FIELDS = ('<ol class="fm-year">'
+               '<li></li><li></li><li class="is-above"></li><li></li>'
+               '<li class="is-now"><span class="fm-chip is-moss">Optimal</span></li></ol>')
+
+
 def _apob_page(content):
-    label = 'apob: the chart card marked, its latest reading drawn larger'
+    label = 'apob: the card marked, its chart drawn as five fields'
     content, n = re.subn(r'(<div class="feat-visual tone-pine" aria-hidden="true">\s*<div class="fm-card)(">)',
                          r'\1 fm-apob\2', content)
     if n != 1:
         sys.exit(f'design revision "{label}": expected one chart card in the pine panel, found {n}')
-    content, n = re.subn(r'<circle cx="304" cy="86" r="3.5"/>',
-                         '<circle class="fm-end" cx="304" cy="86" r="6"/>', content)
-    if n != 1:
-        sys.exit(f'design revision "{label}": expected the latest reading at 304,86 once, found {n}')
+    start = _once(content, 'class="fm-card fm-apob"', label)
+    head = '<div class="fm-row fm-between"><span class="fm-title">ApoB</span><span class="fm-chip is-moss">Optimal</span></div>'
+    if content.find(head, start) < 0:
+        sys.exit(f'design revision "{label}": the ApoB headline row has changed')
+    content = content[:start] + content[start:].replace(
+        head, '<div class="fm-row"><span class="fm-title">ApoB</span></div>', 1)
+    chart = re.compile(r'<svg class="fm-chart"[\s\S]*?</svg>')
+    m = chart.search(content, start)
+    if not m or 'Jan' not in content[m.end():m.end() + 200]:
+        sys.exit(f'design revision "{label}": the ApoB chart was not found above its axis')
+    content = content[:m.start()] + APOB_FIELDS + content[m.end():]
     APPLIED.append(label)
     return content
 
@@ -1580,6 +1646,7 @@ def apply_to_css(css):
     APPLIED.append('ground: one gradient the length of the home page')
     APPLIED.append('type: the headings in Inter Display SemiBold')
     APPLIED.append('audiences: the eye in profile, framed on the left third')
+    APPLIED.append('apob: five fields across the year')
     css = css.rstrip('\n') + '\n' + CSS
     css = _boxy(css)
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
