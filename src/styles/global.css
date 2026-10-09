@@ -2036,6 +2036,10 @@ body:has(> .closer) :is(.btn-pill, .btn-outline):not(:is(.hero, .plans) *):hover
   background: var(--zinc-100); border-color: var(--zinc-100); color: var(--charcoal);
 }
 
+/* Revision 31: the audiences photograph is a panorama in an upright frame;
+   the frame holds her face, right of centre. */
+.audience-media-img { object-position: 62% 50%; }
+
 /* Revision 30: the headings in Inter Display SemiBold. The display cut is
    drawn tight for large sizes, so with the tiers' negative tracking the titles
    stay dense and heavy. Text, labels and the figures' data stay in Aeonik. */
