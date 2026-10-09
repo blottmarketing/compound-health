@@ -59,7 +59,10 @@ Revisions, October 2026:
  15. The hero carries a new photograph, public/images/hero-portrait.webp, in
      place of the drop's. The drop's own stays in public/images/hero.webp,
      because the port matches each embedded photograph to its file there by
-     checksum; only the page's reference to it moves.
+     checksum; only the page's reference to it moves. The photograph was
+     replaced on 2026-10-09 by a man in profile by a window, looking left,
+     under the same file name; on a desktop the frame holds him right of
+     centre and the copy sits on the dark, blurred foliage at his left.
  16. The warm tones go. Rust, umber, bronze, taupe, olive and sand are
      removed from the palette and every use moves onto the two cool families:
      the accent, its tint and its deeper steps onto moss, the secondary warm
@@ -118,10 +121,12 @@ Revisions, October 2026:
      two sky photographs are marked data-ground="light", which the bar reads
      as white page, so it turns to its dark glass over them.
  28. The hero's copy rests on the foot of the photograph, bottom left, on
-     the dark of the sky, rather than at the middle of the screen: the upper
+     its dark ground, rather than at the middle of the screen: the upper
      screen is the photograph alone. A split along the foot, the standfirst
      and actions on the right, was tried and dropped: on the right they fall
-     on her lit neck and do not read.
+     on the lit subject and do not read. From 901px the actions sit beside
+     the standfirst, and the secondary one, which lands there nearer the
+     subject, takes the bar's deep blue glass in place of a bare text link.
  29. The home page has no white ground. One gradient runs the length of the
      page, from white under the hero through the night blue tint and the moss
      tint and back to white at the close, so the photograph that uncovers the
@@ -399,8 +404,10 @@ CSS = """
    ══════════════════════════════════════════════════════════════════════ */
 
 /* The bar. .main-nav is only a frame that centres the island and lets clicks
-   through around it; .nav-inner is the island: 960px wide wherever it fits,
-   and it never changes shape. Its corners are square, as are the action's. No
+   through around it; .nav-inner is the island, as wide as the sections'
+   content column (.inner: 1120px, inside the sections' 56px gutters, 20px
+   on phones), so its edges line up with the content's, and it never changes
+   shape. Its corners are square, as are the action's. No
    outline and no shadow (the drop sets every box-shadow to none, site-wide).
 
    The ink is white in both of the island's tones; only the glass changes.
@@ -414,12 +421,12 @@ CSS = """
 .main-nav, .main-nav.is-scrolled {
   top: 0; left: 0; right: 0;
   display: flex; justify-content: center; align-items: flex-start;
-  padding: 1rem 1rem 0; pointer-events: none;
+  padding: 1rem 56px 0; pointer-events: none;
   background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none;
 }
 .main-nav .nav-inner {
   pointer-events: auto;
-  flex: 0 1 960px; width: 960px; max-width: 100%;
+  flex: 0 1 1120px; width: 1120px; max-width: 100%;
   display: flex; align-items: center; justify-content: flex-start; gap: 0.125rem;
   padding: 0.375rem 0.375rem 0.375rem 1.5rem;
   border-radius: 12px; border: 0;
@@ -677,19 +684,21 @@ CSS = """
   height: 100vh; height: 100svh; min-height: 600px;
   padding: 6.5rem 4rem 4rem;
 }
-/* Revision 15: she sits right of centre and the left of the photograph is its
-   darkest ground, so the frame holds her right and the copy sits on the dark. */
-.hero-img { object-position: 0% 30%; }
+/* Revision 15: he sits right of centre and looks left, and the left of the
+   photograph is a pale window, so the frame holds him right and the copy sits
+   on the darker foliage between the two. At 80% the standfirst holds 5:1 or
+   more and the headline 3.7:1 or more from 1280 by 800 up. */
+.hero-img { object-position: 80% 30%; }
 /* Revision 28: the copy rests on the foot of the photograph, bottom left, on
-   the dark of the sky; the upper screen is the photograph alone. Phones
+   its dark ground; the upper screen is the photograph alone. Phones
    already set it at the foot. On a large, tall screen the actions sit beside
    the standfirst, on its last line, under the headline that spans both, and
-   the standfirst narrows to make room. The photograph scales with the
-   screen's height, so height decides: below 1000px tall the text link
-   lands on the lit sky by her chin and falls under 4.5:1, so there the
-   actions stay under the standfirst. */
+   the standfirst narrows to make room. Beside it the secondary action lands
+   nearer the lit subject, where a bare text link fell to 2.8:1 on the first
+   photograph, so there it takes the bar's deep blue glass, night blue at 88%
+   over a 24px blur, and stays legible whatever is behind it. */
 .hero-card { justify-content: flex-end; }
-@media (min-width: 1600px) and (min-height: 1000px) {
+@media (min-width: 901px) {
   .hero-inner {
     display: grid; max-width: none; width: auto;
     grid-template-columns: auto auto; column-gap: 2.5rem; align-items: end;
@@ -697,6 +706,14 @@ CSS = """
   .hero h1 { grid-column: 1 / -1; }
   .hero-sub { max-width: 22rem; }
   .hero-actions { margin-top: 0; }
+  .hero .hero-btns .btn-outline {
+    background: rgba(10, 26, 38, 0.88);
+    -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px);
+    padding: 15px 32px !important;
+  }
+  .hero .hero-btns .btn-outline:hover {
+    background: var(--tone-blue-deep); text-decoration-color: transparent;
+  }
 }
 
 /* Revision 29: one gradient the length of the home page in place of the white
@@ -757,7 +774,7 @@ body :is(h1, h2, h3, h4, h5, h6, .step-title, .plan-name, .case-num, .mobile-nav
 }
 
 @media (max-width: 900px) {
-  .main-nav, .main-nav.is-scrolled { padding: 0.75rem 0.75rem 0; }
+  .main-nav, .main-nav.is-scrolled { padding: 0.75rem 20px 0; }
   .main-nav .nav-inner, .main-nav.is-scrolled .nav-inner {
     flex: 1 1 auto; width: 100%; max-width: none !important;
     justify-content: flex-start;
@@ -799,7 +816,7 @@ body :is(h1, h2, h3, h4, h5, h6, .step-title, .plan-name, .case-num, .mobile-nav
     height: auto; min-height: 100vh; min-height: 100svh;
     padding: 5.5rem 1.25rem 1.25rem; border-radius: 0;
   }
-  .hero-img { object-position: 45% 20%; }
+  .hero-img { object-position: 57% 20%; }
   /* Both hero actions run the full width of the column on a phone: the
      drop's own width: 100% did nothing while .hero-actions shrank to fit its
      content, so the column stretches and the actions stack. */
@@ -1278,7 +1295,7 @@ def apply_to_page(content):
 
 # ── 15. The hero photograph ─────────────────────────────────────────────
 
-HERO_PHOTO = {'src': '/images/hero-portrait.webp', 'width': '2560', 'height': '1089'}
+HERO_PHOTO = {'src': '/images/hero-portrait.webp', 'width': '2560', 'height': '1086'}
 DROP_PHOTO = {'src': '/images/hero.webp', 'width': '1600', 'height': '800'}
 
 
