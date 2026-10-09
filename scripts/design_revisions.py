@@ -11,7 +11,7 @@ When a drop arrives that already carries a revision, delete it from here.
 
 Revisions, October 2026:
 
-  1. The bar is one glass island of fixed width, almost square at the
+  1. The bar is one glass island of fixed width, square at the
      corners, floating over the page: the lockup on the left, the section
      links and the action on the right, the action last. It never changes
      shape. Its ink is white; its glass is 10% white over the photographs and
@@ -19,10 +19,8 @@ Revisions, October 2026:
      page. Below 900px the menu button sits inside the island.
   2. The hero photograph fills the whole first screen, edge to edge: no inset,
      no rounded corners, no white margin, with the island floating over it.
-  3. Every corner on the site follows the bar's: almost square. Controls
-     (buttons, chips, tags, inputs, badges) take 6px and surfaces (cards,
-     panels, the form, the figures) 12px. True circles, the status dots and
-     the avatars, stay round.
+  3. Every corner on the site is square: no element carries a radius, the
+     status dots and the avatars included.
   4. The drop's unused accent ramps are removed, and the three uses of one of
      them move onto the brand tones (night blue, since revision 16).
   5. The type scale is new: a fixed 16px root, and headings that scale with
@@ -118,6 +116,23 @@ Revisions, October 2026:
      in public/images/ for the checksum match; only the references move. The
      two sky photographs are marked data-ground="light", which the bar reads
      as white page, so it turns to its dark glass over them.
+ 28. The hero's copy rests on the foot of the photograph, bottom left, on
+     the dark of the sky, rather than at the middle of the screen: the upper
+     screen is the photograph alone. A split along the foot, the standfirst
+     and actions on the right, was tried and dropped: on the right they fall
+     on her lit neck and do not read.
+ 29. The home page has no white ground. One gradient runs the length of the
+     page, from white under the hero through the night blue tint and the moss
+     tint and back to white at the close, so the photograph that uncovers the
+     footer still meets white. It is one layer behind every section, and the
+     sections are clear over it; the dark membership band keeps its own
+     ground. The legal pages and the 404 keep white: their footer is in the
+     flow, and the layer would cover it.
+ 30. The headings are set in Inter Display SemiBold, self-hosted at
+     public/fonts/ with its licence (SIL OFL) beside it: the display cut is
+     drawn tighter for large sizes, so with the type tiers' own negative
+     tracking it keeps the dense, heavy titles Aeonik Medium gave. Text,
+     labels and the figures' data stay in Aeonik.
 """
 
 import re
@@ -368,8 +383,7 @@ CSS = """
 
 /* The bar. .main-nav is only a frame that centres the island and lets clicks
    through around it; .nav-inner is the island: 960px wide wherever it fits,
-   and it never changes shape. Its corners are almost square, 12px, and the
-   action's are 6px: the island's radius less its padding, so they nest. No
+   and it never changes shape. Its corners are square, as are the action's. No
    outline and no shadow (the drop sets every box-shadow to none, site-wide).
 
    The ink is white in both of the island's tones; only the glass changes.
@@ -649,6 +663,54 @@ CSS = """
 /* Revision 15: she sits right of centre and the left of the photograph is its
    darkest ground, so the frame holds her right and the copy sits on the dark. */
 .hero-img { object-position: 0% 30%; }
+/* Revision 28: the copy rests on the foot of the photograph, bottom left, on
+   the dark of the sky; the upper screen is the photograph alone. Phones
+   already set it at the foot. */
+.hero-card { justify-content: flex-end; }
+
+/* Revision 29: one gradient the length of the home page in place of the white
+   ground. It is a layer on the body, under the sections and over the fixed
+   footer, ending where the body ends: the close's margin, which reserves the
+   footer's room, falls outside the body, so the footer is still uncovered.
+   The sections go clear over it; the dark membership band keeps its ground.
+   Only the home page has a close, so only the home page takes it.
+   The tones are deep enough to read as colour at a glance, and change within
+   every screen: down the page they alternate night blue and moss, and across
+   it the left, where the copy sits, is lighter than the right. On them the
+   quiet grey of the copy (--mid) is one step darker, so it keeps over 4.5:1. */
+body:has(> .closer) { position: relative; --mid: var(--zinc-600); }
+body:has(> .closer)::before {
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 70%),
+    linear-gradient(180deg,
+      var(--white) 0%,
+      color-mix(in srgb, var(--tone-blue-pale) 50%, var(--white)) 8%,
+      color-mix(in srgb, var(--tone-moss-bright) 32%, var(--white)) 24%,
+      color-mix(in srgb, var(--tone-blue-light) 28%, var(--white)) 40%,
+      color-mix(in srgb, var(--tone-moss-bright) 32%, var(--white)) 56%,
+      color-mix(in srgb, var(--tone-blue-light) 28%, var(--white)) 72%,
+      color-mix(in srgb, var(--tone-blue-pale) 45%, var(--white)) 88%,
+      var(--white) 100%);
+}
+body:has(> .closer) > :is(section, div:not(.mobile-menu), .rule):not(.plans) {
+  background-color: transparent;
+}
+
+/* Revision 30: the headings in Inter Display SemiBold. The display cut is
+   drawn tight for large sizes, so with the tiers' negative tracking the titles
+   stay dense and heavy. Text, labels and the figures' data stay in Aeonik. */
+@font-face {
+  font-family: 'Inter Display';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/InterDisplay-SemiBold.woff2') format('woff2');
+}
+:root { --font-head: 'Inter Display', var(--font-sans); }
+body :is(h1, h2, h3, h4, h5, h6, .step-title, .plan-name, .case-num, .mobile-nav-link) {
+  font-family: var(--font-head); font-weight: 600;
+}
 
 @media (max-width: 900px) {
   .main-nav, .main-nav.is-scrolled { padding: 0.75rem 0.75rem 0; }
@@ -1236,47 +1298,27 @@ def _footer(css):
     return css
 
 
-# ── 3. Almost-square corners everywhere ─────────────────────────────────
-
-CONTROL = '6px'   # buttons, chips, tags, inputs, badges: the bar's action
-SURFACE = '12px'  # cards, panels, the form, the figures: the bar's island
-
-
-def _corner(part):
-    """One radius, mapped onto the two-step scale by the size it had.
-
-    A pill (anything 40px or more) was a control, and goes to CONTROL. A large
-    radius (14px to 40px) was a surface, and goes to SURFACE. 7px to 10px was a
-    small control, an input or a dropdown option, and joins the buttons at
-    CONTROL. Circles in % and corners already this small or smaller are left.
-    rem is read at 16px, which is near enough to sort a radius into its band.
-    """
-    m = re.fullmatch(r'(\d*\.?\d+)(px|rem|em)', part)
-    if not m:
-        return part
-    px = float(m.group(1)) * (1 if m.group(2) == 'px' else 16)
-    if px >= 40:
-        return CONTROL
-    if px >= 14:
-        return SURFACE
-    if 7 <= px <= 10:
-        return CONTROL
-    return part
-
+# ── 3. Square corners everywhere ─────────────────────────────────────
 
 def _boxy(css):
+    """Every radius goes to 0: controls, surfaces, the bar, and the circles
+    (status dots, avatars) too. Runs over the drop's rules and this file's own
+    block alike, so a radius written anywhere in the stylesheet cannot survive.
+    """
     count = 0
 
     def sub(m):
         nonlocal count
-        value, important = m.group(2), m.group(3) or ''
-        new = ' '.join(_corner(p) for p in value.split())
-        if new != value:
+        if m.group(2).strip() != '0':
             count += 1
-        return m.group(1) + new + important
+        return m.group(1) + '0' + (m.group(3) or '')
 
-    css = re.sub(r'(border-radius\s*:\s*)([^;}!]+?)(\s*!important)?(?=\s*[;}])', sub, css)
-    APPLIED.append(f'corners: {count} radii moved onto the 6px and 12px scale')
+    css = re.sub(r'(border(?:-[a-z]+)*-radius\s*:\s*)([^;}!]+?)(\s*!important)?(?=\s*[;}])', sub, css)
+    left = [v for v in re.findall(r'border(?:-[a-z]+)*-radius\s*:([^;}]*)', css)
+            if v.replace('!important', '').strip() != '0']
+    if left:
+        sys.exit(f'design revision "corners": radii survived: {left}')
+    APPLIED.append(f'corners: {count} radii set to 0, every corner square')
     return css
 
 
@@ -1481,7 +1523,6 @@ def apply_to_css(css):
     css = _palette(css)
     css = _cool(css)
     css = _type(css)
-    css = _boxy(css)
     APPLIED.append('bar: one light island of fixed width')
     APPLIED.append('hero: the photograph fills the first screen, edge to edge')
     APPLIED.append('what you get: an index of rows, not a grid of tall panels')
@@ -1499,7 +1540,11 @@ def apply_to_css(css):
     APPLIED.append('disciplines: one choreography, panes that cross, nothing that loops')
     APPLIED.append('therapies: drawn as a gate')
     APPLIED.append('photographs: placed in their frames')
+    APPLIED.append('hero: the copy at the foot of the photograph, bottom left')
+    APPLIED.append('ground: one gradient the length of the home page')
+    APPLIED.append('type: the headings in Inter Display SemiBold')
     css = css.rstrip('\n') + '\n' + CSS
+    css = _boxy(css)
     left = sorted(set(m.group(0) for m in WARM_LEFT.finditer(css)))
     if left:
         sys.exit(f'design revision "palette": warm tones survived: {left}')

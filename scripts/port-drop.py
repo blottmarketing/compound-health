@@ -682,7 +682,7 @@ CHROME
         transform: translate(-50%, -120%);
         z-index: 2000;
         padding: 12px 20px;
-        border-radius: 0 0 6px 6px;
+        border-radius: 0;
         background: #18181b;
         color: #ffffff;
         font-family: var(--font-sans);
